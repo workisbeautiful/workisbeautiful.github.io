@@ -1,7 +1,5 @@
-var jsVer = "j.1";
+var jsVer = "j.2";
 
-alert("js2");
-
-function click1() {
-  alert("this is click1, js version = " + jsVer);
+function jsVersion() {
+  alert("js version = " + jsVer);
 }
