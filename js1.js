@@ -1,4 +1,4 @@
-const jsVer = "j.0.7";
+const jsVer = "j.0.8";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
@@ -231,7 +231,7 @@ function writeItems() {
 
   //loop through array to write list in HTML
   for (i = 0; i < array_itemIds.length; i++){
-    if (i > 0) html += "<div style='height:3px'></div>\n"
+    if (i > 0) html += "<div style='height:0.6em'></div>\n"
     curItemId = array_itemIds[i];
     curItemName = getItemNameFromStorage(curItemId);
     html += "<div><a href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemName + "</a></div>\n";
