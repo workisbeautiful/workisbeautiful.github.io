@@ -1,4 +1,4 @@
-const jsVer = "j.0.10";
+const jsVer = "j.0.11";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
@@ -245,10 +245,10 @@ function writeItems() {
 function writeListOfLists() {
   var i, html = "", curListId, curListName;
   for (i = 0; i < app.listIds.length; i++){
-    if (i > 0) html += "<br />\n"
+    if (i > 0) html += "<div style='height:0.6em'></div>\n"
     curListId = app.listIds[i];
     curListName = getListNameFromStorage(curListId);
-    html += "<a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a>";
+    html += "<div><a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a></div>";
   }
   if (!html) html = "(no lists)";
   elem("dvListOfLists").innerHTML = html;
@@ -282,14 +282,12 @@ function return_to_home() {
 
 
 ///// TEMP ---- seed storage with a list
+
 localStorage.clear();
 saveToStorage(CONST_listOfAllLists, "1");
-saveToStorage(getSaveKeyText_List(1), "test list 1");
-saveToStorage(getSaveKeyText_ListItems(1), "1`2`3`4");
-saveToStorage(getSaveKeyText_Item(1), "test item 1");
-saveToStorage(getSaveKeyText_Item(2), "test item 2");
-saveToStorage(getSaveKeyText_Item(3), "test item 3");
-saveToStorage(getSaveKeyText_Item(4), "test item 4");
+saveToStorage(getSaveKeyText_List(1), "main");
+saveToStorage(getSaveKeyText_ListItems(1), "1");
+saveToStorage(getSaveKeyText_Item(1), "wib list functional");
 
 
 ///// APP LOAD CODE
