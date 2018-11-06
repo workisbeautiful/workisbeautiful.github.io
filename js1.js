@@ -1,4 +1,4 @@
-const jsVer = "j.0.12";
+const jsVer = "j.0.13";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
@@ -209,7 +209,7 @@ function saveListOfAllListsToStorage() {
   var textOfListOfAllLists = "", i, curListId;
 
   for (i = 0; i < app.listIds.length; i++) {
-    if (!textOfListOfAllLists) textOfListOfAllLists += sD;
+    if ( ! isBlank(textOfListOfAllLists) ) textOfListOfAllLists += sD;
     curListId = app.listIds[i];
     textOfListOfAllLists += curListId;
   }
@@ -295,31 +295,37 @@ saveToStorage(getSaveKeyText_ListItems(1), "1");
 saveToStorage(getSaveKeyText_Item(1), "wib list functional");
 */
 
-///// APP LOAD CODE
-function loadAppData() {
-  var text_listOfAllLists, array_listOfAllLists, curListId, i;
 
-  //set app-level variables
-  app.listIds = [];
+///// LOAD APP-LEVEL DATA FROM STORAGE
+function loadAppData() {
+  var text_listOfAllLists, curListId, i;
+
+  //reset to starting values for app-level variables
+  app.listIds = null
   app.maxListId = -1;
   app.curListId = null;
 
   //grab text of list-of-all-lists from storage
   text_listOfAllLists = getFromStorage(CONST_listOfAllLists);
 
-  //build array from text
   if ( isBlank(text_listOfAllLists) ) {
-    array_listOfAllLists = [];
+
+    //if text list-of-all-lists DOES NOT exist, set the app-level list-of-all-lists array to an empty array
+    app.listIds = [];
+
   } else {
-    array_listOfAllLists = text_listOfAllLists.split(sD);
-    for (i = 0; i < array_listOfAllLists.length; i++) {
-      curListId = array_listOfAllLists[i];
+
+    //if text list-of-all-lists DOES exist ... 
+
+    // ... (1) populate the app-level list-of-all-lists array by splitting the list-of-all-lists text that was pulled from storage  
+    app.listIds = text_listOfAllLists.split(sD);
+
+    // ... (2) cycle through the new array and set app.maxListId
+    for (i = 0; i < app.listIds.length; i++) {
+      curListId = app.listIds[i];
       if (curListId > app.maxListId) app.maxListId = curListId;
     }
   }
-
-  //set app array of list-ids
-  app.listIds = array_listOfAllLists;
 }
 
 loadAppData();
