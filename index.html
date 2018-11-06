@@ -6,18 +6,23 @@
 
 <body>
 
-<span style="font-weight: bold; font-size: 150%">v0.6</span>&nbsp;&nbsp;<a href="javascript:void jsVersion()">js version</a>
+<div><span style="font-weight: bold; font-size: 150%">v0.7</span>&nbsp;&nbsp;<a href="javascript:void jsVersion()"><span style="font-size: 80%">js version</span></a></div>
+<div style="height:10px"></div>
 
 <div id="dvPage_Home" style="display:none">
-  <p><a href="javascript:void makeNewList()">make new list</a></p>
-  <p>----------</p>
-  <p><div id="dvListOfLists"></div>
+  <div><a href="javascript:void make_new_list()">make new list</a></div>
+  <div style="height:12px"></div>
+  <div id="dvListOfLists"></div>
 </div>
 
 <div id="dvPage_ViewList" style="display:none">
-  <p><div id="dvListName"></div></p>
-  <p>----------</p>
-  <p><a href="javascript:void returnToHome()">return to home</a></p>
+  <div id="dvListName" style="font-weight: bold"></div>
+  <div style="height:5px"></div>
+  <div><a href="javascript:void make_new_item()">make new item</a></div>
+  <div>--------------------</div>
+  <div id="dvItems"></div>
+  <div>--------------------</div>
+  <div><a href="javascript:void return_to_home()">return to home</a></div>
 </div>
 
 <script type="text/javascript" src="js1.js">
