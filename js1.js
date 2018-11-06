@@ -1,13 +1,10 @@
-const jsVer = "j.0.11";
+const jsVer = "j.0.12";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
 var pageLoaded = false;
 
 var app = {};
-app.listIds = null;
-app.maxListId = -1;
-app.curListId = null;
 
 
 /*
@@ -36,6 +33,13 @@ function addToListOfAllLists(listIdToAdd) {
   saveListOfAllListsToStorage();
 }
 
+function clearStorage() {
+  if (confirm("clear local storage?")) {
+    localStorage.clear();
+    loadAppData();
+    displayPage("Home");
+  }
+}
 
 function displayPage(pageName) {
   elem("dvPage_Home").style.display = "none";
@@ -236,7 +240,7 @@ function writeItems() {
     curItemName = getItemNameFromStorage(curItemId);
     html += "<div><a href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemName + "</a></div>\n";
   }
-  if (!html) html = "(no items)";
+  if (isBlank(html)) html = "(no items)";
 
   //write to screen
   elem("dvItems").innerHTML = html;
@@ -244,13 +248,14 @@ function writeItems() {
 
 function writeListOfLists() {
   var i, html = "", curListId, curListName;
+
   for (i = 0; i < app.listIds.length; i++){
     if (i > 0) html += "<div style='height:0.6em'></div>\n"
     curListId = app.listIds[i];
     curListName = getListNameFromStorage(curListId);
     html += "<div><a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a></div>";
   }
-  if (!html) html = "(no lists)";
+  if (isBlank(html)) html = "(no lists)";
   elem("dvListOfLists").innerHTML = html;
 }
 
@@ -282,23 +287,30 @@ function return_to_home() {
 
 
 ///// TEMP ---- seed storage with a list
-
+/*
 localStorage.clear();
 saveToStorage(CONST_listOfAllLists, "1");
 saveToStorage(getSaveKeyText_List(1), "main");
 saveToStorage(getSaveKeyText_ListItems(1), "1");
 saveToStorage(getSaveKeyText_Item(1), "wib list functional");
-
+*/
 
 ///// APP LOAD CODE
 function loadAppData() {
   var text_listOfAllLists, array_listOfAllLists, curListId, i;
 
+  //set app-level variables
+  app.listIds = [];
+  app.maxListId = -1;
+  app.curListId = null;
+
   //grab text of list-of-all-lists from storage
   text_listOfAllLists = getFromStorage(CONST_listOfAllLists);
 
   //build array from text
-  if ( !isBlank(text_listOfAllLists) ) {
+  if ( isBlank(text_listOfAllLists) ) {
+    array_listOfAllLists = [];
+  } else {
     array_listOfAllLists = text_listOfAllLists.split(sD);
     for (i = 0; i < array_listOfAllLists.length; i++) {
       curListId = array_listOfAllLists[i];
