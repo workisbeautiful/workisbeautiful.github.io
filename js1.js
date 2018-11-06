@@ -1,4 +1,4 @@
-const jsVer = "j.0.9";
+const jsVer = "j.0.10";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
