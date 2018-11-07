@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.16";
+const CONST_appVersion = "0.17";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -512,11 +512,12 @@ function upgradeStoredData() {
 }
 
 function upgradeStoredData_0_15() {
-  var i, j, curListId, curItemIds, curItemId, curItemInfoString, newItemInfoString;
+  var i, j, curListId, curItemIds, curItemId, curItemInfoString, newItemInfoString, curItemSaveKeyText;
 
   //cycle through each list
   for (i = 0; i < app.listIds.length; i++) {
     curListId = app.listIds[i];
+alert("starting outer loop, i="+i+", curListId="+curListId)
     
     //get array of item-ids for the current list
     curItemIds = getItemIdArrayForList(curListId);
@@ -524,15 +525,21 @@ function upgradeStoredData_0_15() {
     //loop through array of item-ids to upgrade each item's stored-data
     for (j = 0; j < curItemIds.length; j++){
       curItemId = curItemIds[j];
+alert("starting inner loop, j="+j+", curItemId="+curItemId)
 
       //get existing item-info-string (which will be just itemName)
       curItemInfoString = getItemInfoStringFromStorage(curListId, curItemId);
+alert("curItemInfoString="+curItemInfoString)
 
       //add the 'done' value of '0' to the string
       newItemInfoString = curItemInfoString + sD + "0";
+alert("newItemInfoString="+newItemInfoString)
 
       //save the revised string to storage
-      saveToStorage(getSaveKeyText_Item(curListId, curItemId), newItemInfoString);
+alert("about to save to storage,curItemSaveKeyText="+curItemSaveKeyText+", newItemInfoString="+newItemInfoString)
+      curItemSaveKeyText = getSaveKeyText_Item(curListId, curItemId);
+      saveToStorage(curItemSaveKeyText, newItemInfoString);
+alert("save to storage complete for curItemSaveKeyText="+curItemSaveKeyText+", newItemInfoString="+newItemInfoString)
     }
   }
 
