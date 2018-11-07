@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.18";
+const CONST_appVersion = "0.19";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
