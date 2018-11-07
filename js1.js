@@ -1,6 +1,7 @@
-const jsVer = "j.0.14";
+const CONST_appVersion = "0.15";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
+const CONST_storedDataVersion = "stored_data_version";
 
 var pageLoaded = false;
 
@@ -33,8 +34,8 @@ function addToListOfAllLists(listIdToAdd) {
   saveListOfAllListsToStorage();
 }
 
-function changeItem(listId, itemId, newItemName) {
-  saveItemToStorage(listId, itemId, newItemName)  
+function changeItem(listId, itemId, newItemName, newDone) {
+  saveItemToStorage(listId, itemId, newItemName, newDone)  
 }
 
 function clearStorage() {
@@ -43,6 +44,22 @@ function clearStorage() {
     loadAppData();
     displayPage("Home");
   }
+}
+
+function createItemInfoString(itemName, done) {
+  var itemInfoString = itemName + sD;
+
+  if ( isBlank(done) ) {
+    itemInfoString += "0";
+  } else {
+    if ( done == "1" ) {
+      itemInfoString += "1";
+    } else {
+      itemInfoString += "0";
+    }
+  }
+
+  return itemInfoString;
 }
 
 function deleteFromStorage(itemKey) {
@@ -84,6 +101,8 @@ function deleteItem(listId, itemIdToBeDeleted) {
 }
 
 function displayPage(pageName) {
+  var itemInfoObject;
+
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
   elem("dvPage_ViewList").style.display = "none";
@@ -97,8 +116,17 @@ function displayPage(pageName) {
       break;
 
     case "ViewItem":
-      elem("dvItemName").innerHTML = getItemNameFromStorage(app.curListId, app.curItemId);
+      itemInfoObject = getItemInfoObjectFromStorage(app.curListId, app.curItemId);
+      elem("dvItemName").innerHTML = itemInfoObject.itemName;
       elem("dvListNameForItem").innerHTML = "( " + getListNameFromStorage(app.curListId) + " )";
+      if (itemInfoObject.done == "0") {
+        elem("dvPage_ViewItem_NotDone").style.display = "";
+        elem("dvPage_ViewItem_Done").style.display = "none";
+      } else {
+        elem("dvPage_ViewItem_NotDone").style.display = "none";
+        elem("dvPage_ViewItem_Done").style.display = "";
+      }
+
       break;
 
     case "ViewList":
@@ -124,9 +152,41 @@ function getIdArray(text_ids){
   return array_itemIds;
 }
 
-function getItemNameFromStorage(listId, itemId) {
-  itemName = getFromStorage(getSaveKeyText_Item(listId, itemId));
-  return itemName;
+function getItemIdArrayForList(listId) {
+  var listItemsSaveKeyText, text_itemIds;
+
+  //get save-key-text for this list's list-items
+  listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
+
+  //get text of list-item-ids from storage
+  text_itemIds = getFromStorage(listItemsSaveKeyText);
+
+  //convert to array and return
+  return getIdArray(text_itemIds);
+}
+
+function getItemInfoObjectFromStorage(listId, itemId) {
+  var itemInfoObj, itemInfoString, itemInfoArray;
+
+  //set item-info-object to a new object
+  itemInfoObj = {};
+
+  //get the item-info-string from storage
+  itemInfoString = getItemInfoStringFromStorage(listId, itemId);
+
+  //split the item-info-string into an array
+  itemInfoArray = itemInfoString.split(sD);
+
+  //set item-info-object's properties from the string
+  itemInfoObj.itemName = itemInfoArray[0];
+  itemInfoObj.done = itemInfoArray[1];
+
+  //return the object that has been populated with item-info values
+  return itemInfoObj;
+}
+
+function getItemInfoStringFromStorage(listId, itemId) {
+  return getFromStorage(getSaveKeyText_Item(listId, itemId));
 }
 
 function getListNameFromStorage(listId) {
@@ -135,16 +195,9 @@ function getListNameFromStorage(listId) {
 }
 
 function getMaxItemIdForList(listId) {
-  var listItemsSaveKeyText, text_itemIds, array_itemIds, i, curItemId, curMaxItemId = -1;
+  var array_itemIds, i, curItemId, curMaxItemId = -1;
 
-  //get save-key-text for this list's list-items
-  listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
-
-  //get text of list-item-ids from storage
-  text_itemIds = getFromStorage(listItemsSaveKeyText);
-
-  //convert to array
-  array_itemIds = getIdArray(text_itemIds);
+  array_itemIds = getItemIdArrayForList(listId);
 
   //grab max item-id
   for (i = 0; i < array_itemIds.length; i++) {
@@ -191,7 +244,7 @@ function itemFactory(listId, itemName) {
   newItemId = curMaxItemId + 1;
 
   //save item to storage
-  saveItemToStorage(listId, newItemId, itemName);
+  saveItemToStorage(listId, newItemId, itemName, "0");
 
   //set new list item values for list
   listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
@@ -219,7 +272,7 @@ function listFactory(listName) {
 }
 
 function jsVersion() {
-  alert("js version = " + jsVer);
+  alert("version in app code = " + CONST_appVersion);
 }
 
 function makeNewItem(listId, name) {
@@ -256,8 +309,9 @@ function saveListItemIdsToStorage(listId, text_itemIds) {
   }
 }
 
-function saveItemToStorage(listId, itemId, itemName) {
-  saveToStorage(getSaveKeyText_Item(listId, itemId), itemName);
+function saveItemToStorage(listId, itemId, itemName, done) {
+  var itemInfoString = createItemInfoString(itemName, done);
+  saveToStorage(getSaveKeyText_Item(listId, itemId), itemInfoString);
 }
 
 function saveListOfAllListsToStorage() {
@@ -277,23 +331,23 @@ function saveToStorage(itemKey, itemValue) {
 }
 
 function writeItems() {
-  var listItemsSaveKeyText, text_itemIds, array_itemIds, i, html = "", curItemId, curItemName;
+  var array_itemIds, i, html = "", curItemId, curItemInfoObj;
 
-  //get save-key-text for this list's list-items
-  listItemsSaveKeyText = getSaveKeyText_ListItems(app.curListId);
-
-  //get text of list-item-ids from storage
-  text_itemIds = getFromStorage(listItemsSaveKeyText);
-
-  //convert to array
-  array_itemIds = getIdArray(text_itemIds);
+  //get array of item-ids for the current app-list
+  array_itemIds = getItemIdArrayForList(app.curListId);
 
   //loop through array to write list in HTML
   for (i = 0; i < array_itemIds.length; i++){
     if (i > 0) html += "<div style='height:0.6em'></div>\n"
     curItemId = array_itemIds[i];
-    curItemName = getItemNameFromStorage(app.curListId, curItemId);
-    html += "<div><a href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemName + "</a></div>\n";
+
+    //call the function that grabs the current item's item-info from storage and returns it as a js-object
+    curItemInfoObj = getItemInfoObjectFromStorage(app.curListId, curItemId);
+
+    //set html based on item-info values stored as properties of the item-info-js-object
+    html += "<div><a" ;
+    if (curItemInfoObj.done == "1") html += " class='green'";
+    html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemInfoObj.itemName + "</a></div>\n";
   }
   if (isBlank(html)) html = "(no items)";
 
@@ -332,14 +386,6 @@ function delete_item() {
   }
 }
 
-function edit_item() {
-  var curItemName = getItemNameFromStorage(app.curListId, app.curItemId);
-  var editedItemName = prompt("Change item name to:", curItemName);
-  if ( isBlank(editedItemName)) return;
-  changeItem(app.curListId, app.curItemId, editedItemName);
-  go_to_item(app.curItemId);
-}
-
 function go_to_item(itemId) {
   app.curItemId = itemId;
   displayPage("ViewItem");
@@ -348,6 +394,12 @@ function go_to_item(itemId) {
 function go_to_list(listId) {
   app.curListId = listId;
   displayPage("ViewList");
+}
+
+function mark_item_as_done() {
+  var curItemObj = getItemInfoObjectFromStorage(app.curListId, app.curItemId);
+  changeItem(app.curListId, app.curItemId, curItemObj.itemName, "1");
+  go_to_item(app.curItemId);
 }
 
 function make_new_item() {
@@ -360,12 +412,26 @@ function make_new_list() {
   writeListOfLists();
 }
 
+function rename_item() {
+  var curItemObj = getItemInfoObjectFromStorage(app.curListId, app.curItemId);
+  var editedItemName = prompt("Change item name to:", curItemObj.itemName);
+  if ( isBlank(editedItemName)) return;
+  changeItem(app.curListId, app.curItemId, editedItemName, curItemObj.done);
+  go_to_item(app.curItemId);
+}
+
 function return_to_home() {
   displayPage("Home");
 }
 
 function return_to_list() {
   go_to_list(app.curListId);
+}
+
+function unmark_item_as_done() {
+  var curItemObj = getItemInfoObjectFromStorage(app.curListId, app.curItemId);
+  changeItem(app.curListId, app.curItemId, curItemObj.itemName, "0");
+  go_to_item(app.curItemId);
 }
 
 
@@ -410,9 +476,74 @@ function loadAppData() {
       if (curListId > app.maxListId) app.maxListId = curListId;
     }
   }
+
+  //update stored-data
+  upgradeStoredData();
+}
+
+function upgradeStoredData() {
+  var appVersion_array, appVersion_major, appVersion_minor;
+  var storedDataVersion_text, storedDataVersion_array, storedDataVersion_major, storedDataVersion_minor;
+
+  //split app-version into major and minor
+  appVersion_array = CONST_appVersion.split(".");
+  appVersion_major = Number(appVersion_array[0]);
+  appVersion_minor = Number(appVersion_array[1]);
+
+  //establish existing version of the stored data
+  storedDataVersion_text = getFromStorage(CONST_storedDataVersion);
+  if ( isBlank(storedDataVersion_text) ) storedDataVersion_text = "0.0";
+  
+  //split stored-data-version into major and minor
+  storedDataVersion_array = storedDataVersion_text.split(".");
+  storedDataVersion_major =  Number(storedDataVersion_array[0]);
+  storedDataVersion_minor =  Number(storedDataVersion_array[1]);
+
+  //warning if major version differs
+  if ( !isEqual(appVersion_major, storedDataVersion_major) ) {
+    alert("WARNING: app version is " + appVersion_major + ", stored data version is " + storedDataVersion_major + " ... no automatic data update available yet for major version upgrades");
+    return;
+  }
+
+  if (appVersion_minor >= 15 && storedDataVersion_minor < 15) {
+    //upgrade from pre-0.15 to 0.15
+    upgradeStoredData_0_15();
+  }
+}
+
+function upgradeStoredData_0_15() {
+  var i, curListId, curItemIds, curItemId, curItemInfoString, newItemInfoString;
+
+  //cycle through each list
+  for (i = 0; i < app.listIds.length; i++) {
+    curListId = app.listIds[i];
+    
+    //get array of item-ids for the current list
+    curItemIds = getItemIdArrayForList(curListId);
+
+    //loop through array of item-ids to upgrade each item's stored-data
+    for (i = 0; i < curItemIds.length; i++){
+      curItemId = curItemIds[i];
+
+      //get existing item-info-string (which will be just itemName)
+      curItemInfoString = getItemInfoStringFromStorage(curListId, curItemId);
+
+      //add the 'done' value of '0' to the string
+      newItemInfoString = curItemInfoString + sD + "0";
+
+      //save the revised string to storage
+      saveToStorage(getSaveKeyText_Item(curListId, curItemId), newItemInfoString);
+    }
+  }
+
+  //update the stored-data's version to 0.15
+  saveToStorage(CONST_storedDataVersion, "0.15");
 }
 
 loadAppData();
+
+
+///// LOAD HOME PAGE
 
 displayPage("Home");
 
