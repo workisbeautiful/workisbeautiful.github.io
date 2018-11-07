@@ -1,4 +1,4 @@
-const jsVer = "j.0.13";
+const jsVer = "j.0.14";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 
@@ -33,6 +33,10 @@ function addToListOfAllLists(listIdToAdd) {
   saveListOfAllListsToStorage();
 }
 
+function changeItem(listId, itemId, newItemName) {
+  saveItemToStorage(listId, itemId, newItemName)  
+}
+
 function clearStorage() {
   if (confirm("clear local storage?")) {
     localStorage.clear();
@@ -41,8 +45,47 @@ function clearStorage() {
   }
 }
 
+function deleteFromStorage(itemKey) {
+  localStorage.removeItem(itemKey);
+}
+
+function deleteItem(listId, itemIdToBeDeleted) {
+  var itemSaveKeyText, listItemsSaveKeyText, curText_itemsIds, curArray_itemsIds, i, curArrayItemId, newText_itemIds = "";
+
+  //delete the item from storage
+  itemSaveKeyText = getSaveKeyText_Item(listId, itemIdToBeDeleted);
+  deleteFromStorage(itemSaveKeyText);
+
+  //clear app-level current-item-id
+  app.curItemId = null;
+
+  //get current list-item values for list
+  listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
+  curText_itemsIds = getFromStorage(listItemsSaveKeyText);
+
+  //convert current text-of-list-items to array
+  curArray_itemsIds = curText_itemsIds.split(sD);
+
+  //cycle through current list-items array
+  for ( i = 0; i < curArray_itemsIds.length; i++) {
+    curArrayItemId = curArray_itemsIds[i];
+    
+    //compare each existing list-item to the item-to-be-deleted
+    if ( !isEqual(curArrayItemId, itemIdToBeDeleted) ) {
+
+      //if match is not found, this is NOT our target list-item, so we can write to the current array item-id to the new text for list-items
+      if ( !isBlank(newText_itemIds) ) newText_itemIds += sD
+      newText_itemIds += curArrayItemId
+    }
+  }
+
+  //save the edited text-of-list-items to storage
+  saveToStorage(listItemsSaveKeyText, newText_itemIds);
+}
+
 function displayPage(pageName) {
   elem("dvPage_Home").style.display = "none";
+  elem("dvPage_ViewItem").style.display = "none";
   elem("dvPage_ViewList").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "";
@@ -51,6 +94,11 @@ function displayPage(pageName) {
 
     case "Home":
       writeListOfLists();  
+      break;
+
+    case "ViewItem":
+      elem("dvItemName").innerHTML = getItemNameFromStorage(app.curListId, app.curItemId);
+      elem("dvListNameForItem").innerHTML = "( " + getListNameFromStorage(app.curListId) + " )";
       break;
 
     case "ViewList":
@@ -108,7 +156,7 @@ function getMaxItemIdForList(listId) {
 }
 
 function getSaveKeyText_Item(listId, itemId) {
-  return "L" + listId + "i" + itemId;
+  return listId + "_" + itemId;
 }
 
 function getSaveKeyText_List(listId) {
@@ -128,25 +176,32 @@ function isBlank(val) {
   return false;
 }
 
+function isEqual(val1, val2) {
+  if ( isBlank(val1) && isBlank(val2) ) return true;
+  if ( val1 == val2 ) return true;
+  if ( Number(val1) == Number(val2) ) return true;
+  return false;
+}
+
 function itemFactory(listId, itemName) {
-  var curMaxItemId, newItemId, listItemsSaveKeyText, curText_itemsIds, newText_itemsIds;
+  var curMaxItemId, newItemId, listItemsSaveKeyText, curText_itemsIds, newText_itemIds = "";
 
   //get new list-item-id and manage list-item-id counter
   curMaxItemId = getMaxItemIdForList(listId);
   newItemId = curMaxItemId + 1;
 
-  //save list item to storage
-  saveItemToStorage(newItemId, listId, itemName);
+  //save item to storage
+  saveItemToStorage(listId, newItemId, itemName);
 
   //set new list item values for list
   listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
   curText_itemsIds = getFromStorage(listItemsSaveKeyText);
   if (isBlank(curText_itemsIds)) {
-    newText_itemsIds = newItemId;
+    newText_itemIds = newItemId;
   } else {
-    newText_itemsIds = curText_itemsIds + sD + newItemId;
+    newText_itemIds = curText_itemsIds + sD + newItemId;
   }
-  saveToStorage(listItemsSaveKeyText, newText_itemsIds);
+  saveToStorage(listItemsSaveKeyText, newText_itemIds);
 }
 
 function listFactory(listName) {
@@ -172,7 +227,7 @@ function makeNewItem(listId, name) {
   if (!name) name = prompt("new list item:","");
   if (!name) return;
 
-  //create and save list item
+  //create and save item
   itemFactory(listId, name);
 }
 
@@ -201,8 +256,8 @@ function saveListItemIdsToStorage(listId, text_itemIds) {
   }
 }
 
-function saveItemToStorage(itemId, listId, itemName) {
-  saveToStorage(getSaveKeyText_Item(itemId), itemName);
+function saveItemToStorage(listId, itemId, itemName) {
+  saveToStorage(getSaveKeyText_Item(listId, itemId), itemName);
 }
 
 function saveListOfAllListsToStorage() {
@@ -237,7 +292,7 @@ function writeItems() {
   for (i = 0; i < array_itemIds.length; i++){
     if (i > 0) html += "<div style='height:0.6em'></div>\n"
     curItemId = array_itemIds[i];
-    curItemName = getItemNameFromStorage(curItemId);
+    curItemName = getItemNameFromStorage(app.curListId, curItemId);
     html += "<div><a href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemName + "</a></div>\n";
   }
   if (isBlank(html)) html = "(no items)";
@@ -263,10 +318,34 @@ function writeListOfLists() {
 ///// FUNCTIONS FROM HTML PAGE
 
 function click_item(itemId) {
-  alert("--- clicked this item, tbd what happens ---")
+  go_to_item(itemId);
 }
 
 function click_list(listId) {
+  go_to_list(listId);
+}
+
+function delete_item() {
+  if ( confirm("Delete this item?") ) {
+    deleteItem(app.curListId, app.curItemId);
+    go_to_list(app.curListId);
+  }
+}
+
+function edit_item() {
+  var curItemName = getItemNameFromStorage(app.curListId, app.curItemId);
+  var editedItemName = prompt("Change item name to:", curItemName);
+  if ( isBlank(editedItemName)) return;
+  changeItem(app.curListId, app.curItemId, editedItemName);
+  go_to_item(app.curItemId);
+}
+
+function go_to_item(itemId) {
+  app.curItemId = itemId;
+  displayPage("ViewItem");
+}
+
+function go_to_list(listId) {
   app.curListId = listId;
   displayPage("ViewList");
 }
@@ -285,6 +364,10 @@ function return_to_home() {
   displayPage("Home");
 }
 
+function return_to_list() {
+  go_to_list(app.curListId);
+}
+
 
 ///// TEMP ---- seed storage with a list
 /*
@@ -292,7 +375,7 @@ localStorage.clear();
 saveToStorage(CONST_listOfAllLists, "1");
 saveToStorage(getSaveKeyText_List(1), "main");
 saveToStorage(getSaveKeyText_ListItems(1), "1");
-saveToStorage(getSaveKeyText_Item(1), "wib list functional");
+saveToStorage(getSaveKeyText_Item(1, 1), "wib list functional");
 */
 
 
@@ -304,6 +387,7 @@ function loadAppData() {
   app.listIds = null
   app.maxListId = -1;
   app.curListId = null;
+  app.curItemId = null;
 
   //grab text of list-of-all-lists from storage
   text_listOfAllLists = getFromStorage(CONST_listOfAllLists);
