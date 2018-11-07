@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.21";
+const CONST_appVersion = "0.22";
 const CONST_devText1 = "devText1";
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
