@@ -1,12 +1,12 @@
-const CONST_appVersion = "0.20";
-const sD = "`"; // sD = storageDivider
+const CONST_appVersion = "0.21";
+const CONST_devText1 = "devText1";
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
+const sD = "`"; // sD = storageDivider
 
 var pageLoaded = false;
 
 var app = {};
-
 
 /*
 
@@ -256,6 +256,14 @@ function isBlank(val) {
   return false;
 }
 
+function isDev() {
+  if ( getFromStorage(CONST_devText1) == "1" ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function isEqual(val1, val2) {
   if ( isBlank(val1) && isBlank(val2) ) return true;
   if ( val1 == val2 ) return true;
@@ -354,8 +362,27 @@ function saveToStorage(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
 
+function toggleDev() {
+  var curDevText1, newDevText1;
+
+  curDevText1 = getFromStorage(CONST_devText1);
+
+  if ( curDevText1 == "1" ) {
+    newDevText1 = "0";
+  } else {
+    newDevText1 = "1";
+  }
+
+  saveToStorage(CONST_devText1, newDevText1);
+
+  alert("devText1 set to " + newDevText1);
+}
+
 function writeItems() {
-  var array_itemIds, i, html = "", curItemId, curItemInfoObj;
+  var array_itemIds, i, html = "", curItemId, curItemInfoObj, addedDevHtml = "";
+
+  //added dev html for debugging
+  // if ( isDev() ) addedDevHtml = " style='border: 1px red solid'";
 
   //get array of item-ids for the current app-list
   array_itemIds = getItemIdArrayForList(app.curListId);
@@ -380,7 +407,7 @@ function writeItems() {
     html += " <tr style='height: 2px'><td></td></tr>\n";
     html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
     html += " </table\n";
-    html += "</td><td>&nbsp;&nbsp;<a" ;
+    html += "</td><td style='width: 0.5em'></td><td><a" ;
     if (curItemInfoObj.done == "1") html += " class='green'";
     html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemInfoObj.itemName + "</a></td></tr>\n";
   }
