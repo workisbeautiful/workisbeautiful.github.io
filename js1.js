@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.17";
+const CONST_appVersion = "0.18";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -36,6 +36,10 @@ function addToListOfAllLists(listIdToAdd) {
 
 function changeItem(listId, itemId, newItemName, newDone) {
   saveItemToStorage(listId, itemId, newItemName, newDone)  
+}
+
+function changeList(listId, newListName) {
+  saveListInfoToStorage(listId, newListName)  
 }
 
 function clearStorage() {
@@ -189,6 +193,29 @@ function getItemInfoStringFromStorage(listId, itemId) {
   return getFromStorage(getSaveKeyText_Item(listId, itemId));
 }
 
+function getListInfoStringFromStorage(listId) {
+  return getFromStorage(getSaveKeyText_List(listId));
+}
+
+function getListInfoObjectFromStorage(listId) {
+  var listInfoObj, listInfoString, listInfoArray;
+
+  //set list-info-object to a new object
+  listInfoObj = {};
+
+  //get the list-info-string from storage
+  listInfoString = getListInfoStringFromStorage(listId);
+
+  //split the list-info-string into an array
+  listInfoArray = listInfoString.split(sD);
+
+  //set list-info-object's properties from the string
+  listInfoObj.listName = listInfoArray[0];
+
+  //return the object that has been populated with list-info values
+  return listInfoObj;
+}
+
 function getListNameFromStorage(listId) {
   listName = getFromStorage(getSaveKeyText_List(listId));
   return listName;
@@ -266,39 +293,36 @@ function listFactory(listName) {
 
   //save list to storage
   saveListInfoToStorage(listId, listName);
+  saveListItemIdsToStorage(listId, "");
 
   //change list-of-all-lists
   addToListOfAllLists(listId);
 }
 
 function jsVersion() {
-  alert("version in app code = " + CONST_appVersion);
+  alert("js version: " + CONST_appVersion);
 }
 
-function makeNewItem(listId, name) {
-  //confirm list name item
-  if (!name) name = prompt("new list item:","");
-  if (!name) return;
+function makeNewItem(listId, itemName) {
+  //confirm item name
+  if (!itemName) itemName = prompt("new list item:","");
+  if (!itemName) return;
 
   //create and save item
-  itemFactory(listId, name);
+  itemFactory(listId, itemName);
 }
 
-function makeNewList(name) {
+function makeNewList(listName) {
   //confirm list name
-  if (!name) name = prompt("new list name:","");
-  if (!name) return;
+  if (!listName) listName = prompt("new list name:","");
+  if (!listName) return;
 
   //create and save list
-  listFactory(name);
+  listFactory(listName);
 }
 
-function saveListInfoToStorage(listId, listName, text_itemIds) {
-  //save list's top level info
+function saveListInfoToStorage(listId, listName) {
   saveToStorage(getSaveKeyText_List(listId), listName);
-
-  // if present, save list's list-of-item-ids
-  saveListItemIdsToStorage(listId, text_itemIds);
 }
 
 function saveListItemIdsToStorage(listId, text_itemIds) {
@@ -338,16 +362,23 @@ function writeItems() {
 
   //loop through array to write list in HTML
   for (i = 0; i < array_itemIds.length; i++){
-    if (i > 0) html += "<div style='height:0.6em'></div>\n"
+    if (i > 0) html += "<div style='height:0.8em'></div>\n"
     curItemId = array_itemIds[i];
 
     //call the function that grabs the current item's item-info from storage and returns it as a js-object
     curItemInfoObj = getItemInfoObjectFromStorage(app.curListId, curItemId);
 
     //set html based on item-info values stored as properties of the item-info-js-object
-    html += "<div><a" ;
+    html += "<table cellspacing=0 cellpadding=0>\n";
+    html += "<tr><td>\n";
+    html += " <table cellspacing=0 cellpadding=0>\n";
+    html += " <tr style='height: 2px'><td></td></tr>\n";
+    html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
+    html += " </table\n";
+    html += "</td><td>&nbsp;&nbsp;<a" ;
     if (curItemInfoObj.done == "1") html += " class='green'";
-    html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemInfoObj.itemName + "</a></div>\n";
+    html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemInfoObj.itemName + "</a></td></tr>\n";
+    html += "</table\n";
   }
   if (isBlank(html)) html = "(no items)";
 
@@ -359,10 +390,10 @@ function writeListOfLists() {
   var i, html = "", curListId, curListName;
 
   for (i = 0; i < app.listIds.length; i++){
-    if (i > 0) html += "<div style='height:0.6em'></div>\n"
+    if (i > 0) html += "<div style='height:0.8em'></div>\n"
     curListId = app.listIds[i];
     curListName = getListNameFromStorage(curListId);
-    html += "<div><a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a></div>";
+    html += "<div style=''><a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a></div>";
   }
   if (isBlank(html)) html = "(no lists)";
   elem("dvListOfLists").innerHTML = html;
@@ -418,6 +449,14 @@ function rename_item() {
   if ( isBlank(editedItemName)) return;
   changeItem(app.curListId, app.curItemId, editedItemName, curItemObj.done);
   go_to_item(app.curItemId);
+}
+
+function rename_list() {
+  var curListObj = getListInfoObjectFromStorage(app.curListId);
+  var editedListName = prompt("Change list name to:", curListObj.listName);
+  if ( isBlank(editedListName)) return;
+  changeList(app.curListId, editedListName);
+  go_to_list(app.curListId);
 }
 
 function return_to_home() {
@@ -517,7 +556,6 @@ function upgradeStoredData_0_15() {
   //cycle through each list
   for (i = 0; i < app.listIds.length; i++) {
     curListId = app.listIds[i];
-alert("starting outer loop, i="+i+", curListId="+curListId)
     
     //get array of item-ids for the current list
     curItemIds = getItemIdArrayForList(curListId);
@@ -525,21 +563,16 @@ alert("starting outer loop, i="+i+", curListId="+curListId)
     //loop through array of item-ids to upgrade each item's stored-data
     for (j = 0; j < curItemIds.length; j++){
       curItemId = curItemIds[j];
-alert("starting inner loop, j="+j+", curItemId="+curItemId)
 
       //get existing item-info-string (which will be just itemName)
       curItemInfoString = getItemInfoStringFromStorage(curListId, curItemId);
-alert("curItemInfoString="+curItemInfoString)
 
       //add the 'done' value of '0' to the string
       newItemInfoString = curItemInfoString + sD + "0";
-alert("newItemInfoString="+newItemInfoString)
 
       //save the revised string to storage
-alert("about to save to storage,curItemSaveKeyText="+curItemSaveKeyText+", newItemInfoString="+newItemInfoString)
       curItemSaveKeyText = getSaveKeyText_Item(curListId, curItemId);
       saveToStorage(curItemSaveKeyText, newItemInfoString);
-alert("save to storage complete for curItemSaveKeyText="+curItemSaveKeyText+", newItemInfoString="+newItemInfoString)
     }
   }
 
