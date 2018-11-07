@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.19";
+const CONST_appVersion = "0.20";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -360,16 +360,21 @@ function writeItems() {
   //get array of item-ids for the current app-list
   array_itemIds = getItemIdArrayForList(app.curListId);
 
+  //open html table
+  html += "<table cellspacing=0 cellpadding=0>\n";
+
   //loop through array to write list in HTML
   for (i = 0; i < array_itemIds.length; i++){
-    if (i > 0) html += "<div style='height:0.8em'></div>\n"
     curItemId = array_itemIds[i];
+
+    if (i > 0) {
+      html += "<tr><td style='height: 1.2em'></td><td></td></tr>\n";
+    }
 
     //call the function that grabs the current item's item-info from storage and returns it as a js-object
     curItemInfoObj = getItemInfoObjectFromStorage(app.curListId, curItemId);
 
     //set html based on item-info values stored as properties of the item-info-js-object
-    html += "<table cellspacing=0 cellpadding=0>\n";
     html += "<tr><td>\n";
     html += " <table cellspacing=0 cellpadding=0>\n";
     html += " <tr style='height: 2px'><td></td></tr>\n";
@@ -378,9 +383,13 @@ function writeItems() {
     html += "</td><td>&nbsp;&nbsp;<a" ;
     if (curItemInfoObj.done == "1") html += " class='green'";
     html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemInfoObj.itemName + "</a></td></tr>\n";
-    html += "</table\n";
   }
-  if (isBlank(html)) html = "(no items)";
+
+  if (array_itemIds.length == 0) html = "<tr><td>(no items)</td></tr>";
+
+  html += "</table\n";
+
+//prompt("",html)
 
   //write to screen
   elem("dvItems").innerHTML = html;
@@ -390,7 +399,7 @@ function writeListOfLists() {
   var i, html = "", curListId, curListName;
 
   for (i = 0; i < app.listIds.length; i++){
-    if (i > 0) html += "<div style='height:0.8em'></div>\n"
+    if (i > 0) html += "<div style='height:1.2em'></div>\n"
     curListId = app.listIds[i];
     curListName = getListNameFromStorage(curListId);
     html += "<div style=''><a href='javascript:void click_list(\"" + curListId + "\")'>" + curListName + "</a></div>";
