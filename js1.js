@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.15";
+const CONST_appVersion = "0.16";
 const sD = "`"; // sD = storageDivider
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -512,7 +512,7 @@ function upgradeStoredData() {
 }
 
 function upgradeStoredData_0_15() {
-  var i, curListId, curItemIds, curItemId, curItemInfoString, newItemInfoString;
+  var i, j, curListId, curItemIds, curItemId, curItemInfoString, newItemInfoString;
 
   //cycle through each list
   for (i = 0; i < app.listIds.length; i++) {
@@ -522,8 +522,8 @@ function upgradeStoredData_0_15() {
     curItemIds = getItemIdArrayForList(curListId);
 
     //loop through array of item-ids to upgrade each item's stored-data
-    for (i = 0; i < curItemIds.length; i++){
-      curItemId = curItemIds[i];
+    for (j = 0; j < curItemIds.length; j++){
+      curItemId = curItemIds[j];
 
       //get existing item-info-string (which will be just itemName)
       curItemInfoString = getItemInfoStringFromStorage(curListId, curItemId);
