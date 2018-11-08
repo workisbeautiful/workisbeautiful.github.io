@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.24";
+const CONST_appVersion = "0.25";
 
 const CONST_appNarrow = "app_narrow";
 const CONST_devText1 = "devText1";
@@ -424,7 +424,15 @@ function writeStorage() {
     html += "<tr><td>(no items in storage)</td></tr>\n";
   } else {
     if (app.narrow == "1") {
-      html += "<tr><td></td><td><b>Key Name<br />Key Value</b></td></tr>\n";
+      html += "<tr><td></td><td>\n";
+      html += "  <table cellpadding=0 cellspacing=0>\n";
+      html += "  <tr><td><b>Key Name</b></td></tr>\n";
+      html += "  <tr><td style='height: 3px'></td></tr>\n";
+      html += "  <tr><td style='height: 1px; background-color: black'></td></tr>\n";
+      html += "  <tr><td style='height: 3px'></td></tr>\n";
+      html += "  <tr><td><b>Key Value</b></td></tr>\n";
+      html += "  </table>\n";
+      html += "</td></tr>\n";
     } else {
       html += "<tr><td></td><td><b>Key Name</b></td><td><b>Key Value</b></td></tr>\n";
     }
@@ -434,8 +442,21 @@ function writeStorage() {
     keyName = localStorage.key(i);
     keyValue = getFromStorage(keyName);
 
-    html += "<tr><td>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
-    html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
+    if (app.narrow == "1") {
+      html += "<tr><td>\n";
+      html += "  <table cellpadding=0 cellspacing=0>\n";
+      html += "  <tr><td><a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a></td></tr>\n";
+      html += "  <tr><td style='height: 15px'></td></tr>\n";
+      html += "  <tr><td><a href='javascript:void change_storage_key_name(\"" + keyName + "\")'>change key</a></td></tr>\n";
+      html += "  <tr><td style='height: 15px'></td></tr>\n";
+      html += "  <tr><td><a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a></td></tr>\n";
+      html += "  </table>\n";
+      html += "</td>\n";
+    } else {
+      html += "<tr><td>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void change_storage_key_name(\"" + keyName + "\")'>change key</a>&nbsp;&nbsp;</td>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
+    }
 
     if (app.narrow == "1") {
       html += "<td>" + keyName + "</td></tr>\n";
@@ -464,6 +485,20 @@ function add_storage_row() {
   }
 
   saveToStorage(keyName, keyValue);
+  show_storage();
+}
+
+function change_storage_key_name(curKeyName) {
+  var editedKeyName = prompt("Change key name to:", curKeyName);
+
+  if ( isBlank(editedKeyName) ) {
+    return;
+  }
+
+  var keyValue = getFromStorage(curKeyName);
+
+  deleteFromStorage(curKeyName);
+  saveToStorage(editedKeyName, keyValue);
   show_storage();
 }
 
