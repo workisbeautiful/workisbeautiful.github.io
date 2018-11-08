@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>TEST - wib</title>
+</head>
+
+<body>
+
+<div id="dv1">not loaded</div>
+
+<script type="text/javascript">
+
+function clear_storage() {
+  var clearStoragePrompt;
+  
+  //clearStoragePrompt = prompt("type 'clear it' to clear local storage, "");
+  clearStoragePrompt = prompt("type 'clear it' to clear local storage", "");
+
+  if (clearStoragePrompt == "clear it") {
+    localStorage.clear();
+    loadAppData();
+    displayPage("Home");
+  } else {
+    alert("storage NOT clear");
+  }
+}
+
+document.getElementById("dv1").innerHTML = "loaded";
+
+</script>
+
+</body>
+
+</html>

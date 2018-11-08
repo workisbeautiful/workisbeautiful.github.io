@@ -21,19 +21,32 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 .green {color: #00CC66}
 </style>
 
-<title>wib list</title>
+<title>wib</title>
 
 </head>
 
 <body>
 
 <div>
-  <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib list v0.22</span>
-  &nbsp;&nbsp;<a href="javascript:void jsVersion()"><span style="font-size: 80%"><nowrap>js ver</nowrap></span></a>
-  |&nbsp;<a href="javascript:void clearStorage()"><span style="font-size: 80%"><nowrap>clr data</nowrap></span></a>
-  |&nbsp;<a href="javascript:void toggleDev()"><span style="font-size: 80%"><nowrap>tgl dev</nowrap></span></a>
+  <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.23</span>
+  &nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>dev</nowrap></span></a>
 </div>
 <div style="height:1.2em"></div>
+
+<div id="dvPage_Dev" style="display: none">
+  <div style="display: inline-block">
+    <div><a href="javascript:void return_home()">return home</a></div>
+    <hr></hr>
+  </div>
+  <div style="height:0.8em"></div>
+  <div><a href="javascript:void js_version()">js version</a></div>
+  <div style="height:1em"></div>
+  <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
+  <div style="height:1em"></div>
+  <div><a href="javascript:void clear_storage()">clear storage</a></div>
+  <div style="height:1em"></div>
+  <div><a href="javascript:void show_storage()">show storage</a></div>
+</div>
 
 <div id="dvPage_Home" style="display: none">
   <div style="display: inline-block">
@@ -50,20 +63,32 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   </div>
 </div>
 
+<div id="dvPage_ShowStorage" style="display: none">
+  <div style="display: inline-block">
+    <div><a href="javascript:void return_home_from_storage()">return home</a></div>
+    <hr></hr>
+  </div>
+  <div style="height:0.8em"></div>
+  <div id="dvStorage"></div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void return_home_from_storage()">return home</a></div>
+  </div>
+</div>
+
 <div id="dvPage_ViewItem" style="display: none">
   <div id="dvItemName" style="font-weight: bold"></div>
   <div style="height:0.3em"></div>
   <div id="dvListNameForItem"></div>
   <div style="height:1.2em"></div>
-
   <div id="dvPage_ViewItem_NotDone" style="display: none">
     <div><a href="javascript:void mark_item_as_done()">mark as done</a></div>
   </div>
-
   <div id="dvPage_ViewItem_Done" style="display: none">
     <div><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()">unmark as done</a></div>
   </div>
-
   <div style="height:1.2em"></div>
   <div><a href="javascript:void rename_item()">rename item</a></div>
   <div style="height:1.2em"></div>
@@ -72,7 +97,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div style="display: inline-block">
     <hr></hr>
     <div style="height:0.9em"></div>
-    <div><a href="javascript:void return_to_list()">return to list</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_to_home()">return to home</a></div>
+    <div><a href="javascript:void return_to_list()">return to list</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_home()">return to home</a></div>
   </div>
 </div>
 
@@ -82,7 +107,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div><a href="javascript:void rename_list()">rename list</a></div>
   <div style="height:1.2em"></div>
   <div style="display: inline-block">
-    <div><a href="javascript:void make_new_item()">make new item</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_to_home()">return to home</a></div>
+    <div><a href="javascript:void make_new_item()">make new item</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_home()">return to home</a></div>
     <div style="height:0.2em"></div>
     <hr></hr>
   </div>
@@ -92,7 +117,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div style="display: inline-block">
     <hr></hr>
     <div style="height:0.9em"></div>
-    <div><a href="javascript:void make_new_item()">make new item</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_to_home()">return to home</a></div>
+    <div><a href="javascript:void make_new_item()">make new item</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_home()">return to home</a></div>
   </div>
 </div>
 

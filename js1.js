@@ -1,4 +1,4 @@
-const CONST_appVersion = "0.22";
+const CONST_appVersion = "0.23";
 const CONST_devText1 = "devText1";
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -40,14 +40,6 @@ function changeItem(listId, itemId, newItemName, newDone) {
 
 function changeList(listId, newListName) {
   saveListInfoToStorage(listId, newListName)  
-}
-
-function clearStorage() {
-  if (confirm("clear local storage?")) {
-    localStorage.clear();
-    loadAppData();
-    displayPage("Home");
-  }
 }
 
 function createItemInfoString(itemName, done) {
@@ -107,7 +99,9 @@ function deleteItem(listId, itemIdToBeDeleted) {
 function displayPage(pageName) {
   var itemInfoObject;
 
+  elem("dvPage_Dev").style.display = "none";
   elem("dvPage_Home").style.display = "none";
+  elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
   elem("dvPage_ViewList").style.display = "none";
 
@@ -136,6 +130,10 @@ function displayPage(pageName) {
     case "ViewList":
       elem("dvListName").innerHTML = getListNameFromStorage(app.curListId);
       writeItems();
+      break;
+
+    case "ShowStorage":
+      writeStorage();
       break;
   }
 }
@@ -307,10 +305,6 @@ function listFactory(listName) {
   addToListOfAllLists(listId);
 }
 
-function jsVersion() {
-  alert("js version: " + CONST_appVersion);
-}
-
 function makeNewItem(listId, itemName) {
   //confirm item name
   if (!itemName) itemName = prompt("new list item:","");
@@ -362,22 +356,6 @@ function saveToStorage(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
 
-function toggleDev() {
-  var curDevText1, newDevText1;
-
-  curDevText1 = getFromStorage(CONST_devText1);
-
-  if ( curDevText1 == "1" ) {
-    newDevText1 = "0";
-  } else {
-    newDevText1 = "1";
-  }
-
-  saveToStorage(CONST_devText1, newDevText1);
-
-  alert("devText1 set to " + newDevText1);
-}
-
 function writeItems() {
   var array_itemIds, i, html = "", curItemId, curItemInfoObj, addedDevHtml = "";
 
@@ -416,8 +394,6 @@ function writeItems() {
 
   html += "</table\n";
 
-//prompt("",html)
-
   //write to screen
   elem("dvItems").innerHTML = html;
 }
@@ -435,8 +411,64 @@ function writeListOfLists() {
   elem("dvListOfLists").innerHTML = html;
 }
 
+function writeStorage() {
+  var i, keyName, keyValue, html = "", curListId, curListName;
+
+  html += "<div><a href='javascript:void add_storage_row()'>add</a></div>\n";
+  html += "<div style='height:0.8em'></div>\n";
+  html += "<table cellpadding=5 cellspacing=0 border=1>\n";
+
+  if (localStorage.length <= 0) {
+    html += "<tr><td>(no items in storage)</td></tr>\n";
+  } else {
+    html += "<tr><td></td><td><b>Key Name</b></td><td><b>Key Value</b></td></tr>\n";
+  }
+
+  for (i = 0; i < localStorage.length; i++) {
+    keyName = localStorage.key(i);
+    keyValue = getFromStorage(keyName);
+
+    html += "<tr><td>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
+    html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
+    html += "<td>" + keyName + "</td><td>" + keyValue + "</td></tr>\n";
+  }
+
+  html += "</table>\n";
+  html += "<div style='height:0.8em'></div>\n";
+  html += "<div><a href='javascript:void add_storage_row()'>add</a></div>\n";
+
+  elem("dvStorage").innerHTML = html;
+}
+
 
 ///// FUNCTIONS FROM HTML PAGE
+
+function add_storage_row() {
+  var keyName = prompt("New key name:", "");
+  var keyValue = prompt("New key value:", "");
+
+  if ( isBlank(keyName) ) {
+    return;
+  }
+
+  saveToStorage(keyName, keyValue);
+  show_storage();
+}
+
+function clear_storage() {
+  var clearStoragePrompt;
+  
+  clearStoragePrompt = prompt("type 'clear it' to clear local storage", "");
+
+  if (clearStoragePrompt == "clear it") {
+    localStorage.clear();
+    alert("storage cleared");
+    loadAppData();
+    displayPage("Home");
+  } else {
+    alert("storage NOT cleared");
+  }
+}
 
 function click_item(itemId) {
   go_to_item(itemId);
@@ -453,6 +485,25 @@ function delete_item() {
   }
 }
 
+function delete_storage_row(keyName) {
+  if ( confirm("Delete this row?") ) {
+    deleteFromStorage(keyName);
+    show_storage();
+  }
+}
+
+function edit_storage_row(keyName) {
+  var curKeyValue = getFromStorage(keyName);
+  var editedKeyValue = prompt("Change key value to:", curKeyValue);
+
+  if ( isBlank(editedKeyValue) ) {
+    return;
+  }
+
+  saveToStorage(keyName, editedKeyValue);
+  show_storage();
+}
+
 function go_to_item(itemId) {
   app.curItemId = itemId;
   displayPage("ViewItem");
@@ -461,6 +512,10 @@ function go_to_item(itemId) {
 function go_to_list(listId) {
   app.curListId = listId;
   displayPage("ViewList");
+}
+
+function js_version() {
+  alert("js version: " + CONST_appVersion);
 }
 
 function mark_item_as_done() {
@@ -495,12 +550,41 @@ function rename_list() {
   go_to_list(app.curListId);
 }
 
-function return_to_home() {
+function return_home() {
+  displayPage("Home");
+}
+
+function return_home_from_storage() {
+  loadAppData();
   displayPage("Home");
 }
 
 function return_to_list() {
   go_to_list(app.curListId);
+}
+
+function show_dev_screen() {
+  displayPage("Dev");
+}
+
+function show_storage() {
+  displayPage("ShowStorage");
+}
+
+function toggle_dev() {
+  var curDevText1, newDevText1;
+
+  curDevText1 = getFromStorage(CONST_devText1);
+
+  if ( curDevText1 == "1" ) {
+    newDevText1 = "0";
+  } else {
+    newDevText1 = "1";
+  }
+
+  saveToStorage(CONST_devText1, newDevText1);
+
+  alert("devText1 set to " + newDevText1);
 }
 
 function unmark_item_as_done() {
