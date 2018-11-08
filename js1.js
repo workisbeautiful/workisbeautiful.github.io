@@ -1,4 +1,6 @@
-const CONST_appVersion = "0.23";
+const CONST_appVersion = "0.24";
+
+const CONST_appNarrow = "app_narrow";
 const CONST_devText1 = "devText1";
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
@@ -274,7 +276,7 @@ function itemFactory(listId, itemName) {
 
   //get new list-item-id and manage list-item-id counter
   curMaxItemId = getMaxItemIdForList(listId);
-  newItemId = curMaxItemId + 1;
+  newItemId = Number(curMaxItemId) + 1;
 
   //save item to storage
   saveItemToStorage(listId, newItemId, itemName, "0");
@@ -421,7 +423,11 @@ function writeStorage() {
   if (localStorage.length <= 0) {
     html += "<tr><td>(no items in storage)</td></tr>\n";
   } else {
-    html += "<tr><td></td><td><b>Key Name</b></td><td><b>Key Value</b></td></tr>\n";
+    if (app.narrow == "1") {
+      html += "<tr><td></td><td><b>Key Name<br />Key Value</b></td></tr>\n";
+    } else {
+      html += "<tr><td></td><td><b>Key Name</b></td><td><b>Key Value</b></td></tr>\n";
+    }
   }
 
   for (i = 0; i < localStorage.length; i++) {
@@ -430,7 +436,13 @@ function writeStorage() {
 
     html += "<tr><td>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
     html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
-    html += "<td>" + keyName + "</td><td>" + keyValue + "</td></tr>\n";
+
+    if (app.narrow == "1") {
+      html += "<td>" + keyName + "</td></tr>\n";
+      html += "<tr><td></td><td>" + keyValue + "</td></tr>\n";
+    } else {
+      html += "<td>" + keyName + "</td><td>" + keyValue + "</td></tr>\n";
+    }
   }
 
   html += "</table>\n";
@@ -571,6 +583,22 @@ function show_storage() {
   displayPage("ShowStorage");
 }
 
+function toggle_app_narrow() {
+  var curAppNarrow, newAppNarrow;
+
+  curAppNarrow = getFromStorage(CONST_appNarrow);
+
+  if ( curAppNarrow == "1" ) {
+    newAppNarrow = "0";
+  } else {
+    newAppNarrow = "1";
+  }
+
+  saveToStorage(CONST_appNarrow, newAppNarrow);
+
+  alert("appNarrow set to " + newAppNarrow);
+}
+
 function toggle_dev() {
   var curDevText1, newDevText1;
 
@@ -606,13 +634,20 @@ saveToStorage(getSaveKeyText_Item(1, 1), "wib list functional");
 
 ///// LOAD APP-LEVEL DATA FROM STORAGE
 function loadAppData() {
-  var text_listOfAllLists, curListId, i;
+  var text_listOfAllLists, curListId, i, appNarrowFromStorage;
 
   //reset to starting values for app-level variables
   app.listIds = null
   app.maxListId = -1;
   app.curListId = null;
   app.curItemId = null;
+
+  appNarrowFromStorage = getFromStorage(CONST_appNarrow);
+  if (appNarrowFromStorage == "1") {
+    app.narrow = 1;
+  } else {
+    app.narrow = 0;
+  }
 
   //grab text of list-of-all-lists from storage
   text_listOfAllLists = getFromStorage(CONST_listOfAllLists);

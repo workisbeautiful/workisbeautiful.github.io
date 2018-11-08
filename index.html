@@ -28,7 +28,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 <body>
 
 <div>
-  <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.23</span>
+  <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.24</span>
   &nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>dev</nowrap></span></a>
 </div>
 <div style="height:1.2em"></div>
@@ -43,9 +43,12 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div style="height:1em"></div>
   <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
   <div style="height:1em"></div>
+  <div><a href="javascript:void toggle_app_narrow()">toggle app narrow mode</a></div>
+  <div style="height:1em"></div>
   <div><a href="javascript:void clear_storage()">clear storage</a></div>
   <div style="height:1em"></div>
   <div><a href="javascript:void show_storage()">show storage</a></div>
+  <div style="height:1em"></div>
 </div>
 
 <div id="dvPage_Home" style="display: none">
@@ -61,6 +64,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
     <div style="height:0.8em"></div>
     <div><a href="javascript:void make_new_list()">make new list</a></div>
   </div>
+  <div style="height:1em"></div>
 </div>
 
 <div id="dvPage_ShowStorage" style="display: none">
@@ -76,6 +80,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
     <div style="height:0.8em"></div>
     <div><a href="javascript:void return_home_from_storage()">return home</a></div>
   </div>
+  <div style="height:1em"></div>
 </div>
 
 <div id="dvPage_ViewItem" style="display: none">
@@ -89,9 +94,9 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div id="dvPage_ViewItem_Done" style="display: none">
     <div><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()">unmark as done</a></div>
   </div>
-  <div style="height:1.2em"></div>
+  <div style="height:1.6em"></div>
   <div><a href="javascript:void rename_item()">rename item</a></div>
-  <div style="height:1.2em"></div>
+  <div style="height:1.6em"></div>
   <div><a href="javascript:void delete_item()">delete item</a></div>
   <div style="height:0.6em"></div>
   <div style="display: inline-block">
@@ -99,6 +104,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
     <div style="height:0.9em"></div>
     <div><a href="javascript:void return_to_list()">return to list</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_home()">return to home</a></div>
   </div>
+  <div style="height:1em"></div>
 </div>
 
 <div id="dvPage_ViewList" style="display: none">
@@ -119,6 +125,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
     <div style="height:0.9em"></div>
     <div><a href="javascript:void make_new_item()">make new item</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:void return_home()">return to home</a></div>
   </div>
+  <div style="height:1em"></div>
 </div>
 
 <script type="text/javascript" src="js1.js">
