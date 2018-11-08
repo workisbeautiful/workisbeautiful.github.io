@@ -130,7 +130,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 
 <script type="text/javascript">
 
-const CONST_appVersion = "0.27";
+const CONST_appVersion = "0.28";
 
 const CONST_appNarrow = "app_narrow";
 const CONST_devText1 = "devText1";
@@ -623,16 +623,45 @@ function add_storage_row() {
 }
 
 function change_storage_key_name(curKeyName) {
-  var editedKeyName = prompt("Change key name to:", curKeyName);
+  var editedKeyName, keyValue, keyValueFromEditedKeyName, warningMsg, confirmationMsg;
 
+  //get new key name user requests
+  editedKeyName = prompt("Change key name to:", curKeyName);
+
+  //exit if user did not provide a new key name
   if ( isBlank(editedKeyName) ) {
     return;
   }
 
-  var keyValue = getFromStorage(curKeyName);
+  //grab existing key value for current key name
+  keyValue = getFromStorage(curKeyName);
 
-  deleteFromStorage(curKeyName);
+  //check to see if new requestd key name is already in use; if so, disallow
+  keyValueFromEditedKeyName = getFromStorage(editedKeyName);
+  if ( !isBlank(keyValueFromEditedKeyName) ) {
+    warningMsg = "*** OPERATION DISALLOWED ***\n";
+    warningMsg += "You tried to change key with keyName='" + curKeyName + "'\n";
+    warningMsg += "( keyValue='" + keyValue + "' )\n";
+    warningMsg += "... to the new-keyName '" + editedKeyName + "'\n";
+    warningMsg += "... but that new-keyName already exists, with existing-keyValue '" + keyValueFromEditedKeyName + "'";
+    alert(warningMsg);
+    return;
+  }
+
+  //save new key to storage
   saveToStorage(editedKeyName, keyValue);
+
+  //delete previous key name
+  deleteFromStorage(curKeyName);
+
+  //provide info with change
+  confirmationMsg = "Change Made:\n\n";
+  confirmationMsg += " old-keyName: " + curKeyName + "\n";
+  confirmationMsg += " new-keyName " + editedKeyName + "\n";
+  confirmationMsg += " keyValue: " + keyValue;
+  alert(confirmationMsg);
+
+  //refresh storage view
   show_storage();
 }
 
