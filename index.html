@@ -160,9 +160,10 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 
 <script type="text/javascript">
 
-const CONST_appVersion = "0.31";
+"use strict";
 
 const CONST_appNarrow = "app_narrow";
+const CONST_appVersion = "0.32";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_listOfAllLists = "list_of_all_lists";
@@ -195,11 +196,6 @@ example list-item in text format:
 
 */
 
-
-function addToListOfAllLists(listIdToAdd) {
-  app.listIds.push(listIdToAdd);
-  saveListOfAllListsToStorage();
-}
 
 function changeItem(listId, itemId, newItemName, newDone) {
   saveItemToStorage(listId, itemId, newItemName, newDone)  
@@ -393,7 +389,7 @@ function getListInfoObjectFromStorage(listId) {
 }
 
 function getListNameFromStorage(listId) {
-  listName = getFromDatastore(getSaveKeyText_List(listId));
+  var listName = getFromDatastore(getSaveKeyText_List(listId));
   return listName;
 }
 
@@ -405,7 +401,7 @@ function getMaxItemIdForList(listId) {
   //grab max item-id
   for (i = 0; i < array_itemIds.length; i++) {
     curItemId = array_itemIds[i];
-    if (curItemId > curMaxItemId) curMaxItemId = curItemId;
+    if (parseInt(curItemId) > parseInt(curMaxItemId)) curMaxItemId = parseInt(curItemId);
   }
   
   return curMaxItemId;
@@ -502,21 +498,6 @@ function itemFactory(listId, itemName) {
   saveToStorage(listItemsSaveKeyText, newText_itemIds);
 }
 
-function listFactory(listName) {
-  var listId;
-
-  //get new list-id and manage list-id counter
-  app.maxListId++;
-  listId = app.maxListId;
-
-  //save list to storage
-  saveListInfoToStorage(listId, listName);
-  saveListItemIdsToStorage(listId, "");
-
-  //change list-of-all-lists
-  addToListOfAllLists(listId);
-}
-
 function makeNewItem(listId, itemName) {
   //confirm item name
   if (!itemName) itemName = prompt("new list item:","");
@@ -527,12 +508,23 @@ function makeNewItem(listId, itemName) {
 }
 
 function makeNewList(listName) {
+  var newListId;
+
   //confirm list name
   if (!listName) listName = prompt("new list name:","");
   if (!listName) return;
 
-  //create and save list
-  listFactory(listName);
+  //get new list-id and manage list-id counter
+  newListId = parseInt(app.maxListId) + 1;
+  app.maxListId = newListId;
+
+  //save list to storage
+  saveListInfoToStorage(newListId, listName);
+  saveListItemIdsToStorage(newListId, "");
+
+  //change list-of-all-lists
+  app.listIds.push(newListId);
+  saveListOfAllListsToStorage();
 }
 
 function saveListInfoToStorage(listId, listName) {
@@ -991,7 +983,7 @@ function loadAppData() {
     // ... (2) cycle through the new array and set app.maxListId
     for (i = 0; i < app.listIds.length; i++) {
       curListId = app.listIds[i];
-      if (curListId > app.maxListId) app.maxListId = curListId;
+      if (parseInt(curListId) > parseInt(app.maxListId)) app.maxListId = curListId;
     }
   }
 
@@ -1023,7 +1015,7 @@ function upgradeStoredData() {
     return;
   }
 
-  if (appVersion_minor >= 15 && storedDataVersion_minor < 15) {
+  if (parseInt(appVersion_minor) >= 15 && parseInt(storedDataVersion_minor) < 15) {
     //upgrade from pre-0.15 to 0.15
     upgradeStoredData_0_15();
   }
