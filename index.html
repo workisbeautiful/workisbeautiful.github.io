@@ -33,18 +33,46 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 </div>
 <div style="height:1.2em"></div>
 
+<div id="dvPage_BackupExport" style="display: none">
+  <div style="display: inline-block">
+    <div><a href="javascript:void return_home()">return home</a></div>
+    <hr></hr>
+  </div>
+  <div style="height:0.8em"></div>
+  <textarea id="taExportedBackupText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px" readonly></textarea>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvPage_BackupImport" style="display: none">
+  <div style="display: inline-block">
+    <div><a href="javascript:void return_home()">return home</a></div>
+    <hr></hr>
+  </div>
+  <div style="height:0.8em"></div>
+  <div>Paste text-to-import below:</div>
+  <div style="height:0.4em"></div>
+  <textarea id="taBackupTextToImport" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
+  <div style="height:0.8em"></div>
+  <div><a href="javascript:void begin_import()">begin import</a></div>
+  <div style="height:1em"></div>
+</div>
+
 <div id="dvPage_Dev" style="display: none">
   <div style="display: inline-block">
     <div><a href="javascript:void return_home()">return home</a></div>
     <hr></hr>
   </div>
   <div style="height:0.8em"></div>
-  <div><a href="javascript:void js_version()">js version</a></div>
-  <div style="height:1em"></div>
+  <div><a href="javascript:void export_backup_text()">export backup text</a></div>
+  <div style="height:1.7em"></div>
+  <div><a href="javascript:void import_backup_text()">import backup text</a></div>
+  <div style="height:1.7em"></div>
+  <div><a href="javascript:void toggle_import_blocked()">toggle import-backup-text blocked (for this device)</a></div>
+  <div style="height:1.7em"></div>
   <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
-  <div style="height:1em"></div>
+  <div style="height:1.7em"></div>
   <div><a href="javascript:void toggle_app_narrow()">toggle app narrow mode</a></div>
-  <div style="height:1em"></div>
+  <div style="height:1.7em"></div>
   <div><a href="javascript:void show_storage()">show storage</a></div>
   <div style="height:100em"></div>
   <div><a href="javascript:void clear_storage()">clear storage</a></div>
@@ -94,9 +122,9 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
   <div id="dvPage_ViewItem_Done" style="display: none">
     <div><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()">unmark as done</a></div>
   </div>
-  <div style="height:1.6em"></div>
+  <div style="height:1.7em"></div>
   <div><a href="javascript:void rename_item()">rename item</a></div>
-  <div style="height:1.6em"></div>
+  <div style="height:1.7em"></div>
   <div><a href="javascript:void delete_item()">delete item</a></div>
   <div style="height:0.6em"></div>
   <div style="display: inline-block">
@@ -130,13 +158,16 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 
 <script type="text/javascript">
 
-const CONST_appVersion = "0.28";
+const CONST_appVersion = "0.29";
 
 const CONST_appNarrow = "app_narrow";
 const CONST_devText1 = "devText1";
+const CONST_importBlocked = "importBlocked";
 const CONST_listOfAllLists = "list_of_all_lists";
 const CONST_storedDataVersion = "stored_data_version";
+
 const sD = "`"; // sD = storageDivider
+const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
 
 var pageLoaded = false;
 
@@ -192,7 +223,7 @@ function createItemInfoString(itemName, done) {
   return itemInfoString;
 }
 
-function deleteFromStorage(itemKey) {
+function deleteFromDatastore(itemKey) {
   localStorage.removeItem(itemKey);
 }
 
@@ -201,14 +232,14 @@ function deleteItem(listId, itemIdToBeDeleted) {
 
   //delete the item from storage
   itemSaveKeyText = getSaveKeyText_Item(listId, itemIdToBeDeleted);
-  deleteFromStorage(itemSaveKeyText);
+  deleteFromDatastore(itemSaveKeyText);
 
   //clear app-level current-item-id
   app.curItemId = null;
 
   //get current list-item values for list
   listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
-  curText_itemsIds = getFromStorage(listItemsSaveKeyText);
+  curText_itemsIds = getFromDatastore(listItemsSaveKeyText);
 
   //convert current text-of-list-items to array
   curArray_itemsIds = curText_itemsIds.split(sD);
@@ -234,6 +265,8 @@ function displayPage(pageName) {
   var itemInfoObject;
 
   elem("dvPage_Dev").style.display = "none";
+  elem("dvPage_BackupExport").style.display = "none";
+  elem("dvPage_BackupImport").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
@@ -242,6 +275,15 @@ function displayPage(pageName) {
   elem("dvPage_" + pageName).style.display = "";
 
   switch (pageName) {
+
+    case "BackupExport":
+      writeBackupExport();
+      break;
+
+    case "BackupImport":
+      elem("taBackupTextToImport").value = "";
+      elem("taBackupTextToImport").focus();
+      break;
 
     case "Home":
       writeListOfLists();  
@@ -276,7 +318,7 @@ function elem(id) {
   return document.getElementById(id);
 }
 
-function getFromStorage(itemKey) {
+function getFromDatastore(itemKey) {
   var itemValue = localStorage.getItem(itemKey);
   return itemValue;
 }
@@ -295,7 +337,7 @@ function getItemIdArrayForList(listId) {
   listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
 
   //get text of list-item-ids from storage
-  text_itemIds = getFromStorage(listItemsSaveKeyText);
+  text_itemIds = getFromDatastore(listItemsSaveKeyText);
 
   //convert to array and return
   return getIdArray(text_itemIds);
@@ -322,11 +364,11 @@ function getItemInfoObjectFromStorage(listId, itemId) {
 }
 
 function getItemInfoStringFromStorage(listId, itemId) {
-  return getFromStorage(getSaveKeyText_Item(listId, itemId));
+  return getFromDatastore(getSaveKeyText_Item(listId, itemId));
 }
 
 function getListInfoStringFromStorage(listId) {
-  return getFromStorage(getSaveKeyText_List(listId));
+  return getFromDatastore(getSaveKeyText_List(listId));
 }
 
 function getListInfoObjectFromStorage(listId) {
@@ -349,7 +391,7 @@ function getListInfoObjectFromStorage(listId) {
 }
 
 function getListNameFromStorage(listId) {
-  listName = getFromStorage(getSaveKeyText_List(listId));
+  listName = getFromDatastore(getSaveKeyText_List(listId));
   return listName;
 }
 
@@ -379,6 +421,40 @@ function getSaveKeyText_ListItems(listId) {
   return "listItems_" + listId;
 }
 
+function importBackupText(textToImport) {
+  var i, keyValuePairs, keyName, keyValue;
+
+  //split storage-keys from text-to-import string
+  keyValuePairs = textToImport.split(sD2);
+
+  //if we don't have an even number of items, there is a mismatch of key/value pairs
+  if (keyValuePairs.length % 2 > 0) {
+    alert("uneven number of key/value pairs, operation canceled");
+    return;
+  }
+
+  //clear existing storage
+  if ( !confirm("About to clear existing storage, in order to proceed with import. Continue?") ) {
+    return
+  }
+  localStorage.clear();
+
+  //do the import
+  for (i = 0; i < keyValuePairs.length; i = i + 2) {
+    keyName = keyValuePairs[i];
+    keyValue = keyValuePairs[i+1];
+//if(!confirm("would make:\nkeyName: "+keyName+"\nkeyValue: "+keyValue+"\n\nexisting keyValue: "+getFromDatastore(keyName)))return
+    localStorage.setItem(keyName, keyValue);
+//if(!confirm("just added:\nkeyName: "+keyName+"\n\nnow, when re-grabbed from localStorage it is: "+getFromDatastore(keyName)))return
+  }
+
+  alert("Import complete");
+
+  //refresh app and go to home page
+  loadAppData();
+  displayPage("Home");
+}
+
 function isBlank(val) {
   if(val == undefined) return true;
   if(val == null) return true;
@@ -389,7 +465,7 @@ function isBlank(val) {
 }
 
 function isDev() {
-  if ( getFromStorage(CONST_devText1) == "1" ) {
+  if ( getFromDatastore(CONST_devText1) == "1" ) {
     return true;
   } else {
     return false;
@@ -415,7 +491,7 @@ function itemFactory(listId, itemName) {
 
   //set new list item values for list
   listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
-  curText_itemsIds = getFromStorage(listItemsSaveKeyText);
+  curText_itemsIds = getFromDatastore(listItemsSaveKeyText);
   if (isBlank(curText_itemsIds)) {
     newText_itemIds = newItemId;
   } else {
@@ -490,6 +566,22 @@ function saveToStorage(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
 
+function writeBackupExport() {
+  var i, keyName, txt = "";
+
+  for (i = 0; i < localStorage.length; i++){
+    keyName = localStorage.key(i);
+    keyValue = localStorage.getItem(keyName);
+
+    if (i > 0) txt += sD2;
+
+    txt += keyName + sD2 + keyValue;
+  }
+
+  elem("taExportedBackupText").value = txt;
+  elem("taExportedBackupText").select();
+}
+
 function writeItems() {
   var array_itemIds, i, html = "", curItemId, curItemInfoObj, addedDevHtml = "";
 
@@ -548,7 +640,7 @@ function writeListOfLists() {
 function writeStorage() {
   var i, keyName, keyValue, html = "", curListId, curListName, appNarrow;
 
-  appNarrow = getFromStorage(CONST_appNarrow);
+  appNarrow = getFromDatastore(CONST_appNarrow);
 
   html += "<div><a href='javascript:void add_storage_row()'>add</a></div>\n";
   html += "<div style='height:0.8em'></div>\n";
@@ -574,7 +666,7 @@ function writeStorage() {
 
   for (i = 0; i < localStorage.length; i++) {
     keyName = localStorage.key(i);
-    keyValue = getFromStorage(keyName);
+    keyValue = getFromDatastore(keyName);
 
     if (appNarrow == "1") {
       html += "<tr><td>\n";
@@ -622,6 +714,12 @@ function add_storage_row() {
   show_storage();
 }
 
+function begin_import() {
+  var textToImport = elem("taBackupTextToImport").value;
+  if ( isBlank(textToImport) ) return;
+  importBackupText(textToImport);
+}
+
 function change_storage_key_name(curKeyName) {
   var editedKeyName, keyValue, keyValueFromEditedKeyName, warningMsg, confirmationMsg;
 
@@ -634,10 +732,10 @@ function change_storage_key_name(curKeyName) {
   }
 
   //grab existing key value for current key name
-  keyValue = getFromStorage(curKeyName);
+  keyValue = getFromDatastore(curKeyName);
 
   //check to see if new requestd key name is already in use; if so, disallow
-  keyValueFromEditedKeyName = getFromStorage(editedKeyName);
+  keyValueFromEditedKeyName = getFromDatastore(editedKeyName);
   if ( !isBlank(keyValueFromEditedKeyName) ) {
     warningMsg = "*** OPERATION DISALLOWED ***\n";
     warningMsg += "You tried to change key with keyName='" + curKeyName + "'\n";
@@ -652,7 +750,7 @@ function change_storage_key_name(curKeyName) {
   saveToStorage(editedKeyName, keyValue);
 
   //delete previous key name
-  deleteFromStorage(curKeyName);
+  deleteFromDatastore(curKeyName);
 
   //provide info with change
   confirmationMsg = "Change Made:\n\n";
@@ -697,13 +795,13 @@ function delete_item() {
 
 function delete_storage_row(keyName) {
   if ( confirm("Delete this row?") ) {
-    deleteFromStorage(keyName);
+    deleteFromDatastore(keyName);
     show_storage();
   }
 }
 
 function edit_storage_row(keyName) {
-  var curKeyValue = getFromStorage(keyName);
+  var curKeyValue = getFromDatastore(keyName);
   var editedKeyValue = prompt("Change key value to:", curKeyValue);
 
   if ( isBlank(editedKeyValue) ) {
@@ -712,6 +810,10 @@ function edit_storage_row(keyName) {
 
   saveToStorage(keyName, editedKeyValue);
   show_storage();
+}
+
+function export_backup_text() {
+  displayPage("BackupExport");
 }
 
 function go_to_item(itemId) {
@@ -724,8 +826,12 @@ function go_to_list(listId) {
   displayPage("ViewList");
 }
 
-function js_version() {
-  alert("js version: " + CONST_appVersion);
+function import_backup_text() {
+  if ( getFromDatastore(CONST_importBlocked) == "1" ) {
+    alert("OPERATION DISALLOWED\n\nImporting of text has been blocked on this device");
+    return;
+  }
+  displayPage("BackupImport");
 }
 
 function mark_item_as_done() {
@@ -784,7 +890,7 @@ function show_storage() {
 function toggle_app_narrow() {
   var curAppNarrow, newAppNarrow;
 
-  curAppNarrow = getFromStorage(CONST_appNarrow);
+  curAppNarrow = getFromDatastore(CONST_appNarrow);
 
   if ( curAppNarrow == "1" ) {
     newAppNarrow = "0";
@@ -797,10 +903,26 @@ function toggle_app_narrow() {
   alert("app_narrow set to " + newAppNarrow);
 }
 
+function toggle_import_blocked() {
+  var curImportBlocked, newImportBlocked;
+
+  curImportBlocked = getFromDatastore(CONST_importBlocked);
+
+  if ( curImportBlocked == "1" ) {
+    newImportBlocked = "0";
+  } else {
+    newImportBlocked = "1";
+  }
+
+  saveToStorage(CONST_importBlocked, newImportBlocked);
+
+  alert("importBlocked set to " + newImportBlocked);
+}
+
 function toggle_dev() {
   var curDevText1, newDevText1;
 
-  curDevText1 = getFromStorage(CONST_devText1);
+  curDevText1 = getFromDatastore(CONST_devText1);
 
   if ( curDevText1 == "1" ) {
     newDevText1 = "0";
@@ -844,7 +966,7 @@ function loadAppData() {
   elem("spnAppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
 
   //grab text of list-of-all-lists from storage
-  text_listOfAllLists = getFromStorage(CONST_listOfAllLists);
+  text_listOfAllLists = getFromDatastore(CONST_listOfAllLists);
 
   if ( isBlank(text_listOfAllLists) ) {
 
@@ -879,7 +1001,7 @@ function upgradeStoredData() {
   appVersion_minor = Number(appVersion_array[1]);
 
   //establish existing version of the stored data
-  storedDataVersion_text = getFromStorage(CONST_storedDataVersion);
+  storedDataVersion_text = getFromDatastore(CONST_storedDataVersion);
   if ( isBlank(storedDataVersion_text) ) storedDataVersion_text = "0.0";
   
   //split stored-data-version into major and minor
