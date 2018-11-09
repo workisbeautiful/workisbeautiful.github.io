@@ -163,7 +163,7 @@ hr {display: block; height: 0; border: 0; border-top: 1em solid white; border-bo
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.32";
+const CONST_appVersion = "0.33";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_listOfAllLists = "list_of_all_lists";
@@ -324,8 +324,8 @@ function getFromDatastore(itemKey) {
 function getIdArray(text_ids){
   var array_ids;
   if (isBlank(text_ids)) return [];
-  array_itemIds = text_ids.split(sD);
-  return array_itemIds;
+  array_ids = text_ids.split(sD);
+  return array_ids;
 }
 
 function getItemIdArrayForList(listId) {
