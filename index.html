@@ -138,11 +138,16 @@ table {height: 100%}
   </div>
   <div style="height:1.5em"></div>
   <div>
-    <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()"><nowrap>mark as done</nowrap></a></span>
-    <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark as done</nowrap></a></span>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()"><nowrap>return to home</nowrap></a>
+    <div>
+      <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()"><nowrap>mark as done</nowrap></a></span>
+      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark as done</nowrap></a></span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()"><nowrap>return to home</nowrap></a>
+    </div>
+    <div style="height:1.7em"></div>
+    <div>
+      <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
+    </div>
   </div>
   <div style="height:1.7em"></div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
@@ -158,6 +163,8 @@ table {height: 100%}
       <div style="height:1em"></div>
       <div style="border-bottom: 1px black solid"></div>
     </div>
+    <div style="height:1em"></div>
+    <div><a href="javascript:void make_new_item()">make new item</a></div>
   </div>
   <div style="height:1em"></div>
 </div>
@@ -167,7 +174,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.34";
+const CONST_appVersion = "0.35";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -554,6 +561,9 @@ function itemObjFactory() {
     //delete joined-list-info for this item
     deleteFromDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId));
 
+    //delete list-members entry for this item
+    deleteFromDatastore(saveKeyText_listMembers_ofItem);
+
     //remove from all-items array
     curAllItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
     curAllItemIds_array = getIdArray(curAllItemIds_string);
@@ -778,9 +788,9 @@ function writeStorage() {
       html += "  </table>\n";
       html += "</td>\n";
     } else {
-      html += "<tr><td>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
+      html += "<tr><td><nowrap>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
       html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void change_storage_key_name(\"" + keyName + "\")'>change key</a>\n";
-      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</nowrap></td>\n";
     }
 
     if (appNarrow == "1") {
@@ -1107,11 +1117,9 @@ function upgradeStoredData() {
 }
 
 function upgradeStoredData_0_34() {
+  
 
-
-alert("--- INCOMPLETE: need to upgrade this data to 0.34 ---");
-return false;
-
+  
 
   //update the stored-data's version to 0.34
   saveToDatastore(CONST_storedDataVersion, "0.34");
