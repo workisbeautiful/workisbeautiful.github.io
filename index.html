@@ -150,6 +150,18 @@ table {height: 100%}
     </div>
   </div>
   <div style="height:1.7em"></div>
+  <div id="dvViewItem_Notes_No" style="display: none">
+    <div><a href="javascript:void add_notes()">add notes</a></div>
+  </div>
+  <div id="dvViewItem_Notes_Yes" style="display: none">
+    <div>
+      <a href="javascript:void edit_notes()"><nowrap>edit notes</nowrap></a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_notes()"><nowrap>delete notes</nowrap></a>
+    </div>
+    <div style="height:1em"></div>
+    <div id="dvViewItem_Notes"></div>
+  </div>
+  <div style="height:1.7em"></div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
     <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
   </div>
@@ -174,7 +186,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.35";
+const CONST_appVersion = "0.36";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -187,7 +199,7 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 var app = {};
 
 
-function createItemInfoString(itemName, done, displayCode, isList) {
+function createItemInfoString(itemName, done, displayCode, isList, notes) {
   var itemInfoString = itemName + sD;
 
   if ( isBlank(done) ) {
@@ -212,6 +224,13 @@ function createItemInfoString(itemName, done, displayCode, isList) {
     itemInfoString += "0";
   } else {
     itemInfoString += isList
+  }
+
+  itemInfoString = itemInfoString + sD;
+  if ( isBlank(notes) ) {
+    itemInfoString += "";
+  } else {
+    itemInfoString += notes
   }
 
   return itemInfoString;
@@ -270,6 +289,8 @@ function displayPage(pageName) {
       elem("dvItemName").innerHTML = app.itemObj.itemName;
 
       //TO-DO: display multiple list names, if this item is a member of 2+
+      
+      elem("dvListNameForItem").innerHTML = "";
 
       for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
         list_itemObj = grabItemObj(app.itemObj.joinedLists_itemIds[0])
@@ -278,6 +299,7 @@ function displayPage(pageName) {
           hasDisplayedLists = true;
         }
       }
+
       if (hasDisplayedLists) {
         elem("dvPage_ViewItem_JoinedListsArea").style.display = "";
       } else {
@@ -299,6 +321,17 @@ function displayPage(pageName) {
       } else {
         elem("dvViewItem_ListMembers_Yes").style.display = "none";
         elem("dvViewItem_ListMembers_No").style.display = "";
+        elem("dvViewItem_ListMembers_Items").innerHTML = "";
+      }
+
+      if ( isBlank(app.itemObj.notes) ) {
+        elem("dvViewItem_Notes_Yes").style.display = "none";
+        elem("dvViewItem_Notes_No").style.display = "";
+        elem("dvViewItem_Notes").innerHTML = "";
+      } else {
+        elem("dvViewItem_Notes_Yes").style.display = "";
+        elem("dvViewItem_Notes_No").style.display = "none";
+        elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
       }
 
       break;
@@ -330,41 +363,6 @@ function getIdString(array_ids){
   return string_ids;
 }
 
-function getItemIdArrayForList(listId) {
-alert("TO-DO")
-  var listItemsSaveKeyText, string_itemIds;
-
-  //get save-key-string for this list's list-items
-  listItemsSaveKeyText = getSaveKeyText_ListItems(listId);
-
-  //get string of list-item-ids from storage
-  string_itemIds = getFromDatastore(listItemsSaveKeyText);
-
-  //convert to array and return
-  return getIdArray(string_itemIds);
-}
-
-function getItemInfoObjectFromStorage(listId, itemId) {
-alert("TO-DO")
-  var itemInfoObj, itemInfoString, itemInfoArray;
-
-  //set item-info-object to a new object
-  itemInfoObj = {};
-
-  //get the item-info-string from storage
-  itemInfoString = getItemInfoStringFromStorage(listId, itemId);
-
-  //split the item-info-string into an array
-  itemInfoArray = itemInfoString.split(sD);
-
-  //set item-info-object's properties from the string
-  itemInfoObj.itemName = itemInfoArray[0];
-  itemInfoObj.done = itemInfoArray[1];
-
-  //return the object that has been populated with item-info values
-  return itemInfoObj;
-}
-
 function getSaveKeyText_item(itemId) {
   return "i_" + itemId;
 }
@@ -386,11 +384,11 @@ function goToItemView(itemId) {
 }
 
 function grabItemObj(itemId) {
-  var saveText_item, itemObj, itemDataString, itemDataArray, saveText_joinedLists_ofItem, joinedLists_itemIds_string;
+  var saveKeyText_item, itemObj, itemDataString, itemDataArray, saveKeyText_joinedLists_ofItem, joinedLists_itemIds_string;
 
   //get the item-data-string from the datastore
-  saveText_item = getSaveKeyText_item(itemId);
-  itemDataString = getFromDatastore(saveText_item);
+  saveKeyText_item = getSaveKeyText_item(itemId);
+  itemDataString = getFromDatastore(saveKeyText_item);
 
   //this function assumes only existing items will be requested; so, if the item-data-string is blank, the item does not exist, and we must throw an error
   if ( isBlank(itemDataString) ) {
@@ -407,11 +405,12 @@ function grabItemObj(itemId) {
   itemObj.done = itemDataArray[1];
   itemObj.displayCode = itemDataArray[2];
   itemObj.isList = itemDataArray[3];
+  itemObj.notes = itemDataArray[4];
 
   //set joined-lists array, if any
   if (itemObj.isList) {
-    saveText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
-    joinedLists_itemIds_string = getFromDatastore(saveText_joinedLists_ofItem);
+    saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
+    joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
     itemObj.joinedLists_itemIds = getIdArray(joinedLists_itemIds_string);
   }
 
@@ -504,6 +503,7 @@ function itemObjFactory() {
   itemObj.done = "0";
   itemObj.displayCode = "1";
   itemObj.isList = "0";
+  itemObj.notes = "";
   itemObj.joinedLists_itemIds = [];
 
   itemObj.addToList = function(listToJoin_itemId) {
@@ -529,11 +529,12 @@ function itemObjFactory() {
     saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
   };
 
-  itemObj.changeItem = function(itemName, done, displayCode, isList) {
+  itemObj.changeItem = function(itemName, done, displayCode, isList, notes) {
     if ( !isBlank(itemName) ) this.itemName = itemName;
     if ( !isBlank(done) ) this.done = done;
     if ( !isBlank(displayCode) ) this.displayCode = displayCode;
     if ( !isBlank(isList) ) this.isList = isList;
+    if ( notes !== null ) this.notes = notes;
     this.saveItemInfoToDatastore();
     return true;
   };
@@ -628,7 +629,7 @@ function itemObjFactory() {
   itemObj.saveItemInfoToDatastore = function() {
     var itemInfoString;
 
-    itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList)
+    itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
   };
 
@@ -662,6 +663,7 @@ function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_it
   newItemObj.itemName = itemName;
   if ( !isBlank(displayCode) ) newItemObj.displayCode = displayCode;
   if ( !isBlank(isList) ) newItemObj.isList = isList;
+  newItemObj.notes = "";
   newItemObj.saveItemInfoToDatastore();
 
   //if is-list, make into a list
@@ -788,9 +790,9 @@ function writeStorage() {
       html += "  </table>\n";
       html += "</td>\n";
     } else {
-      html += "<tr><td><nowrap>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
+      html += "<tr><td style='white-space: nowrap'>&nbsp;<a href='javascript:void edit_storage_row(\"" + keyName + "\")'>edit</a>\n";
       html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void change_storage_key_name(\"" + keyName + "\")'>change key</a>\n";
-      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</nowrap></td>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript:void delete_storage_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
     }
 
     if (appNarrow == "1") {
@@ -810,6 +812,13 @@ function writeStorage() {
 
 
 ///// FUNCTIONS FROM HTML PAGE
+
+function add_notes() {
+  var newNotes = prompt("Notes:", "");
+  if ( isBlank(newNotes)) return;
+  app.itemObj.changeItem(null, null, null, null, newNotes);
+  goToItemView();
+}
 
 function add_storage_row() {
   var keyName = prompt("New key name:", "");
@@ -905,11 +914,28 @@ function delete_item() {
   }
 }
 
+function delete_notes() {
+  if ( confirm("Delete all Notes for this item?") ) {
+    app.itemObj.changeItem(null, null, null, null, "");
+    goToItemView();
+  }
+}
+
 function delete_storage_row(keyName) {
   if ( confirm("Delete this row?") ) {
     deleteFromDatastore(keyName);
     show_storage();
   }
+}
+
+function edit_notes() {
+  var editedNotes = prompt("Notes:", app.itemObj.notes);
+  if ( isBlank(editedNotes)) {
+    alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
+    return;
+  }
+  app.itemObj.changeItem(null, null, null, null, editedNotes);
+  goToItemView();
 }
 
 function edit_storage_row(keyName) {
@@ -941,7 +967,7 @@ function import_backup_text() {
 }
 
 function mark_item_as_done() {
-  app.itemObj.changeItem(null, "1", null, null);
+  app.itemObj.changeItem(null, "1", null, null, null);
   goToItemView();
 }
 
@@ -973,7 +999,7 @@ function make_new_list() {
 function rename_item() {
   var editedItemName = prompt("Change item name to:", app.itemObj.itemName);
   if ( isBlank(editedItemName)) return;
-  app.itemObj.changeItem(editedItemName, null, null, null);
+  app.itemObj.changeItem(editedItemName, null, null, null, null);
   goToItemView();
 }
 
@@ -1044,7 +1070,7 @@ function toggle_dev() {
 }
 
 function unmark_item_as_done() {
-  app.itemObj.changeItem(null, "0", null, null);
+  app.itemObj.changeItem(null, "0", null, null, null);
   goToItemView();
 }
 
@@ -1104,9 +1130,9 @@ function upgradeStoredData() {
     return false;
   }
 
-  if (parseInt(appVersion_minor) >= 34 && parseInt(storedDataVersion_minor) < 34) {
-    //upgrade from pre-0.34 to 0.34
-    if ( upgradeStoredData_0_34() ) {
+  if (parseInt(appVersion_minor) >= 36 && parseInt(storedDataVersion_minor) < 36) {
+    //upgrade from pre-0.36 to 0.36
+    if ( upgradeStoredData_0_36() ) {
       // no action
     } else {
       return false;
@@ -1116,13 +1142,23 @@ function upgradeStoredData() {
   return true;
 }
 
-function upgradeStoredData_0_34() {
-  
+function upgradeStoredData_0_36() {
+  var allItemIds_string, allItemIds_array, i, curItemId, saveKeyText_curItem, oldItemInfoString, newItemInfoString, storedDataVersion_string;
 
-  
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+ 
+  //cycle through all items, add blank Notes field for each
+  for (i = 0; i < allItemIds_array.length; i++) {
+    curItemId = allItemIds_array[i];
+    saveKeyText_curItem = getSaveKeyText_item(curItemId);
+    oldItemInfoString = getFromDatastore(saveKeyText_curItem);
+    newItemInfoString = oldItemInfoString + sD;
+    saveToDatastore(saveKeyText_curItem, newItemInfoString);
+  }
 
-  //update the stored-data's version to 0.34
-  saveToDatastore(CONST_storedDataVersion, "0.34");
+  //update data's version-number to 0.36
+  saveToDatastore(CONST_storedDataVersion, "0.36");
 
   //return success flag
   return true;
