@@ -186,7 +186,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.37";
+const CONST_appVersion = "0.38";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -303,17 +303,18 @@ function deleteFromDatastore(itemKey) {
 }
 
 function deleteItem(itemIdToDelete) {
-  var itemObjToDelete;
+  var itemObjToDelete, returnValue, successBoolean = false;
 
-  //grab item-object
   itemObjToDelete = grabItemObj(itemIdToDelete);
 
-  //use the item's factory functions to delete it
-  if ( itemObjToDelete.doDeletion() ) {
-    return true;
-  } else {
-    return false;
+  returnValue = itemObjToDelete.doDeletion() ;
+
+  if ( ! isBlank(returnValue) && ! returnValue === false ) {
+    successBoolean = true;
+    app.itemObj = grabItemObj(returnValue);
   }
+
+  return successBoolean;
 }
 
 function displayPage(pageName) {
@@ -618,13 +619,11 @@ function itemObjFactory() {
   };
 
   itemObj.doDeletion = function() {
-    var saveKeyText_listMembers_ofItem,saveKeyText_itemListMembers, listMembers_string, i, joinedList_itemId, joinedList_itemObj, curAllItemIds_string, curAllItemIds_array, newAllItemIds_string = "";
+    var firstListItemId = null, saveKeyText_listMembers_ofItem, i, curAllItemIds_string, curAllItemIds_array, newAllItemIds_string = "";
 
     //check if this is a list with list-members
     if (this.isList == "1") {
-      saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
-      listMembers_string = getFromDatastore(saveKeyText_listMembers_ofItem);
-      if (listMembers_string.length > 1) {
+      if ( this.hasListMembers() ) {
         alert("Can't delete something that has list members");
         return false;
       }
@@ -632,8 +631,9 @@ function itemObjFactory() {
 
     //remove from joined-lists
     for (i = 0; i < this.joinedLists_itemIds.length; i++) {
-      joinedList_itemId = this.joinedLists_itemIds[i];
-      joinedList_itemObj = grabItemObj(joinedList_itemId);
+      let joinedList_itemId = this.joinedLists_itemIds[i];
+      let joinedList_itemObj = grabItemObj(joinedList_itemId);
+      if ( firstListItemId == null ) firstListItemId = joinedList_itemId
       joinedList_itemObj.removeListMember(this.itemId);
     }
 
@@ -660,8 +660,8 @@ function itemObjFactory() {
     //clear app-level current-item-id
     app.itemObj = null;
 
-    //return success
-    return true;
+    //return the the item-id of the first joined-list, so the calling functions can move to that item in the UI
+    return firstListItemId;
   };
 
   itemObj.getListMemberDataObjs = function() {
@@ -680,6 +680,21 @@ function itemObjFactory() {
     listMemberDataObjs.sort(sortingObjects(CONST_propName_sortPosition));
 
     return listMemberDataObjs;
+  };
+
+  itemObj.hasListMembers = function() {
+    var saveKeyText_listMembers_ofItem, listMembers_string;
+
+    saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
+    listMembers_string = getFromDatastore(saveKeyText_listMembers_ofItem);
+
+    if ( isBlank(listMembers_string) ) return false;
+
+    if (listMembers_string.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   itemObj.joinList = function(listToJoin_itemId) {
@@ -835,7 +850,7 @@ function writeBackupExport() {
 }
 
 function writeItemsHtml(mainItemObj) {
-  var listMemberDataObjs, html = "", i, curItemId, curItemObj;
+  var listMemberDataObjs, html = "", i;
 
   if (mainItemObj.isList) {
     //get array of list-member-item-ids
@@ -846,6 +861,8 @@ function writeItemsHtml(mainItemObj) {
 
     //loop through array to write list in HTML
     for (i = 0; i < listMemberDataObjs.length; i++){
+      let curItemId, curItemObj, addAsterisk, itemNameDisplay;
+
       curItemId = listMemberDataObjs[i].itemId;
 
       if (i > 0) {
@@ -855,6 +872,23 @@ function writeItemsHtml(mainItemObj) {
       //call the function that grabs the current item's item-info from storage and returns it as a js-object
       curItemObj = grabItemObj(curItemId);
 
+      //add asterisk to item-name if it has notes or list-members
+      addAsterisk = false;
+
+      if ( !isBlank(curItemObj.notes) ) {
+        addAsterisk = true;
+      } else {
+        if ( curItemObj.hasListMembers() ) {
+          addAsterisk = true;
+        }
+      }
+
+      if (addAsterisk) {
+        itemNameDisplay = curItemObj.itemName + " *";
+      } else {
+        itemNameDisplay = curItemObj.itemName;
+      }
+
       //set html based on item-info values stored as properties of the item-info-js-object
       html += "<tr><td>\n";
       html += " <table cellspacing=0 cellpadding=0>\n";
@@ -863,7 +897,7 @@ function writeItemsHtml(mainItemObj) {
       html += " </table\n";
       html += "</td><td style='width: 0.5em'></td><td><a" ;
       if (curItemObj.done == "1") html += " class='green'";
-      html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemObj.itemName + "</a></td></tr>\n";
+      html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a></td></tr>\n";
       html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
       if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
       html += "'><td colspan=3>\n";
@@ -1055,7 +1089,11 @@ function copy_imported_text_to_clipboard() {
 function delete_item() {
   if ( confirm("Delete this item?") ) {
     if ( deleteItem(app.itemObj.itemId) ) {
-      return_home();
+      if ( !isBlank(app.itemObj) ) {
+        goToItemView(null, false);
+      } else {
+        return_home();
+      }
     }
   }
 }
