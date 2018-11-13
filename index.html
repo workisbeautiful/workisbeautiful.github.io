@@ -97,6 +97,31 @@ table {height: 100%}
   <div style="height:1em"></div>
 </div>
 
+<div id="dvPage_GrabbingMove" style="display: none">
+  <div><i>from list:</i>&nbsp;&nbsp;&nbsp;<span id="spnGrabbingMove_FromList"></span></div>
+  <div style="height:1.5em"></div>
+  <div><i>moving these items:</i></div>
+  <div style="height:0.8em"></div>
+  <div style="display: inline-block">
+    <div style="border-bottom: 1px black solid"></div>
+    <div style="height:1em"></div>
+    <div id="dvGrabbingMove_Items"></div>
+    <div style="height:1em"></div>
+    <div style="border-bottom: 1px black solid"></div>
+  </div>
+  <div style="height:1.5em"></div>
+  <div><i>to which list?</i>&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_move()"><nowrap>cancel</nowrap></a></div>
+  <div style="height:0.8em"></div>
+  <div style="display: inline-block">
+    <div style="border-bottom: 1px black solid"></div>
+    <div style="height:1em"></div>
+    <div id="dvGrabbingMove_ListOptions"></div>
+    <div style="height:1em"></div>
+    <div style="border-bottom: 1px black solid"></div>
+  </div>
+  <div style="height:1em"></div>
+</div>
+
 <div id="dvPage_Home" style="display: none">
   <div style="font-weight: bold">Home</div>
   <div style="height:0.8em"></div>
@@ -147,6 +172,9 @@ table {height: 100%}
     <div>
       <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
+      <span id="spnMoveToDifferentList" style="display: none">
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move list</nowrap></a>
+      </span>
     </div>
   </div>
   <div style="height:1.7em"></div>
@@ -166,7 +194,10 @@ table {height: 100%}
     <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
   </div>
   <div id="dvViewItem_ListMembers_Yes" style="display: none">
-    <div><a href="javascript:void make_new_item()">make new item</a></div>
+    <div>
+      <a href="javascript:void make_new_item()"><nowrap>make new item</nowrap></a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems' href="javascript:void grab_items()"><nowrap>grab items</nowrap></a>
+    </div>
     <div style="height:1em"></div>
     <div style="display: inline-block">
       <div style="border-bottom: 1px black solid"></div>
@@ -186,7 +217,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.38";
+const CONST_appVersion = "0.39";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -200,6 +231,10 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 
 var app = {};
 app.activatedItemId = null;
+app.grabbing_itemId1 = null;
+app.grabbing_itemId2 = null;
+app.grabbing_itemIdArray = [];
+app.grabbingEnabled = false;
 
 
 function activateItem(itemId) {
@@ -311,17 +346,24 @@ function deleteItem(itemIdToDelete) {
 
   if ( ! isBlank(returnValue) && ! returnValue === false ) {
     successBoolean = true;
-    app.itemObj = grabItemObj(returnValue);
+    setAppItemObj(grabItemObj(returnValue));
   }
 
   return successBoolean;
 }
 
-function displayPage(pageName) {
+function disableGrabbing() {
+  app.grabbing_itemId1 = null;
+  app.grabbing_itemId2 = null;
+  app.grabbing_itemIdArray = [];
+  app.grabbingEnabled = false;
+}
 
+function displayPage(pageName) {
   elem("dvPage_Dev").style.display = "none";
   elem("dvPage_BackupExport").style.display = "none";
   elem("dvPage_BackupImport").style.display = "none";
+  elem("dvPage_GrabbingMove").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
@@ -339,11 +381,23 @@ function displayPage(pageName) {
       elem("taBackupTextToImport").focus();
       break;
 
+    case "GrabbingMove":
+      if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+        //single-item-grab
+        elem("spnGrabbingMove_FromList").innerHTML = grabItemObj(app.itemObj.displayedOnList_itemId).itemName;
+      } else {
+        elem("spnGrabbingMove_FromList").innerHTML = app.itemObj.itemName;
+      }
+
+      elem("dvGrabbingMove_Items").innerHTML = writeHtml_GrabbingMove_Items();
+      elem("dvGrabbingMove_ListOptions").innerHTML = writeHtml_GrabbingMove_ListOptions();
+      break;
+
     case "Home":
       if (!app.itemObj) {
-        app.itemObj = grabItemObjByName(CONST_homePageListName);
+        setAppItemObj(grabItemObjByName(CONST_homePageListName));
       }
-      elem("dvHome_Items").innerHTML = writeItemsHtml(app.itemObj);
+      elem("dvHome_Items").innerHTML = writeHtml_ViewItem_Items(app.itemObj);
       break;
 
     case "ViewItem":
@@ -359,7 +413,10 @@ function displayPage(pageName) {
         list_itemObj = grabItemObj(app.itemObj.joinedLists_itemIds[0])
         if (list_itemObj.displayCode == "1") {
           elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + list_itemObj.itemId + "\")'>" + list_itemObj.itemName + "</a>";
+          elem("spnMoveToDifferentList").style.display = "";
           hasDisplayedLists = true;
+          app.itemObj.displayedOnList_itemId = list_itemObj.itemId;
+          break;
         }
       }
 
@@ -369,7 +426,7 @@ function displayPage(pageName) {
         elem("dvPage_ViewItem_JoinedListsArea").style.display = "none";
       }
 
-      if ( app.itemObj.done == "0") {
+      if (app.itemObj.done == "0") {
         elem("spnPage_ViewItem_NotDone").style.display = "";
         elem("spnPage_ViewItem_Done").style.display = "none";
       } else {
@@ -380,7 +437,7 @@ function displayPage(pageName) {
       if (app.itemObj.isList =="1") {
         elem("dvViewItem_ListMembers_Yes").style.display = "";
         elem("dvViewItem_ListMembers_No").style.display = "none";
-        elem("dvViewItem_ListMembers_Items").innerHTML = writeItemsHtml(app.itemObj);
+        elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_ViewItem_Items(app.itemObj);
       } else {
         elem("dvViewItem_ListMembers_Yes").style.display = "none";
         elem("dvViewItem_ListMembers_No").style.display = "";
@@ -414,6 +471,10 @@ function getFromDatastore(itemKey) {
   return itemValue;
 }
 
+function getHtml_aItem(itemId) {
+  return "aItem_" + itemId;
+}
+
 function getHtml_trActivated(itemId) {
   return "trActivated_" + itemId;
 }
@@ -430,7 +491,21 @@ function getIdString(array_ids){
   return string_ids;
 }
 
-function getObjArrayWithoutMember(theArray, propNameToMatch, propValueToMatch) {
+function getObjArrayWithoutElem(theArray, propName, propValueToExclude) {
+  var revisedArray;
+
+  revisedArray = theArray.filter(function (arrayElem) {
+    var returnValue = true;
+    if ( isEqual(arrayElem[propName], propValueToExclude) ) {
+      returnValue = false;
+    }
+    return returnValue;
+  });
+
+  return revisedArray;
+}
+
+function getObjArrayWithoutElem_old(theArray, propNameToMatch, propValueToMatch) {
   var i, curArrayElem, revisedArray = [];
 
   for (i = 0; i < theArray.length; i++) {
@@ -457,13 +532,32 @@ function getSaveKeyText_listMembers_ofItem(itemId) {
 
 function goToItemView(itemId, maintainActivatedItem) {
   if ( !isBlank(itemId) ) {
-    app.itemObj = grabItemObj(itemId);
+    setAppItemObj(grabItemObj(itemId));
   }
   if (!maintainActivatedItem) {
     app.activatedItemId = null;
   }
 
   displayPage("ViewItem");
+  stopGrabbingItems();
+}
+
+function getValArrayWithoutElem(theArray, valToExclude) {
+  var revisedArray;
+
+  revisedArray = theArray.filter(function (arrayElem) {
+    var returnValue = true;
+    if ( isEqual(arrayElem, valToExclude) ) {
+      returnValue = false;
+    }
+    return returnValue;
+  });
+
+  return revisedArray;
+}
+
+function goToGrabbingMove() {
+  displayPage("GrabbingMove");
 }
 
 function grabItemObj(itemId) {
@@ -597,7 +691,11 @@ function itemObjFactory() {
     listMemberDataObjs = this.getListMemberDataObjs();
 
     //set the new sortPosition value
-    curMaxSortPosition = listMemberDataObjs[listMemberDataObjs.length - 1].sortPosition;
+    if (listMemberDataObjs.length == 0) {
+      curMaxSortPosition = -1;
+    } else {
+      curMaxSortPosition = listMemberDataObjs[listMemberDataObjs.length - 1].sortPosition;
+    }
     sortPositionToUse = parseInt(curMaxSortPosition) + 1
 
     //create a new list-member-data-object, and add it to the current array
@@ -658,7 +756,7 @@ function itemObjFactory() {
     deleteFromDatastore(getSaveKeyText_item(this.itemId));
 
     //clear app-level current-item-id
-    app.itemObj = null;
+    setAppItemObj(null);
 
     //return the the item-id of the first joined-list, so the calling functions can move to that item in the UI
     return firstListItemId;
@@ -698,7 +796,7 @@ function itemObjFactory() {
   };
 
   itemObj.joinList = function(listToJoin_itemId) {
-    var listToJoin_itemObj, listToJoin_listMemberDataObjs, curMaxSortPosition, sortPositionToUse, listToJoin_newListMemberDataObj, saveKeyText_itemListMembers_ofListToJoin, joinedLists_itemIds_string;
+    var listToJoin_itemObj;
 
     //grab item-object for the list-to-join
     listToJoin_itemObj = grabItemObj(listToJoin_itemId);
@@ -710,8 +808,23 @@ function itemObjFactory() {
     this.joinedLists_itemIds.push(listToJoin_itemId);
 
     //save joined-lists to datastore
-    joinedLists_itemIds_string = getIdString(this.joinedLists_itemIds);
-    saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
+    this.saveJoinedListsToDatastore();
+  };
+
+  itemObj.leaveList = function(listToLeave_itemId) {
+    var listToLeave_itemObj;
+
+    //remove the list-to-leave's itemId from this list's array of joined-lists
+    this.joinedLists_itemIds = getValArrayWithoutElem(this.joinedLists_itemIds, listToLeave_itemId);
+
+    //save joined-lists to datastore
+    this.saveJoinedListsToDatastore();
+
+    //grab item-object for the list-to-join
+    listToLeave_itemObj = grabItemObj(listToLeave_itemId);
+
+    //call function on list-to-leave's item-object, in order to be removed from its list-members
+    listToLeave_itemObj.removeListMember(this.itemId);
   };
 
   itemObj.makeIntoAList = function() {
@@ -732,7 +845,7 @@ function itemObjFactory() {
     var oldListMemberDataObjs, newListMemberDataObjs;
 
     oldListMemberDataObjs = this.getListMemberDataObjs();
-    newListMemberDataObjs = getObjArrayWithoutMember(oldListMemberDataObjs, CONST_propName_itemId, itemIdToRemove)
+    newListMemberDataObjs = getObjArrayWithoutElem(oldListMemberDataObjs, CONST_propName_itemId, itemIdToRemove)
 
     this.saveListMembersToDatastore(newListMemberDataObjs);
   };
@@ -742,6 +855,13 @@ function itemObjFactory() {
 
     itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
+  };
+
+  itemObj.saveJoinedListsToDatastore = function() {
+    var joinedLists_itemIds_string;
+
+    joinedLists_itemIds_string = getIdString(this.joinedLists_itemIds);
+    saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
   };
 
   itemObj.saveListMembersToDatastore = function(listMemberDataObjs) {
@@ -817,6 +937,29 @@ function saveToDatastore(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
 
+function move_to_different_list() {
+  app.grabbing_itemId1 = app.itemObj.itemId;
+  app.grabbing_itemId2 = null;
+  goToGrabbingMove();
+}
+
+function setAppItemObj(itemObj) {
+  app.itemObj = itemObj;
+  if ( app.itemObj ) {
+    app.itemObj.displayedOnList_itemId = null;
+  }
+}
+
+function setGrabItem(itemId) {
+  elem(getHtml_aItem(itemId)).style.color = "red";
+  if ( isBlank(app.grabbing_itemId1) ) {
+    app.grabbing_itemId1 = itemId;
+  } else {
+    app.grabbing_itemId2 = itemId;
+    goToGrabbingMove();
+  }
+}
+
 function sortingObjects(propNameToSortBy) {
   return function(objA, objB) {
     var comparisonCode;
@@ -831,6 +974,37 @@ function sortingObjects(propNameToSortBy) {
 
     return comparisonCode;
   };
+}
+
+function startGrabbingItems() {
+  app.grabbing_itemId1 = null;
+  app.grabbing_itemId2 = null;
+  app.grabbing_itemIdArray = [];
+
+  elem("aGrabItems").style.color = "red";
+
+  app.grabbingEnabled = true;
+}
+
+function stopGrabbingItems() {
+  elem("aGrabItems").style.color = "";
+
+  if ( !isBlank(app.grabbing_itemId1) ) {
+    elem(getHtml_aItem(app.grabbing_itemId1)).style.color = "";
+  }
+
+  disableGrabbing();
+}
+
+function transferItems(oldListObj, newListObj, memberItems_idArray) {
+  var i;
+
+  for (i = 0; i < memberItems_idArray.length; i++) {
+    let curItemObj = grabItemObj(memberItems_idArray[i]);
+
+    curItemObj.joinList(newListObj.itemId);
+    curItemObj.leaveList(oldListObj.itemId);
+  }
 }
 
 function writeBackupExport() {
@@ -849,7 +1023,191 @@ function writeBackupExport() {
   elem("taExportedBackupText").select();
 }
 
-function writeItemsHtml(mainItemObj) {
+function writeHtml_GrabbingMove_Items() {
+  var singleItemGrab, displayList_itemObj, curList_listMemberDataObjs, html, i, firstGrabbingItemId = null, secondGrabbingItemId = null, firstWas1 = false, firstWas2 = false, wroteFirstHtmlRow = false;
+
+  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+    singleItemGrab = true;
+    displayList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+  } else {
+    singleItemGrab = false;
+    displayList_itemObj = app.itemObj;
+  }
+
+  html = "<table cellspacing=0 cellpadding=0>\n";
+  app.grabbing_itemIdArray = [];
+
+  curList_listMemberDataObjs = displayList_itemObj.getListMemberDataObjs();
+
+  for (i = 0; i < curList_listMemberDataObjs.length; i++){
+    let curItemId, curItemObj, writeCurItem = false;
+
+    curItemId = curList_listMemberDataObjs[i].itemId;
+
+    if ( firstGrabbingItemId == null ) {
+      
+      //we HAVE NOT found the earliest-sort-position grabbed-item yet
+
+      if ( isEqual(curItemId, app.grabbing_itemId1) ) {
+        //the current item matches grab-item-1
+
+        //... set info about first-grabbed-item found
+        firstGrabbingItemId = app.grabbing_itemId1;
+        firstWas1 = true;
+
+        //... mark that we should write the current item
+        writeCurItem = true;
+      }
+
+      if ( isEqual(curItemId, app.grabbing_itemId2) ) {
+        //the current item matches grab-item-2
+
+        //... set info about first-grabbed-item found
+        firstGrabbingItemId = app.grabbing_itemId2;
+        firstWas2 = true;
+
+        //... mark that we should write the current item
+        writeCurItem = true;
+      }
+
+    } else {
+
+      //we HAVE found the earliest-sort-position grabbed-item yet
+
+      //... NOTE: this ELSE section does not apply to single-item-grab, as we will exit this loop on the pass when firstGrabbingItemId is filled with the single-item, above
+
+      //we should always write the current item now, because firstGrabbingItem is filled (non-null)
+      writeCurItem = true;
+
+      if (firstWas1) {
+
+        //the earliest-sort-position grabbed-item was 1, so check 2 to see if we're done after the current item
+        if ( isEqual(curItemId, app.grabbing_itemId2) ) {
+
+          //the current item matches grab-item-2, so mark it as the second-grabbed-item found
+          secondGrabbingItemId = app.grabbing_itemId2;
+        }
+
+      } else {
+
+        //the earliest-sort-position grabbed-item was 2, so check 1 to see if we're done after the current item
+        if ( isEqual(curItemId, app.grabbing_itemId1) ) {
+
+          //the current item matches grab-item-1, so mark it as the second-grabbed-item found
+          secondGrabbingItemId = app.grabbing_itemId1;
+        }
+
+      }
+
+    }
+
+    //check if we've gotten to the earliest-sort-position grabbed-item yet; if so, we can write HTML
+    if (writeCurItem) {
+      curItemObj = grabItemObj(curItemId);
+
+      //save the item in an array, for use in the next step
+      app.grabbing_itemIdArray.push(curItemId);
+
+      if (wroteFirstHtmlRow) {
+        html += "<tr style='height: 0.8em'><td></td><td></td></tr>\n";
+      }
+
+      html += "<tr><td>\n";
+      html += " <table cellspacing=0 cellpadding=0>\n";
+      html += " <tr style='height: 2px'><td></td></tr>\n";
+      html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
+      html += " </table\n";
+      html += "</td><td style='width: 0.5em'></td><td>" + curItemObj.itemName + "</td></tr>\n";
+
+      wroteFirstHtmlRow = true;
+
+      //always break for single-item-grab, after this one row is written
+      if (singleItemGrab) {
+        break;
+      }
+    }
+
+    //if first-grabbed-item and second-grabbed-item are filled, we can now exit this loop
+    if ( firstGrabbingItemId !== null && secondGrabbingItemId !== null ) {
+      break;
+    }
+  }
+
+  html += "</table>\n";
+
+  return html;
+}
+
+function writeHtml_GrabbingMove_ListOptions() {
+  var singleItemGrab, displayList_itemId, allItemIds_string, allItemIds_array, html = "", i, wroteFirstHtmlRow = false;
+
+  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+    singleItemGrab = true;
+    displayList_itemId = app.itemObj.displayedOnList_itemId;
+  } else {
+    singleItemGrab = false;
+    displayList_itemId = app.itemObj.itemId;
+  }
+
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+  
+  html += "<table cellspacing=0 cellpadding=0>\n";
+
+  for (i = 0; i < allItemIds_array.length; i++) {
+    let j, skipThisItem = false;
+    let curItemId = allItemIds_array[i];
+    let curItemObj = grabItemObj(curItemId)
+
+    //don't write the display-list that holds the grabbed-items:
+    if ( isEqual(displayList_itemId, curItemId) ) {
+      continue;
+    }
+
+    //don't write non-list items:
+    if (curItemObj.isList == "0") {
+      continue;
+    }
+
+    //don't write items without displayCode 1:
+    if ( !isEqual(curItemObj.displayCode, "1") ) {
+      continue;
+    }
+
+    //don't write items from the list of grabbed-items
+    for (j = 0; j < app.grabbing_itemIdArray.length; j++) {
+      if ( isEqual(app.grabbing_itemIdArray[j], curItemId) ) {
+        skipThisItem = true;
+        continue;
+      }
+    }
+    if (skipThisItem) {
+      continue;
+    }
+
+    //everything else is okay to write as an available list to move the grabbed-items to
+    if (wroteFirstHtmlRow) {
+        html += "<tr style='height: 1.6em'><td></td><td></td></tr>\n";
+    }
+
+    html += "<tr><td>\n";
+    html += " <table cellspacing=0 cellpadding=0>\n";
+    html += " <tr style='height: 2px'><td></td></tr>\n";
+    html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
+    html += " </table\n";
+    html += "</td><td style='width: 0.5em'></td><td><a href='javascript:void choose_target_list(\"" + curItemId + "\")'>" + curItemObj.itemName + "</a></td></tr>\n";
+
+    wroteFirstHtmlRow = true;
+  }
+
+  if (!wroteFirstHtmlRow) html += "<tr><td>(no other lists are available)</td></tr>";
+
+  html += "</table>\n";
+
+  return html;
+}
+
+function writeHtml_ViewItem_Items(mainItemObj) {
   var listMemberDataObjs, html = "", i;
 
   if (mainItemObj.isList) {
@@ -895,7 +1253,7 @@ function writeItemsHtml(mainItemObj) {
       html += " <tr style='height: 2px'><td></td></tr>\n";
       html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
       html += " </table\n";
-      html += "</td><td style='width: 0.5em'></td><td><a" ;
+      html += "</td><td style='width: 0.5em'></td><td><a id='" + getHtml_aItem(curItemId) + "'" ;
       if (curItemObj.done == "1") html += " class='green'";
       html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a></td></tr>\n";
       html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
@@ -913,7 +1271,7 @@ function writeItemsHtml(mainItemObj) {
 
     if (listMemberDataObjs.length == 0) html += "<tr><td>(no items)</td></tr>";
 
-    html += "</table\n";
+    html += "</table>\n";
   }
 
   return html;
@@ -1009,6 +1367,11 @@ function begin_import() {
   importBackupText(textToImport);
 }
 
+function cancel_move() {
+  disableGrabbing();
+  goToItemView(null, false);
+}
+
 function change_storage_key_name(curKeyName) {
   var editedKeyName, keyValue, keyValueFromEditedKeyName, warningMsg, confirmationMsg;
 
@@ -1052,6 +1415,31 @@ function change_storage_key_name(curKeyName) {
   show_storage();
 }
 
+function choose_target_list(newList_itemId) {
+  var singleItemGrab, oldList_itemObj, newList_itemObj;
+
+  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+    singleItemGrab = true;
+    oldList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+  } else {
+    singleItemGrab = false;
+    oldList_itemObj = app.itemObj;
+  }
+
+  newList_itemObj = grabItemObj(newList_itemId);
+  transferItems(oldList_itemObj, newList_itemObj, app.grabbing_itemIdArray);
+
+  disableGrabbing();
+
+  if (singleItemGrab) {
+    //reset the display-item-object -- still is correct itemId-property in app.itemObj, but list-membership change means we need to reset the app.itemObj by re-passing in its item-id
+    goToItemView(app.itemObj.itemId, false);
+  } else {
+    //display the item-object for the list where the grabbed-items where transferred to
+    goToItemView(newList_itemId, false);
+  }
+}
+
 function clear_storage() {
   var clearStoragePrompt;
   
@@ -1068,6 +1456,11 @@ function clear_storage() {
 }
 
 function click_item(itemId) {
+  if (app.grabbingEnabled) {
+    setGrabItem(itemId);
+    return;
+  }
+
   if ( isBlank(app.activatedItemId) ) {
     activateItem(itemId);
   } else {
@@ -1142,6 +1535,14 @@ function go_to_list(itemId) {
   goToItemView(itemId, false);
 }
 
+function grab_items() {
+  if (app.grabbingEnabled) {
+    stopGrabbingItems();
+  } else {
+    startGrabbingItems();
+  }
+}
+
 function import_backup_text() {
   if ( getFromDatastore(CONST_importBlocked) == "1" ) {
     alert("OPERATION DISALLOWED\n\nImporting of text has been blocked on this device");
@@ -1165,7 +1566,7 @@ function make_new_item() {
 
   newItemObj = makeNewItem(null, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
-    app.itemObj = newItemObj;
+    setAppItemObj(newItemObj);
     displayPage("ViewItem");
   }
 }
@@ -1175,7 +1576,7 @@ function make_new_list() {
 
   newItemObj = makeNewItem(null, "new list name:", null, "1", app.homePageList_itemId);
   if ( newItemObj ) {
-    app.itemObj = newItemObj;
+    setAppItemObj(newItemObj);
     displayPage("ViewItem");
   }
 }
@@ -1200,7 +1601,7 @@ function rename_item() {
 }
 
 function return_home() {
-  app.itemObj = grabItemObjByName(CONST_homePageListName);
+  setAppItemObj(grabItemObjByName(CONST_homePageListName));
   displayPage("Home");
 }
 
@@ -1286,7 +1687,7 @@ function loadAppData() {
   }
 
   //set app current-item to home-page-list
-  app.itemObj = homePageListItemObj;
+  setAppItemObj(homePageListItemObj);
 
   //set home-page-list item-id
   app.homePageList_itemId = homePageListItemObj.itemId;
@@ -1413,6 +1814,23 @@ loadAppData();
 if ( app.dataLoadedSuccessfully ) {
   displayPage("Home");
 }
+
+/*
+var ay1 = [{testProp:1}, {testProp:2}, {testProp:3}, {testProp:4}, {testProp:5}];
+function displayAy(ay) {
+  var x = "";
+  for (var i = 0; i < ay.length; i++){
+    if (i > 0) x += " ----- "
+    x += "ay elem index " + i + ", testProp=" + ay[i].testProp;
+  }
+  console.log(x);
+}
+//console.log(ay1);
+displayAy(ay1);
+var ay2 = getObjArrayWithoutElem(ay1, "testProp", 4);
+//console.log(ay2);
+displayAy(ay2);
+*/
 
 </script>
 
