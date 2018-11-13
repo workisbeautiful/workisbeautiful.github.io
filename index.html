@@ -168,7 +168,7 @@ table {height: 100%}
       <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark done</nowrap></a></span>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()"><nowrap>home</nowrap></a>
       <span id="spnMoveToDifferentList" style="display: none">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move item</nowrap></a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move</nowrap></a>
       </span>
     </div>
     <div style="height:1.7em"></div>
@@ -211,11 +211,11 @@ table {height: 100%}
       <div style="border-bottom: 1px black solid"></div>
       <div style="height:1.2em"></div>
       <div id="dvViewItem_ListMembers_Items"></div>
-      <div style="height:0.7em"></div>
+      <div style="height:0.9em"></div>
       <div style="border-bottom: 1px black solid"></div>
     </div>
     <div style="height:1em"></div>
-    <div><a href="javascript:void make_new_item()">make new item</a></div>
+    <div><a href="javascript:void make_new_item()">new item</a></div>
   </div>
   <div style="height:1em"></div>
 </div>
@@ -225,7 +225,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.40";
+const CONST_appVersion = "0.41";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -249,42 +249,6 @@ app.reorderEnabled = false;
 function activateItem(itemId) {
   app.activatedItemId = itemId;
   elem(getHtml_trActivated(itemId)).style.display = "" ;
-}
-
-function changeSortPosition(itemId, moveUp, moveAmt) {
-  var listItemObj, memberItemObj, list_memberDataObjs, i = null;
-  
-  listItemObj = app.itemObj;
-  memberItemObj = grabItemObj(itemId);
-  list_memberDataObjs = listItemObj.getListMemberDataObjs();
-
-  for (i = 0; i < list_memberDataObjs.length; i++) {
-    let requestedNewSortIndex, memberItemDataObj, memberItemDataObj_toSwapWith, member_oldSortPosition;
-
-    if ( isEqual(list_memberDataObjs[i].itemId, memberItemObj.itemId) ) {
-      memberItemDataObj = list_memberDataObjs[i];
-
-      if (moveUp) {
-        requestedNewSortIndex = i - parseInt(moveAmt);
-        if (requestedNewSortIndex < 0) return false;
-      } else {
-        requestedNewSortIndex = i + parseInt(moveAmt);
-        if (requestedNewSortIndex >= list_memberDataObjs.length) return false;
-      }
-
-      memberItemDataObj_toSwapWith = list_memberDataObjs[requestedNewSortIndex];
-
-      member_oldSortPosition = memberItemDataObj.sortPosition;
-      memberItemDataObj.sortPosition = memberItemDataObj_toSwapWith.sortPosition;
-      memberItemDataObj_toSwapWith.sortPosition = member_oldSortPosition;
-  
-      listItemObj.saveListMembersToDatastore(list_memberDataObjs);
-
-      return true;
-    }
-  }
-
-  return false;
 }
 
 function createItemInfoString(itemName, done, displayCode, isList, notes) {
@@ -498,6 +462,16 @@ function getIdArray(string_ids){
 function getIdString(array_ids){
   var string_ids = array_ids.join(sD);
   return string_ids;
+}
+
+function getObjArrayAsString(theArray, propName1, propName2) {
+  var i, str = "";
+  for (i = 0; i < theArray.length; i++ ){
+    str += propName1 + ": " + theArray[i][propName1];
+    if ( !isBlank(propName2) ) str += ", " + propName2 + ": " + theArray[i][propName2];
+    str += "\n";
+  }
+  return str;
 }
 
 function getObjArrayWithoutElem(theArray, propName, propValueToExclude) {
@@ -1022,6 +996,42 @@ function stopGrabbingItems() {
   disableGrabbing();
 }
 
+function swapSortPosition(itemId, moveUp, moveAmt) {
+  var listItemObj, memberItemObj, list_memberDataObjs, i = null;
+  
+  listItemObj = app.itemObj;
+  memberItemObj = grabItemObj(itemId);
+  list_memberDataObjs = listItemObj.getListMemberDataObjs();
+
+  for (i = 0; i < list_memberDataObjs.length; i++) {
+    let requestedNewIndex, memberItemDataObj, memberItemDataObj_toSwapWith, member_oldSortPosition;
+
+    if ( isEqual(list_memberDataObjs[i].itemId, memberItemObj.itemId) ) {
+      memberItemDataObj = list_memberDataObjs[i];
+
+      if (moveUp) {
+        requestedNewIndex = i - parseInt(moveAmt);
+        if (requestedNewIndex < 0) return false;
+      } else {
+        requestedNewIndex = i + parseInt(moveAmt);
+        if (requestedNewIndex >= list_memberDataObjs.length) return false;
+      }
+
+      memberItemDataObj_toSwapWith = list_memberDataObjs[requestedNewIndex];
+
+      member_oldSortPosition = memberItemDataObj.sortPosition;
+      memberItemDataObj.sortPosition = memberItemDataObj_toSwapWith.sortPosition;
+      memberItemDataObj_toSwapWith.sortPosition = member_oldSortPosition;
+  
+      listItemObj.saveListMembersToDatastore(list_memberDataObjs);
+
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function transferItems(oldListObj, newListObj, memberItems_idArray) {
   var i;
 
@@ -1031,6 +1041,108 @@ function transferItems(oldListObj, newListObj, memberItems_idArray) {
     curItemObj.joinList(newListObj.itemId);
     curItemObj.leaveList(oldListObj.itemId);
   }
+}
+
+function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, moveToItemId) {
+  var memberItemObj, list_memberDataObjs, i, movedAtLeastOneSpot = false;
+
+  //grab item-object for the item-being-walked, and the array of list-member-data-objects for the list
+  memberItemObj = grabItemObj(itemId);
+  list_memberDataObjs = listItemObj.getListMemberDataObjs();
+
+  //cycle through all list-member-data-objects for the list, until we find our item that is being walked
+  for (i = 0; i < list_memberDataObjs.length; i++) {
+
+    let memberItemDataObj, requestedNewIndex = null, curSortIndex, reachedNewIndex = false;
+
+    if ( isEqual(list_memberDataObjs[i].itemId, memberItemObj.itemId) ) {
+
+      //found the item that is being walked
+      memberItemDataObj = list_memberDataObjs[i];
+
+      //calculate the requested new index when the walk will be complete
+      if ( Number.isInteger(moveAmt) ) {
+        //a negative moveAmt sends us towards the top of the list; positive moveAmt sends us towards the end
+        requestedNewIndex = i + parseInt(moveAmt);
+      } else if (moveToTop) {
+        requestedNewIndex = 0;
+      } else if (moveToEnd) {
+        requestedNewIndex = list_memberDataObjs.length - 1;
+      } else if ( !isBlank(moveToItemId) ) {
+        //need to grab the current index of the requested item-to-move-to
+        for (let j = 0; j < list_memberDataObjs.length; j++) {
+          let memberDataObj_toCheck = list_memberDataObjs[j];
+          if ( isEqual(memberDataObj_toCheck.itemId, moveToItemId) ) {
+            //found the requested item-to-move-to
+            requestedNewIndex = j;
+          }
+        }
+      } else {
+        //this occurs if none of the "move" function parameters were set in a valid fashion
+        return false;
+      }
+
+      //if there was a problem finding the requested item or spot to walk to, return false
+      if ( isBlank(requestedNewIndex) || !Number.isInteger(parseInt(requestedNewIndex)) ) {
+        return false;
+      }
+
+      //don't walk past the top or end of the list
+      if (requestedNewIndex < 0) requestedNewIndex = 0;
+      if (requestedNewIndex >= list_memberDataObjs.length) requestedNewIndex = list_memberDataObjs.length - 1;
+
+//da("requestedNewIndex="+requestedNewIndex)
+      //check if the item-being-walked is already at the requested new index
+      curSortIndex = i;
+      if ( parseInt(curSortIndex) == parseInt(requestedNewIndex) ) {
+        reachedNewIndex = true;
+      }
+
+      //while we have not yet reached the requested new index, walk one step at a time in its direction
+      while(!reachedNewIndex) {
+        let memberItemDataObj_toSwapWith, member_oldSortPosition;
+
+        //determine which direction to walk
+        if (curSortIndex > requestedNewIndex) {
+          curSortIndex = curSortIndex - 1;
+        } else {
+          curSortIndex = parseInt(curSortIndex) + 1;
+        }
+//da("curSortIndex="+curSortIndex) 
+        //grab the item-object for the item that our walk has brought us to
+        memberItemDataObj_toSwapWith = list_memberDataObjs[curSortIndex];
+
+        //save the current sortPosition value for the item-being-walked
+        // (sortPosition is not always the same as list-index: example #1, if an item has been removed from the list); example #2, if items have swapped position)
+        member_oldSortPosition = memberItemDataObj.sortPosition;
+
+        //set the sortPosition value for the item-being-walked, to the sortPosition value of the list-member that was already at this index
+        memberItemDataObj.sortPosition = memberItemDataObj_toSwapWith.sortPosition;
+
+        ///... and give the old sortPosition of the item-to-be-walked, to the list-member that was already at this index
+        memberItemDataObj_toSwapWith.sortPosition = member_oldSortPosition;
+
+        //mark that we moved at least one spot
+        if (!movedAtLeastOneSpot) movedAtLeastOneSpot = true;
+
+        //check if we have reached our requested index for the walk
+        if ( parseInt(curSortIndex) == parseInt(requestedNewIndex) ) {
+          reachedNewIndex = true;
+        }
+      }
+
+      //if we moved at least one spot, save the member-data-objects for the the list
+      if (movedAtLeastOneSpot) {
+//da("ready to save list changes\n\n"+getObjArrayAsString(list_memberDataObjs,"itemId","sortPosition"))
+        listItemObj.saveListMembersToDatastore(list_memberDataObjs);
+      }
+
+      //exit this for-loop -- was only being used to find the item-being-walked
+      break;
+    }
+  }
+
+  return movedAtLeastOneSpot;
 }
 
 function writeBackupExport() {
@@ -1288,24 +1400,26 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "'><td style='height: 1em' colspan=2></td><td>\n";
       html += " <table cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\")'>move up</a>\n";
-      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\")'>move down</a>\n";
+      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 1)'>move up</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 1)'>move down</a>\n";
+      html += " </td></tr>\n";
+      html += " <tr style='height: 1em'><td colspan=2></td><td>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 5)'>up 5</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 5)'>down 5</a>\n";
+      html += " </td></tr>\n";
+      html += " <tr style='height: 1em'><td colspan=2></td><td>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 10)'>up 10</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 10)'>down 10</a>\n";
+      html += " </td></tr>\n";
+      html += " <tr style='height: 1em'><td colspan=2></td><td>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_to_top(\"" + curItemId + "\")'>to top</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_to_end(\"" + curItemId + "\")'>to end</a>\n";
       html += " </td></tr>\n";
       html += " </table\n";
       html += "</td></tr>\n";
-
-
-/*
-      html += "'><td colspan=3>\n";
-      html += " <table cellspacing=0 cellpadding=0>\n";
-      html += " <tr style='height: 1em'><td></td><td></td></tr>\n";
-      html += " <tr><td style='width: 2em'></td><td>\n";
-      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\")'>move up</a>\n";
-      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\")'>move down</a>\n";
-      html += " </td></td></tr>\n";
-      html += " </table\n";
-      html += "</td></tr>\n";
-*/
     }
 
     if (listMemberDataObjs.length == 0) html += "<tr><td>(no items)</td></tr>";
@@ -1656,14 +1770,26 @@ function mark_all() {
 }
 
 
-function move_item_down(itemId) {
-  if ( changeSortPosition(itemId, false, 1) ) {
+function move_item_down(itemId, amount) {
+  if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount), false, false, null) ) {
     goToItemView(null, true);
   }
 }
 
-function move_item_up(itemId) {
-  if ( changeSortPosition(itemId, true, 1) ) {
+function move_item_to_end(itemId) {
+  if ( walkSortPosition(app.itemObj, itemId, null, false, true, null) ) {
+    goToItemView(null, true);
+  }
+}
+
+function move_item_to_top(itemId) {
+  if ( walkSortPosition(app.itemObj, itemId, null, true, false, null) ) {
+    goToItemView(null, true);
+  }
+}
+
+function move_item_up(itemId, amount) {
+  if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount) * -1, false, false, null) ) {
     goToItemView(null, true);
   }
 }
@@ -1927,6 +2053,8 @@ displayAy(ay1);
 var ay2 = getObjArrayWithoutElem(ay1, "testProp", 4);
 //console.log(ay2);
 displayAy(ay2);
+
+console.log(getObjArrayAsString([{prop1:"test1"},{prop1:"test2"}], "prop1"));
 */
 
 </script>
