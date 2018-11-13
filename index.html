@@ -186,18 +186,62 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.36";
+const CONST_appVersion = "0.37";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
 const CONST_homePageListName = "home_page_list";
+const CONST_propName_sortPosition = "sortPosition";
+const CONST_propName_itemId = "itemId";
 const CONST_storedDataVersion = "stored_data_version";
 
 const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
 
 var app = {};
+app.activatedItemId = null;
 
+
+function activateItem(itemId) {
+  app.activatedItemId = itemId;
+  elem(getHtml_trActivated(itemId)).style.display = "" ;
+}
+
+function changeSortPosition(itemId, moveUp, moveAmt) {
+  var listItemObj, memberItemObj, list_memberDataObjs, i = null;
+  
+  listItemObj = app.itemObj;
+  memberItemObj = grabItemObj(itemId);
+  list_memberDataObjs = listItemObj.getListMemberDataObjs();
+
+  for (i = 0; i < list_memberDataObjs.length; i++) {
+    let requestedNewSortIndex, memberItemDataObj, memberItemDataObj_toSwapWith, member_oldSortPosition;
+
+    if ( isEqual(list_memberDataObjs[i].itemId, memberItemObj.itemId) ) {
+      memberItemDataObj = list_memberDataObjs[i];
+
+      if (moveUp) {
+        requestedNewSortIndex = i - parseInt(moveAmt);
+        if (requestedNewSortIndex < 0) return false;
+      } else {
+        requestedNewSortIndex = i + parseInt(moveAmt);
+        if (requestedNewSortIndex >= list_memberDataObjs.length) return false;
+      }
+
+      memberItemDataObj_toSwapWith = list_memberDataObjs[requestedNewSortIndex];
+
+      member_oldSortPosition = memberItemDataObj.sortPosition;
+      memberItemDataObj.sortPosition = memberItemDataObj_toSwapWith.sortPosition;
+      memberItemDataObj_toSwapWith.sortPosition = member_oldSortPosition;
+  
+      listItemObj.saveListMembersToDatastore(list_memberDataObjs);
+
+      return true;
+    }
+  }
+
+  return false;
+}
 
 function createItemInfoString(itemName, done, displayCode, isList, notes) {
   var itemInfoString = itemName + sD;
@@ -234,6 +278,24 @@ function createItemInfoString(itemName, done, displayCode, isList, notes) {
   }
 
   return itemInfoString;
+}
+
+function createListMemberDataObj(itemId, sortPosition) {
+  var curListMemberDataObj = {};
+
+  curListMemberDataObj.itemId = itemId;
+  curListMemberDataObj.sortPosition = sortPosition;
+
+  return curListMemberDataObj;
+}
+
+function da(text) {
+  alert(text);
+}
+
+function deactivateItem(itemId) {
+  app.activatedItemId = null;
+  elem(getHtml_trActivated(itemId)).style.display = "none" ;
 }
 
 function deleteFromDatastore(itemKey) {
@@ -351,6 +413,10 @@ function getFromDatastore(itemKey) {
   return itemValue;
 }
 
+function getHtml_trActivated(itemId) {
+  return "trActivated_" + itemId;
+}
+
 function getIdArray(string_ids){
   var array_ids;
   if (isBlank(string_ids)) return [];
@@ -361,6 +427,19 @@ function getIdArray(string_ids){
 function getIdString(array_ids){
   var string_ids = array_ids.join(sD);
   return string_ids;
+}
+
+function getObjArrayWithoutMember(theArray, propNameToMatch, propValueToMatch) {
+  var i, curArrayElem, revisedArray = [];
+
+  for (i = 0; i < theArray.length; i++) {
+    curArrayElem = theArray[i];
+    if ( !isEqual(curArrayElem[propNameToMatch], propValueToMatch) ) {
+      revisedArray.push(curArrayElem);
+    }
+  }
+
+  return revisedArray;
 }
 
 function getSaveKeyText_item(itemId) {
@@ -375,11 +454,14 @@ function getSaveKeyText_listMembers_ofItem(itemId) {
   return "iLM_" + itemId;
 }
 
-
-function goToItemView(itemId) {
+function goToItemView(itemId, maintainActivatedItem) {
   if ( !isBlank(itemId) ) {
     app.itemObj = grabItemObj(itemId);
   }
+  if (!maintainActivatedItem) {
+    app.activatedItemId = null;
+  }
+
   displayPage("ViewItem");
 }
 
@@ -500,33 +582,29 @@ function itemObjFactory() {
   var itemObj = {};
 
   itemObj.itemId = null;
+  itemObj.itemName = "";
   itemObj.done = "0";
   itemObj.displayCode = "1";
   itemObj.isList = "0";
   itemObj.notes = "";
   itemObj.joinedLists_itemIds = [];
 
-  itemObj.addToList = function(listToJoin_itemId) {
-    var saveKeyText_itemListMembers_ofListToJoin, curString_listMemberItemsIds_ofListToJoin, newString_listMemberItemsIds_ofListToJoin, joinedLists_itemIds_string;
+  itemObj.addItemToListMembers = function(itemIdToAdd) {
+    var listMemberDataObjs, curMaxSortPosition, sortPositionToUse, newListMemberDataObj;
 
-    //grab save-key text for the list-to-join 
-    saveKeyText_itemListMembers_ofListToJoin = getSaveKeyText_listMembers_ofItem(listToJoin_itemId);
-    curString_listMemberItemsIds_ofListToJoin = getFromDatastore(saveKeyText_itemListMembers_ofListToJoin);
+    //grab current list-members for this list 
+    listMemberDataObjs = this.getListMemberDataObjs();
 
-    //add the current item to the list-member-ids of the list-to-join
-    if (isBlank(curString_listMemberItemsIds_ofListToJoin)) {
-      newString_listMemberItemsIds_ofListToJoin = this.itemId;
-    } else {
-      newString_listMemberItemsIds_ofListToJoin = curString_listMemberItemsIds_ofListToJoin + sD + this.itemId;
-    }
-    saveToDatastore(saveKeyText_itemListMembers_ofListToJoin, newString_listMemberItemsIds_ofListToJoin);
+    //set the new sortPosition value
+    curMaxSortPosition = listMemberDataObjs[listMemberDataObjs.length - 1].sortPosition;
+    sortPositionToUse = parseInt(curMaxSortPosition) + 1
 
-    //add the list-to-join's itemId to this list's array of joined-lists
-    itemObj.joinedLists_itemIds.push(listToJoin_itemId);
-
-    //save joined-lists to datastore
-    joinedLists_itemIds_string = getIdString(itemObj.joinedLists_itemIds);
-    saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
+    //create a new list-member-data-object, and add it to the current array
+    newListMemberDataObj = createListMemberDataObj(itemIdToAdd, sortPositionToUse);
+    listMemberDataObjs.push(newListMemberDataObj);
+    
+    //save the revised list-members-array to datastore
+    this.saveListMembersToDatastore(listMemberDataObjs);
   };
 
   itemObj.changeItem = function(itemName, done, displayCode, isList, notes) {
@@ -547,14 +625,14 @@ function itemObjFactory() {
       saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
       listMembers_string = getFromDatastore(saveKeyText_listMembers_ofItem);
       if (listMembers_string.length > 1) {
-        alert("Can't delete something that has list memebers");
+        alert("Can't delete something that has list members");
         return false;
       }
     }
 
     //remove from joined-lists
-    for (i = 0; i < itemObj.joinedLists_itemIds.length; i++) {
-      joinedList_itemId = itemObj.joinedLists_itemIds[i];
+    for (i = 0; i < this.joinedLists_itemIds.length; i++) {
+      joinedList_itemId = this.joinedLists_itemIds[i];
       joinedList_itemObj = grabItemObj(joinedList_itemId);
       joinedList_itemObj.removeListMember(this.itemId);
     }
@@ -586,14 +664,39 @@ function itemObjFactory() {
     return true;
   };
 
-  itemObj.getListMembers = function() {
-    var saveKeyText_listMembers_ofItem, listMembers_string, listMembers_array;
+  itemObj.getListMemberDataObjs = function() {
+    var saveKeyText_listMembers_ofItem, listMembers_string, listMembers_array, i, curListMemberDataObj, listMemberDataObjs = [];
 
     saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
     listMembers_string = getFromDatastore(saveKeyText_listMembers_ofItem);
     listMembers_array = getIdArray(listMembers_string);
 
-    return listMembers_array;
+    for (i = 0; i < listMembers_array.length; i = i + 2) {
+      curListMemberDataObj = createListMemberDataObj(listMembers_array[i], listMembers_array[i + 1]);
+      listMemberDataObjs.push(curListMemberDataObj);
+    }
+
+    //for now, we will sort the array by sortPosition every time; in the future, this could be provided as a separate function
+    listMemberDataObjs.sort(sortingObjects(CONST_propName_sortPosition));
+
+    return listMemberDataObjs;
+  };
+
+  itemObj.joinList = function(listToJoin_itemId) {
+    var listToJoin_itemObj, listToJoin_listMemberDataObjs, curMaxSortPosition, sortPositionToUse, listToJoin_newListMemberDataObj, saveKeyText_itemListMembers_ofListToJoin, joinedLists_itemIds_string;
+
+    //grab item-object for the list-to-join
+    listToJoin_itemObj = grabItemObj(listToJoin_itemId);
+
+    //call function on list-to-join's item-object, in order to be added to the list-members for that list-to-join 
+    listToJoin_itemObj.addItemToListMembers(this.itemId);
+
+    //add the list-to-join's itemId to this list's array of joined-lists
+    this.joinedLists_itemIds.push(listToJoin_itemId);
+
+    //save joined-lists to datastore
+    joinedLists_itemIds_string = getIdString(this.joinedLists_itemIds);
+    saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
   };
 
   itemObj.makeIntoAList = function() {
@@ -611,19 +714,12 @@ function itemObjFactory() {
   };
 
   itemObj.removeListMember = function(itemIdToRemove) {
-    var saveKeyText_listMembers, curListMembers_string, curListMembers_array, i, newListMembers_string = "";
+    var oldListMemberDataObjs, newListMemberDataObjs;
 
-    saveKeyText_listMembers = getSaveKeyText_listMembers_ofItem(this.itemId);
-    curListMembers_string = getFromDatastore(saveKeyText_listMembers);
-    curListMembers_array = getIdArray(curListMembers_string);
+    oldListMemberDataObjs = this.getListMemberDataObjs();
+    newListMemberDataObjs = getObjArrayWithoutMember(oldListMemberDataObjs, CONST_propName_itemId, itemIdToRemove)
 
-    for (i = 0; i < curListMembers_array.length; i++) {
-      if ( !isEqual(curListMembers_array[i], itemIdToRemove) ) {
-        if ( !isBlank(newListMembers_string) ) newListMembers_string += sD;
-        newListMembers_string += curListMembers_array[i];
-      }
-    }
-    saveToDatastore(saveKeyText_listMembers, newListMembers_string);
+    this.saveListMembersToDatastore(newListMemberDataObjs);
   };
 
   itemObj.saveItemInfoToDatastore = function() {
@@ -631,6 +727,20 @@ function itemObjFactory() {
 
     itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
+  };
+
+  itemObj.saveListMembersToDatastore = function(listMemberDataObjs) {
+    var saveKeyText_itemListMembers, i, curListMemberDataObj, listMemberDataObjs_string = ""; 
+
+    saveKeyText_itemListMembers = getSaveKeyText_listMembers_ofItem(this.itemId);
+    
+    for (i = 0; i < listMemberDataObjs.length; i++) {
+      curListMemberDataObj = listMemberDataObjs[i];
+      if ( !isBlank(listMemberDataObjs_string) ) listMemberDataObjs_string += sD;
+      listMemberDataObjs_string += curListMemberDataObj.itemId + sD + curListMemberDataObj.sortPosition;
+    }
+
+    saveToDatastore(saveKeyText_itemListMembers, listMemberDataObjs_string);
   };
 
   return itemObj;
@@ -682,7 +792,7 @@ function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_it
 
   //if requested, add this item to a list
   if ( !isBlank(addToList_itemId) ) {
-    newItemObj.addToList(addToList_itemId);
+    newItemObj.joinList(addToList_itemId);
   }
 
   return newItemObj;
@@ -690,6 +800,22 @@ function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_it
 
 function saveToDatastore(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
+}
+
+function sortingObjects(propNameToSortBy) {
+  return function(objA, objB) {
+    var comparisonCode;
+
+    if ( parseInt(objA[propNameToSortBy]) < parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = -1;
+    } else if ( parseInt(objA[propNameToSortBy]) > parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = 1;
+    } else {
+      comparisonCode = 0;
+    }
+
+    return comparisonCode;
+  };
 }
 
 function writeBackupExport() {
@@ -709,21 +835,21 @@ function writeBackupExport() {
 }
 
 function writeItemsHtml(mainItemObj) {
-  var listMembers_itemIds, html = "", i, curItemId, curItemObj;
+  var listMemberDataObjs, html = "", i, curItemId, curItemObj;
 
   if (mainItemObj.isList) {
     //get array of list-member-item-ids
-    listMembers_itemIds = mainItemObj.getListMembers();
+    listMemberDataObjs = mainItemObj.getListMemberDataObjs();
 
     //open html table
     html += "<table cellspacing=0 cellpadding=0>\n";
 
     //loop through array to write list in HTML
-    for (i = 0; i < listMembers_itemIds.length; i++){
-      curItemId = listMembers_itemIds[i];
+    for (i = 0; i < listMemberDataObjs.length; i++){
+      curItemId = listMemberDataObjs[i].itemId;
 
       if (i > 0) {
-        html += "<tr><td style='height: 1.2em'></td><td></td></tr>\n";
+        html += "<tr style='height: 1.6em'><td></td><td></td></tr>\n";
       }
 
       //call the function that grabs the current item's item-info from storage and returns it as a js-object
@@ -738,9 +864,20 @@ function writeItemsHtml(mainItemObj) {
       html += "</td><td style='width: 0.5em'></td><td><a" ;
       if (curItemObj.done == "1") html += " class='green'";
       html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + curItemObj.itemName + "</a></td></tr>\n";
+      html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
+      if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
+      html += "'><td colspan=3>\n";
+      html += " <table cellspacing=0 cellpadding=0>\n";
+      html += " <tr style='height: 1em'><td></td><td></td></tr>\n";
+      html += " <tr><td style='width: 2em'></td><td>\n";
+      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\")'>move up</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\")'>move down</a>\n";
+      html += " </td></td></tr>\n";
+      html += " </table\n";
+      html += "</td></tr>\n";
     }
 
-    if (listMembers_itemIds.length == 0) html += "<tr><td>(no items)</td></tr>";
+    if (listMemberDataObjs.length == 0) html += "<tr><td>(no items)</td></tr>";
 
     html += "</table\n";
   }
@@ -817,7 +954,7 @@ function add_notes() {
   var newNotes = prompt("Notes:", "");
   if ( isBlank(newNotes)) return;
   app.itemObj.changeItem(null, null, null, null, newNotes);
-  goToItemView();
+  goToItemView(null, true);
 }
 
 function add_storage_row() {
@@ -897,7 +1034,16 @@ function clear_storage() {
 }
 
 function click_item(itemId) {
-  goToItemView(itemId);
+  if ( isBlank(app.activatedItemId) ) {
+    activateItem(itemId);
+  } else {
+    if ( isEqual(itemId, app.activatedItemId) ) {
+      goToItemView(itemId, false);
+    } else {
+      deactivateItem(app.activatedItemId);
+      activateItem(itemId);
+    }
+  }
 }
 
 function copy_imported_text_to_clipboard() {
@@ -917,7 +1063,7 @@ function delete_item() {
 function delete_notes() {
   if ( confirm("Delete all Notes for this item?") ) {
     app.itemObj.changeItem(null, null, null, null, "");
-    goToItemView();
+    goToItemView(null, true);
   }
 }
 
@@ -935,7 +1081,7 @@ function edit_notes() {
     return;
   }
   app.itemObj.changeItem(null, null, null, null, editedNotes);
-  goToItemView();
+  goToItemView(null, true);
 }
 
 function edit_storage_row(keyName) {
@@ -955,7 +1101,7 @@ function export_backup_text() {
 }
 
 function go_to_list(itemId) {
-  goToItemView(itemId);
+  goToItemView(itemId, false);
 }
 
 function import_backup_text() {
@@ -968,12 +1114,12 @@ function import_backup_text() {
 
 function mark_item_as_done() {
   app.itemObj.changeItem(null, "1", null, null, null);
-  goToItemView();
+  goToItemView(null, true);
 }
 
 function make_into_a_list() {
   app.itemObj.makeIntoAList();
-  goToItemView();
+  goToItemView(null, false);
 }
 
 function make_new_item() {
@@ -996,11 +1142,23 @@ function make_new_list() {
   }
 }
 
+function move_item_down(itemId) {
+  if ( changeSortPosition(itemId, false, 1) ) {
+    goToItemView(null, true);
+  }
+}
+
+function move_item_up(itemId) {
+  if ( changeSortPosition(itemId, true, 1) ) {
+    goToItemView(null, true);
+  }
+}
+
 function rename_item() {
   var editedItemName = prompt("Change item name to:", app.itemObj.itemName);
   if ( isBlank(editedItemName)) return;
   app.itemObj.changeItem(editedItemName, null, null, null, null);
-  goToItemView();
+  goToItemView(null, true);
 }
 
 function return_home() {
@@ -1071,7 +1229,7 @@ function toggle_dev() {
 
 function unmark_item_as_done() {
   app.itemObj.changeItem(null, "0", null, null, null);
-  goToItemView();
+  goToItemView(null, true);
 }
 
 
@@ -1139,6 +1297,15 @@ function upgradeStoredData() {
     }
   }
 
+  if (parseInt(appVersion_minor) >= 37 && parseInt(storedDataVersion_minor) < 37) {
+    //upgrade from pre-0.37 to 0.37
+    if ( upgradeStoredData_0_37() ) {
+      // no action
+    } else {
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -1159,6 +1326,41 @@ function upgradeStoredData_0_36() {
 
   //update data's version-number to 0.36
   saveToDatastore(CONST_storedDataVersion, "0.36");
+
+  //return success flag
+  return true;
+}
+
+function upgradeStoredData_0_37() {
+  var allItemIds_string, allItemIds_array, i, j;
+
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+ 
+  //cycle through all items
+  for (i = 0; i < allItemIds_array.length; i++) {
+    let curItemId = allItemIds_array[i];
+    let curItemObj = grabItemObj(curItemId);
+
+    //for each item, if it is-list, cycle through list-members
+    if (curItemObj.isList == "1") {
+      let saveKeyText_listMembers_ofCurItem = getSaveKeyText_listMembers_ofItem(curItemId);
+      let oldListMembers_string = getFromDatastore(saveKeyText_listMembers_ofCurItem);
+      let oldListMembers_array = getIdArray(oldListMembers_string);
+      let newListMembers_string = "";
+
+      //add sort-position-number after each item-id
+      for (j = 0; j < oldListMembers_array.length; j++) {
+        if (newListMembers_string !== "") newListMembers_string += sD
+        newListMembers_string += oldListMembers_array[j] + sD + String(j);
+      }
+
+      saveToDatastore(saveKeyText_listMembers_ofCurItem, newListMembers_string)
+    }
+  }
+
+  //update data's version-number to 0.37
+  saveToDatastore(CONST_storedDataVersion, "0.37");
 
   //return success flag
   return true;
