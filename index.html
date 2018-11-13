@@ -164,30 +164,30 @@ table {height: 100%}
   <div style="height:1.5em"></div>
   <div>
     <div>
-      <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()"><nowrap>mark as done</nowrap></a></span>
-      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark as done</nowrap></a></span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()"><nowrap>return to home</nowrap></a>
+      <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()"><nowrap>mark done</nowrap></a></span>
+      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark done</nowrap></a></span>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()"><nowrap>home</nowrap></a>
+      <span id="spnMoveToDifferentList" style="display: none">
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move item</nowrap></a>
+      </span>
     </div>
     <div style="height:1.7em"></div>
     <div>
       <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
-      <span id="spnMoveToDifferentList" style="display: none">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move list</nowrap></a>
+      <span id="spnViewItem_Notes_No" style="display: none">
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
       </span>
     </div>
   </div>
-  <div style="height:1.7em"></div>
-  <div id="dvViewItem_Notes_No" style="display: none">
-    <div><a href="javascript:void add_notes()">add notes</a></div>
-  </div>
   <div id="dvViewItem_Notes_Yes" style="display: none">
+    <div style="height:1em"></div>
+    <div id="dvViewItem_Notes"></div>
+    <div style="height:0.2em"></div>
     <div>
       <a href="javascript:void edit_notes()"><nowrap>edit notes</nowrap></a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_notes()"><nowrap>delete notes</nowrap></a>
     </div>
-    <div style="height:1em"></div>
-    <div id="dvViewItem_Notes"></div>
   </div>
   <div style="height:1.7em"></div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
@@ -195,15 +195,23 @@ table {height: 100%}
   </div>
   <div id="dvViewItem_ListMembers_Yes" style="display: none">
     <div>
-      <a href="javascript:void make_new_item()"><nowrap>make new item</nowrap></a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems' href="javascript:void grab_items()"><nowrap>grab items</nowrap></a>
+      <a href="javascript:void make_new_item()"><nowrap>new item</nowrap></a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
+    </div>
+    <div id="dvMoreOptions" style="display: none">
+      <div style="height:1.7em"></div>
+      <div>
+        <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+      </div>
     </div>
     <div style="height:1em"></div>
     <div style="display: inline-block">
       <div style="border-bottom: 1px black solid"></div>
-      <div style="height:1em"></div>
+      <div style="height:1.2em"></div>
       <div id="dvViewItem_ListMembers_Items"></div>
-      <div style="height:1em"></div>
+      <div style="height:0.7em"></div>
       <div style="border-bottom: 1px black solid"></div>
     </div>
     <div style="height:1em"></div>
@@ -217,7 +225,7 @@ table {height: 100%}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.39";
+const CONST_appVersion = "0.40";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -235,7 +243,8 @@ app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
 app.grabbingEnabled = false;
-
+app.moreOptionsEnabled = false;
+app.reorderEnabled = false;
 
 function activateItem(itemId) {
   app.activatedItemId = itemId;
@@ -446,11 +455,11 @@ function displayPage(pageName) {
 
       if ( isBlank(app.itemObj.notes) ) {
         elem("dvViewItem_Notes_Yes").style.display = "none";
-        elem("dvViewItem_Notes_No").style.display = "";
+        elem("spnViewItem_Notes_No").style.display = "";
         elem("dvViewItem_Notes").innerHTML = "";
       } else {
         elem("dvViewItem_Notes_Yes").style.display = "";
-        elem("dvViewItem_Notes_No").style.display = "none";
+        elem("spnViewItem_Notes_No").style.display = "none";
         elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
       }
 
@@ -648,7 +657,6 @@ function importBackupText(textToImport) {
 }
 
 function isBlank(val) {
-if(val == "test")return "test2";
   if(val == undefined) return true;
   if(val == null) return true;
   if(val == "0")return false;
@@ -839,6 +847,24 @@ function itemObjFactory() {
 
     saveKeyText_itemListMembers = getSaveKeyText_listMembers_ofItem(this.itemId);
     saveToDatastore(saveKeyText_itemListMembers, "");
+  };
+
+  itemObj.markAllListMembers = function(markDirectionIsDone, listMemberDataObjs) {
+    var i;
+
+    for (i = 0; i < listMemberDataObjs.length; i++) {
+      let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
+      
+      if (markDirectionIsDone) {
+        if (curItemObj.done == "0") {
+          curItemObj.changeItem(null, "1", null, null, null);
+        }
+      } else {
+        if (curItemObj.done == "1") {
+          curItemObj.changeItem(null, "0", null, null, null);
+        }
+      }
+    }
   };
 
   itemObj.removeListMember = function(itemIdToRemove) {
@@ -1256,8 +1282,20 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "</td><td style='width: 0.5em'></td><td><a id='" + getHtml_aItem(curItemId) + "'" ;
       if (curItemObj.done == "1") html += " class='green'";
       html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a></td></tr>\n";
+      html += "<tr style='height: 0.8em'><td colspan=3></td></tr>\n"
       html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
       if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
+      html += "'><td style='height: 1em' colspan=2></td><td>\n";
+      html += " <table cellspacing=0 cellpadding=0>\n";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\")'>move up</a>\n";
+      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\")'>move down</a>\n";
+      html += " </td></tr>\n";
+      html += " </table\n";
+      html += "</td></tr>\n";
+
+
+/*
       html += "'><td colspan=3>\n";
       html += " <table cellspacing=0 cellpadding=0>\n";
       html += " <tr style='height: 1em'><td></td><td></td></tr>\n";
@@ -1267,6 +1305,7 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += " </td></td></tr>\n";
       html += " </table\n";
       html += "</td></tr>\n";
+*/
     }
 
     if (listMemberDataObjs.length == 0) html += "<tr><td>(no items)</td></tr>";
@@ -1344,7 +1383,7 @@ function writeStorage() {
 
 function add_notes() {
   var newNotes = prompt("Notes:", "");
-  if ( isBlank(newNotes)) return;
+  if ( isBlank(newNotes) ) return;
   app.itemObj.changeItem(null, null, null, null, newNotes);
   goToItemView(null, true);
 }
@@ -1461,15 +1500,19 @@ function click_item(itemId) {
     return;
   }
 
-  if ( isBlank(app.activatedItemId) ) {
-    activateItem(itemId);
-  } else {
-    if ( isEqual(itemId, app.activatedItemId) ) {
-      goToItemView(itemId, false);
-    } else {
-      deactivateItem(app.activatedItemId);
+  if (app.reorderEnabled) {
+    if ( isBlank(app.activatedItemId) ) {
       activateItem(itemId);
+    } else {
+      if ( isEqual(itemId, app.activatedItemId) ) {
+        goToItemView(itemId, false);
+      } else {
+        deactivateItem(app.activatedItemId);
+        activateItem(itemId);
+      }
     }
+  } else {
+    goToItemView(itemId, false);
   }
 }
 
@@ -1480,7 +1523,7 @@ function copy_imported_text_to_clipboard() {
 }
 
 function delete_item() {
-  if ( confirm("Delete this item?") ) {
+  if ( confirm("Delete this item?\n\nItem Name: " + app.itemObj.itemName) ) {
     if ( deleteItem(app.itemObj.itemId) ) {
       if ( !isBlank(app.itemObj) ) {
         goToItemView(null, false);
@@ -1492,7 +1535,7 @@ function delete_item() {
 }
 
 function delete_notes() {
-  if ( confirm("Delete all Notes for this item?") ) {
+  if ( confirm("Delete all Notes for this item?\n\nItem Name: " + app.itemObj.itemName + "\n\nNotes: " + app.itemObj.notes) ) {
     app.itemObj.changeItem(null, null, null, null, "");
     goToItemView(null, true);
   }
@@ -1581,6 +1624,38 @@ function make_new_list() {
   }
 }
 
+function mark_all() {
+  var markDirectionIsDone = false, listMemberDataObjs, i, confirmText;
+  
+  listMemberDataObjs = app.itemObj.getListMemberDataObjs();
+
+  for (i = 0; i < listMemberDataObjs.length; i++) {
+    let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
+
+    //if we find at least one that is not-done, that mark-all direction will be towards Done
+    if (curItemObj.done == "0") {
+      markDirectionIsDone = true;
+      break;
+    }
+  }
+
+  confirmText = "mark all items on this list as";
+  if (markDirectionIsDone) {
+    confirmText += " done?";
+  } else {
+    confirmText += " not done?";
+  }
+
+  if ( !confirm(confirmText) ) {
+    return;
+  }
+
+  app.itemObj.markAllListMembers(markDirectionIsDone, listMemberDataObjs);
+
+  goToItemView(null, true);
+}
+
+
 function move_item_down(itemId) {
   if ( changeSortPosition(itemId, false, 1) ) {
     goToItemView(null, true);
@@ -1634,6 +1709,22 @@ function toggle_app_narrow() {
   alert("app_narrow set to " + newAppNarrow);
 }
 
+function toggle_dev() {
+  var curDevText1, newDevText1;
+
+  curDevText1 = getFromDatastore(CONST_devText1);
+
+  if (curDevText1 == "1") {
+    newDevText1 = "0";
+  } else {
+    newDevText1 = "1";
+  }
+
+  saveToDatastore(CONST_devText1, newDevText1);
+
+  alert("devText1 set to " + newDevText1);
+}
+
 function toggle_import_blocked() {
   var curImportBlocked, newImportBlocked;
 
@@ -1650,20 +1741,26 @@ function toggle_import_blocked() {
   alert("importBlocked set to " + newImportBlocked);
 }
 
-function toggle_dev() {
-  var curDevText1, newDevText1;
-
-  curDevText1 = getFromDatastore(CONST_devText1);
-
-  if ( curDevText1 == "1" ) {
-    newDevText1 = "0";
+function toggle_more_options() {
+  if (app.moreOptionsEnabled) {
+    elem("dvMoreOptions").style.display = "none";
+    elem("aMoreOptions").innerHTML = "more...";
+    app.moreOptionsEnabled = false;
   } else {
-    newDevText1 = "1";
+    elem("dvMoreOptions").style.display = "";
+    elem("aMoreOptions").innerHTML = "less...";
+    app.moreOptionsEnabled = true;
   }
+}
 
-  saveToDatastore(CONST_devText1, newDevText1);
-
-  alert("devText1 set to " + newDevText1);
+function toggle_reorder() {
+  if (app.reorderEnabled) {
+    app.reorderEnabled = false;
+    elem("aReorder").style.color = "";
+  } else {
+    app.reorderEnabled = true;
+    elem("aReorder").style.color = "red";
+  }
 }
 
 function unmark_item_as_done() {
