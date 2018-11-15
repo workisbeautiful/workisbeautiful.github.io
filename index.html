@@ -6,6 +6,10 @@
 <head>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 a {color: blue; outline: 0}
 a:link {text-decoration: none}
 a:visited {text-decoration: none}
@@ -36,9 +40,6 @@ table {height: 100%}
 <div>
   <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
   &nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>dev</nowrap></span></a>
-<!--
-  &nbsp;&nbsp;<a href="javascript:void showPopUp()"><span style="font-size: 80%"><nowrap>show pop-up</nowrap></span></a>
--->
 </div>
 <div style="height:1.2em"></div>
 
@@ -170,7 +171,7 @@ table {height: 100%}
   <div>
     <div>
       <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()"><nowrap>mark done</nowrap></a></span>
-      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark done</nowrap></a></span>
+      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()"><nowrap>unmark</nowrap></a></span>
       <span id="spnMoveToDifferentList" style="display: none">
         &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoveToDifferentList" href="javascript:void move_to_different_list()"><nowrap>move</nowrap></a>
       </span>
@@ -223,46 +224,40 @@ table {height: 100%}
     <div>
       <a style="white-space: nowrap" href="javascript:void make_new_item()">new item</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder2" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
-<!--
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void make_new_item2()">new2</a>
--->
     </div>
   </div>
   <div style="height:1em"></div>
 </div>
 
-<!--
-<div style="display: none">
-  <br />
-  <br />
-  <br />
-  <textarea id="taDev1"></textarea>
 </div>
 
--->
-</div>
-
-<!--
-<div id="dvPopUp" style="left: 0; top: 0" style="display: none">
-  <div id="dvPopUp_Border" style="display: none; padding: 10px; border: 2px black solid; margin: 10px">
-    pop-up<br />
-    <br />
-    <a href="javascript:void hidePopUp()">hidePopUp</a>
+<div id="dvPopUp" style="display: none; border: 2px black solid">
+  <div id="dvPopUp_MakeNewItem" style="display: grid; grid-template-columns: auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em">
+    <div style="grid-column: 1/3; padding-bottom: 0.7em; border-bottom: 1px gray solid; text-align: center"><b>Make New Item</b></div>
+    <div style="grid-column: 1/3; padding-bottom: 1.1em"></div>
+    <div style="padding-right: 0.8em; text-align: right">Item Name:</div>
+    <div style=""><input id="ipMakeNewItem_ItemName" style="width: 14em" /></div>
+    <div style="padding-right: 0.8em; padding-top: 1em; text-align: right">add to top of list:</div>
+    <div style="padding-top: 1em"><input id="ipMakeNewItem_TopOfList" style="" type="checkbox" /></div>
+    <div style="padding-right: 0.8em; padding-top: 1em; text-align: right">remain on list view:</div>
+    <div style="padding-top: 1em"><input id="ipMakeNewItem_StayListView" style="" type="checkbox" /></div>
+    <div style="padding-right: 0.8em; padding-top: 1em; text-align: right">add more items:</div>
+    <div style="padding-top: 1em"><input id="ipMakeNewItem_AddMoreItems" style="" type="checkbox" /></div>
+    <div style="grid-column: 1/3; padding-top: 1em; text-align: center">
+      <a style="white-space: nowrap" href="javascript:void do_make_new_item()">submit</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
+    </div>
   </div>
 </div>
--->
-<div id="dvPopUp" style="display: none; left: 0px; top: 0px; width: 96.6vw; height: 94.5vh; padding: 10px; border: 2px black solid; margin: 10px">
-  pop-up<br />
-  <br />
-  <a href="javascript:void hidePopUp()">hidePopUp</a>
-</div>
+
 
 <script type="text/javascript">
 
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.42";
+const CONST_appVersion = "0.43";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -472,8 +467,35 @@ function displayPage(pageName) {
   }
 }
 
-function elem(id) {
-  return document.getElementById(id);
+function elem(elemId) {
+  return document.getElementById(elemId);
+}
+
+function getElemVal(elemId) {
+  var theElem, elemType, elemVal;
+
+  theElem = elem(elemId);
+  elemType = theElem.type;
+
+  switch (elemType) {
+    case "text":
+      elemVal = theElem.value;
+      break;
+
+    case "checkbox":
+      if (elemVal = theElem.checked) {
+        elemVal = "1";
+      } else {
+        elemVal = "0";
+      }
+      console.log("getElemVal(), elemId="+elemId+", elemType="+elemType+", elemVal="+elemVal)
+      break;
+
+    default:
+      throw ("HTML element '" + elemId + "' does not have a valid input-type");
+  }
+
+  return elemVal;
 }
 
 function getFromDatastore(itemKey) {
@@ -633,9 +655,10 @@ function grabItemObjByName(itemName) {
   return false;
 }
 
-function hidePopUp(popUpHtmlId) {
+function hidePopUp(popUpCode) {
   elem("dvMainViewOverlay").style.display = "";
   elem("dvPopUp").style.display = "none";
+  elem("dvPopUp_" + popUpCode).style.display = "none";
 }
 
 function importBackupText(textToImport) {
@@ -923,18 +946,14 @@ function itemObjFactory() {
   return itemObj;
 }
 
-function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_itemId, useNew) {
+function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
   var newItemObj, allItemIds_string, allItemIds_array, i, itemId_toCheck, maxItemId;
 
   //if not passed, get item name
-  if (useNew) {
-    showPopUp();
-  } else {
-    if ( isBlank(itemName) ) {
-      if ( isBlank(itemNamePrompt) ) itemNamePrompt = "new item:";
-      itemName = prompt(itemNamePrompt, "");
-      if ( isBlank(itemName) ) return false;
-    }
+  if ( isBlank(itemName) ) {
+    if ( isBlank(itemNamePrompt) ) itemNamePrompt = "new item:";
+    itemName = prompt(itemNamePrompt, "");
+    if ( isBlank(itemName) ) return false;
   }
 
   //create item-object
@@ -979,6 +998,26 @@ function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_it
   return newItemObj;
 }
 
+function resetElemVal(elemId) {
+  var theElem, elemType, elemVal;
+
+  theElem = elem(elemId);
+  elemType = theElem.type;
+
+  switch (elemType) {
+    case "text":
+      theElem.value = "";
+      break;
+
+    case "checkbox":
+      theElem.checked = false;
+      break;
+
+    default:
+      throw ("HTML element '" + elemId + "' does not have a valid input-type");
+  }
+}
+
 function saveToDatastore(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
@@ -1006,11 +1045,13 @@ function setGrabItem(itemId) {
   }
 }
 
-function showPopUp(popUpHtmlId) {
-console.log("inside showPopUp()")
+function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvMainViewOverlay").style.display = "none";
-//  elem("dvPopUp").style.display = "absolute";
-  elem("dvPopUp").style.display = "";
+  elem("dvPopUp").style.display = "inline-flex";
+  elem("dvPopUp_" + popUpCode).style.display = "grid";
+  if ( !isBlank(popUpFocusElem) ) {
+    elem(popUpFocusElem).focus();
+  }
 }
 
 function sortingObjects(propNameToSortBy) {
@@ -1574,6 +1615,10 @@ function begin_import() {
   importBackupText(textToImport);
 }
 
+function cancel_make_new_item() {
+  hidePopUp("MakeNewItem");
+}
+
 function cancel_move() {
   disableGrabbing();
   goToItemView(null, false);
@@ -1716,6 +1761,27 @@ function delete_storage_row(keyName) {
   }
 }
 
+function do_make_new_item() {
+  var itemName, topOfList, stayListView, addMoreItems, newItemObj;
+
+  itemName = getElemVal("ipMakeNewItem_ItemName");
+  topOfList = getElemVal("ipMakeNewItem_TopOfList");
+  stayListView = getElemVal("ipMakeNewItem_StayListView");
+  addMoreItems = getElemVal("ipMakeNewItem_AddMoreItems");
+
+  if ( isBlank(itemName) ) {
+    alert("Item Name is required");
+    return;
+  }
+
+  newItemObj = makeNewItem(itemName, null, null, "0", app.itemObj.itemId);
+  if ( newItemObj ) {
+    setAppItemObj(newItemObj);
+    hidePopUp("MakeNewItem");
+    displayPage("ViewItem");
+  }
+}
+
 function edit_notes() {
   var editedNotes = prompt("Notes:", app.itemObj.notes);
   if ( isBlank(editedNotes)) {
@@ -1788,13 +1854,12 @@ function make_new_item() {
 }
 
 function make_new_item2() {
-  var newItemObj;
+  resetElemVal("ipMakeNewItem_ItemName");
+  resetElemVal("ipMakeNewItem_TopOfList");
+  resetElemVal("ipMakeNewItem_StayListView");
+  resetElemVal("ipMakeNewItem_AddMoreItems");
 
-  newItemObj = makeNewItem(null, null, null, "0", app.itemObj.itemId, true);
-  if ( newItemObj ) {
-    setAppItemObj(newItemObj);
-    displayPage("ViewItem");
-  }
+  showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
 }
 
 function make_new_list() {
