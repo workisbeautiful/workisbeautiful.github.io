@@ -35,7 +35,6 @@ table {}
 .green {color: #00CC66}
 </style>
 
-
 <title>wib</title>
 
 </head>
@@ -224,7 +223,7 @@ table {}
       <div style="border-bottom: 1px black solid"></div>
       <div style="height:1.2em"></div>
       <div id="dvViewItem_ListMembers_Items"></div>
-      <div style="height:0.9em"></div>
+      <div style="height:0.6em"></div>
       <div style="border-bottom: 1px black solid"></div>
     </div>
     <div style="height:1em"></div>
@@ -261,13 +260,12 @@ table {}
   </div>
 </div>
 
-
 <script type="text/javascript">
 
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.51";
+const CONST_appVersion = "0.52";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -292,11 +290,14 @@ app.moreOptionsEnabled = false;
 app.reorderEnabled = false;
 app.reorderItemId = null;
 
+
+///// REGULAR FUNCTIONS
+
 function activateItem(itemId) {
   app.activatedItemId = itemId;
   elem(getHtml_trActivated(itemId)).style.display = "" ;
   elem(getHtml_tblReorderChoices(itemId)).style.display = "";
-  elem(getHtml_spnReorderItemInstructions(itemId)).style.display = "none";
+  elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
 }
 
 function createItemInfoString(itemName, done, displayCode, isList, notes) {
@@ -523,8 +524,8 @@ function getHtml_aItem(itemId) {
   return "aItem_" + itemId;
 }
 
-function getHtml_spnReorderItemInstructions(itemId) {
-  return "spnReorderItemInstructions_" + itemId;
+function getHtml_dvReorderItemInstructions(itemId) {
+  return "dvReorderItemInstructions_" + itemId;
 }
 
 function getHtml_tblReorderChoices(itemId) {
@@ -608,10 +609,6 @@ function goToItemView(itemId, maintainActivatedItem) {
   stopGrabbingItems();
 
   if ( !isBlank(app.reorderItemId) ) {
-/*
-    elem(getHtml_tblReorderChoices(app.reorderItemId)).style.display = "";
-    elem(getHtml_spnReorderItemInstructions(app.reorderItemId)).style.display = "none";
-*/
     app.reorderItemId = null;
   }
 }
@@ -1523,7 +1520,7 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       curItemId = listMemberDataObjs[i].itemId;
 
       if (i > 0) {
-        html += "<tr style='height: 1.6em'><td></td><td></td></tr>\n";
+        html += "<tr style='height: 1.4em'><td></td><td></td></tr>\n";
       }
 
       //call the function that grabs the current item's item-info from storage and returns it as a js-object
@@ -1561,6 +1558,10 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "'><td style='height: 1em' colspan=2></td><td>\n";
       html += " <table id='" + getHtml_tblReorderChoices(curItemId) + "' cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_to_other_item(\"" + curItemId + "\")'>move to other item</a>\n";
+      html += " </td></tr>\n";
+      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 1)'>up 1</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 1)'>down 1</a>\n";
       html += " </td></tr>\n";
@@ -1579,12 +1580,8 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "  <a href='javascript:void move_item_to_top(\"" + curItemId + "\")'>to top</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_to_end(\"" + curItemId + "\")'>to end</a>\n";
       html += " </td></tr>\n";
-      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
-      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a href='javascript:void move_item_to_other_item(\"" + curItemId + "\")'>move to other item</a>\n";
-      html += " </td></tr>\n";
       html += " </table>\n";
-      html += " <span id='" + getHtml_spnReorderItemInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></span>\n";
+      html += " <div id='" + getHtml_dvReorderItemInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></div>\n";
       html += "</td></tr>\n";
     }
 
@@ -1660,7 +1657,7 @@ function writeStorage() {
 }
 
 
-///// FUNCTIONS FROM HTML PAGE
+///// USER-CLICKABLE FUNCTIONS
 
 function add_notes() {
   var newNotes = prompt("Notes:", "");
@@ -1994,7 +1991,6 @@ function mark_all() {
   goToItemView(null, true);
 }
 
-
 function move_item_down(itemId, amount) {
   if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount), false, false, null) ) {
     goToItemView(null, true);
@@ -2010,7 +2006,7 @@ function move_item_to_end(itemId) {
 function move_item_to_other_item(itemId) {
   app.reorderItemId = itemId;
   elem(getHtml_tblReorderChoices(itemId)).style.display = "none";
-  elem(getHtml_spnReorderItemInstructions(itemId)).style.display = "";
+  elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "";
 }
 
 function move_item_to_top(itemId) {
@@ -2139,7 +2135,7 @@ function unmark_item_as_done() {
 }
 
 
-///// LOADING & UPGRADING APP-LEVEL DATA FROM STORAGE
+///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData() {
   var homePageListItemObj;
@@ -2282,29 +2278,6 @@ if ( app.dataLoadedSuccessfully ) {
   displayPage("Home");
 }
 
-/*
-var ay1 = [{testProp:1}, {testProp:2}, {testProp:3}, {testProp:4}, {testProp:5}];
-function displayAy(ay) {
-  var x = "";
-  for (var i = 0; i < ay.length; i++){
-    if (i > 0) x += " ----- "
-    x += "ay elem index " + i + ", testProp=" + ay[i].testProp;
-  }
-  console.log(x);
-}
-//console.log(ay1);
-displayAy(ay1);
-var ay2 = getObjArrayWithoutElem(ay1, "testProp", 4);
-//console.log(ay2);
-displayAy(ay2);
-
-console.log(getObjArrayAsString([{prop1:"test1"},{prop1:"test2"}], "prop1"));
-
-showPopUp();
-
-*/
-
-//elem("dvPopUp").style.display = "";
 
 </script>
 
