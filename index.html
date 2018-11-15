@@ -267,7 +267,7 @@ table {}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.50";
+const CONST_appVersion = "0.51";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -290,10 +290,13 @@ app.makeNewItem_StayListView = "0";
 app.makeNewItem_AddMoreItems = "0";
 app.moreOptionsEnabled = false;
 app.reorderEnabled = false;
+app.reorderItemId = null;
 
 function activateItem(itemId) {
   app.activatedItemId = itemId;
   elem(getHtml_trActivated(itemId)).style.display = "" ;
+  elem(getHtml_tblReorderChoices(itemId)).style.display = "";
+  elem(getHtml_spnReorderItemInstructions(itemId)).style.display = "none";
 }
 
 function createItemInfoString(itemName, done, displayCode, isList, notes) {
@@ -501,7 +504,7 @@ function getElemVal(elemId) {
       } else {
         elemVal = "0";
       }
-      console.log("getElemVal(), elemId="+elemId+", elemType="+elemType+", elemVal="+elemVal)
+      //console.log("getElemVal(), elemId="+elemId+", elemType="+elemType+", elemVal="+elemVal)
       break;
 
     default:
@@ -518,6 +521,14 @@ function getFromDatastore(itemKey) {
 
 function getHtml_aItem(itemId) {
   return "aItem_" + itemId;
+}
+
+function getHtml_spnReorderItemInstructions(itemId) {
+  return "spnReorderItemInstructions_" + itemId;
+}
+
+function getHtml_tblReorderChoices(itemId) {
+  return "tblReorderChoices_" + itemId;
 }
 
 function getHtml_trActivated(itemId) {
@@ -595,6 +606,14 @@ function goToItemView(itemId, maintainActivatedItem) {
 
   displayPage("ViewItem");
   stopGrabbingItems();
+
+  if ( !isBlank(app.reorderItemId) ) {
+/*
+    elem(getHtml_tblReorderChoices(app.reorderItemId)).style.display = "";
+    elem(getHtml_spnReorderItemInstructions(app.reorderItemId)).style.display = "none";
+*/
+    app.reorderItemId = null;
+  }
 }
 
 function getValArrayWithoutElem(theArray, valToExclude) {
@@ -1011,6 +1030,12 @@ function makeNewItem(itemName, itemNamePrompt, displayCode, isList, addToList_it
   return newItemObj;
 }
 
+function reorderItemToOtherItem(otherItemId) {
+  if ( walkSortPosition(app.itemObj, app.reorderItemId, null, false, false, otherItemId) ) {
+    goToItemView(null, true);
+  }
+}
+
 function resetElemVal(elemId) {
   var theElem, elemType, elemVal;
 
@@ -1033,12 +1058,6 @@ function resetElemVal(elemId) {
 
 function saveToDatastore(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
-}
-
-function move_to_different_list() {
-  app.grabbing_itemId1 = app.itemObj.itemId;
-  app.grabbing_itemId2 = null;
-  goToGrabbingMove();
 }
 
 function setAppItemObj(itemObj) {
@@ -1540,7 +1559,7 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
       if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
       html += "'><td style='height: 1em' colspan=2></td><td>\n";
-      html += " <table cellspacing=0 cellpadding=0>\n";
+      html += " <table id='" + getHtml_tblReorderChoices(curItemId) + "' cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 1)'>up 1</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 1)'>down 1</a>\n";
@@ -1560,7 +1579,12 @@ function writeHtml_ViewItem_Items(mainItemObj) {
       html += "  <a href='javascript:void move_item_to_top(\"" + curItemId + "\")'>to top</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_to_end(\"" + curItemId + "\")'>to end</a>\n";
       html += " </td></tr>\n";
+      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void move_item_to_other_item(\"" + curItemId + "\")'>move to other item</a>\n";
+      html += " </td></tr>\n";
       html += " </table>\n";
+      html += " <span id='" + getHtml_spnReorderItemInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></span>\n";
       html += "</td></tr>\n";
     }
 
@@ -1762,7 +1786,10 @@ function click_item(itemId) {
   }
 
   if (app.reorderEnabled) {
-    if ( isBlank(app.activatedItemId) ) {
+
+    if ( !isBlank(app.reorderItemId) ) {
+      reorderItemToOtherItem(itemId);      
+    } else if ( isBlank(app.activatedItemId) ) {
       activateItem(itemId);
     } else {
       if ( isEqual(itemId, app.activatedItemId) ) {
@@ -1772,8 +1799,11 @@ function click_item(itemId) {
         activateItem(itemId);
       }
     }
+
   } else {
+
     goToItemView(itemId, false);
+
   }
 }
 
@@ -1977,6 +2007,12 @@ function move_item_to_end(itemId) {
   }
 }
 
+function move_item_to_other_item(itemId) {
+  app.reorderItemId = itemId;
+  elem(getHtml_tblReorderChoices(itemId)).style.display = "none";
+  elem(getHtml_spnReorderItemInstructions(itemId)).style.display = "";
+}
+
 function move_item_to_top(itemId) {
   if ( walkSortPosition(app.itemObj, itemId, null, true, false, null) ) {
     goToItemView(null, true);
@@ -1987,6 +2023,12 @@ function move_item_up(itemId, amount) {
   if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount) * -1, false, false, null) ) {
     goToItemView(null, true);
   }
+}
+
+function move_to_different_list() {
+  app.grabbing_itemId1 = app.itemObj.itemId;
+  app.grabbing_itemId2 = null;
+  goToGrabbingMove();
 }
 
 function rename_item() {
@@ -2077,6 +2119,7 @@ function toggle_more_options() {
 function toggle_reorder() {
   if (app.reorderEnabled) {
     app.reorderEnabled = false;
+    app.reorderItemId = null;
     elem("aReorder1").style.color = "";
     elem("aReorder2").style.color = "";
     if ( !isBlank(app.activatedItemId) ) {
@@ -2084,6 +2127,7 @@ function toggle_reorder() {
     }
   } else {
     app.reorderEnabled = true;
+    app.reorderItemId = null;
     elem("aReorder1").style.color = "red";
     elem("aReorder2").style.color = "red";
   }
