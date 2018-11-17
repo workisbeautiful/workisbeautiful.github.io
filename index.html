@@ -18,19 +18,35 @@ a:active {text-decoration: none}
 body {font-size: 110%; font-family: Helvetica}
 div {padding: 0; margin: 0}
 input {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 2px; padding-right: 2px}
+select {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 2px; padding-right: 2px}
 table {}
 
-.grid {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
-.gridCell {/* border: 1px red solid */}
-.gcHeader {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
-.gcVertSpace1 {grid-column: 1/4; padding-bottom: 1em}
-.gcVertSpace2 {grid-column: 1/4; padding-bottom: 1em}
-.gcText {white-space: nowrap; padding-right: 0.8em; padding-top: 3px; text-align: right}
-.gcTextForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
-.gcInput {grid-column: 2/4}
-.gcCheckbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
-.gcCheckboxFirst {padding-right: 4em}
-.gcFooter {grid-column: 1/4; text-align: center}
+.grid1 {display: grid; grid-template-columns: auto auto}
+.grid1Cell {border: 1px red solid}
+.gc1Header {grid-column: 1/3; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
+.gc1VertSpace1 {grid-column: 1/3; padding-bottom: 1em}
+.gc1VertSpace2 {grid-column: 1/3; padding-bottom: 1em}
+.gc1TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
+.gc1TextLeftForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
+.gc1TextRight {white-space: nowrap}
+.gc1Input {}
+.gc1Select {}
+.gc1Checkbox {padding-top: 0px /* vertical alignment with left-hand cell was slightly above/beloweven on PC vs. Android, so leaving at 0 for now */}
+.gc1CheckboxFirst {padding-right: 4em}
+.gc1Footer {grid-column: 1/3; text-align: center}
+
+.grid2 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
+.grid2Cell {/* border: 1px red solid */}
+.gc2Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
+.gc2VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
+.gc2VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
+.gc2Text {white-space: nowrap; padding-right: 0.8em; padding-top: 3px; text-align: right}
+.gc2TextForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
+.gc2Input {grid-column: 2/4}
+.gc2Select {grid-column: 2/4}
+.gc2Checkbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
+.gc2CheckboxFirst {padding-right: 4em}
+.gc2Footer {grid-column: 1/4; text-align: center}
 
 .green {color: #00CC66}
 </style>
@@ -142,12 +158,14 @@ table {}
     &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_types()" style="white-space: nowrap">show types</a>
   </div>
   <div style="height: 1em"></div>
-  <div style="display: inline-block">
-    <div style="border-bottom: 1px black solid"></div>
-    <div style="height: 1em"></div>
-    <div id="dvHome_Items"></div>
-    <div style="height: 0.3em"></div>
-    <div style="border-bottom: 1px black solid"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
+  </div>
+  <div style="height: 1.4em"></div>
+  <div id="dvHome_Items"></div>
+  <div style="height: 0.4em"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
   </div>
   <div style="height: 1em"></div>
   <div><a href="javascript:void make_new_list()">make new list</a></div>
@@ -170,7 +188,7 @@ table {}
   <div style="height:1em"></div>
 </div>
 
-<div id="dvPage_Types" style="display: none">
+<div id="dvPage_WibTypes" style="display: none">
   <div style="font-weight: bold; color: red">Types</div>
   <div style="height: 0.8em"></div>
   <div>
@@ -178,12 +196,14 @@ table {}
     &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
   </div>
   <div style="height: 1em"></div>
-  <div style="display: inline-block">
-    <div style="border-bottom: 1px black solid"></div>
-    <div style="height: 1em"></div>
-    <div id="dvTypes_Items"></div>
-    <div style="height: 0.3em"></div>
-    <div style="border-bottom: 1px black solid"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
+  </div>
+  <div style="height: 1.4em"></div>
+    <div id="dvWibTypes_Items"></div>
+  <div style="height: 0.4em"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
   </div>
   <div style="height: 1em"></div>
   <div>
@@ -199,7 +219,19 @@ table {}
     <div style="height: 0.3em"></div>
     <div id="dvListNameForItem"></div>
   </div>
-  <div style="height: 1.5em"></div>
+  <div style="height: 0.95em"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
+  </div>
+  <div style="height: 0.95em"></div>
+  <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+  <div style="height: 0.95em"></div>
+  <div id="dvViewItem_ConnectedItems_Items"></div>
+  <div style="height: 0.95em"></div>
+  <div style="height: 5px; border: 2px solid #AAAAAA">
+    <div style="height: 1px; background-color: #DDDDDD"></div>
+  </div>
+  <div style="height: 0.95em"></div>
   <div>
     <div>
       <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()" style="white-space: nowrap">mark done</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -207,12 +239,12 @@ table {}
       <span id="spnMoveToDifferentList" style="display: none">
         <a id="aMoveToDifferentList" href="javascript:void move_to_different_list()" style="white-space: nowrap">move</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
       </span>
-      <span id="spnViewItem_ShowTypes">
+      <span id="spnViewItem_ShowWibTypes">
         <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
       </span>
       <a href="javascript:void return_home()" style="white-space: nowrap">home</a>
     </div>
-    <div style="height: 1.7em"></div>
+    <div style="height: 1.4em"></div>
     <div>
       <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
       <span id="spnViewItem_Delete">
@@ -224,49 +256,104 @@ table {}
     </div>
   </div>
   <div id="dvViewItem_Notes_Yes" style="display: none">
-    <div style="height: 1em"></div>
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
     <div id="dvViewItem_Notes"></div>
     <div style="height: 0.2em"></div>
     <div>
       <a href="javascript:void edit_notes()"><nowrap>edit notes</nowrap></a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_notes()"><nowrap>delete notes</nowrap></a>
     </div>
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
   </div>
-  <div style="height: 1.7em"></div>
+  <div id="dvViewItem_WibTypes" style="display: none">
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
+    <div><a href="javascript:void assign_item_to_type()" style="white-space: nowrap">assign this item to a type</a></div>
+    <div style="height: 0.95em"></div>
+    <div id="dvViewItem_WibTypes_Items"></div>
+  </div>
+  <div id="dvViewItem_WibTypeInfoFieldInfo" style="display: none">
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
+    <div class="grid1">
+      <div class="grid1Cell gc1TextLeft">Data Type:</div>
+      <div class="grid1Cell gc1TextRight"><span id="spn_ViewItem_WibTypeInfoFieldInfo_WibDataType"></span></div>
+    </div>
+  </div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
     <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
   </div>
   <div id="dvViewItem_ListMembers_Yes" style="display: none">
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
     <div>
       <span id="spnViewItem_MakeNewItem1">
         <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
       </span>
+      <span id="spnViewItem_MakeNewField1">
+        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
+      </span>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder1" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
-      <span id="spnViewItem_More">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
+      <span id="spnViewItem_More1">
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions1" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
       </span>
     </div>
-    <div id="dvMoreOptions" style="display: none">
-      <div style="height: 1.7em"></div>
+    <div id="dvMoreOptions1" style="display: none">
+      <div style="height: 1.4em"></div>
       <div>
         <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems1' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
       </div>
     </div>
     <div style="height: 1em"></div>
     <div style="display: inline-block">
-      <div style="border-bottom: 1px black solid"></div>
+      <div style="border-bottom: 2px solid #BBBBBB"></div>
       <div style="height: 1.2em"></div>
       <div id="dvViewItem_ListMembers_Items"></div>
       <div style="height: 0.3em"></div>
-      <div style="border-bottom: 1px black solid"></div>
+      <div style="border-bottom: 2px solid #BBBBBB"></div>
     </div>
     <div style="height: 1em"></div>
     <div>
       <span id="spnViewItem_MakeNewItem2">
         <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
       </span>
+      <span id="spnViewItem_MakeNewField2">
+        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
+      </span>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder2" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
+      <span id="spnViewItem_More2">
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions2" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
+      </span>
+    </div>
+    <div id="dvMoreOptions2" style="display: none">
+      <div style="height: 1.4em"></div>
+      <div>
+        <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems2' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+      </div>
     </div>
   </div>
   <div style="height:1em"></div>
@@ -276,36 +363,54 @@ table {}
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
 
-  <div class="grid" id="dvPopUp_MakeNewItem" style="display: none">
-    <div class="gridCell gcHeader"><b>Make New Item</b></div>
-    <div class="gridCell gcVertSpace1"></div>
-    <div class="gridCell gcText">Item Name:</div>
-    <div class="gridCell gcInput"><input id="ipMakeNewItem_ItemName" style="width: 12em" /></div>
-    <div class="gridCell gcVertSpace2"></div>
-    <div class="gridCell gcTextForCheckbox">add to top of list:</div>
-    <div class="gridCell gcCheckbox gcCheckboxFirst"><input id="ipMakeNewItem_TopOfList" style="" type="checkbox" /></div>
-    <div class="gridCell gcVertSpace2"></div>
-    <div class="gridCell gcTextForCheckbox">remain on list view:</div>
-    <div class="gridCell gcCheckbox"><input id="ipMakeNewItem_StayListView" style="" type="checkbox" /></div>
-    <div class="gridCell gcVertSpace2"></div>
-    <div class="gridCell gcTextForCheckbox">add additional items:</div>
-    <div class="gridCell gcCheckbox"><input id="ipMakeNewItem_AddMoreItems" style="" type="checkbox" /></div>
-    <div class="gridCell gcVertSpace2"></div>
-    <div class="gridCell gcFooter" style="">
+  <div class="grid2" id="dvPopUp_MakeNewItem" style="display: none">
+    <div class="grid2Cell gc2Header"><b>Make New Item</b></div>
+    <div class="grid2Cell gc2VertSpace1"></div>
+    <div class="grid2Cell gc2Text">Item Name:</div>
+    <div class="grid2Cell gc2Input"><input id="ipMakeNewItem_ItemName" style="width: 12em" /></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2TextForCheckbox">add to top of list:</div>
+    <div class="grid2Cell gc2Checkbox gc2CheckboxFirst"><input id="ipMakeNewItem_TopOfList" style="" type="checkbox" /></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2TextForCheckbox">remain on list view:</div>
+    <div class="grid2Cell gc2Checkbox"><input id="ipMakeNewItem_StayListView" style="" type="checkbox" /></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2TextForCheckbox">add additional items:</div>
+    <div class="grid2Cell gc2Checkbox"><input id="ipMakeNewItem_AddMoreItems" style="" type="checkbox" /></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
     </div>
   </div>
 
-  <div class="grid" id="dvPopUp_MakeNewType" style="display: none">
-    <div class="gridCell gcHeader" style="color: red"><b>Make New Type</b></div>
-    <div class="gridCell gcVertSpace1"></div>
-    <div class="gridCell gcText">Type Name:</div>
-    <div class="gridCell gcInput"><input id="ipMakeNewType_TypeName" style="width: 12em" /></div>
-    <div class="gridCell gcVertSpace2"></div>
-    <div class="gridCell gcFooter" style="">
+  <div class="grid2" id="dvPopUp_MakeNewWibType" style="display: none">
+    <div class="grid2Cell gc2Header" style="color: red"><b>Make New Type</b></div>
+    <div class="grid2Cell gc2VertSpace1"></div>
+    <div class="grid2Cell gc2Text">Type Name:</div>
+    <div class="grid2Cell gc2Input"><input id="ipMakeNewWibType_WibTypeName" style="width: 12em" /></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type()">cancel</a>
+    </div>
+  </div>
+
+  <div class="grid2" id="dvPopUp_MakeNewWibTypeInfoField" style="display: none">
+    <div class="grid2Cell gc2Header" style="color: red"><b>Make New Info-Field</b></div>
+    <div class="grid2Cell gc2VertSpace1"></div>
+    <div class="grid2Cell gc2Text">Type Name:</div>
+    <div class="grid2Cell gc2Text"><span id="spnMakeNewWibTypeInfoField_WibTypeName"></span></div>
+    <div class="grid2Cell gc2VertSpace1"></div>
+    <div class="grid2Cell gc2Text">Info-Field Name:</div>
+    <div class="grid2Cell gc2Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 12em" /></div>
+    <div class="grid2Cell gc2VertSpace1"></div>
+    <div class="grid2Cell gc2Text">Data Type:</div>
+    <div class="grid2Cell gc2Select" id="dvMakeNewWibTypeInfoField_WibDataTypeId"><select id="selMakeNewWibTypeInfoField_WibDataTypeId" style="width: 12em"></select></div>
+    <div class="grid2Cell gc2VertSpace2"></div>
+    <div class="grid2Cell gc2Footer" style="">
+      <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type_info_field()">cancel</a>
     </div>
   </div>
 
@@ -316,15 +421,19 @@ table {}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.53";
+const CONST_appVersion = "0.54";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
 const CONST_listName_homePage = "home_page_list";
-const CONST_listName_types = "types";
+const CONST_listName_wibTypes = "types";
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
 const CONST_storedDataVersion = "stored_data_version";
+const CONST_wibDataType_dateTime_name = "date & time";
+const CONST_wibDataType_dateTime_id = 2;
+const CONST_wibDataType_text_name = "text";
+const CONST_wibDataType_text_id = 1;
 
 const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
@@ -352,7 +461,7 @@ function activateItem(itemId) {
   elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
 }
 
-function createItemInfoString(itemName, done, displayCode, isList, notes, wibType) {
+function createItemInfoString(itemName, done, displayCode, isList, notes, isWibType, isWibTypeInfoField) {
   var itemInfoString = itemName + sD;
 
   if ( isBlank(done) ) {
@@ -387,7 +496,14 @@ function createItemInfoString(itemName, done, displayCode, isList, notes, wibTyp
   }
 
   itemInfoString = itemInfoString + sD;
-  if (wibType == "1") {
+  if (isWibType == "1") {
+    itemInfoString += "1";
+  } else {
+    itemInfoString += "0";
+  }
+
+  itemInfoString = itemInfoString + sD;
+  if (isWibTypeInfoField == "1") {
     itemInfoString += "1";
   } else {
     itemInfoString += "0";
@@ -403,6 +519,11 @@ function createListMemberDataObj(itemId, sortPosition) {
   curListMemberDataObj.sortPosition = sortPosition;
 
   return curListMemberDataObj;
+}
+
+function createWibTypeInfoFieldInfoString(wibDataTypeId) {
+  var itemInfoString = wibDataTypeId;
+  return itemInfoString;
 }
 
 function da(text) {
@@ -447,10 +568,10 @@ function displayPage(pageName) {
   elem("dvPage_GrabbingMove").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
-  elem("dvPage_Types").style.display = "none";
+  elem("dvPage_WibTypes").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
 
-  elem("dvPage_" + pageName).style.display = "";
+  elem("dvPage_" + pageName).style.display = "inline-grid";
 
   switch (pageName) {
 
@@ -479,95 +600,145 @@ function displayPage(pageName) {
       if (!app.itemObj) {
         setAppItemObj(grabItemObjByName(CONST_listName_homePage));
       }
-      elem("dvHome_Items").innerHTML = writeHtml_Items(app.itemObj);
+      elem("dvHome_Items").innerHTML = writeHtml_Items();
       break;
 
-    case "Types":
-      setAppItemObj(grabItemObj(app.types_itemId));
-      elem("dvTypes_Items").innerHTML = writeHtml_Items(app.itemObj);
+    case "WibTypes":
+      setAppItemObj(grabItemObj(app.wibTypes_itemId));
+      elem("dvWibTypes_Items").innerHTML = writeHtml_Items();
       break;
 
     case "ViewItem":
-      var list_itemObj, hasDisplayedLists = false, i;
+      {
+        let i, hasDisplayedLists = false, displayListItemObj,  hasConnectedItems = false, hasWibTypes = false;
 
-      if (app.itemObj.wibType == "1") {
-        elem("dvItemName").innerHTML = "<div style='color: red'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
-      } else {
-        elem("dvItemName").innerHTML = app.itemObj.itemName;
-      }
+        if (app.itemObj.isWibType == "1") {
+          elem("dvItemName").innerHTML = "<div style='color: red'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
+        } else {
+          elem("dvItemName").innerHTML = app.itemObj.itemName;
+        }
 
-      //TO-DO: display multiple list names, if this item is a member of 2+
-      
-      elem("dvListNameForItem").innerHTML = "";
+        //TO-DO: display multiple list names, if this item is a member of 2+
+        
+        elem("dvListNameForItem").innerHTML = "";
 
-      if (app.itemObj.wibType == "0") {
-        for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
-          list_itemObj = grabItemObj(app.itemObj.joinedLists_itemIds[0])
-          if (list_itemObj.displayCode == "1") {
-            elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + list_itemObj.itemId + "\")'>" + list_itemObj.itemName + "</a>";
-            elem("spnMoveToDifferentList").style.display = "";
-            hasDisplayedLists = true;
-            app.itemObj.displayedOnList_itemId = list_itemObj.itemId;
-            break;
+        if (app.itemObj.isWibType == "0") {
+          for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
+            let curItemObjForLoop = grabItemObj(app.itemObj.joinedLists_itemIds[0])
+
+            if (curItemObjForLoop.displayCode == "1") {
+              elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
+              elem("spnMoveToDifferentList").style.display = "";
+              hasDisplayedLists = true;
+              app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
+
+              displayListItemObj = curItemObjForLoop;
+              if (displayListItemObj.isWibType == "1") {
+                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: red'><b>info-field for type:</b></span>&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
+              } else {
+                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
+              }
+              break;
+            }
+          }
+
+          if (hasDisplayedLists) {
+            elem("dvPage_ViewItem_JoinedListsArea").style.display = "";
+          } else {
+            elem("dvPage_ViewItem_JoinedListsArea").style.display = "none";
           }
         }
 
-        if (hasDisplayedLists) {
-          elem("dvPage_ViewItem_JoinedListsArea").style.display = "";
+        if (hasConnectedItems) {
+          elem("dvViewItem_ConnectedItems_Items").innerHTML = "(connected items would go here)";
         } else {
-          elem("dvPage_ViewItem_JoinedListsArea").style.display = "none";
+          elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>";
+        }
+
+        if (app.itemObj.isWibType == "1") {
+          elem("spnMoveToDifferentList").style.display = "none";
+          elem("spnViewItem_ShowWibTypes").style.display = "";
+          elem("spnViewItem_Delete").style.display = "none";
+        } else if (app.itemObj.isWibTypeInfoField == "1") {
+          elem("spnMoveToDifferentList").style.display = "none";
+          elem("spnViewItem_ShowWibTypes").style.display = "none";
+          elem("spnViewItem_Delete").style.display = "none";
+        } else {
+          elem("spnViewItem_ShowWibTypes").style.display = "none";
+          elem("spnViewItem_Delete").style.display = "";
+        }
+
+        if (app.itemObj.isWibType == "1" || app.itemObj.isWibTypeInfoField == "1") {
+          elem("spnPage_ViewItem_NotDone").style.display = "none";
+          elem("spnPage_ViewItem_Done").style.display = "none";
+        } else if (app.itemObj.done == "0") {
+          elem("spnPage_ViewItem_NotDone").style.display = "";
+          elem("spnPage_ViewItem_Done").style.display = "none";
+        } else {
+          elem("spnPage_ViewItem_NotDone").style.display = "none";
+          elem("spnPage_ViewItem_Done").style.display = "";
+        }
+
+        if ( isBlank(app.itemObj.notes) ) {
+          elem("dvViewItem_Notes_Yes").style.display = "none";
+          elem("spnViewItem_Notes_No").style.display = "";
+          elem("dvViewItem_Notes").innerHTML = "";
+        } else {
+          elem("dvViewItem_Notes_Yes").style.display = "";
+          elem("spnViewItem_Notes_No").style.display = "none";
+          elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
+        }
+
+        if (app.itemObj.isWibType == "1" || app.itemObj.isWibTypeInfoField == "1") {
+          elem("dvViewItem_WibTypes").style.display = "none";
+        } else {
+          elem("dvViewItem_WibTypes").style.display = "";
+          if (hasWibTypes) {
+            elem("dvViewItem_WibTypes_Items").innerHTML = "(types would go here)";
+          } else {
+            elem("dvViewItem_WibTypes_Items").innerHTML = "types: <i>none</i>";
+          }
+        }
+
+        if (app.itemObj.isWibTypeInfoField == "1") {
+          elem("dvViewItem_WibTypeInfoFieldInfo").style.display = "";
+          elem("spn_ViewItem_WibTypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(app.itemObj.wibDataTypeId);
+        } else {
+          elem("dvViewItem_WibTypeInfoFieldInfo").style.display = "none";
+        }
+
+        if (app.itemObj.isWibType == "1") {
+          elem("dvViewItem_ListMembers_Yes").style.display = "";
+          elem("dvViewItem_ListMembers_No").style.display = "none";
+          elem("spnViewItem_MakeNewItem1").style.display = "none";
+          elem("spnViewItem_MakeNewItem2").style.display = "none";
+          elem("spnViewItem_MakeNewField1").style.display = "";
+          elem("spnViewItem_MakeNewField2").style.display = "";
+          elem("spnViewItem_More1").style.display = "none";
+          elem("spnViewItem_More2").style.display = "none";
+          elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_Items();
+        } else if (app.itemObj.isWibTypeInfoField == "1") {
+          elem("dvViewItem_ListMembers_No").style.display = "none";
+          elem("dvViewItem_ListMembers_Yes").style.display = "none";
+          elem("dvViewItem_ListMembers_Items").innerHTML = "";
+        } else {
+          elem("spnViewItem_MakeNewItem1").style.display = "";
+          elem("spnViewItem_MakeNewItem2").style.display = "";
+          elem("spnViewItem_MakeNewField1").style.display = "none";
+          elem("spnViewItem_MakeNewField2").style.display = "none";
+          elem("spnViewItem_More1").style.display = "";
+          elem("spnViewItem_More2").style.display = "";
+          if (app.itemObj.isList == "1") {
+            elem("dvViewItem_ListMembers_Yes").style.display = "";
+            elem("dvViewItem_ListMembers_No").style.display = "none";
+            elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_Items();
+          } else {
+            elem("dvViewItem_ListMembers_Yes").style.display = "none";
+            elem("dvViewItem_ListMembers_No").style.display = "";
+            elem("dvViewItem_ListMembers_Items").innerHTML = "";
+          }
         }
       }
-
-      if (app.itemObj.wibType == "1") {
-        elem("spnViewItem_ShowTypes").style.display = "";
-        elem("spnViewItem_Delete").style.display = "none";
-        elem("spnViewItem_More").style.display = "none";
-        elem("spnViewItem_MakeNewItem1").style.display = "none";
-        elem("spnViewItem_MakeNewItem2").style.display = "none";
-      } else {
-        elem("spnViewItem_ShowTypes").style.display = "none";
-        elem("spnViewItem_Delete").style.display = "";
-        elem("spnViewItem_More").style.display = "";
-        elem("spnViewItem_MakeNewItem1").style.display = "";
-        elem("spnViewItem_MakeNewItem2").style.display = "";
-      }
-
-      if (app.itemObj.wibType == "1") {
-        elem("spnPage_ViewItem_NotDone").style.display = "none";
-        elem("spnPage_ViewItem_Done").style.display = "none";
-      } else if (app.itemObj.done == "0") {
-        elem("spnPage_ViewItem_NotDone").style.display = "";
-        elem("spnPage_ViewItem_Done").style.display = "none";
-      } else {
-        elem("spnPage_ViewItem_NotDone").style.display = "none";
-        elem("spnPage_ViewItem_Done").style.display = "";
-      }
-
-      if (app.itemObj.wibType == "1") {
-        elem("dvViewItem_ListMembers_Yes").style.display = "none";
-        elem("dvViewItem_ListMembers_No").style.display = "none";
-        elem("dvViewItem_ListMembers_Items").innerHTML = "";
-      } else if (app.itemObj.isList =="1") {
-        elem("dvViewItem_ListMembers_Yes").style.display = "";
-        elem("dvViewItem_ListMembers_No").style.display = "none";
-        elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_Items(app.itemObj);
-      } else {
-        elem("dvViewItem_ListMembers_Yes").style.display = "none";
-        elem("dvViewItem_ListMembers_No").style.display = "";
-        elem("dvViewItem_ListMembers_Items").innerHTML = "";
-      }
-
-      if ( isBlank(app.itemObj.notes) ) {
-        elem("dvViewItem_Notes_Yes").style.display = "none";
-        elem("spnViewItem_Notes_No").style.display = "";
-        elem("dvViewItem_Notes").innerHTML = "";
-      } else {
-        elem("dvViewItem_Notes_Yes").style.display = "";
-        elem("spnViewItem_Notes_No").style.display = "none";
-        elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
-      }
-
       break;
 
     case "ShowStorage":
@@ -587,10 +758,6 @@ function getElemVal(elemId) {
   elemType = theElem.type;
 
   switch (elemType) {
-    case "text":
-      elemVal = theElem.value;
-      break;
-
     case "checkbox":
       if (elemVal = theElem.checked) {
         elemVal = "1";
@@ -601,7 +768,7 @@ function getElemVal(elemId) {
       break;
 
     default:
-      throw ("HTML element '" + elemId + "' does not have a valid input-type");
+      elemVal = theElem.value;
   }
 
   return elemVal;
@@ -618,6 +785,51 @@ function getHtml_aItem(itemId) {
 
 function getHtml_dvReorderItemInstructions(itemId) {
   return "dvReorderItemInstructions_" + itemId;
+}
+
+function getHtml_selectElem(selectElemId, includeBlank, theArray, defValue, theStyle, onChange, blankDisplay, isDisabled) {
+  var i, html;
+
+  html = "<select id='" + selectElemId + "'";
+
+  if (  !isBlank(theStyle) ) {
+    html += " style='" + theStyle + "'";
+  }
+
+  if ( !isBlank(onChange) ) {
+    html += " onchange='javascript:void " + onChange + "'";
+  }
+
+  if (isDisabled) {
+    html += " disabled";
+  }
+
+  html += ">\n";
+
+  if (includeBlank) {
+    html += "<option value=''";
+    if ( isBlank(defValue) ) html += " selected";
+      html += ">";
+    if (blankDisplay) {
+      html += blankDisplay + "</option>\n";
+    } else {
+      html += " </option>\n";
+    }
+  }
+
+
+  for (i = 0; i < theArray.length; i++ ) {
+    let curOptionId, curOptionDisplay;
+    curOptionId = theArray[i].optionId;
+    curOptionDisplay = theArray[i].optionDisplay;
+    html += "<option value='" + curOptionId + "'";
+    if ( isEqual(defValue, curOptionId) ) html += " selected";
+    html += ">" + curOptionDisplay + "</option>\n";
+  }
+
+  html += "</select>\n";
+
+  return html;
 }
 
 function getHtml_tblReorderChoices(itemId) {
@@ -689,20 +901,22 @@ function getSaveKeyText_listMembers_ofItem(itemId) {
   return "iLM_" + itemId;
 }
 
-function goToItemView(itemId, maintainActivatedItem) {
-  if ( !isBlank(itemId) ) {
-    setAppItemObj(grabItemObj(itemId));
-  }
-  if (!maintainActivatedItem) {
-    app.activatedItemId = null;
+function getSaveKeyText_wibTypeInfoFieldInfo_ofItem(itemId) {
+  return "iWTIFI_" + itemId;
+}
+
+function getSelectArrayElem(optionId, optionDisplay) {
+  var theObj = {};
+
+  theObj.optionId = optionId;
+
+  if (optionDisplay === undefined) {
+    theObj.optionDisplay = optionId;
+  } else {
+    theObj.optionDisplay = optionDisplay;
   }
 
-  displayPage("ViewItem");
-  stopGrabbingItems();
-
-  if ( !isBlank(app.reorderItemId) ) {
-    app.reorderItemId = null;
-  }
+  return theObj;
 }
 
 function getValArrayWithoutElem(theArray, valToExclude) {
@@ -719,19 +933,63 @@ function getValArrayWithoutElem(theArray, valToExclude) {
   return revisedArray;
 }
 
+function getWibDataTypeNameFromId(wibDataTypeId) {
+  switch (parseInt(wibDataTypeId)) {
+    case parseInt(CONST_wibDataType_text_id):
+      return CONST_wibDataType_text_name;
+    case parseInt(CONST_wibDataType_dateTime_id):
+      return CONST_wibDataType_dateTime_name;
+  }
+}
+
+function getWibDataTypesAsArray() {
+  var anObj;
+  var theArray = [];
+
+  //WibDataType = "text"
+  anObj = getSelectArrayElem(CONST_wibDataType_text_id, CONST_wibDataType_text_name);
+  anObj.wibDataTypeId = CONST_wibDataType_text_id;
+  anObj.wibDataTypeName = CONST_wibDataType_text_name;
+  theArray.push(anObj);
+
+  //WibDataType = "date & time"
+  anObj = getSelectArrayElem(CONST_wibDataType_dateTime_id, CONST_wibDataType_dateTime_name);
+  anObj.wibDataTypeId = CONST_wibDataType_dateTime_id;
+  anObj.wibDataTypeName = CONST_wibDataType_dateTime_name;
+  theArray.push(anObj);
+
+  return theArray;
+}
+
+function goToItemView(itemId, maintainActivatedItem) {
+  if ( !isBlank(itemId) ) {
+    setAppItemObj(grabItemObj(itemId));
+  }
+  if (!maintainActivatedItem) {
+    app.activatedItemId = null;
+  }
+
+  displayPage("ViewItem");
+  stopGrabbingItems();
+
+  if ( !isBlank(app.reorderItemId) ) {
+    app.reorderItemId = null;
+  }
+}
+
 function goToGrabbingMove() {
   displayPage("GrabbingMove");
 }
 
 function grabItemObj(itemId) {
-  var saveKeyText_item, itemObj, itemDataString, itemDataArray, saveKeyText_joinedLists_ofItem, joinedLists_itemIds_string;
+  var saveKeyText_item, itemObj, itemInfoString, itemDataArray;
 
   //get the item-data-string from the datastore
   saveKeyText_item = getSaveKeyText_item(itemId);
-  itemDataString = getFromDatastore(saveKeyText_item);
+  itemInfoString = getFromDatastore(saveKeyText_item);
 
   //this function assumes only existing items will be requested; so, if the item-data-string is blank, the item does not exist, and we must throw an error
-  if ( isBlank(itemDataString) ) {
+  if ( isBlank(itemInfoString) ) {
     throw("ERROR: item with itemId=" + itemId + " does not exist in data storage");
   }
 
@@ -739,20 +997,30 @@ function grabItemObj(itemId) {
   itemObj = itemObjFactory();
 
   //set the item-object's properties from the retrieved item-data
-  itemDataArray = itemDataString.split(sD);
+  itemDataArray = itemInfoString.split(sD);
   itemObj.itemId = itemId;
   itemObj.itemName = itemDataArray[0];
   itemObj.done = itemDataArray[1];
   itemObj.displayCode = itemDataArray[2];
   itemObj.isList = itemDataArray[3];
   itemObj.notes = itemDataArray[4];
-  itemObj.wibType = itemDataArray[5];
+  itemObj.isWibType = itemDataArray[5];
+  itemObj.isWibTypeInfoField = itemDataArray[6];
 
   //set joined-lists array, if any
   if (itemObj.isList) {
-    saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
-    joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
+    let saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
+    let joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
     itemObj.joinedLists_itemIds = getIdArray(joinedLists_itemIds_string);
+  }
+
+  //if this is a wib-type-info-field, set wibTypeInfo for this item-object
+  if (itemObj.isWibTypeInfoField == "1") {
+    let saveKeyText_wibTypeInfoFieldInfo_ofItem = getSaveKeyText_wibTypeInfoFieldInfo_ofItem(itemObj.itemId);
+    let wibTypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibTypeInfoFieldInfo_ofItem);
+    let wibTypeInfoFieldInfo_array = wibTypeInfoFieldInfo_string.split(sD);
+    let wibDataTypeId = wibTypeInfoFieldInfo_array[0];
+    itemObj.setWibTypeInfo(wibDataTypeId, false);
   }
 
   //return the item-object
@@ -842,12 +1110,27 @@ function isEqual(val1, val2) {
   return false;
 }
 
+function isMemberOfList(memberItemId, listItemId) {
+  var listItemObj, listMemberDataObjs, i;
+
+  listItemObj = grabItemObj(listItemId);
+  listMemberDataObjs = listItemObj.getListMemberDataObjs();
+  
+  for (i = 0; i < listMemberDataObjs.length; i++) {
+    if ( isEqual(listMemberDataObjs[i].itemId, listItemId) ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function itemNameIsAllowed(itemName) {
   var disallowedName = false;
 
   if ( isEqual(itemName, CONST_listName_homePage) ) {
     disallowedName = true;
-  } else if ( isEqual(itemName, CONST_listName_types) ) {
+  } else if ( isEqual(itemName, CONST_listName_wibTypes) ) {
     disallowedName = true;
   }
   if (disallowedName) {
@@ -868,6 +1151,8 @@ function itemObjFactory() {
   itemObj.isList = "0";
   itemObj.notes = "";
   itemObj.joinedLists_itemIds = [];
+  itemObj.isWibType = "0";
+  itemObj.isWibTypeInfoField = "0";
 
   itemObj.addItemToListMembers = function(itemIdToAdd) {
     var listMemberDataObjs, curMaxSortPosition, sortPositionToUse, newListMemberDataObj;
@@ -1054,16 +1339,12 @@ function itemObjFactory() {
   };
 
   itemObj.saveItemInfoToDatastore = function() {
-    var itemInfoString;
-
-    itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes, this.wibType)
+    var itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes, this.isWibType, this.isWibTypeInfoField)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
   };
 
   itemObj.saveJoinedListsToDatastore = function() {
-    var joinedLists_itemIds_string;
-
-    joinedLists_itemIds_string = getIdString(this.joinedLists_itemIds);
+    var joinedLists_itemIds_string = getIdString(this.joinedLists_itemIds);
     saveToDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId), joinedLists_itemIds_string);
   };
 
@@ -1081,10 +1362,22 @@ function itemObjFactory() {
     saveToDatastore(saveKeyText_itemListMembers, listMemberDataObjs_string);
   };
 
+  itemObj.saveWibTypeInfoFieldInfoToDatastore = function() {
+    var wibTypeInfoFieldInfoString = createWibTypeInfoFieldInfoString(this.wibDataTypeId);
+    saveToDatastore(getSaveKeyText_wibTypeInfoFieldInfo_ofItem(this.itemId), wibTypeInfoFieldInfoString);
+  };
+
+  itemObj.setWibTypeInfo = function(wibDataTypeId, saveToDatastore) {
+    this.wibDataTypeId = wibDataTypeId;
+    if (saveToDatastore) {
+      this.saveWibTypeInfoFieldInfoToDatastore();
+    }
+  };
+
   return itemObj;
 }
 
-function makeNewItem(wibType, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
+function makeNewItem(isWibTypeInfoField, isWibType, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
   var newItemObj, allItemIds_string, allItemIds_array, i, itemId_toCheck, maxItemId;
 
   //if not passed, get item name
@@ -1114,10 +1407,15 @@ function makeNewItem(wibType, overrideDisallowName, itemName, itemNamePrompt, di
   newItemObj.itemId = parseInt(maxItemId) + 1;
 
   //save item-info to datastore
-  if ( wibType == "1") {
-    newItemObj.wibType = "1";
+  if ( isWibTypeInfoField == "1") {
+    newItemObj.isWibTypeInfoField = "1";
   } else {
-    newItemObj.wibType = "0";
+    newItemObj.isWibTypeInfoField = "0";
+  }
+  if ( isWibType == "1") {
+    newItemObj.isWibType = "1";
+  } else {
+    newItemObj.isWibType = "0";
   }
   newItemObj.itemName = itemName;
   if ( !isBlank(displayCode) ) newItemObj.displayCode = displayCode;
@@ -1160,16 +1458,12 @@ function resetElemVal(elemId) {
   elemType = theElem.type;
 
   switch (elemType) {
-    case "text":
-      theElem.value = "";
-      break;
-
     case "checkbox":
       theElem.checked = false;
       break;
 
     default:
-      throw ("HTML element '" + elemId + "' does not have a valid input-type");
+      theElem.value = "";
   }
 }
 
@@ -1191,10 +1485,6 @@ function setElemVal(elemId, elemVal) {
   elemType = theElem.type;
 
   switch (elemType) {
-    case "text":
-      theElem.value = elemVal;
-      break;
-
     case "checkbox":
       if (elemVal == "1") {
         theElem.checked = true;
@@ -1204,7 +1494,7 @@ function setElemVal(elemId, elemVal) {
       break;
 
     default:
-      throw ("HTML element '" + elemId + "' does not have a valid input-type");
+      theElem.value = elemVal;
   }
 }
 
@@ -1220,21 +1510,33 @@ function setGrabItem(itemId) {
 
 function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_MakeNewItem").style.display = "none";
-  elem("dvPopUp_MakeNewType").style.display = "none";
+  elem("dvPopUp_MakeNewWibType").style.display = "none";
+  elem("dvPopUp_MakeNewWibTypeInfoField").style.display = "none";
 
   switch (popUpCode) {
 
     case "MakeNewItem":
       resetElemVal("ipMakeNewItem_ItemName");
-
       setElemVal("ipMakeNewItem_TopOfList", app.makeNewItem_TopOfList);
       setElemVal("ipMakeNewItem_StayListView", app.makeNewItem_StayListView);
       setElemVal("ipMakeNewItem_AddMoreItems", app.makeNewItem_AddMoreItems);
       break;
 
-    case "MakeNewType":
-      resetElemVal("ipMakeNewType_TypeName");
+    case "MakeNewWibType":
+      resetElemVal("ipMakeNewWibType_WibTypeName");
       break;
+
+    case "MakeNewWibTypeInfoField":
+      {
+        let wibDataTypesArray = getWibDataTypesAsArray(true);
+        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibTypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 12em", null, null, false);
+    
+        elem("dvMakeNewWibTypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
+      
+        resetElemVal("ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
+        resetElemVal("selMakeNewWibTypeInfoField_WibDataTypeId");
+        break;
+      }
   }
 
   elem("dvMainViewOverlay").style.display = "none";
@@ -1266,13 +1568,15 @@ function startGrabbingItems() {
   app.grabbing_itemId2 = null;
   app.grabbing_itemIdArray = [];
 
-  elem("aGrabItems").style.color = "red";
+  elem("aGrabItems1").style.color = "red";
+  elem("aGrabItems2").style.color = "red";
 
   app.grabbingEnabled = true;
 }
 
 function stopGrabbingItems() {
-  elem("aGrabItems").style.color = "";
+  elem("aGrabItems1").style.color = "";
+  elem("aGrabItems2").style.color = "";
 
   if ( !isBlank(app.grabbing_itemId1) ) {
     elem(getHtml_aItem(app.grabbing_itemId1)).style.color = "";
@@ -1633,6 +1937,10 @@ function writeHtml_GrabbingMove_ListOptions() {
 function writeHtml_Items(mainItemObj) {
   var listMemberDataObjs, html = "", i;
 
+  if ( isBlank(mainItemObj) ) {
+    mainItemObj = app.itemObj;
+  }
+
   if (mainItemObj.isList) {
     //get array of list-member-item-ids
     listMemberDataObjs = mainItemObj.getListMemberDataObjs();
@@ -1713,7 +2021,11 @@ function writeHtml_Items(mainItemObj) {
     }
 
     if (listMemberDataObjs.length == 0) {
-      html += "<tr'><td>(no items)</td></tr>";
+      if (mainItemObj.isWibType == "1") {
+        html += "<tr'><td>(no info-fields yet for this Type)</td></tr>";
+      } else {
+        html += "<tr'><td>(no items)</td></tr>";
+      }
       html += "<tr style='height: 0.85em'><td></td></tr>";
     }
 
@@ -1819,7 +2131,11 @@ function cancel_make_new_item() {
 }
 
 function cancel_make_new_type() {
-  hidePopUp("MakeNewType");
+  hidePopUp("MakeNewWibType");
+}
+
+function cancel_make_new_type_info_field() {
+  hidePopUp("MakeNewWibTypeInfoField");
 }
 
 function cancel_move() {
@@ -1993,7 +2309,7 @@ function do_make_new_item() {
     return;
   }
 
-  newItemObj = makeNewItem("0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem("0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
 
     if (topOfList == "1") {
@@ -2016,7 +2332,7 @@ function do_make_new_item() {
 function do_make_new_type() {
   var itemName, newItemObj;
 
-  itemName = getElemVal("ipMakeNewType_TypeName");
+  itemName = getElemVal("ipMakeNewWibType_WibTypeName");
 
   if ( !itemNameIsAllowed(itemName) ) {
     return;
@@ -2027,10 +2343,38 @@ function do_make_new_type() {
     return;
   }
 
-  newItemObj = makeNewItem("1", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem("0", "1", false, itemName, null, null, "1", app.itemObj.itemId);
   if ( newItemObj ) {
-    hidePopUp("MakeNewType");
-    displayPage("Types");
+    hidePopUp("MakeNewWibType");
+    displayPage("WibTypes");
+  }
+}
+
+function do_make_new_type_info_field() {
+  var itemName, wibDataTypeId, newItemObj;
+
+  itemName = getElemVal("ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
+  wibDataTypeId = getElemVal("selMakeNewWibTypeInfoField_WibDataTypeId");
+
+  if ( !itemNameIsAllowed(itemName) ) {
+    return;
+  }
+
+  if ( isBlank(itemName) ) {
+    alert("Info-Field Name is required");
+    return;
+  }
+
+  if ( isBlank(wibDataTypeId) ) {
+    alert("Data Type is required");
+    return;
+  }
+
+  newItemObj = makeNewItem("1", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  if ( newItemObj ) {
+    hidePopUp("MakeNewWibTypeInfoField");
+    newItemObj.setWibTypeInfo(wibDataTypeId, true);
+    displayPage("ViewItem");
   }
 }
 
@@ -2053,7 +2397,7 @@ function edit_storage_row(keyName) {
 
   var editedKeyValue = prompt("Change key value to:", curKeyValue);
 
-  if ( isBlank(editedKeyValue) ) {
+  if ( editedKeyValue == null ) {
     return;
   }
 
@@ -2104,20 +2448,10 @@ function make_new_item() {
   showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
 }
 
-function make_new_item_OLD() {
-  var newItemObj;
-
-  newItemObj = makeNewItem("0", false, null, null, null, "0", app.itemObj.itemId);
-  if ( newItemObj ) {
-    setAppItemObj(newItemObj);
-    displayPage("ViewItem");
-  }
-}
-
 function make_new_list() {
   var newItemObj;
 
-  newItemObj = makeNewItem("0", false, null, "new list name:", null, "1", app.homePageList_itemId);
+  newItemObj = makeNewItem("0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
   if ( newItemObj ) {
     setAppItemObj(newItemObj);
     displayPage("ViewItem");
@@ -2125,7 +2459,13 @@ function make_new_list() {
 }
 
 function make_new_type() {
-  showPopUp("MakeNewType", "ipMakeNewType_TypeName");
+  showPopUp("MakeNewWibType", "ipMakeNewWibType_WibTypeName");
+}
+
+function make_new_type_info_field() {
+  elem("spnMakeNewWibTypeInfoField_WibTypeName").innerHTML = app.itemObj.itemName;
+
+  showPopUp("MakeNewWibTypeInfoField", "ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
 }
 
 function mark_all() {
@@ -2221,7 +2561,7 @@ function show_storage() {
 }
 
 function show_types() {
-  displayPage("Types");
+  displayPage("WibTypes");
 }
 
 function toggle_app_narrow() {
@@ -2274,12 +2614,16 @@ function toggle_import_blocked() {
 
 function toggle_more_options() {
   if (app.moreOptionsEnabled) {
-    elem("dvMoreOptions").style.display = "none";
-    elem("aMoreOptions").innerHTML = "more...";
+    elem("dvMoreOptions1").style.display = "none";
+    elem("dvMoreOptions2").style.display = "none";
+    elem("aMoreOptions1").innerHTML = "more...";
+    elem("aMoreOptions2").innerHTML = "more...";
     app.moreOptionsEnabled = false;
   } else {
-    elem("dvMoreOptions").style.display = "";
-    elem("aMoreOptions").innerHTML = "less...";
+    elem("dvMoreOptions1").style.display = "";
+    elem("dvMoreOptions2").style.display = "";
+    elem("aMoreOptions1").innerHTML = "less...";
+    elem("aMoreOptions2").innerHTML = "less...";
     app.moreOptionsEnabled = true;
   }
 }
@@ -2310,7 +2654,7 @@ function unmark_item_as_done() {
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData() {
-  var homePageListItemObj, typesItemObj;
+  var homePageListItemObj, wibTypesItemObj;
 
   //set success-flag to false
   app.dataLoadedSuccessfully = false;
@@ -2318,20 +2662,20 @@ function loadAppData() {
   //if it does not exist, create a home-page-list item
   homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
   if ( !homePageListItemObj ) {
-    homePageListItemObj = makeNewItem("0", true, CONST_listName_homePage, "", "0", "1", null)
+    homePageListItemObj = makeNewItem("0", "0", true, CONST_listName_homePage, null, "0", "1", null)
   }
 
   //set home-page-list item-id
   app.homePageList_itemId = homePageListItemObj.itemId;
 
-  //if it does not exist, create a types item
-  typesItemObj = grabItemObjByName(CONST_listName_types);
-  if ( !typesItemObj ) {
-    typesItemObj = makeNewItem("0", true, CONST_listName_types, "", "0", "1", null)
+  //if it does not exist, create a wibTypes item
+  wibTypesItemObj = grabItemObjByName(CONST_listName_wibTypes);
+  if ( !wibTypesItemObj ) {
+    wibTypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibTypes, null, "0", "1", null)
   }
 
-  //set types item-id
-  app.types_itemId = typesItemObj.itemId;
+  //set wibTypes item-id
+  app.wibTypes_itemId = wibTypesItemObj.itemId;
 
   //set app current-item to home-page-list
   setAppItemObj(homePageListItemObj);
@@ -2389,6 +2733,14 @@ function upgradeStoredData() {
 
   if (parseInt(appVersion_minor) >= 53 && parseInt(storedDataVersion_minor) < 53) {
     if ( upgradeStoredData_0_53() ) {
+      // no action -- continue with function
+    } else {
+      return false;
+    }
+  }
+
+  if (parseInt(appVersion_minor) >= 54 && parseInt(storedDataVersion_minor) < 54) {
+    if ( upgradeStoredData_0_54() ) {
       // no action -- continue with function
     } else {
       return false;
@@ -2461,8 +2813,8 @@ function upgradeStoredData_0_53() {
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
   allItemIds_array = getIdArray(allItemIds_string);
  
-  //cycle through all items, add wibType field for each
-  // (wibType == "0" for all existing items, as no types have been created yet)
+  //cycle through all items, add isWibType field for each
+  // (isWibType == "0" for all existing items, as no wibTypes have been created yet)
   for (i = 0; i < allItemIds_array.length; i++) {
     curItemId = allItemIds_array[i];
     saveKeyText_curItem = getSaveKeyText_item(curItemId);
@@ -2478,6 +2830,29 @@ function upgradeStoredData_0_53() {
   return true;
 }
 
+function upgradeStoredData_0_54() {
+  var allItemIds_string, allItemIds_array, i, curItemId, saveKeyText_curItem, oldItemInfoString, newItemInfoString, storedDataVersion_string;
+
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+ 
+  //cycle through all items, add isWibTypeInfoField field for each
+  // (isWibTypeInfoField == "0" for all existing items, as no wibTypeInfoFields have been created yet)
+  for (i = 0; i < allItemIds_array.length; i++) {
+    curItemId = allItemIds_array[i];
+    saveKeyText_curItem = getSaveKeyText_item(curItemId);
+    oldItemInfoString = getFromDatastore(saveKeyText_curItem);
+    newItemInfoString = oldItemInfoString + sD + "0";
+    saveToDatastore(saveKeyText_curItem, newItemInfoString);
+  }
+
+  //update data's version-number to 0.54
+  saveToDatastore(CONST_storedDataVersion, "0.54");
+
+  //return success flag
+  return true;
+}
+
 
 ///// RUN APP-DATA-LOAD AND SHOW HOME PAGE
 
@@ -2487,6 +2862,296 @@ loadAppData();
 if ( app.dataLoadedSuccessfully ) {
   displayPage("Home");
 }
+
+
+//// SAVED FROM PREVIOUS PROJECT, MIGHT USE LATER
+
+/*
+// MODULE-LEVEL ERROR HANDLING - TOP
+try {
+
+var DIRECTION_east = "east" ;
+var DIRECTION_north = "north" ;
+var DIRECTION_south = "south" ;
+var DIRECTION_west = "west" ;
+
+var KEY_NAME_alt = "alt" ;
+var KEY_NAME_backspace = "backspace" ;
+var KEY_NAME_ctrl = "ctrl" ;
+var KEY_NAME_delete = "delete" ;
+var KEY_NAME_down_arrow = "down arrow" ;
+var KEY_NAME_end = "end" ;
+var KEY_NAME_enter = "enter" ;
+var KEY_NAME_esc = "esc" ;
+var KEY_NAME_home = "home" ;
+var KEY_NAME_left_arrow = "left arrow" ;
+var KEY_NAME_page_down = "page down" ;
+var KEY_NAME_page_up = "page up" ;
+var KEY_NAME_right_arrow = "right arrow" ;
+var KEY_NAME_shift = "shift" ;
+var KEY_NAME_spacebar = "spacebar" ;
+var KEY_NAME_tab = "tab" ;
+var KEY_NAME_up_arrow = "up arrow" ;
+
+var page_keyMonitoring = false ;
+var page_pauseKeyInput = false ;
+var page_sendKeyToCharacter = false ;
+
+var page_escKeyJsFunc = "" ;
+
+var page_curTheKeyDown = null ;
+var page_curTheKeyPress = null ;
+
+function getInputElem ( idName , width , defValue ) {
+	try {
+		var html = "<input id='" + idName + "' name='" + idName + "' type='text' class='input1' style='width: " + width + "' value='" + defValue + "'" ;
+		html += " onfocus='keysAllow()' onblur='keysBlock()'/>" ;
+		return html ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getSelectElem ( idName , includeBlank , theArray , defValue , theStyle , onChange , blankDisplay , disabled ) {
+	try {
+		var i , html = "<select id='" + idName + "' name='" + idName + "' class='input1'" ;
+		var arrayItem , id , display ;
+
+		if ( theStyle ) {
+			html += " style='" + theStyle + "'" ;
+		}
+
+		if ( onChange ) {
+			html += " onchange='javascript:void " + onChange + "'" ;
+		}
+
+		if ( disabled ) {
+			html += " disabled" ;
+		}
+
+		html += " onfocus='keysAllow()' onblur='keysBlock()'>\n" ;
+
+		if ( includeBlank ) {
+			html += "<option value=''" ;
+			if ( ! defValue ) html += " selected" ;
+				html += ">" ;
+			if ( blankDisplay ) {
+				html += blankDisplay + "</option>\n" ;
+			} else {
+				html += " </option>\n" ;
+			}
+		}
+
+		for ( i = 0  ; i < theArray.length ; i++ ) {
+			arrayItem = theArray[i] ;
+			if ( arrayItem.isRow ) {
+				id = arrayItem.id ;
+				display = arrayItem.name ;
+			} else {
+				id = arrayItem ;
+				display = arrayItem ;
+			}
+
+			html += "<option value='" + id + "'" ;
+			if ( isSame(defValue,id) ) html += " selected" ;
+			html += ">" + display + "</option>\n" ;
+		}
+
+		html += "</select>\n" ;
+
+		return html ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function processKeyDown_master ( e ) {
+	try {
+		var eventObject = window.event ? event : e ;  // distinguish between IE's explicit event object (window.event) and Firefox's implicit
+		var keyCode = eventObject.keyCode ;
+		var keyDownName = "" ;
+
+		if ( (keyCode >= 48 && keyCode <= 57) || (keyCode >= 65 && keyCode <= 90) ) {
+			keyDownName = String.fromCharCode ( keyCode ) ;
+		} else {
+			switch ( keyCode ) {
+				case 8 : keyDownName = KEY_NAME_backspace  ; break ;
+				case 9 : keyDownName = KEY_NAME_tab ; break ;
+				case 13 : keyDownName = KEY_NAME_enter ; break ;
+				case 16 : keyDownName = KEY_NAME_shift ; break ;
+				case 17 : keyDownName = KEY_NAME_ctrl  ; break ;
+				case 18 : keyDownName = KEY_NAME_alt ; break ;
+				case 27 : keyDownName = KEY_NAME_esc ; break ;
+				case 32 : keyDownName = KEY_NAME_spacebar ; break ;
+				case 33 : keyDownName = KEY_NAME_page_up ; break ;
+				case 34 : keyDownName = KEY_NAME_page_down ; break ;
+				case 35 : keyDownName = KEY_NAME_end ; break ;
+				case 36 : keyDownName = KEY_NAME_home ; break ;
+				case 37 : keyDownName = KEY_NAME_left_arrow  ; break ;
+				case 38 : keyDownName = KEY_NAME_up_arrow ; break ;
+				case 39 : keyDownName = KEY_NAME_right_arrow ; break ;
+				case 40 : keyDownName = KEY_NAME_down_arrow ; break ;
+				case 46 : keyDownName = KEY_NAME_delete ; break ;
+				default:
+					try {
+						console.log ( "keyCode: " + keyCode ) ;
+					} catch ( e_inside1 ) {
+						// no action -- error is acceptable
+					}
+			}
+		}
+
+		page_curTheKeyDown = new TheKeyDown ( keyDownName , eventObject.ctrlKey , eventObject.altKey , eventObject.shiftKey , eventObject ) ;
+
+		try {
+			processKeyDown_page ( page_curTheKeyDown ) ;
+		} catch ( e_inside2 ) {
+			// no action, error is acceptable
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function processKeyDown_page ( theKeyDown ) {
+	try {
+		var direction ;
+
+		if ( 
+		  theKeyDown.keyDownName == KEY_NAME_backspace
+		  || theKeyDown.keyDownName == KEY_NAME_spacebar
+		  || theKeyDown.keyDownName == KEY_NAME_down_arrow
+		  || theKeyDown.keyDownName == KEY_NAME_left_arrow
+		  || theKeyDown.keyDownName == KEY_NAME_right_arrow
+		  || theKeyDown.keyDownName == KEY_NAME_up_arrow
+		  || theKeyDown.keyDownName == KEY_NAME_page_down
+		  || theKeyDown.keyDownName == KEY_NAME_page_up
+		  || ( theKeyDown.keyDownName == "A" && theKeyDown.ctrl && ! showingLocalStorage )
+		) {
+			if ( ! control.allowKeys ) theKeyDown.stopEvent ( ) ;
+		}
+
+		if ( page_pauseKeyInput ) return ;
+
+		if ( screens.curScreen ) {
+			screens.curScreen.processKeyDown ( theKeyDown ) ;
+			return ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function processKeyPress_master ( e ) {
+	try {
+		var eventObject = window.event ? event : e ; // distinguish between IE's explicit event object (window.event) and Firefox's implicit
+		var keyCode = eventObject.keyCode ;
+		var charCode = eventObject.charCode ;
+		var ctrlKey = eventObject.ctrlKey ;
+		var altKey = eventObject.altKey ;
+		var shiftKey = eventObject.shiftKey ;
+		var keyPressName ;
+
+		//alert("keyCode="+keyCode+" --- charCode="+charCode+" --- ctrlKey="+ctrlKey+" --- altKey="+altKey+" --- shiftKey="+shiftKey)
+
+		if ( charCode ) {
+			keyPressName = String.fromCharCode ( charCode ) ;
+		} else {
+			switch ( keyCode ) {
+				case 8 : keyPressName = KEY_NAME_backspace  ; break ;
+				case 9 : keyPressName = KEY_NAME_tab ; break ;
+				case 13 : keyPressName = KEY_NAME_enter ; break ;
+				case 27 : keyPressName = KEY_NAME_esc ; break ;
+				case 32 : keyPressName = KEY_NAME_spacebar ; break ;
+				case 33 : keyPressName = KEY_NAME_page_up ; break ;
+				case 34 : keyPressName = KEY_NAME_page_down ; break ;
+				case 35 : keyPressName = KEY_NAME_end ; break ;
+				case 36 : keyPressName = KEY_NAME_home ; break ;
+				case 37 : keyPressName = KEY_NAME_left_arrow  ; break ;
+				case 38 : keyPressName = KEY_NAME_up_arrow ; break ;
+				case 39 : keyPressName = KEY_NAME_right_arrow ; break ;
+				case 40 : keyPressName = KEY_NAME_down_arrow ; break ;
+				case 46 : keyPressName = KEY_NAME_delete ; break ;
+				default:
+					try {
+						console.log ( "keyCode="+keyCode+" --- charCode="+charCode+" --- ctrlKey="+ctrlKey+" --- altKey="+altKey+" --- shiftKey="+shiftKey ) ;
+					} catch ( e_inside1 ) {
+						// no action -- error is acceptable
+					}
+			}
+		}
+
+		page_curTheKeyPress = new TheKeyPress ( keyPressName , ctrlKey , altKey , shiftKey ) ;
+		try {
+			processKeyPress_page ( page_curTheKeyPress ) ;
+		} catch ( e_inside2 ) {
+			// no action, error is acceptable
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function processKeyPress_page ( theKeyPress ) {
+	try {
+		if ( page_pauseKeyInput ) return ;
+
+		if ( screens.curScreen ) {
+			screens.curScreen.processKeyPress ( theKeyPress ) ;
+			return ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function startKeyMonitoring ( ) {
+	try {
+		page_keyMonitoring = true ;
+		page_sendKeyToCharacter = true ;
+		document.onkeydown = processKeyDown_master ;
+		document.onkeypress = processKeyPress_master ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function TheKeyDown ( keyDownName , ctrl , alt , shift , eventObject ) {
+	try {
+		this.keyDownName = String(keyDownName) ;
+		this.ctrl = ctrl ;
+		this.alt = alt ;
+		this.shift = shift ;
+		this.eventObject = eventObject ;
+		
+		this.stopEvent = function ( ) {
+			this.eventObject.preventDefault ( ) ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function TheKeyPress ( keyPressName , ctrlKey , altKey , shiftKey ) {
+	try {
+		this.keyPressName = keyPressName ;
+		this.ctrlKey = ctrlKey ;
+		this.altKey = altKey ;
+		this.shiftKey = shiftKey ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+
+startKeyMonitoring() ;
+
+
+// MODULE-LEVEL ERROR HANDLING - BOTTOM
+} catch ( e ) {
+	throw ( handleAndReturnError ( e ) ) ;
+}
+*/
 
 
 </script>
