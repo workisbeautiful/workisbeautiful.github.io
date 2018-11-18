@@ -377,7 +377,7 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" style="width: 11em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1TextForCheckbox">add to top of list:</div>
     <div class="grid1Cell gc1Checkbox gc1CheckboxFirst"><input id="ipMakeNewItem_TopOfList" type="checkbox" /></div>
@@ -432,10 +432,10 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Text"><span id="spnMakeNewWibTypeInfoField_WibTypeName"></span></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Info-Field Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 11em" /></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Data Type:</div>
-    <div class="grid1Cell gc1Select" id="dvMakeNewWibTypeInfoField_WibDataTypeId"><select id="selMakeNewWibTypeInfoField_WibDataTypeId" style="width: 12em"></select></div>
+    <div class="grid1Cell gc1Select"><span id="spnMakeNewWibTypeInfoField_WibDataTypeId"></span></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
@@ -450,7 +450,7 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.55";
+const CONST_appVersion = "0.56";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -1596,9 +1596,9 @@ function showPopUp(popUpCode, popUpFocusElem) {
     case "MakeNewWibTypeInfoField":
       {
         let wibDataTypesArray = getWibDataTypesAsArray(true);
-        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibTypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 12em", null, null, false);
+        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibTypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 11em", null, null, false);
     
-        elem("dvMakeNewWibTypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
+        elem("spnMakeNewWibTypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
       
         resetElemVal("ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
         resetElemVal("selMakeNewWibTypeInfoField_WibDataTypeId");
