@@ -21,34 +21,47 @@ input {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; paddi
 select {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 2px; padding-right: 2px}
 table {}
 
-.grid1 {display: grid; grid-template-columns: auto auto}
-.grid1Cell {border: 1px red solid}
-.gc1Header {grid-column: 1/3; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
-.gc1VertSpace1 {grid-column: 1/3; padding-bottom: 1em}
-.gc1VertSpace2 {grid-column: 1/3; padding-bottom: 1em}
-.gc1TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
-.gc1TextLeftForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
-.gc1TextRight {white-space: nowrap}
-.gc1Input {}
-.gc1Select {}
-.gc1Checkbox {padding-top: 0px /* vertical alignment with left-hand cell was slightly above/beloweven on PC vs. Android, so leaving at 0 for now */}
+.grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
+.grid1Cell {/* border: 1px solid red */}
+.gc1Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
+.gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
+.gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
+.gc1Text {white-space: nowrap; padding-right: 0.8em; padding-top: 3px; text-align: right}
+.gc1TextForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
+.gc1Input {grid-column: 2/4}
+.gc1Select {grid-column: 2/4}
+.gc1Checkbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
 .gc1CheckboxFirst {padding-right: 4em}
-.gc1Footer {grid-column: 1/3; text-align: center}
+.gc1Footer {grid-column: 1/4; text-align: center}
 
-.grid2 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
+.grid2 {display: inline-grid; grid-template-columns: auto auto}
 .grid2Cell {/* border: 1px red solid */}
-.gc2Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
-.gc2VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
-.gc2VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
-.gc2Text {white-space: nowrap; padding-right: 0.8em; padding-top: 3px; text-align: right}
-.gc2TextForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
-.gc2Input {grid-column: 2/4}
-.gc2Select {grid-column: 2/4}
-.gc2Checkbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
+.gc2Header {grid-column: 1/3; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: left}
+.gc2VertSpace1 {grid-column: 1/3; padding-bottom: 0.6em}
+.gc2VertSpace2 {grid-column: 1/3; padding-bottom: 0.6em}
+.gc2TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
+.gc2TextLeftForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
+.gc2TextRight {white-space: nowrap}
+.gc2Input {}
+.gc2Select {}
+.gc2Checkbox {padding-top: 0px /* vertical alignment with left-hand cell was slightly above/beloweven on PC vs. Android, so leaving at 0 for now */}
 .gc2CheckboxFirst {padding-right: 4em}
-.gc2Footer {grid-column: 1/4; text-align: center}
+.gc2Footer {grid-column: 1/3; text-align: left}
 
 .green {color: #00CC66}
+
+
+
+
+input.timeX (background-color: yellow}
+/*
+input.timeX (width: 2em; padding-top: 2px; text-align: center}
+*/
+
+
+
+
+
 </style>
 
 <title>wib</title>
@@ -264,14 +277,9 @@ table {}
     <div id="dvViewItem_Notes"></div>
     <div style="height: 0.2em"></div>
     <div>
-      <a href="javascript:void edit_notes()"><nowrap>edit notes</nowrap></a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_notes()"><nowrap>delete notes</nowrap></a>
+      <a style="white-space: nowrap" href="javascript:void edit_notes()">edit notes</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
     </div>
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
   </div>
   <div id="dvViewItem_WibTypes" style="display: none">
     <div style="height: 0.95em"></div>
@@ -289,9 +297,11 @@ table {}
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 0.95em"></div>
-    <div class="grid1">
-      <div class="grid1Cell gc1TextLeft">Data Type:</div>
-      <div class="grid1Cell gc1TextRight"><span id="spn_ViewItem_WibTypeInfoFieldInfo_WibDataType"></span></div>
+    <div class="grid2">
+      <div class="grid2Cell gc2Header">Info Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
+      <div class="grid2Cell gc2VertSpace1"></div>
+      <div class="grid2Cell gc2TextLeft">Data Type:</div>
+      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibTypeInfoFieldInfo_WibDataType"></span></div>
     </div>
   </div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
@@ -363,52 +373,71 @@ table {}
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
 
-  <div class="grid2" id="dvPopUp_MakeNewItem" style="display: none">
-    <div class="grid2Cell gc2Header"><b>Make New Item</b></div>
-    <div class="grid2Cell gc2VertSpace1"></div>
-    <div class="grid2Cell gc2Text">Item Name:</div>
-    <div class="grid2Cell gc2Input"><input id="ipMakeNewItem_ItemName" style="width: 12em" /></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2TextForCheckbox">add to top of list:</div>
-    <div class="grid2Cell gc2Checkbox gc2CheckboxFirst"><input id="ipMakeNewItem_TopOfList" style="" type="checkbox" /></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2TextForCheckbox">remain on list view:</div>
-    <div class="grid2Cell gc2Checkbox"><input id="ipMakeNewItem_StayListView" style="" type="checkbox" /></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2TextForCheckbox">add additional items:</div>
-    <div class="grid2Cell gc2Checkbox"><input id="ipMakeNewItem_AddMoreItems" style="" type="checkbox" /></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2Footer" style="">
+  <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none">
+    <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1TextForCheckbox">add to top of list:</div>
+    <div class="grid1Cell gc1Checkbox gc1CheckboxFirst"><input id="ipMakeNewItem_TopOfList" type="checkbox" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1TextForCheckbox">remain on list view:</div>
+    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_StayListView" type="checkbox" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1TextForCheckbox">add additional items:</div>
+    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_AddMoreItems" type="checkbox" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1TextForCheckbox">do time tracking:</div>
+    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_DoTimeTracking" onclick="doCheckboxClickAction('ipMakeNewItem_DoTimeTracking')" type="checkbox" /></div>
+    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Y / M / D:</div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipMakeNewItem_Year" style="width: 4em" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" style="width: 2em" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Day" style="width: 2em" />
+    </div>
+    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Time:</div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipMakeNewItem_Hour" class="timeX" style="width: 2em" />
+      : <input id="ipMakeNewItem_Minute" style="width: 2em; text-align: center" />
+    </div>
+    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
+    <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" style="width: 3em" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
     </div>
   </div>
 
-  <div class="grid2" id="dvPopUp_MakeNewWibType" style="display: none">
-    <div class="grid2Cell gc2Header" style="color: red"><b>Make New Type</b></div>
-    <div class="grid2Cell gc2VertSpace1"></div>
-    <div class="grid2Cell gc2Text">Type Name:</div>
-    <div class="grid2Cell gc2Input"><input id="ipMakeNewWibType_WibTypeName" style="width: 12em" /></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2Footer" style="">
+  <div class="grid1" id="dvPopUp_MakeNewWibType" style="display: none">
+    <div class="grid1Cell gc1Header" style="color: red"><b>Make New Type</b></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text">Type Name:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibType_WibTypeName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type()">cancel</a>
     </div>
   </div>
 
-  <div class="grid2" id="dvPopUp_MakeNewWibTypeInfoField" style="display: none">
-    <div class="grid2Cell gc2Header" style="color: red"><b>Make New Info-Field</b></div>
-    <div class="grid2Cell gc2VertSpace1"></div>
-    <div class="grid2Cell gc2Text">Type Name:</div>
-    <div class="grid2Cell gc2Text"><span id="spnMakeNewWibTypeInfoField_WibTypeName"></span></div>
-    <div class="grid2Cell gc2VertSpace1"></div>
-    <div class="grid2Cell gc2Text">Info-Field Name:</div>
-    <div class="grid2Cell gc2Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 12em" /></div>
-    <div class="grid2Cell gc2VertSpace1"></div>
-    <div class="grid2Cell gc2Text">Data Type:</div>
-    <div class="grid2Cell gc2Select" id="dvMakeNewWibTypeInfoField_WibDataTypeId"><select id="selMakeNewWibTypeInfoField_WibDataTypeId" style="width: 12em"></select></div>
-    <div class="grid2Cell gc2VertSpace2"></div>
-    <div class="grid2Cell gc2Footer" style="">
+  <div class="grid1" id="dvPopUp_MakeNewWibTypeInfoField" style="display: none">
+    <div class="grid1Cell gc1Header" style="color: red"><b>Make New Info-Field</b></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text">Type Name:</div>
+    <div class="grid1Cell gc1Text"><span id="spnMakeNewWibTypeInfoField_WibTypeName"></span></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text">Info-Field Name:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text">Data Type:</div>
+    <div class="grid1Cell gc1Select" id="dvMakeNewWibTypeInfoField_WibDataTypeId"><select id="selMakeNewWibTypeInfoField_WibDataTypeId" style="width: 12em"></select></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type_info_field()">cancel</a>
     </div>
@@ -421,7 +450,7 @@ table {}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.54";
+const CONST_appVersion = "0.55";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -459,6 +488,42 @@ function activateItem(itemId) {
   elem(getHtml_trActivated(itemId)).style.display = "" ;
   elem(getHtml_tblReorderChoices(itemId)).style.display = "";
   elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
+}
+
+function html_displayAllElementsOfClass(className) {
+  html_toggleDisplayAllElementsOfClass(className, true);
+}
+
+function html_hideAllElementsOfClass(className) {
+  html_toggleDisplayAllElementsOfClass(className, false);
+}
+
+function html_toggleDisplayAllElementsOfClass(className, doShow) {
+  var ay = document.querySelectorAll("." + className);
+  ay.forEach( function(theElem, idx) {
+    if (doShow) {
+      theElem.style.display = "";
+    } else {
+      theElem.style.display = "none";
+    }
+  } );
+}
+
+function doCheckboxClickAction(elemId) {
+  var checkboxIsChecked = false;
+  if ( elem(elemId).checked ) {
+    checkboxIsChecked = true;
+  }
+
+  switch (elemId) {
+    case "ipMakeNewItem_DoTimeTracking":
+      if (checkboxIsChecked) {
+        html_displayAllElementsOfClass("gc1Group1")
+      } else {
+        html_hideAllElementsOfClass("gc1Group1")
+      }
+      break;
+  }
 }
 
 function createItemInfoString(itemName, done, displayCode, isList, notes, isWibType, isWibTypeInfoField) {
@@ -1520,6 +1585,8 @@ function showPopUp(popUpCode, popUpFocusElem) {
       setElemVal("ipMakeNewItem_TopOfList", app.makeNewItem_TopOfList);
       setElemVal("ipMakeNewItem_StayListView", app.makeNewItem_StayListView);
       setElemVal("ipMakeNewItem_AddMoreItems", app.makeNewItem_AddMoreItems);
+
+      doCheckboxClickAction("ipMakeNewItem_DoTimeTracking");
       break;
 
     case "MakeNewWibType":
