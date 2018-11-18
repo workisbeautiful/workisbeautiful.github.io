@@ -23,7 +23,7 @@ input.ipNumeric {width: 3em; padding-left: 4px; padding-right: 4px; padding-top:
 input.ipText {padding-left: 4px; padding-right: 4px; padding-top: 1px}
 input.ipTime {width: 1.85em; padding-top: 3px; text-align: center}
 input.ipYear {width: 2.85em; padding-top: 3px; text-align: center}
-select {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
+select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
 table {}
 
 .grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
@@ -32,25 +32,24 @@ table {}
 .gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
 .gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
-.gc1TextForCheckbox {grid-column: 1/3; padding-right: 0.6em; text-align: right}
+.gc1TextForCheckbox {white-space: nowrap; padding-right: 0.6em; text-align: right}
+.gc1TextForActionCheckbox {grid-column: 1/3; padding-right: 0.6em; text-align: right}
 .gc1Input {grid-column: 2/4}
 .gc1Select {grid-column: 2/4}
-.gc1Checkbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
-.gc1CheckboxFirst {padding-right: 5em}
+.gc1Checkbox {grid-column: 2/4}
+.gc1ActionCheckbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
+.gc1ActionCheckboxFirst {padding-right: 5em}
 .gc1Footer {grid-column: 1/4; text-align: center}
 
 .grid2 {display: inline-grid; grid-template-columns: auto auto}
-.grid2Cell {/* border: 1px red solid */}
+.grid2Cell {/* border: 1px solid red */}
 .gc2Header {grid-column: 1/3; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: left}
+.gc2Header2 {grid-column: 1/3; padding-bottom: 0.4em; border-bottom: 1px gray solid; text-align: center}
 .gc2VertSpace1 {grid-column: 1/3; padding-bottom: 0.6em}
 .gc2VertSpace2 {grid-column: 1/3; padding-bottom: 0.6em}
+.gc2VertSpace3 {grid-column: 1/3; padding-bottom: 0.5em}
 .gc2TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
-.gc2TextLeftForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
 .gc2TextRight {white-space: nowrap}
-.gc2Input {padding-left: 4px; padding-right: 4px}
-.gc2Select {}
-.gc2Checkbox {padding-top: 0px /* vertical alignment with left-hand cell was slightly above/beloweven on PC vs. Android, so leaving at 0 for now */}
-.gc2CheckboxFirst {padding-right: 4em}
 .gc2Footer {grid-column: 1/3; text-align: left}
 
 .green {color: #00CC66}
@@ -74,6 +73,8 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 </head>
 
 <body>
+
+<script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
 
 <div id="dvMainViewOverlay">
 
@@ -206,7 +207,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   <div style="height:1em"></div>
 </div>
 
-<div id="dvPage_WibTypes" style="display: none">
+<div id="dvPage_Wibtypes" style="display: none">
   <div style="font-weight: bold; color: red">Types</div>
   <div style="height: 0.8em"></div>
   <div>
@@ -218,7 +219,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height: 1px; background-color: #DDDDDD"></div>
   </div>
   <div style="height: 1.4em"></div>
-    <div id="dvWibTypes_Items"></div>
+    <div id="dvWibtypes_Items"></div>
   <div style="height: 0.4em"></div>
   <div style="height: 5px; border: 2px solid #AAAAAA">
     <div style="height: 1px; background-color: #DDDDDD"></div>
@@ -257,7 +258,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <span id="spnMoveToDifferentList" style="display: none">
         <a id="aMoveToDifferentList" href="javascript:void move_to_different_list()" style="white-space: nowrap">move</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
       </span>
-      <span id="spnViewItem_ShowWibTypes">
+      <span id="spnViewItem_ShowWibtypes">
         <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
       </span>
       <a href="javascript:void return_home()" style="white-space: nowrap">home</a>
@@ -286,17 +287,19 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
     </div>
   </div>
-  <div id="dvViewItem_WibTypes" style="display: none">
+  <div id="dvViewItem_Wibtypes" style="display: none">
     <div style="height: 0.95em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 0.95em"></div>
+<!--
     <div><a href="javascript:void assign_item_to_type()" style="white-space: nowrap">assign this item to a type</a></div>
     <div style="height: 0.95em"></div>
-    <div id="dvViewItem_WibTypes_Items"></div>
+-->
+    <div id="dvViewItem_Wibtypes_WtifData"></div>
   </div>
-  <div id="dvViewItem_WibTypeInfoFieldInfo" style="display: none">
+  <div id="dvViewItem_WibtypeInfoFieldInfo" style="display: none">
     <div style="height: 0.95em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
@@ -306,7 +309,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div class="grid2Cell gc2Header">Info Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
       <div class="grid2Cell gc2VertSpace1"></div>
       <div class="grid2Cell gc2TextLeft">Data Type:</div>
-      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibTypeInfoFieldInfo_WibDataType"></span></div>
+      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
+      <div class="grid2Cell gc2VertSpace2"></div>
+      <div class="grid2Cell gc2TextLeft">Required:</div>
+      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
     </div>
   </div>
   <div id="dvViewItem_ListMembers_No" style="display: none">
@@ -384,17 +390,17 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText" style="width: 10em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1TextForCheckbox">add to top of list:</div>
-    <div class="grid1Cell gc1Checkbox gc1CheckboxFirst"><input id="ipMakeNewItem_TopOfList" type="checkbox" /></div>
+    <div class="grid1Cell gc1TextForActionCheckbox">add to top of list:</div>
+    <div class="grid1Cell gc1ActionCheckbox gc1ActionCheckboxFirst"><input id="ckMakeNewItem_TopOfList" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1TextForCheckbox">remain on list view:</div>
-    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_StayListView" type="checkbox" /></div>
+    <div class="grid1Cell gc1TextForActionCheckbox">remain on list view:</div>
+    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_StayListView" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1TextForCheckbox">add additional items:</div>
-    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_AddMoreItems" type="checkbox" /></div>
+    <div class="grid1Cell gc1TextForActionCheckbox">add additional items:</div>
+    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_AddMoreItems" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1TextForCheckbox">do time tracking:</div>
-    <div class="grid1Cell gc1Checkbox"><input id="ipMakeNewItem_DoTimeTracking" onclick="doCheckboxClickAction('ipMakeNewItem_DoTimeTracking')" type="checkbox" /></div>
+    <div class="grid1Cell gc1TextForActionCheckbox">do time tracking:</div>
+    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_TimeTracking" onclick="doCheckboxClickAction('ckMakeNewItem_TimeTracking')" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Y / M / D:</div>
     <div class="grid1Cell gc1Input gc1Group1">
@@ -418,11 +424,11 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
-  <div class="grid1" id="dvPopUp_MakeNewWibType" style="display: none">
+  <div class="grid1" id="dvPopUp_MakeNewWibtype" style="display: none">
     <div class="grid1Cell gc1Header" style="color: red"><b>Make New Type</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibType_WibTypeName" class="ipText" style="width: 12em" /></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtype_WibtypeName" class="ipText" style="width: 10em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
@@ -430,17 +436,20 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
-  <div class="grid1" id="dvPopUp_MakeNewWibTypeInfoField" style="display: none">
+  <div class="grid1" id="dvPopUp_MakeNewWibtypeInfoField" style="display: none">
     <div class="grid1Cell gc1Header" style="color: red"><b>Make New Info-Field</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1Text"><span id="spnMakeNewWibTypeInfoField_WibTypeName"></span></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text"><span id="spnMakeNewWibtypeInfoField_WibtypeName"></span></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Text">Info-Field Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibTypeInfoField_WibTypeInfoFieldName" style="width: 10em" /></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtypeInfoField_WibtypeInfoFieldName" style="width: 10em" /></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Text">Data Type:</div>
-    <div class="grid1Cell gc1Select"><span id="spnMakeNewWibTypeInfoField_WibDataTypeId"></span></div>
+    <div class="grid1Cell gc1Select"><span id="spnMakeNewWibtypeInfoField_WibDataTypeId"></span></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1TextForCheckbox">Required:</div>
+    <div class="grid1Cell gc1Checkbox"><input id="ckMakeNewWibtypeInfoField_Required" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
@@ -455,19 +464,23 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.58";
+const CONST_appVersion = "0.59";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
 const CONST_listName_homePage = "home_page_list";
-const CONST_listName_wibTypes = "types";
+const CONST_listName_wibtypes = "types";
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
 const CONST_storedDataVersion = "stored_data_version";
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
+const CONST_wibDataType_numeric_name = "numeric";
+const CONST_wibDataType_numeric_id = 4;
 const CONST_wibDataType_text_name = "text";
 const CONST_wibDataType_text_id = 1;
+const CONST_wibDataType_timeOfDay_name = "time of day";
+const CONST_wibDataType_timeOfDay_id = 3;
 
 const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
@@ -481,9 +494,13 @@ app.grabbingEnabled = false;
 app.makeNewItem_TopOfList = "0";
 app.makeNewItem_StayListView = "1";
 app.makeNewItem_AddMoreItems = "0";
+app.makeNewItem_TimeTracking = "0";
 app.moreOptionsEnabled = false;
 app.reorderEnabled = false;
 app.reorderItemId = null;
+app.timeTrackingDefault_year = null;
+app.timeTrackingDefault_month = null;
+app.timeTrackingDefault_day = null;
 
 
 ///// REGULAR FUNCTIONS
@@ -495,23 +512,15 @@ function activateItem(itemId) {
   elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
 }
 
-function html_displayAllElementsOfClass(className) {
-  html_toggleDisplayAllElementsOfClass(className, true);
-}
+function appDateTimeFactory() {
+  var appDateTime = {};
 
-function html_hideAllElementsOfClass(className) {
-  html_toggleDisplayAllElementsOfClass(className, false);
-}
+  appDateTime.getText = function() {
+    var text = this.yyyy + this.mm + this.dd + this.hh + this.nn + this.ss + this.ms;
+    return text;
+  };
 
-function html_toggleDisplayAllElementsOfClass(className, doShow) {
-  var ay = document.querySelectorAll("." + className);
-  ay.forEach( function(theElem, idx) {
-    if (doShow) {
-      theElem.style.display = "";
-    } else {
-      theElem.style.display = "none";
-    }
-  } );
+  return appDateTime;
 }
 
 function doCheckboxClickAction(elemId) {
@@ -521,7 +530,7 @@ function doCheckboxClickAction(elemId) {
   }
 
   switch (elemId) {
-    case "ipMakeNewItem_DoTimeTracking":
+    case "ckMakeNewItem_TimeTracking":
       if (checkboxIsChecked) {
         html_displayAllElementsOfClass("gc1Group1")
         elem("ipMakeNewItem_Year").focus();
@@ -532,7 +541,17 @@ function doCheckboxClickAction(elemId) {
   }
 }
 
-function createItemInfoString(itemName, done, displayCode, isList, notes, isWibType, isWibTypeInfoField) {
+function doesValArrayHaveElem(theArray, valToMatch) {
+  for (let i = 0; i < theArray.length; i++) {
+    if (isEqual(theArray[i], valToMatch) ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function createItemInfoString(itemName, done, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
   var itemInfoString = itemName + sD;
 
   if ( isBlank(done) ) {
@@ -567,14 +586,14 @@ function createItemInfoString(itemName, done, displayCode, isList, notes, isWibT
   }
 
   itemInfoString = itemInfoString + sD;
-  if (isWibType == "1") {
+  if (isWibtype == "1") {
     itemInfoString += "1";
   } else {
     itemInfoString += "0";
   }
 
   itemInfoString = itemInfoString + sD;
-  if (isWibTypeInfoField == "1") {
+  if (isWibtypeInfoField == "1") {
     itemInfoString += "1";
   } else {
     itemInfoString += "0";
@@ -592,8 +611,38 @@ function createListMemberDataObj(itemId, sortPosition) {
   return curListMemberDataObj;
 }
 
-function createWibTypeInfoFieldInfoString(wibDataTypeId) {
-  var itemInfoString = wibDataTypeId;
+function createWtifDataObj(wibtypeItemId, wtifItemId, theData) {
+  //NOTE:
+  //  don't need the itemId of the item whose data is being held here
+  //  -> this wtif-data-object will be stored in an array property of that item
+  //      (see "itemIdAssignedToTheWibtype" in function ".saveToDatastore" below)
+
+  var wtifDataObj = {};
+
+  wtifDataObj.wibtypeItemId = wibtypeItemId;
+  wtifDataObj.wtifItemId = wtifItemId;
+  wtifDataObj.theData = theData;
+
+  wtifDataObj.saveToDatastore = function(itemIdAssignedToTheWibtype) {
+    //declaring new variables, because:
+    //  accidentally using wtifItemId or theData
+    //  (instead of this.theData or this.wtifItemId)
+    //  would not throw an error even with "use strict"
+    //  (because the former variables are used/available in the parent function)
+    let theData_toSave = this.theData;
+    let wtifItemId_toSave = this.wtifItemId;
+
+    //NOTE: "itemIdAssignedToTheWibtype" is the item whose wtif-data is being stored
+    var saveKeyText_wtifData = getSaveKeyText_wtifData(itemIdAssignedToTheWibtype, wtifItemId_toSave);
+
+    saveToDatastore(saveKeyText_wtifData, theData_toSave);
+  };
+
+  return wtifDataObj;
+}
+
+function createWibtypeInfoFieldInfoString(wibDataTypeId, required) {
+  var itemInfoString = wibDataTypeId + sD + required;
   return itemInfoString;
 }
 
@@ -611,18 +660,20 @@ function deleteFromDatastore(itemKey) {
 }
 
 function deleteItem(itemIdToDelete) {
-  var itemObjToDelete, returnValue, successBoolean = false;
+  var itemObjToDelete, returnValue;
 
   itemObjToDelete = grabItemObj(itemIdToDelete);
 
   returnValue = itemObjToDelete.doDeletion() ;
-
-  if ( ! isBlank(returnValue) && ! returnValue === false ) {
-    successBoolean = true;
+  if ( isBlank(returnValue) ) {
+    return false;
+  } else if (returnValue == false) {
+    return false;
+  } else {
     setAppItemObj(grabItemObj(returnValue));
   }
 
-  return successBoolean;
+  return true;
 }
 
 function disableGrabbing() {
@@ -639,7 +690,7 @@ function displayPage(pageName) {
   elem("dvPage_GrabbingMove").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
-  elem("dvPage_WibTypes").style.display = "none";
+  elem("dvPage_Wibtypes").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "inline-grid";
@@ -674,26 +725,26 @@ function displayPage(pageName) {
       elem("dvHome_Items").innerHTML = writeHtml_Items();
       break;
 
-    case "WibTypes":
-      setAppItemObj(grabItemObj(app.wibTypes_itemId));
-      elem("dvWibTypes_Items").innerHTML = writeHtml_Items();
+    case "Wibtypes":
+      setAppItemObj(grabItemObj(app.wibtypes_itemId));
+      elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
       break;
 
     case "ViewItem":
       {
-        let i, hasDisplayedLists = false, displayListItemObj,  hasConnectedItems = false, hasWibTypes = false;
+        let i, hasDisplayedLists = false, displayListItemObj,  hasConnectedItems = false;
 
-        if (app.itemObj.isWibType == "1") {
+        if (app.itemObj.isWibtype == "1") {
           elem("dvItemName").innerHTML = "<div style='color: red'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
         } else {
           elem("dvItemName").innerHTML = app.itemObj.itemName;
         }
 
-        //TO-DO: display multiple list names, if this item is a member of 2+
+        //TO-DO2: display multiple list names, if this item is a member of 2+
         
         elem("dvListNameForItem").innerHTML = "";
 
-        if (app.itemObj.isWibType == "0") {
+        if (app.itemObj.isWibtype == "0") {
           for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
             let curItemObjForLoop = grabItemObj(app.itemObj.joinedLists_itemIds[0])
 
@@ -704,7 +755,7 @@ function displayPage(pageName) {
               app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
 
               displayListItemObj = curItemObjForLoop;
-              if (displayListItemObj.isWibType == "1") {
+              if (displayListItemObj.isWibtype == "1") {
                 elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: red'><b>info-field for type:</b></span>&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
               } else {
                 elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
@@ -726,20 +777,20 @@ function displayPage(pageName) {
           elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>";
         }
 
-        if (app.itemObj.isWibType == "1") {
+        if (app.itemObj.isWibtype == "1") {
           elem("spnMoveToDifferentList").style.display = "none";
-          elem("spnViewItem_ShowWibTypes").style.display = "";
+          elem("spnViewItem_ShowWibtypes").style.display = "";
           elem("spnViewItem_Delete").style.display = "none";
-        } else if (app.itemObj.isWibTypeInfoField == "1") {
+        } else if (app.itemObj.isWibtypeInfoField == "1") {
           elem("spnMoveToDifferentList").style.display = "none";
-          elem("spnViewItem_ShowWibTypes").style.display = "none";
+          elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_Delete").style.display = "none";
         } else {
-          elem("spnViewItem_ShowWibTypes").style.display = "none";
+          elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_Delete").style.display = "";
         }
 
-        if (app.itemObj.isWibType == "1" || app.itemObj.isWibTypeInfoField == "1") {
+        if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
           elem("spnPage_ViewItem_NotDone").style.display = "none";
           elem("spnPage_ViewItem_Done").style.display = "none";
         } else if (app.itemObj.done == "0") {
@@ -760,25 +811,22 @@ function displayPage(pageName) {
           elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
         }
 
-        if (app.itemObj.isWibType == "1" || app.itemObj.isWibTypeInfoField == "1") {
-          elem("dvViewItem_WibTypes").style.display = "none";
+        if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
+          elem("dvViewItem_Wibtypes").style.display = "none";
         } else {
-          elem("dvViewItem_WibTypes").style.display = "";
-          if (hasWibTypes) {
-            elem("dvViewItem_WibTypes_Items").innerHTML = "(types would go here)";
-          } else {
-            elem("dvViewItem_WibTypes_Items").innerHTML = "types: <i>none</i>";
-          }
+          elem("dvViewItem_Wibtypes").style.display = "";
+          elem("dvViewItem_Wibtypes_WtifData").innerHTML = writeHtml_WtifData(); 
         }
 
-        if (app.itemObj.isWibTypeInfoField == "1") {
-          elem("dvViewItem_WibTypeInfoFieldInfo").style.display = "";
-          elem("spn_ViewItem_WibTypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(app.itemObj.wibDataTypeId);
+        if (app.itemObj.isWibtypeInfoField == "1") {
+          elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "";
+          elem("spn_ViewItem_WibtypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(app.itemObj.wibDataTypeId);
+          elem("spn_ViewItem_WibtypeInfoFieldInfo_Required").innerHTML = getBooleanFieldTextDisplay(app.itemObj.required);
         } else {
-          elem("dvViewItem_WibTypeInfoFieldInfo").style.display = "none";
+          elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "none";
         }
 
-        if (app.itemObj.isWibType == "1") {
+        if (app.itemObj.isWibtype == "1") {
           elem("dvViewItem_ListMembers_Yes").style.display = "";
           elem("dvViewItem_ListMembers_No").style.display = "none";
           elem("spnViewItem_MakeNewItem1").style.display = "none";
@@ -788,7 +836,7 @@ function displayPage(pageName) {
           elem("spnViewItem_More1").style.display = "none";
           elem("spnViewItem_More2").style.display = "none";
           elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_Items();
-        } else if (app.itemObj.isWibTypeInfoField == "1") {
+        } else if (app.itemObj.isWibtypeInfoField == "1") {
           elem("dvViewItem_ListMembers_No").style.display = "none";
           elem("dvViewItem_ListMembers_Yes").style.display = "none";
           elem("dvViewItem_ListMembers_Items").innerHTML = "";
@@ -822,6 +870,59 @@ function elem(elemId) {
   return document.getElementById(elemId);
 }
 
+function getAppDateTime_fromJSDateTime(jsDateTime) {
+  var yyyy = jsDateTime.getFullYear();
+  var m = jsDateTime.getMonth() + 1; //January is 0
+  var d = jsDateTime.getDate();
+  var h = jsDateTime.getHours();
+  var n = jsDateTime.getMinutes();
+  var s = jsDateTime.getSeconds();
+  var msOriginal = jsDateTime.getMilliseconds();
+
+  if (m < 10) mm = "0" + m
+  if (d < 10) dd = "0" + d
+  if (h < 10) hh = "0" + h
+  if (n < 10) nn = "0" + n
+  if (s < 10) ss = "0" + s
+
+  if (msOriginal < 100) {
+    ms = "0" + msOriginal
+  } else if (msOriginal < 10) {
+    ms = "00" + msOriginal;
+  }
+
+  var appDateTime = appDateTimeFactory();
+
+  appDateTime.yyyy = yyyy;
+  appDateTime.m = m;
+  appDateTime.mm = mm;
+  appDateTime.d = d;
+  appDateTime.dd = dd;
+  appDateTime.h = h;
+  appDateTime.hh = hh;
+  appDateTime.n = n;
+  appDateTime.nn = nn;
+  appDateTime.s = s;
+  appDateTime.ss = ss;
+  appDateTime.msOriginal = msOriginal;
+  appDateTime.ms = ms;
+
+  return appDateTime;
+}
+
+function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
+  if ( booleanFieldZeroOrOne == "1" ) {
+    return "yes";
+  } else{
+    return "no";
+  }
+}
+
+function getCurAppDateTime() {
+  var curAppDateTime = getAppDateTime_fromJSDateTime( new Date() );
+  return curAppDateTime;
+}
+
 function getElemVal(elemId) {
   var theElem, elemType, elemVal;
 
@@ -835,7 +936,6 @@ function getElemVal(elemId) {
       } else {
         elemVal = "0";
       }
-      //console.log("getElemVal(), elemId="+elemId+", elemType="+elemType+", elemVal="+elemVal)
       break;
 
     default:
@@ -843,6 +943,39 @@ function getElemVal(elemId) {
   }
 
   return elemVal;
+}
+
+function getElemFromObjArray(theArray, propName, propValToMatch) {
+//console.log(theArray.length, propName, propValToMatch)
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem[propName], propValToMatch) ) {
+      returnValue = true;
+    }
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return null;
+  } else {
+    return revisedArray[0];
+  }
+}
+
+function getElemFromValArray(theArray, valToMatch) {
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem, valToMatch) ) {
+      returnValue = true;
+    }
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return "";
+  } else {
+    return revisedArray[0];
+  }
 }
 
 function getFromDatastore(itemKey) {
@@ -933,29 +1066,16 @@ function getObjArrayAsString(theArray, propName1, propName2) {
   return str;
 }
 
-function getObjArrayWithoutElem(theArray, propName, propValueToExclude) {
+function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
   var revisedArray;
 
-  revisedArray = theArray.filter(function (arrayElem) {
+  revisedArray = theArray.filter( (arrayElem) => {
     var returnValue = true;
-    if ( isEqual(arrayElem[propName], propValueToExclude) ) {
+    if ( isEqual(arrayElem[propName], propValToExclude) ) {
       returnValue = false;
     }
     return returnValue;
   });
-
-  return revisedArray;
-}
-
-function getObjArrayWithoutElem_old(theArray, propNameToMatch, propValueToMatch) {
-  var i, curArrayElem, revisedArray = [];
-
-  for (i = 0; i < theArray.length; i++) {
-    curArrayElem = theArray[i];
-    if ( !isEqual(curArrayElem[propNameToMatch], propValueToMatch) ) {
-      revisedArray.push(curArrayElem);
-    }
-  }
 
   return revisedArray;
 }
@@ -972,8 +1092,16 @@ function getSaveKeyText_listMembers_ofItem(itemId) {
   return "iLM_" + itemId;
 }
 
-function getSaveKeyText_wibTypeInfoFieldInfo_ofItem(itemId) {
+function getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemId) {
   return "iWTIFI_" + itemId;
+}
+
+function getSaveKeyText_wibtypeAssignments_toItem(itemId) {
+  return "iWTAs_" + itemId;
+}
+
+function getSaveKeyText_wtifData(itemIdAssignedToTheWibtype, wtifItemId) {
+  return "i" + itemIdAssignedToTheWibtype + "_wtif" + wtifItemId;
 }
 
 function getSelectArrayElem(optionId, optionDisplay) {
@@ -993,7 +1121,7 @@ function getSelectArrayElem(optionId, optionDisplay) {
 function getValArrayWithoutElem(theArray, valToExclude) {
   var revisedArray;
 
-  revisedArray = theArray.filter(function (arrayElem) {
+  revisedArray = theArray.filter( (arrayElem) => {
     var returnValue = true;
     if ( isEqual(arrayElem, valToExclude) ) {
       returnValue = false;
@@ -1010,6 +1138,10 @@ function getWibDataTypeNameFromId(wibDataTypeId) {
       return CONST_wibDataType_text_name;
     case parseInt(CONST_wibDataType_dateTime_id):
       return CONST_wibDataType_dateTime_name;
+    case parseInt(CONST_wibDataType_timeOfDay_id):
+      return CONST_wibDataType_timeOfDay_name;
+    case parseInt(CONST_wibDataType_numeric_id):
+      return CONST_wibDataType_numeric_name;
   }
 }
 
@@ -1027,6 +1159,18 @@ function getWibDataTypesAsArray() {
   anObj = getSelectArrayElem(CONST_wibDataType_dateTime_id, CONST_wibDataType_dateTime_name);
   anObj.wibDataTypeId = CONST_wibDataType_dateTime_id;
   anObj.wibDataTypeName = CONST_wibDataType_dateTime_name;
+  theArray.push(anObj);
+
+  //WibDataType = "time of day"
+  anObj = getSelectArrayElem(CONST_wibDataType_timeOfDay_id, CONST_wibDataType_timeOfDay_name);
+  anObj.wibDataTypeId = CONST_wibDataType_timeOfDay_id;
+  anObj.wibDataTypeName = CONST_wibDataType_timeOfDay_name;
+  theArray.push(anObj);
+
+  //WibDataType = "numeric"
+  anObj = getSelectArrayElem(CONST_wibDataType_numeric_id, CONST_wibDataType_numeric_name);
+  anObj.wibDataTypeId = CONST_wibDataType_numeric_id;
+  anObj.wibDataTypeName = CONST_wibDataType_numeric_name;
   theArray.push(anObj);
 
   return theArray;
@@ -1053,7 +1197,7 @@ function goToGrabbingMove() {
 }
 
 function grabItemObj(itemId) {
-  var saveKeyText_item, itemObj, itemInfoString, itemDataArray;
+  var i, saveKeyText_item, itemObj, itemInfoString, itemDataArray;
 
   //get the item-data-string from the datastore
   saveKeyText_item = getSaveKeyText_item(itemId);
@@ -1075,23 +1219,58 @@ function grabItemObj(itemId) {
   itemObj.displayCode = itemDataArray[2];
   itemObj.isList = itemDataArray[3];
   itemObj.notes = itemDataArray[4];
-  itemObj.isWibType = itemDataArray[5];
-  itemObj.isWibTypeInfoField = itemDataArray[6];
+  itemObj.isWibtype = itemDataArray[5];
+  itemObj.isWibtypeInfoField = itemDataArray[6];
 
-  //set joined-lists array, if any
-  if (itemObj.isList) {
-    let saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
-    let joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
-    itemObj.joinedLists_itemIds = getIdArray(joinedLists_itemIds_string);
-  }
+  //set joined-lists array, if any exist for this item
+  let saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
+  let joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
+  itemObj.joinedLists_itemIds = getIdArray(joinedLists_itemIds_string);
 
-  //if this is a wib-type-info-field, set wibTypeInfo for this item-object
-  if (itemObj.isWibTypeInfoField == "1") {
-    let saveKeyText_wibTypeInfoFieldInfo_ofItem = getSaveKeyText_wibTypeInfoFieldInfo_ofItem(itemObj.itemId);
-    let wibTypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibTypeInfoFieldInfo_ofItem);
-    let wibTypeInfoFieldInfo_array = wibTypeInfoFieldInfo_string.split(sD);
-    let wibDataTypeId = wibTypeInfoFieldInfo_array[0];
-    itemObj.setWibTypeInfo(wibDataTypeId, false);
+  //set wibtype-assignments array, if any exist for this item
+  let saveKeyText_wibtypeAssignments_toItem = getSaveKeyText_wibtypeAssignments_toItem(itemObj.itemId);
+  let assignedWibtypes_itemIds_string = getFromDatastore(saveKeyText_wibtypeAssignments_toItem);
+  itemObj.assignedWibtypes_itemIds = getIdArray(assignedWibtypes_itemIds_string);
+
+  //set data-from-wibtype-assignment-info-fields, if any
+  // loop through any wibtype-itemIds that are assigned to this item-we-are-creating
+  itemObj.assignedWibtypes_itemIds.forEach( (current_assignedWibtype_itemId) => {
+
+    //get the item-object for the current wib-type-itemId in the outer loop
+    let currentWibType_itemObj = grabItemObj(current_assignedWibtype_itemId);
+
+    //get the list-member-itemIds for the outer-loop-wib-type's item-object
+    let currentWibType_listMemberItemIds = currentWibType_itemObj.getListMemberItemIds();
+
+    //loop through the list-member-itemIds
+    currentWibType_listMemberItemIds.forEach( (currentListMemberItemId_ofTheCurrentWibType) => {
+
+      //we are now in an inner loop, of the list-member-data-itemIds for the wib-type from the outer loop
+      //
+      //each list-member-data-itemId is for a wibType-info-field
+      // (the variable is "currentListMemberItemId_ofTheCurrentWibType" in this inner loop)
+
+      //get the wtif-related-data from datastore for this item-we-are-creating
+      let saveKeyText_wtifData = getSaveKeyText_wtifData(itemObj.itemId, currentListMemberItemId_ofTheCurrentWibType)
+      let wtifData = getFromDatastore(saveKeyText_wtifData);
+
+      //create and fill the wtif-data-object that holds the wtif-data for this item-we-are-creating
+      let wtifDataObj = createWtifDataObj(currentWibType_itemObj, currentListMemberItemId_ofTheCurrentWibType, wtifData);
+
+      //push tye wtif-data-object to the associated array-property of this item-we-are-creating
+      itemObj.wtifDataObjs.push(wtifDataObj);
+
+    } );
+  } );
+
+  //if this is a wib-type-info-field, set wibtypeInfo for this item-object
+  if (itemObj.isWibtypeInfoField == "1") {
+    let saveKeyText_wibtypeInfoFieldInfo_ofItem = getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemObj.itemId);
+    let wibtypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibtypeInfoFieldInfo_ofItem);
+    let wibtypeInfoFieldInfo_array = wibtypeInfoFieldInfo_string.split(sD);
+    let wibDataTypeId = wibtypeInfoFieldInfo_array[0];
+    let required = wibtypeInfoFieldInfo_array[1];
+    itemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, false);
   }
 
   //return the item-object
@@ -1120,6 +1299,25 @@ function hidePopUp(popUpCode) {
   elem("dvMainViewOverlay").style.display = "";
   elem("dvPopUp").style.display = "none";
   elem("dvPopUp_" + popUpCode).style.display = "none";
+}
+
+function html_displayAllElementsOfClass(className) {
+  html_toggleDisplayAllElementsOfClass(className, true);
+}
+
+function html_hideAllElementsOfClass(className) {
+  html_toggleDisplayAllElementsOfClass(className, false);
+}
+
+function html_toggleDisplayAllElementsOfClass(className, doShow) {
+  var ay = document.querySelectorAll("." + className);
+  ay.forEach( (theElem, idx) => {
+    if (doShow) {
+      theElem.style.display = "";
+    } else {
+      theElem.style.display = "none";
+    }
+  } );
 }
 
 function importBackupText(textToImport) {
@@ -1196,12 +1394,36 @@ function isMemberOfList(memberItemId, listItemId) {
   return false;
 }
 
+function isNumeric(val) {
+  if ( isBlank(val) ) return false;
+  return val == val * 1;
+}
+
+function isValidDate(yyyy, mm, dd) {
+  return moment(yyyy + "-" + mm + "-" + dd).isValid();
+}
+
+function isValidTime(hh, nn) {
+  if ( !isNumeric(hh) || !isNumeric(nn) ) {
+    return false;
+  }
+
+  if ( parseInt(hh) < 0 || parseInt(hh) > 23 || parseInt(nn) < 0 || parseInt(nn) > 59 ) {
+    return false;
+  }
+
+  return true;
+}
+
 function itemNameIsAllowed(itemName) {
   var disallowedName = false;
 
   if ( isEqual(itemName, CONST_listName_homePage) ) {
     disallowedName = true;
-  } else if ( isEqual(itemName, CONST_listName_wibTypes) ) {
+  } else if ( isEqual(itemName, CONST_listName_wibtypes) ) {
+    disallowedName = true;
+  } else if ( itemName == "Time Tracking" ) {
+    //TO-DO2: handle this differently
     disallowedName = true;
   }
   if (disallowedName) {
@@ -1222,8 +1444,10 @@ function itemObjFactory() {
   itemObj.isList = "0";
   itemObj.notes = "";
   itemObj.joinedLists_itemIds = [];
-  itemObj.isWibType = "0";
-  itemObj.isWibTypeInfoField = "0";
+  itemObj.isWibtype = "0";
+  itemObj.isWibtypeInfoField = "0";
+  itemObj.assignedWibtypes_itemIds = [];
+  itemObj.wtifDataObjs = [];
 
   itemObj.addItemToListMembers = function(itemIdToAdd) {
     var listMemberDataObjs, curMaxSortPosition, sortPositionToUse, newListMemberDataObj;
@@ -1247,7 +1471,24 @@ function itemObjFactory() {
     this.saveListMembersToDatastore(listMemberDataObjs);
   };
 
-  itemObj.changeItem = function(itemName, done, displayCode, isList, notes) {
+  itemObj.assignToWibtype = function(wibtypeItemIdToAssign) {
+    var i
+
+    //confirm that this item is not already assigned to the wibtype
+    if ( doesValArrayHaveElem(this.assignedWibtypes_itemIds, wibtypeItemIdToAssign) ) {
+      return false;
+    }
+    
+    //add the new wibtype's itemId to this list's array of wibtype-assignments
+   this.assignedWibtypes_itemIds.push(wibtypeItemIdToAssign);
+
+    //save this item's wibtype-assignments to datastore
+    this.saveWibtypeAssignmentsToDatastore();
+
+    //TO-DO2: something about grabbing info-field-data-objects?
+  };
+
+  itemObj.changeItemInfo = function(itemName, done, displayCode, isList, notes) {
     if ( !isBlank(itemName) ) this.itemName = itemName;
     if ( !isBlank(done) ) this.done = done;
     if ( !isBlank(displayCode) ) this.displayCode = displayCode;
@@ -1255,6 +1496,20 @@ function itemObjFactory() {
     if ( notes !== null ) this.notes = notes;
     this.saveItemInfoToDatastore();
     return true;
+  };
+
+  itemObj.changeWtifData = function(wibtypeItemId, wtifItemId, theData) {
+    if ( isBlank(wibtypeItemId) ){
+      let wtifItemObj = grabItemObj(wtifItemId);
+
+      if (wtifItemObj.joinedLists_itemIds.length > 1) {
+        throw("ERROR: Could not save data, " + wtifItemObj.itemName + " is on more than one list, can't determine Type's item-id\n\n(wtifItemId=" + wtifItemId);
+      }
+
+      wibtypeItemId = wtifItemObj.joinedLists_itemIds[0];
+    }
+
+    return this.setDataFromWtif(wibtypeItemId, wtifItemId, theData, true);
   };
 
   itemObj.doDeletion = function() {
@@ -1267,6 +1522,18 @@ function itemObjFactory() {
         return false;
       }
     }
+
+    //delete assigned-wibtypes and wtif-data for this item
+    this.assignedWibtypes_itemIds.forEach( (assignedWibtypes_itemId) => {
+      deleteFromDatastore(getSaveKeyText_wibtypeAssignments_toItem(this.itemId));
+
+      let assignedWibtypes_itemObj = grabItemObj(assignedWibtypes_itemId);
+      let wtifItemIds = assignedWibtypes_itemObj.getListMemberItemIds()
+
+      wtifItemIds.forEach( (wtifItemId) => {
+        deleteFromDatastore(getSaveKeyText_wtifData(this.itemId, wtifItemId));
+      } );
+    } );
 
     //remove from joined-lists
     for (i = 0; i < this.joinedLists_itemIds.length; i++) {
@@ -1321,6 +1588,26 @@ function itemObjFactory() {
     return listMemberDataObjs;
   };
 
+  itemObj.getListMemberItemIds = function() {
+    var saveKeyText_listMembers_ofItem, listMembers_string, listMembers_array, i, listMemberItemIds = [];
+
+    saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
+    listMembers_string = getFromDatastore(saveKeyText_listMembers_ofItem);
+    listMembers_array = getIdArray(listMembers_string);
+
+    for (i = 0; i < listMembers_array.length; i = i + 2) {
+      listMemberItemIds.push(listMembers_array[i]);
+    }
+
+    return listMemberItemIds;
+  };
+
+  itemObj.getWtifData = function(wtifItemId) {
+    for (let i; i < this.wtifDataObjs.length; i++ ) {
+      
+    }
+  };
+
   itemObj.hasListMembers = function() {
     var saveKeyText_listMembers_ofItem, listMembers_string;
 
@@ -1337,6 +1624,7 @@ function itemObjFactory() {
   };
 
   itemObj.joinList = function(listToJoin_itemId) {
+    //TO-DO2: need to handle attempt to join list that this item is already a member of
     var listToJoin_itemObj;
 
     //grab item-object for the list-to-join
@@ -1390,11 +1678,11 @@ function itemObjFactory() {
       
       if (markDirectionIsDone) {
         if (curItemObj.done == "0") {
-          curItemObj.changeItem(null, "1", null, null, null);
+          curItemObj.changeItemInfo(null, "1", null, null, null);
         }
       } else {
         if (curItemObj.done == "1") {
-          curItemObj.changeItem(null, "0", null, null, null);
+          curItemObj.changeItemInfo(null, "0", null, null, null);
         }
       }
     }
@@ -1410,7 +1698,7 @@ function itemObjFactory() {
   };
 
   itemObj.saveItemInfoToDatastore = function() {
-    var itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes, this.isWibType, this.isWibTypeInfoField)
+    var itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes, this.isWibtype, this.isWibtypeInfoField)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
   };
 
@@ -1433,22 +1721,55 @@ function itemObjFactory() {
     saveToDatastore(saveKeyText_itemListMembers, listMemberDataObjs_string);
   };
 
-  itemObj.saveWibTypeInfoFieldInfoToDatastore = function() {
-    var wibTypeInfoFieldInfoString = createWibTypeInfoFieldInfoString(this.wibDataTypeId);
-    saveToDatastore(getSaveKeyText_wibTypeInfoFieldInfo_ofItem(this.itemId), wibTypeInfoFieldInfoString);
+  itemObj.saveWibtypeAssignmentsToDatastore = function() {
+    var assignedWibtypes_itemIds_string = getIdString(this.assignedWibtypes_itemIds);
+    saveToDatastore(getSaveKeyText_wibtypeAssignments_toItem(this.itemId), assignedWibtypes_itemIds_string);
   };
 
-  itemObj.setWibTypeInfo = function(wibDataTypeId, saveToDatastore) {
-    this.wibDataTypeId = wibDataTypeId;
+  itemObj.saveWibtypeInfoFieldInfoToDatastore = function() {
+    var wibtypeInfoFieldInfoString = createWibtypeInfoFieldInfoString(this.wibDataTypeId, this.required);
+    saveToDatastore(getSaveKeyText_wibtypeInfoFieldInfo_ofItem(this.itemId), wibtypeInfoFieldInfoString);
+  };
+
+  itemObj.setDataFromWtif = function(wibtypeItemId, wtifItemId, theData, saveToDatastore) {
+    var i, wtifDataObj = null;
+
+    //check if the wtifDataObj already exists
+    for (i = 0; i < this.wtifDataObjs.length; i++) {
+      if ( isEqual(this.wtifDataObjs[i].itemId == wtifItemId ) ) {
+        wtifDataObj = this.wtifDataObjs[i].itemId;
+        break;
+      }
+    }
+
+    if ( wtifDataObj == null ) {
+      //if the wtifDataObj DOES NOT exist, create a new one
+      wtifDataObj = createWtifDataObj(wibtypeItemId, wtifItemId, theData);
+    } else {
+      //if the wtifDataObj DOES exist, update its data
+      wtifDataObj.theData = theData;
+    }
+
+    //if requested, save the wtifDataObject to the datastore
     if (saveToDatastore) {
-      this.saveWibTypeInfoFieldInfoToDatastore();
+      wtifDataObj.saveToDatastore(this.itemId);
+    }
+
+    return true;
+  };
+
+  itemObj.setWibtypeInfoFieldInfo = function(wibDataTypeId, required, saveToDatastore) {
+    this.wibDataTypeId = wibDataTypeId;
+    this.required = required;
+    if (saveToDatastore) {
+      this.saveWibtypeInfoFieldInfoToDatastore();
     }
   };
 
   return itemObj;
 }
 
-function makeNewItem(isWibTypeInfoField, isWibType, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
+function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
   var newItemObj, allItemIds_string, allItemIds_array, i, itemId_toCheck, maxItemId;
 
   //if not passed, get item name
@@ -1478,15 +1799,15 @@ function makeNewItem(isWibTypeInfoField, isWibType, overrideDisallowName, itemNa
   newItemObj.itemId = parseInt(maxItemId) + 1;
 
   //save item-info to datastore
-  if ( isWibTypeInfoField == "1") {
-    newItemObj.isWibTypeInfoField = "1";
+  if ( isWibtypeInfoField == "1") {
+    newItemObj.isWibtypeInfoField = "1";
   } else {
-    newItemObj.isWibTypeInfoField = "0";
+    newItemObj.isWibtypeInfoField = "0";
   }
-  if ( isWibType == "1") {
-    newItemObj.isWibType = "1";
+  if ( isWibtype == "1") {
+    newItemObj.isWibtype = "1";
   } else {
-    newItemObj.isWibType = "0";
+    newItemObj.isWibtype = "0";
   }
   newItemObj.itemName = itemName;
   if ( !isBlank(displayCode) ) newItemObj.displayCode = displayCode;
@@ -1581,33 +1902,54 @@ function setGrabItem(itemId) {
 
 function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_MakeNewItem").style.display = "none";
-  elem("dvPopUp_MakeNewWibType").style.display = "none";
-  elem("dvPopUp_MakeNewWibTypeInfoField").style.display = "none";
+  elem("dvPopUp_MakeNewWibtype").style.display = "none";
+  elem("dvPopUp_MakeNewWibtypeInfoField").style.display = "none";
 
   switch (popUpCode) {
 
     case "MakeNewItem":
       resetElemVal("ipMakeNewItem_ItemName");
-      setElemVal("ipMakeNewItem_TopOfList", app.makeNewItem_TopOfList);
-      setElemVal("ipMakeNewItem_StayListView", app.makeNewItem_StayListView);
-      setElemVal("ipMakeNewItem_AddMoreItems", app.makeNewItem_AddMoreItems);
+      resetElemVal("ipMakeNewItem_Year");
+      resetElemVal("ipMakeNewItem_Month");
+      resetElemVal("ipMakeNewItem_Day");
+      resetElemVal("ipMakeNewItem_Hour");
+      resetElemVal("ipMakeNewItem_Minute");
+      resetElemVal("ipMakeNewItem_MinutesTracked");
+      setElemVal("ckMakeNewItem_TopOfList", app.makeNewItem_TopOfList);
+      setElemVal("ckMakeNewItem_StayListView", app.makeNewItem_StayListView);
+      setElemVal("ckMakeNewItem_AddMoreItems", app.makeNewItem_AddMoreItems);
+      setElemVal("ckMakeNewItem_TimeTracking", app.makeNewItem_TimeTracking);
 
-      doCheckboxClickAction("ipMakeNewItem_DoTimeTracking");
+      doCheckboxClickAction("ckMakeNewItem_TimeTracking");
+
+      if (app.makeNewItem_TimeTracking == "1") {
+        if ( isBlank(app.timeTrackingDefault_year) || isBlank(app.timeTrackingDefault_month) || isBlank(app.timeTrackingDefault_day) ) {
+          let curAppDateTime = getCurAppDateTime();
+          elem("ipMakeNewItem_Year").value = curAppDateTime.yyyy;
+          elem("ipMakeNewItem_Month").value = curAppDateTime.m;
+          elem("ipMakeNewItem_Day").value = curAppDateTime.d;
+        } else {
+          if ( !isBlank(app.timeTrackingDefault_year) ) elem("ipMakeNewItem_Year").value = app.timeTrackingDefault_year;
+          if ( !isBlank(app.timeTrackingDefault_month) ) elem("ipMakeNewItem_Month").value = app.timeTrackingDefault_month;
+          if ( !isBlank(app.timeTrackingDefault_day) ) elem("ipMakeNewItem_Day").value = app.timeTrackingDefault_day;
+        }
+      }
       break;
 
-    case "MakeNewWibType":
-      resetElemVal("ipMakeNewWibType_WibTypeName");
+    case "MakeNewWibtype":
+      resetElemVal("ipMakeNewWibtype_WibtypeName");
       break;
 
-    case "MakeNewWibTypeInfoField":
+    case "MakeNewWibtypeInfoField":
       {
         let wibDataTypesArray = getWibDataTypesAsArray(true);
-        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibTypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
+        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibtypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
     
-        elem("spnMakeNewWibTypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
+        elem("spnMakeNewWibtypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
       
-        resetElemVal("ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
-        resetElemVal("selMakeNewWibTypeInfoField_WibDataTypeId");
+        resetElemVal("ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
+        resetElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
+        resetElemVal("ckMakeNewWibtypeInfoField_Required");
         break;
       }
   }
@@ -1753,7 +2095,6 @@ function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, mo
       if (requestedNewIndex < 0) requestedNewIndex = 0;
       if (requestedNewIndex >= list_memberDataObjs.length) requestedNewIndex = list_memberDataObjs.length - 1;
 
-//da("requestedNewIndex="+requestedNewIndex)
       //check if the item-being-walked is already at the requested new index
       curSortIndex = i;
       if ( parseInt(curSortIndex) == parseInt(requestedNewIndex) ) {
@@ -1770,7 +2111,7 @@ function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, mo
         } else {
           curSortIndex = parseInt(curSortIndex) + 1;
         }
-//da("curSortIndex="+curSortIndex) 
+
         //grab the item-object for the item that our walk has brought us to
         memberItemDataObj_toSwapWith = list_memberDataObjs[curSortIndex];
 
@@ -1795,7 +2136,6 @@ function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, mo
 
       //if we moved at least one spot, save the member-data-objects for the the list
       if (movedAtLeastOneSpot) {
-//da("ready to save list changes\n\n"+getObjArrayAsString(list_memberDataObjs,"itemId","sortPosition"))
         listItemObj.saveListMembersToDatastore(list_memberDataObjs);
       }
 
@@ -2094,7 +2434,7 @@ function writeHtml_Items(mainItemObj) {
     }
 
     if (listMemberDataObjs.length == 0) {
-      if (mainItemObj.isWibType == "1") {
+      if (mainItemObj.isWibtype == "1") {
         html += "<tr'><td>(no info-fields yet for this Type)</td></tr>";
       } else {
         html += "<tr'><td>(no items)</td></tr>";
@@ -2104,6 +2444,55 @@ function writeHtml_Items(mainItemObj) {
 
     html += "</table>\n";
   }
+
+//elem("taDev1").value = html;
+  return html;
+}
+
+function writeHtml_WtifData() {
+  var wibtypeItemIds, html = "", i;
+
+  html += "<div class='grid2'>\n";
+
+  for (i = 0; i < app.itemObj.assignedWibtypes_itemIds.length; i++) {
+    let wibtypeItemId = app.itemObj.assignedWibtypes_itemIds[i];
+    let wibTypeItemObj = grabItemObj(wibtypeItemId);
+
+    if (i > 0) {
+      html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+    }
+    html += "<div class='grid2Cell gc2Header2'>" + wibTypeItemObj.itemName + "&nbsp;&nbsp;</div>\n";
+    html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+
+    let wtifs_listMemberDataObjs = wibTypeItemObj.getListMemberDataObjs();
+
+    for (let j = 0; j < wtifs_listMemberDataObjs.length; j++) {
+      let wtif_listMemberDataObj = wtifs_listMemberDataObjs[j];
+      let wtif_itemObj = grabItemObj(wtif_listMemberDataObj.itemId);
+
+      let wtifDataObj = getElemFromObjArray(app.itemObj.wtifDataObjs, "wtifItemId", wtif_itemObj.itemId);
+      let dataDisplay = "(blank)";
+
+      if ( wtifDataObj !== null ) {
+        dataDisplay = wtifDataObj.theData;
+        if ( isBlank(dataDisplay) ) {
+          dataDisplay = "(blank)";
+        }
+      }
+
+      if (j > 0) {
+        html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+      }
+      html += "<div class='grid2Cell gc2TextLeft'>" + wtif_itemObj.itemName + ":</div>\n";
+      html += "<div class='grid2Cell gc2TextRight'>" + dataDisplay + "</div>\n";
+    }
+  }
+
+  if (app.itemObj.assignedWibtypes_itemIds == 0) {
+    html += "<div class='grid2Cell gc2Footer'>types: <i>none</i></div>\n";
+  }
+
+  html += "</div>\n";
 
 //elem("taDev1").value = html;
   return html;
@@ -2177,7 +2566,7 @@ function writeStorage() {
 function add_notes() {
   var newNotes = prompt("Notes:", "");
   if ( isBlank(newNotes) ) return;
-  app.itemObj.changeItem(null, null, null, null, newNotes);
+  app.itemObj.changeItemInfo(null, null, null, null, newNotes);
   goToItemView(null, true);
 }
 
@@ -2204,11 +2593,11 @@ function cancel_make_new_item() {
 }
 
 function cancel_make_new_type() {
-  hidePopUp("MakeNewWibType");
+  hidePopUp("MakeNewWibtype");
 }
 
 function cancel_make_new_type_info_field() {
-  hidePopUp("MakeNewWibTypeInfoField");
+  hidePopUp("MakeNewWibtypeInfoField");
 }
 
 function cancel_move() {
@@ -2347,7 +2736,7 @@ function delete_item() {
 
 function delete_notes() {
   if ( confirm("Delete all Notes for this item?\n\nItem Name: " + app.itemObj.itemName + "\n\nNotes: " + app.itemObj.notes) ) {
-    app.itemObj.changeItem(null, null, null, null, "");
+    app.itemObj.changeItemInfo(null, null, null, null, "");
     goToItemView(null, true);
   }
 }
@@ -2360,26 +2749,58 @@ function delete_storage_row(keyName) {
 }
 
 function do_make_new_item() {
-  var itemName, topOfList, stayListView, addMoreItems, newItemObj;
+  var itemName, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, newItemObj;
 
   itemName = getElemVal("ipMakeNewItem_ItemName");
 
   if ( !itemNameIsAllowed(itemName) ) {
+    elem("ipMakeNewItem_ItemName").focus();
     return;
   }
 
-  topOfList = getElemVal("ipMakeNewItem_TopOfList");
+  topOfList = getElemVal("ckMakeNewItem_TopOfList");
   app.makeNewItem_TopOfList = topOfList;
 
-  stayListView = getElemVal("ipMakeNewItem_StayListView");
+  stayListView = getElemVal("ckMakeNewItem_StayListView");
   app.makeNewItem_StayListView = stayListView;
 
-  addMoreItems = getElemVal("ipMakeNewItem_AddMoreItems");
+  addMoreItems = getElemVal("ckMakeNewItem_AddMoreItems");
   app.makeNewItem_AddMoreItems = addMoreItems;
+
+  timeTracking = getElemVal("ckMakeNewItem_TimeTracking");
+  app.makeNewItem_TimeTracking = timeTracking;
 
   if ( isBlank(itemName) ) {
     alert("Item Name is required");
+    elem().focus();
     return;
+  }
+
+  if (timeTracking == "1") {
+    //TO-DO2: validate Time Tracking data via standardized wtif-info-field process
+    ttYear = getElemVal("ipMakeNewItem_Year");
+    if ( isBlank(ttYear) ) { alert("Year is required for Time Tracking"); elem("ipMakeNewItem_Year").focus(); return; }
+
+    ttMonth = getElemVal("ipMakeNewItem_Month");
+    if ( isBlank(ttMonth) ) { alert("Month is required for Time Tracking"); elem("ipMakeNewItem_Month").focus(); return; }
+
+    ttDay = getElemVal("ipMakeNewItem_Day");
+    if ( isBlank(ttDay) ) { alert("Day is required for Time Tracking"); elem("ipMakeNewItem_Day").focus(); return; }
+
+    if ( !isValidDate(ttYear, ttMonth, ttDay) ) { alert("The Year/Month/Day entered is not a valid date"); elem("ipMakeNewItem_Year").focus(); return; }
+
+    ttHour = getElemVal("ipMakeNewItem_Hour");
+    if ( isBlank(ttHour) ) { alert("Hour is required for Time Tracking"); elem("ipMakeNewItem_Hour").focus(); return; }
+
+    ttMinute = getElemVal("ipMakeNewItem_Minute");
+    if ( isBlank(ttMinute) ) { alert("Minute is required for Time Tracking"); elem("ipMakeNewItem_Minute").focus(); return; }
+
+    if ( !isValidTime(ttHour, ttMinute) ) { alert("The Hour/Minute entered is not a valid time"); elem("ipMakeNewItem_Hour").focus(); return; }
+
+    ttMinutesTracked = getElemVal("ipMakeNewItem_MinutesTracked");
+    if ( isBlank(ttMinutesTracked) ) { alert("MinutesTracked is required for Time Tracking"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
+    if ( !isNumeric(ttMinutesTracked) ) { alert("MinutesTracked requires a numeric value"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
+    if ( parseInt(ttMinutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
   }
 
   newItemObj = makeNewItem("0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
@@ -2391,6 +2812,34 @@ function do_make_new_item() {
 
     if (stayListView == "0" && addMoreItems == "0") {
       setAppItemObj(newItemObj);
+    }
+
+    if (timeTracking == "1") {
+      app.timeTrackingDefault_year = ttYear;
+      app.timeTrackingDefault_month = ttMonth;
+      app.timeTrackingDefault_day = ttDay;
+
+      let ttItemObj = grabItemObjByName("Time Tracking");
+      newItemObj.assignToWibtype(ttItemObj.itemId);
+
+      let ttWtifItemIds = ttItemObj.getListMemberItemIds();
+
+      ttWtifItemIds.forEach( (ttWtifItemId) => {
+        let ttWtifItemObj = grabItemObj(ttWtifItemId);
+        let wtifData = "";
+        switch (ttWtifItemObj.itemName) {
+          case "Y / M / D":
+            wtifData = ttYear + "-" + ttMonth + "-" + ttDay;
+            break;
+          case "Time":
+            wtifData = ttHour + ":" + ttMinute;
+            break;
+          case "Mins Tracked":
+            wtifData = ttMinutesTracked;
+            break;
+        }
+        newItemObj.changeWtifData(ttItemObj.itemId, ttWtifItemObj.itemId, wtifData)
+      } );
     }
 
     hidePopUp("MakeNewItem");
@@ -2405,7 +2854,7 @@ function do_make_new_item() {
 function do_make_new_type() {
   var itemName, newItemObj;
 
-  itemName = getElemVal("ipMakeNewWibType_WibTypeName");
+  itemName = getElemVal("ipMakeNewWibtype_WibtypeName");
 
   if ( !itemNameIsAllowed(itemName) ) {
     return;
@@ -2418,16 +2867,17 @@ function do_make_new_type() {
 
   newItemObj = makeNewItem("0", "1", false, itemName, null, null, "1", app.itemObj.itemId);
   if ( newItemObj ) {
-    hidePopUp("MakeNewWibType");
-    displayPage("WibTypes");
+    hidePopUp("MakeNewWibtype");
+    displayPage("Wibtypes");
   }
 }
 
 function do_make_new_type_info_field() {
-  var itemName, wibDataTypeId, newItemObj;
+  var itemName, wibDataTypeId, required, newItemObj;
 
-  itemName = getElemVal("ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
-  wibDataTypeId = getElemVal("selMakeNewWibTypeInfoField_WibDataTypeId");
+  itemName = getElemVal("ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
+  wibDataTypeId = getElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
+  required = getElemVal("ckMakeNewWibtypeInfoField_Required");
 
   if ( !itemNameIsAllowed(itemName) ) {
     return;
@@ -2445,8 +2895,8 @@ function do_make_new_type_info_field() {
 
   newItemObj = makeNewItem("1", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
-    hidePopUp("MakeNewWibTypeInfoField");
-    newItemObj.setWibTypeInfo(wibDataTypeId, true);
+    hidePopUp("MakeNewWibtypeInfoField");
+    newItemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, true);
     displayPage("ViewItem");
   }
 }
@@ -2457,7 +2907,7 @@ function edit_notes() {
     alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
     return;
   }
-  app.itemObj.changeItem(null, null, null, null, editedNotes);
+  app.itemObj.changeItemInfo(null, null, null, null, editedNotes);
   goToItemView(null, true);
 }
 
@@ -2503,7 +2953,7 @@ function import_backup_text() {
 }
 
 function mark_item_as_done() {
-  app.itemObj.changeItem(null, "1", null, null, null);
+  app.itemObj.changeItemInfo(null, "1", null, null, null);
 
   if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
     goToItemView(null, false);
@@ -2532,13 +2982,13 @@ function make_new_list() {
 }
 
 function make_new_type() {
-  showPopUp("MakeNewWibType", "ipMakeNewWibType_WibTypeName");
+  showPopUp("MakeNewWibtype", "ipMakeNewWibtype_WibtypeName");
 }
 
 function make_new_type_info_field() {
-  elem("spnMakeNewWibTypeInfoField_WibTypeName").innerHTML = app.itemObj.itemName;
+  elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
 
-  showPopUp("MakeNewWibTypeInfoField", "ipMakeNewWibTypeInfoField_WibTypeInfoFieldName");
+  showPopUp("MakeNewWibtypeInfoField", "ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
 }
 
 function mark_all() {
@@ -2611,7 +3061,7 @@ function move_to_different_list() {
 function rename_item() {
   var editedItemName = prompt("Change item name to:", app.itemObj.itemName);
   if ( isBlank(editedItemName)) return;
-  app.itemObj.changeItem(editedItemName, null, null, null, null);
+  app.itemObj.changeItemInfo(editedItemName, null, null, null, null);
   goToItemView(null, true);
 }
 
@@ -2634,7 +3084,7 @@ function show_storage() {
 }
 
 function show_types() {
-  displayPage("WibTypes");
+  displayPage("Wibtypes");
 }
 
 function toggle_app_narrow() {
@@ -2719,7 +3169,7 @@ function toggle_reorder() {
 }
 
 function unmark_item_as_done() {
-  app.itemObj.changeItem(null, "0", null, null, null);
+  app.itemObj.changeItemInfo(null, "0", null, null, null);
   goToItemView(null, true);
 }
 
@@ -2727,7 +3177,7 @@ function unmark_item_as_done() {
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData() {
-  var homePageListItemObj, wibTypesItemObj;
+  var homePageListItemObj, wibtypesItemObj;
 
   //set success-flag to false
   app.dataLoadedSuccessfully = false;
@@ -2741,14 +3191,14 @@ function loadAppData() {
   //set home-page-list item-id
   app.homePageList_itemId = homePageListItemObj.itemId;
 
-  //if it does not exist, create a wibTypes item
-  wibTypesItemObj = grabItemObjByName(CONST_listName_wibTypes);
-  if ( !wibTypesItemObj ) {
-    wibTypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibTypes, null, "0", "1", null)
+  //if it does not exist, create a wibtypes item
+  wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
+  if ( !wibtypesItemObj ) {
+    wibtypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
   }
 
-  //set wibTypes item-id
-  app.wibTypes_itemId = wibTypesItemObj.itemId;
+  //set wibtypes item-id
+  app.wibtypes_itemId = wibtypesItemObj.itemId;
 
   //set app current-item to home-page-list
   setAppItemObj(homePageListItemObj);
@@ -2886,8 +3336,8 @@ function upgradeStoredData_0_53() {
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
   allItemIds_array = getIdArray(allItemIds_string);
  
-  //cycle through all items, add isWibType field for each
-  // (isWibType == "0" for all existing items, as no wibTypes have been created yet)
+  //cycle through all items, add isWibtype field for each
+  // (isWibtype == "0" for all existing items, as no wibtypes have been created yet)
   for (i = 0; i < allItemIds_array.length; i++) {
     curItemId = allItemIds_array[i];
     saveKeyText_curItem = getSaveKeyText_item(curItemId);
@@ -2909,8 +3359,8 @@ function upgradeStoredData_0_54() {
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
   allItemIds_array = getIdArray(allItemIds_string);
  
-  //cycle through all items, add isWibTypeInfoField field for each
-  // (isWibTypeInfoField == "0" for all existing items, as no wibTypeInfoFields have been created yet)
+  //cycle through all items, add isWibtypeInfoField field for each
+  // (isWibtypeInfoField == "0" for all existing items, as no wibtypeInfoFields have been created yet)
   for (i = 0; i < allItemIds_array.length; i++) {
     curItemId = allItemIds_array[i];
     saveKeyText_curItem = getSaveKeyText_item(curItemId);
@@ -2938,15 +3388,9 @@ if ( app.dataLoadedSuccessfully ) {
 
 
 //// SAVED FROM PREVIOUS PROJECT, MIGHT USE LATER
-
 /*
 // MODULE-LEVEL ERROR HANDLING - TOP
 try {
-
-var DIRECTION_east = "east" ;
-var DIRECTION_north = "north" ;
-var DIRECTION_south = "south" ;
-var DIRECTION_west = "west" ;
 
 var KEY_NAME_alt = "alt" ;
 var KEY_NAME_backspace = "backspace" ;
@@ -2985,58 +3429,6 @@ function getInputElem ( idName , width , defValue ) {
 	}
 }
 
-function getSelectElem ( idName , includeBlank , theArray , defValue , theStyle , onChange , blankDisplay , disabled ) {
-	try {
-		var i , html = "<select id='" + idName + "' name='" + idName + "' class='input1'" ;
-		var arrayItem , id , display ;
-
-		if ( theStyle ) {
-			html += " style='" + theStyle + "'" ;
-		}
-
-		if ( onChange ) {
-			html += " onchange='javascript:void " + onChange + "'" ;
-		}
-
-		if ( disabled ) {
-			html += " disabled" ;
-		}
-
-		html += " onfocus='keysAllow()' onblur='keysBlock()'>\n" ;
-
-		if ( includeBlank ) {
-			html += "<option value=''" ;
-			if ( ! defValue ) html += " selected" ;
-				html += ">" ;
-			if ( blankDisplay ) {
-				html += blankDisplay + "</option>\n" ;
-			} else {
-				html += " </option>\n" ;
-			}
-		}
-
-		for ( i = 0  ; i < theArray.length ; i++ ) {
-			arrayItem = theArray[i] ;
-			if ( arrayItem.isRow ) {
-				id = arrayItem.id ;
-				display = arrayItem.name ;
-			} else {
-				id = arrayItem ;
-				display = arrayItem ;
-			}
-
-			html += "<option value='" + id + "'" ;
-			if ( isSame(defValue,id) ) html += " selected" ;
-			html += ">" + display + "</option>\n" ;
-		}
-
-		html += "</select>\n" ;
-
-		return html ;
-	} catch ( e ) {
-		throw ( handleAndReturnError ( e ) ) ;
-	}
-}
 
 function processKeyDown_master ( e ) {
 	try {
@@ -3225,7 +3617,6 @@ startKeyMonitoring() ;
 	throw ( handleAndReturnError ( e ) ) ;
 }
 */
-
 
 </script>
 
