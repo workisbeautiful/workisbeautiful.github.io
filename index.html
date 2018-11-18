@@ -17,8 +17,13 @@ a:active {text-decoration: none}
 
 body {font-size: 110%; font-family: Helvetica}
 div {padding: 0; margin: 0}
-input {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 2px; padding-right: 2px}
-select {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 2px; padding-right: 2px}
+input {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9}
+input.ipMonthDay {width: 1.85em; padding-top: 3px; text-align: center}
+input.ipNumeric {width: 3em; padding-left: 4px; padding-right: 4px; padding-top: 3px}
+input.ipText {padding-left: 4px; padding-right: 4px; padding-top: 1px}
+input.ipTime {width: 1.85em; padding-top: 3px; text-align: center}
+input.ipYear {width: 2.85em; padding-top: 3px; text-align: center}
+select {font-size: 100%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
 table {}
 
 .grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
@@ -26,12 +31,12 @@ table {}
 .gc1Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
 .gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
-.gc1Text {white-space: nowrap; padding-right: 0.8em; padding-top: 3px; text-align: right}
-.gc1TextForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
+.gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
+.gc1TextForCheckbox {grid-column: 1/3; padding-right: 0.6em; text-align: right}
 .gc1Input {grid-column: 2/4}
 .gc1Select {grid-column: 2/4}
 .gc1Checkbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
-.gc1CheckboxFirst {padding-right: 4em}
+.gc1CheckboxFirst {padding-right: 5em}
 .gc1Footer {grid-column: 1/4; text-align: center}
 
 .grid2 {display: inline-grid; grid-template-columns: auto auto}
@@ -42,7 +47,7 @@ table {}
 .gc2TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
 .gc2TextLeftForCheckbox {grid-column: 1/3; padding-right: 0.8em; text-align: right}
 .gc2TextRight {white-space: nowrap}
-.gc2Input {}
+.gc2Input {padding-left: 4px; padding-right: 4px}
 .gc2Select {}
 .gc2Checkbox {padding-top: 0px /* vertical alignment with left-hand cell was slightly above/beloweven on PC vs. Android, so leaving at 0 for now */}
 .gc2CheckboxFirst {padding-right: 4em}
@@ -53,9 +58,9 @@ table {}
 
 
 
-input.timeX (background-color: yellow}
 /*
-input.timeX (width: 2em; padding-top: 2px; text-align: center}
+input.ipTime {background-color: yellow}
+input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 */
 
 
@@ -377,7 +382,7 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" style="width: 10em" /></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText" style="width: 10em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1TextForCheckbox">add to top of list:</div>
     <div class="grid1Cell gc1Checkbox gc1CheckboxFirst"><input id="ipMakeNewItem_TopOfList" type="checkbox" /></div>
@@ -393,19 +398,19 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Y / M / D:</div>
     <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_Year" style="width: 4em" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" style="width: 2em" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Day" style="width: 2em" />
+      <input id="ipMakeNewItem_Year" class="ipYear" maxlength="4" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" class="ipMonthDay" maxlength="2" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Day" class="ipMonthDay" maxlength="2" />
     </div>
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Time:</div>
     <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_Hour" class="timeX" style="width: 2em" />
-      : <input id="ipMakeNewItem_Minute" style="width: 2em; text-align: center" />
+      <input id="ipMakeNewItem_Hour" class="ipTime" maxlength="2" />
+      : <input id="ipMakeNewItem_Minute" class="ipTime" maxlength="2" />
     </div>
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" style="width: 3em" /></div>
+    <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
@@ -417,7 +422,7 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Header" style="color: red"><b>Make New Type</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibType_WibTypeName" style="width: 12em" /></div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibType_WibTypeName" class="ipText" style="width: 12em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer" style="">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
@@ -450,7 +455,7 @@ input.timeX (width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.57";
+const CONST_appVersion = "0.58";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -519,6 +524,7 @@ function doCheckboxClickAction(elemId) {
     case "ipMakeNewItem_DoTimeTracking":
       if (checkboxIsChecked) {
         html_displayAllElementsOfClass("gc1Group1")
+        elem("ipMakeNewItem_Year").focus();
       } else {
         html_hideAllElementsOfClass("gc1Group1")
       }
