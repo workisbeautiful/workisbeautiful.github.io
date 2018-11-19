@@ -44,6 +44,7 @@ table {}
 .gc1ActionCheckbox {padding-top: 0px /* 2px top padding looked even on PC, but not on Android */}
 .gc1ActionCheckboxFirst {padding-right: 5em}
 .gc1Footer {grid-column: 1/4; text-align: center}
+.gc1QuickLinks {grid-column: 1/4; text-align: left}
 
 .grid2 {display: inline-grid; grid-template-columns: auto auto}
 .grid2Cell {/* border: 1px solid red */}
@@ -387,13 +388,13 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
 
-  <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none">
-    <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
-    <div class="grid1Cell gc1VertSpace3"></div>
-    <div class="grid1Cell gc1Footer">
+  <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none; padding-top: 0.3em">
+    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Make New Item</b></div>
+    <div class="grid1Cell gc1VertSpace3" style="padding-bottom: 0.3em"></div>
+    <div class="grid1Cell gc1QuickLinks">
       <a style="white-space: nowrap; font-size: 95%" href="javascript:void do_make_new_item_line()">quick line</a>
     </div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VertSpace3" style="padding-bottom: 0.1em"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText popUpMaxTextWidth" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
@@ -424,7 +425,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
     <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VertSpace2" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
@@ -511,7 +512,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.64";
+const CONST_appVersion = "0.65";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
@@ -3857,7 +3858,7 @@ if ( app.addDataLoadedSuccessfully ) {
 }
 
 
-//// SAVED FROM PREVIOUS PROJECT, MIGHT USE LATER
+//// SAVED FROM PREVIOUS PROJECTS, MIGHT USE LATER
 /*
 // MODULE-LEVEL ERROR HANDLING - TOP
 try {
@@ -4086,6 +4087,583 @@ startKeyMonitoring() ;
 } catch ( e ) {
 	throw ( handleAndReturnError ( e ) ) ;
 }
+
+
+
+///////////////
+///////////////
+
+
+function add ( startingValue , amountToAdd1 , amountToAdd2 , amountToAdd3 ) {
+	try {
+		if ( ! isNumeric(startingValue) ) startingValue = 0 ; // throw ( "add(), received invalid startingValue=" + startingValue ) ;
+		if ( ! isNumeric(amountToAdd1) ) amountToAdd1 = 0 ; // throw ( "add(), received invalid amountToAdd1=" + amountToAdd1 ) ;
+
+		var newValue = parseFloat(startingValue) + parseFloat(amountToAdd1) ;
+
+		if ( isNumeric(amountToAdd2) ) newValue = parseFloat(newValue) + parseFloat(amountToAdd2) ;
+
+		if ( isNumeric(amountToAdd3) ) newValue = parseFloat(newValue) + parseFloat(amountToAdd3) ;
+
+		return newValue ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+
+function confirmInput ( elem , valueName , isRequired , minVal , maxVal ) {
+	try {
+		var val = elem.value ;
+
+		if ( isRequired && ! val ) {
+			alert ( valueName + " is required." ) ;
+			elem.focus() ;
+			return false ;
+		}
+
+		if ( ! isNumeric(minVal) ) minVal = null ;
+		if ( ! isNumeric(maxVal) ) maxVal = null ;
+
+		if ( ( minVal || maxVal ) && val && ! isNumeric(val) ) {
+			alert ( valueName + " requires a numeric value." ) ;
+			elem.focus() ;
+			return false ;
+		}
+
+		if ( minVal && val && val < minVal ) {
+			alert ( valueName + " must be at least " + getNumberWithCommas(minVal) + "." ) ;
+			elem.focus() ;
+			return false ;
+		}
+
+		if ( maxVal && val && val > maxVal ) {
+			alert ( valueName + " must be no more than " + getNumberWithCommas(maxVal) + "." ) ;
+			elem.focus() ;
+			return false ;
+		}
+
+		return true ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getElem ( elem_OR_elemId ) {
+	try {
+		var testElemId , elem ;
+
+		testElemId = getProp ( elem_OR_elemId , "id" ) ;
+
+		if ( testElemId ) {
+			elem = elem_OR_elemId ;
+		} else {
+			elem = document.getElementById ( elem_OR_elemId ) ;
+		}
+
+		return elem ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+} ;
+
+function getElemPxAsNumber ( elemPx ) {
+	try {
+		var elemPx = String(elemPx) ;
+		var asNumber = withoutRight ( elemPx , "px" ) ;
+		return asNumber ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+} ;
+
+// this function from http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
+function getNumberWithCommas ( x ) {
+	try {
+		if ( ! x ) return 0 ;
+		
+		var y = String(x) ;
+
+		var parts = y.split(".") ;
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") ;
+
+		var z = parts.join(".") ; 
+
+		return z ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getProp ( item , propertyName ) {
+	try {
+		var propertyValue ;
+		try {
+			propertyValue = item[propertyName] ;
+		} catch ( e ) {
+		}
+		return propertyValue ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getRandomNumber ( max , min ) {
+	try {
+		if ( ! min ) min = 1 ;
+
+		max = 1 * max ;
+		min = 1 * min ;
+
+		if ( min > max ) {
+			var temp = min ;
+			min = max ;
+			max = temp ;   
+		}
+		
+		var diff = max - min ;
+		var diffPlusOne = (diff + 1) ;
+		
+		var tempRandomNum = Math.floor ( Math.random() * diffPlusOne ) ;
+
+		var finalRandomNum = (tempRandomNum + min) ;
+		return finalRandomNum ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function handleError_OLD ( squex ) {
+	try {
+		if ( ! squex.alerted ) {
+			var msg = squex.ex.fileName + "\n" ;
+			msg += "\n" ;
+			msg += "LINE: " + squex.ex.lineNumber + "\n" ;
+			msg += "COLUMN: " + squex.ex.columnNumber + "\n" ;
+			msg += "\n" ;
+			msg += ex ;
+			msg += "\n" ;
+
+			alert ( msg ) ;
+		}
+		
+		throw ( squex ) ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function isBlank ( val ) {
+	try {
+		if ( val === 0 || val === "0" ) return false ;
+		if ( ! val ) return true ;
+		return false ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function isNumeric ( val ) {
+	try {
+		if ( isBlank(val) ) return false ;
+
+		return val == val * 1 ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function isSame ( val1 , val2 ) {
+	try {
+		if ( ( val1 === 0 || val1 === "0" ) && ( val2 === 0 || val2 === "0" ) ) return true ;
+		if ( ( val1 === 0 || val1 === "0" ) && ! ( val2 === 0 || val2 === "0" ) ) return false ;
+		if ( ! ( val1 === 0 || val1 === "0" ) && ( val2 === 0 || val2 === "0" ) ) return false ;
+
+		if ( ! val1 && ! val2 ) return true ;
+
+		if ( Number ( val1 ) == Number ( val2 ) ) return true ;
+
+		if ( val1 == val2 ) return true ;
+
+		return false ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+} ;
+
+function left ( str , numChars ) {
+	try {
+		if ( typeof str !== "string" ) return null ;
+		if ( ! isNumeric(numChars) ) return null ;
+		if ( numChars < 0 ) return null ;
+		if ( isSame(numChars,0) ) return "" ;
+		if ( numChars > str.length ) return str ;
+		var theLeft = str.substr ( 0 , numChars ) ;
+		return theLeft ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function leftIs ( haystack , needle ) {
+	try {
+		if ( typeof haystack !== "string" ) return false ;
+		if ( typeof needle !== "string" ) return false ;
+
+		var lenNeedle = needle.length ;
+
+		if ( isSame(lenNeedle,0) ) {
+			if ( isSame(haystack.length,0) ) {
+				return true ;
+			} else {
+				return false ;
+			}
+		}
+
+		var haystackLeft = left ( haystack , lenNeedle ) ;
+
+		return isSame(haystackLeft,needle) ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function right ( str , numChars ) {
+	try {
+		if ( typeof str !== "string" ) return null ;
+		if ( ! isNumeric(numChars) ) return null ;
+		if ( numChars < 0 ) return null ;
+		if ( isSame(numChars,0) ) return "" ;
+		if ( numChars > str.length ) return str ;
+		return str.substr ( str.length - numChars ) ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function rightIs ( haystack , needle ) {
+	try {
+		if ( typeof haystack !== "string" ) return false ;
+		if ( typeof needle !== "string" ) return false ;
+
+		var lenNeedle = needle.length ;
+
+		if ( isSame(lenNeedle,0) ) {
+			if ( isSame(haystack.length,0) ) {
+				return true ;
+			} else {
+				return false ;
+			}
+		}
+
+		var haystackRight = right ( haystack , lenNeedle ) ;
+
+		return isSame(haystackRight,needle) ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function eval2 ( val ) {
+	return val ;
+}
+
+function runJsFuncWithArgs ( jsFunc , args ) {
+	try {
+//alert("runJsFuncWithArgs() --- jsFunc.name="+jsFunc.name)
+		if ( args ) {
+			if ( getProp ( args , "arg5" ) ) {
+				jsFunc ( eval(args.arg1) , eval(args.arg2) , eval(args.arg3) , eval(args.arg4) , eval(args.arg5) )  ;
+			} else if ( getProp ( args , "arg4" ) ) {
+				jsFunc ( eval(args.arg1) , eval(args.arg2) , eval(args.arg3) , eval(args.arg4) )  ;
+			} else if ( getProp ( args , "arg3" ) ) {
+				jsFunc ( eval(args.arg1) , eval(args.arg2) , eval(args.arg3) )  ;
+			} else if ( getProp ( args , "arg2" ) ) {
+				jsFunc ( eval(args.arg1) , eval(args.arg2) )  ;
+			} else {
+				jsFunc ( eval(args.arg1) )  ;
+			}
+		} else {
+			jsFunc() ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function setElem ( elemId , val ) {
+	try {
+		var elem = getElem(elemId) ;
+		if ( ! elem ) throw ( sqErrTxt ( "setFocusToLink() --- invalid elemId received ('" + elemId + "')" ) ) ;
+
+		if ( isBlank(val) ) val = "" ;
+
+		elem.value = val ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function setFocusToElem ( elemId , doSelect ) {
+	try {
+		var elem = getElem(elemId) ;
+		if ( ! elem ) throw ( sqErrTxt ( "setFocusToLink() --- invalid elemId received ('" + elemId + "')" ) ) ;
+
+		elem.focus() ;
+
+		if ( doSelect && elem.select ) {
+			elem.select() ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function showAllProperties ( theObj ) {
+	try {
+		var propName ;
+		for ( propName in theObj ) {
+			alert ( propName + " --- " + theObj[propName] ) ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function withoutLeft ( haystack , needle ) {
+	try {
+		if ( typeof haystack !== "string" ) return "" ;
+		if ( typeof needle !== "string" ) return haystack ;
+
+		var lenNeedle = needle.length ;
+
+		if ( isSame(lenNeedle,0) ) {
+			return haystack ;
+		}
+
+		var haystackLeft = left ( haystack , lenNeedle ) ;
+
+		if ( isSame(haystackLeft,needle) ) {
+			return haystack.substr ( lenNeedle ) ;
+		} else {
+			return haystack ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function withoutRight ( haystack , needle ) {
+	try {
+		if ( typeof haystack !== "string" ) return "" ;
+		if ( typeof needle !== "string" ) return haystack ;
+
+		var lenNeedle = needle.length ;
+
+		if ( isSame(lenNeedle,0) ) {
+			return haystack ;
+		}
+
+		var haystackRight = right ( haystack , lenNeedle ) ;
+
+		if ( isSame(haystackRight,needle) ) {
+			return haystack.substr ( 0 , haystack.length - lenNeedle ) ;
+		} else {
+			return haystack ;
+		}
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+
+// SQUONCH DATE/TIME
+
+sqDateTime = {} ;
+
+sqDateTime.getText = function ( ) {
+	try {
+		var text = this.yyyy + this.mm + this.dd + this.hh + this.nn + this.ss + this.ms ;
+		return text ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+} ;
+
+function getSqDateTime_fromText ( textOfSqDateTime ) {
+	if ( ! textOfSqDateTime ) throw ( sqErrTxt ( "getSqDateTime_fromText(), textOfSqDateTime is blank" ) ) ;
+
+	try {
+		textOfSqDateTime = String(textOfSqDateTime) ;
+
+		var yyyy = textOfSqDateTime.substr ( 0 , 4 ) ;
+		var mm = textOfSqDateTime.substr ( 4 , 2 ) ;
+		var dd = textOfSqDateTime.substr ( 6 , 2 ) ;
+		var hh = textOfSqDateTime.substr ( 8 , 2 ) ;
+		var nn = textOfSqDateTime.substr ( 10 , 2 ) ;
+		var ss = textOfSqDateTime.substr ( 12 , 2 ) ;
+		var ms = textOfSqDateTime.substr ( 14 , 3 ) ;
+
+		var sqdt = Object.create ( sqDateTime ) ;
+
+		sqdt.yyyy = yyyy ;
+		sqdt.mm = mm ;
+		sqdt.dd = dd ;
+		sqdt.hh = hh ;
+		sqdt.nn = nn ;
+		sqdt.ss = ss ;
+		sqdt.ms = ms ;
+
+		return sqdt ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getSqDateTime_fromJsDateTime ( jsDateTime ) {
+	if ( ! jsDateTime ) throw ( sqErrTxt ( "getSqDateTime_fromText(), jsDateTime is blank" ) ) ;
+
+	try {
+		var yyyy = jsDateTime.getFullYear();
+		var mm = jsDateTime.getMonth ( ) + 1 ; // January is 0
+		var dd = jsDateTime.getDate ( ) ;
+		var hh = jsDateTime.getHours ( ) ;
+		var nn = jsDateTime.getMinutes ( ) ;
+		var ss = jsDateTime.getSeconds ( ) ;
+		var ms = jsDateTime.getMilliseconds ( ) ;
+
+		if ( mm < 10 ) mm = "0" + mm
+		if ( dd < 10 ) dd = "0" + dd
+		if ( hh < 10 ) hh = "0" + hh
+		if ( nn < 10 ) nn = "0" + nn
+		if ( ss < 10 ) ss = "0" + ss
+
+		if ( ms < 100 ) {
+			ms = "0" + ms
+		} else if ( ms < 10 ) {
+			ms = "00" + ms ;
+		}
+
+		var sqdt = Object.create ( sqDateTime ) ;
+
+		sqdt.yyyy = yyyy ;
+		sqdt.mm = mm ;
+		sqdt.dd = dd ;
+		sqdt.hh = hh ;
+		sqdt.nn = nn ;
+		sqdt.ss = ss ;
+		sqdt.ms = ms ;
+
+		return sqdt ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+function getSqDateTime_now ( ) {
+	try {
+		var sqdt = getSqDateTime_fromJsDateTime ( new Date() ) ;
+		return sqdt ;
+	} catch ( e ) {
+		throw ( handleAndReturnError ( e ) ) ;
+	}
+}
+
+
+// ERROR HANDLING
+
+var Squerror = Object.create ( Error ) ;
+
+Squerror.doAlert = function ( ) {
+	var msg = "" ;
+
+	if ( this.ex ) {
+		var fileName = getProp ( this.ex , "fileName" ) ;
+		if ( fileName ) {
+			msg = fileName + "\n" ;
+			msg += "\n" ;
+		}
+
+		var lineNumber = getProp ( this.ex , "lineNumber" ) ;
+		var columnNumber = getProp ( this.ex , "columnNumber" ) ;
+		if ( lineNumber && columnNumber ) {
+			msg += "LINE: " + lineNumber + " / COLUMN: " + columnNumber + "\n" ;
+			msg += "\n" ;
+		}
+	}
+
+	msg += this.message + "\n" ;
+	msg += "\n" ;
+
+	alert ( msg ) ;
+
+	this.alerted = true ;
+} ;
+
+function createSquerrorFromException ( ex ) {
+	var squerror = Object.create ( Squerror ) ;
+
+	squerror.isSquerror = true ;
+	squerror.ex = ex ;
+
+	var message = ex ;
+	if ( ! message ) message = "" ;
+	try {
+		message = String(message) ;
+	} catch ( e ) {
+		// no action
+	}
+	squerror.message = message ;
+
+	squerror.alerted = false ;
+
+	return squerror ;
+}
+
+function createSquerrorFromText ( text ) {
+	var squerror = Object.create ( Squerror ) ;
+
+	squerror.isSquerror = true ;
+	squerror.ex = null ;
+
+	if ( ! text ) text = "" ;
+	try {
+		text = String(text) ;
+	} catch ( e ) {
+		// no action
+	}
+	squerror.message = text ;
+
+	squerror.alerted = false ;
+
+	return squerror ;
+}
+
+var sqErrTxt = createSquerrorFromText ;
+
+function handleAndReturnError ( theObj ) {
+	var newObj ;
+
+	if ( getProp ( theObj , "isSquerror" ) ) {
+		newObj = theObj ;
+	} else {
+		newObj = createSquerrorFromException ( theObj ) ;
+	}
+
+	if ( ! newObj.alerted ) {
+		newObj.doAlert() ;
+	}
+
+	return newObj ;
+}
+
+
+// MODULE-LEVEL ERROR HANDLING - BOTTOM
+} catch ( e ) {
+	throw ( handleAndReturnError ( e ) ) ;
+}
+
+
 */
 
 </script>
