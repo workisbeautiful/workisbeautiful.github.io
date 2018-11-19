@@ -29,10 +29,12 @@ table {}
 .grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
 .grid1Cell {/* border: 1px solid red */}
 .gc1Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
+.gc1Line {grid-column: 1/4; border-bottom: 1px gray solid}
 .gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace3 {grid-column: 1/4; padding-bottom: 0.5em}
 .gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
+.gc1TextRight {font-style: italic; white-space: nowrap; padding-top: 3px; text-align: left}
 .gc1TextForCheckbox {white-space: nowrap; padding-right: 0.6em; text-align: right}
 .gc1TextForActionCheckbox {grid-column: 1/3; padding-right: 0.6em; text-align: right}
 .gc1Input {grid-column: 2/4}
@@ -53,7 +55,9 @@ table {}
 .gc2TextRight {white-space: nowrap}
 .gc2Footer {grid-column: 1/3; text-align: left}
 
+.brown {color: brown}
 .green {color: #00CC66}
+.red {color: red}
 
 
 
@@ -79,7 +83,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <div id="dvMainViewOverlay">
 
-<div>
+<div id="dvAppHeader">
   <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
   &nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>dev</nowrap></span></a>
 </div>
@@ -209,7 +213,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 </div>
 
 <div id="dvPage_Wibtypes" style="display: none">
-  <div style="font-weight: bold; color: red">Types</div>
+  <div class="red" style="font-weight: bold">Types</div>
   <div style="height: 0.8em"></div>
   <div>
     <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
@@ -254,8 +258,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   <div style="height: 0.95em"></div>
   <div>
     <div>
-      <span id="spnPage_ViewItem_NotDone"><a href="javascript:void mark_item_as_done()" style="white-space: nowrap">mark done</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <span id="spnPage_ViewItem_Done"><span class="green">DONE</span>&nbsp;&nbsp;<a href="javascript:void unmark_item_as_done()" style="white-space: nowrap">unmark</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
+      <span id="spnViewItem_DoneStatusLink" style="display: none">
+        <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+      </span>
       <span id="spnMoveToDifferentList" style="display: none">
         <a id="aMoveToDifferentList" href="javascript:void move_to_different_list()" style="white-space: nowrap">move</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
       </span>
@@ -388,7 +394,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none">
     <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
     <div class="grid1Cell gc1VertSpace3"></div>
-    <div class="grid1Cell gc1Footer" style="">
+    <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap; font-size: 95%" href="javascript:void do_make_new_item_line()">quick line</a>
     </div>
     <div class="grid1Cell gc1VertSpace2"></div>
@@ -423,29 +429,29 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
     <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1Footer" style="">
+    <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
     </div>
   </div>
 
   <div class="grid1" id="dvPopUp_MakeNewWibtype" style="display: none">
-    <div class="grid1Cell gc1Header" style="color: red"><b>Make New Type</b></div>
+    <div class="grid1Cell gc1Header red"><b>Make New Type</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtype_WibtypeName" class="ipText" style="width: 10em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1Footer" style="">
+    <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type()">cancel</a>
     </div>
   </div>
 
   <div class="grid1" id="dvPopUp_MakeNewWibtypeInfoField" style="display: none">
-    <div class="grid1Cell gc1Header" style="color: red"><b>Make New Info-Field</b></div>
+    <div class="grid1Cell gc1Header red"><b>Make New Info-Field</b></div>
     <div class="grid1Cell gc1VertSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1Text"><span id="spnMakeNewWibtypeInfoField_WibtypeName"></span></div>
+    <div class="grid1Cell gc1TextRight"><span id="spnMakeNewWibtypeInfoField_WibtypeName"></span></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Text">Info-Field Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtypeInfoField_WibtypeInfoFieldName" style="width: 10em" /></div>
@@ -456,9 +462,46 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1TextForCheckbox">Required:</div>
     <div class="grid1Cell gc1Checkbox"><input id="ckMakeNewWibtypeInfoField_Required" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
-    <div class="grid1Cell gc1Footer" style="">
+    <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type_info_field()">cancel</a>
+    </div>
+  </div>
+
+  <div class="grid1" id="dvPopUp_ChangeDoneStatus" style="display: none">
+    <div class="grid1Cell gc1Header"><b>Change Done Status</b></div>
+    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1Text">List Name:</div>
+    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_mainListName"></span></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Text">Item Name:</div>
+    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_itemName"></span></div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Text">Current Status:</div>
+    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_currentStatus"></span></div>
+    <div class="grid1Cell gc1VertSpace3"></div>
+    <div class="grid1Cell gc1Line"></div>
+    <div class="grid1Cell gc1VertSpace2" id="dvChangeDoneStatus_Undone1"></div>
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Undone2">
+      <a style="white-space: nowrap" id="aChangeDoneStatus_Undone" href="javascript:void do_change_done_status('undone')"></a>
+    </div>
+    <div class="grid1Cell gc1VertSpace2" id="dvChangeDoneStatus_Done1"></div>
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Done2">
+      <a style="white-space: nowrap" id="aChangeDoneStatus_Done" href="javascript:void do_change_done_status('done')"></a>
+    </div>
+    <div class="grid1Cell gc1VertSpace2" id="dvChangeDoneStatus_Okay1"></div>
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2">
+      <a style="white-space: nowrap" id="aChangeDoneStatus_Okay" href="javascript:void do_change_done_status('okay')"></a>
+    </div>
+    <div class="grid1Cell gc1VertSpace2" id="dvChangeDoneStatus_Notice1"></div>
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2">
+      <a style="white-space: nowrap" id="aChangeDoneStatus_Notice" href="javascript:void do_change_done_status('notice')"></a>
+    </div>
+    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1Line"></div>
+    <div class="grid1Cell gc1VertSpace3"></div>
+    <div class="grid1Cell gc1Footer">
+      <a style="white-space: nowrap" href="javascript:void cancel_change_done_status()">cancel</a>
     </div>
   </div>
 
@@ -469,8 +512,19 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.60";
+const CONST_appVersion = "0.61";
+const CONST_cssClassName_brown = "brown";
+const CONST_cssClassName_green = "green";
+const CONST_cssClassName_red = "red";
 const CONST_devText1 = "devText1";
+const CONST_doneStatusCode_done = "1";
+const CONST_doneStatusCode_notice = "3";
+const CONST_doneStatusCode_okay = "2";
+const CONST_doneStatusCode_undone = "0";
+const CONST_doneStatusDisplay_done = "done";
+const CONST_doneStatusDisplay_notice = "notice";
+const CONST_doneStatusDisplay_okay = "okay";
+const CONST_doneStatusDisplay_undone = "undone";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
 const CONST_listName_homePage = "home_page_list";
@@ -501,7 +555,7 @@ app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
 app.grabbingEnabled = false;
-app.makeNewItem_TopOfList = "0";
+app.makeNewItem_TopOfList = "1";
 app.makeNewItem_StayListView = "1";
 app.makeNewItem_AddMoreItems = "0";
 app.makeNewItem_TimeTracking = "0";
@@ -543,21 +597,6 @@ function appDateTimeObjFactory() {
   };
 
   return appDateTimeObj;
-}
-
-function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
-  var ymd_inWtifStyle_array, time_inWtifStyle_array;
-
-  if ( isBlank(ymd_inWtifStyle) ) return null;
-  if ( isBlank(time_inWtifStyle) ) return null;
-
-  ymd_inWtifStyle_array = ymd_inWtifStyle.split("-");
-  if ( ymd_inWtifStyle_array.length < 1 || ymd_inWtifStyle_array.length > 3 ) return null;
-
-  time_inWtifStyle_array = time_inWtifStyle.split(":");
-  if ( time_inWtifStyle_array.length < 1 || time_inWtifStyle_array.length > 2 ) return null;
-
-  return createAppDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1]);
 }
 
 function createAppDateTimeObj1(year, month, day, hour, minute) {
@@ -613,17 +652,28 @@ function createAppDateTimeObj1(year, month, day, hour, minute) {
   return appDateTimeObj;
 }
 
-function createItemInfoString(itemName, done, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
+function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
+  var ymd_inWtifStyle_array, time_inWtifStyle_array;
+
+  if ( isBlank(ymd_inWtifStyle) ) return null;
+  if ( isBlank(time_inWtifStyle) ) return null;
+
+  ymd_inWtifStyle_array = ymd_inWtifStyle.split("-");
+  if ( ymd_inWtifStyle_array.length < 1 || ymd_inWtifStyle_array.length > 3 ) return null;
+
+  time_inWtifStyle_array = time_inWtifStyle.split(":");
+  if ( time_inWtifStyle_array.length < 1 || time_inWtifStyle_array.length > 2 ) return null;
+
+  return createAppDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1]);
+}
+
+function createItemInfoString(itemName, doneStatusCode, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
   var itemInfoString = itemName + sD;
 
-  if ( isBlank(done) ) {
-    itemInfoString += "0";
+  if ( isBlank(doneStatusCode) ) {
+    itemInfoString += CONST_doneStatusCode_undone;
   } else {
-    if ( done == "1" ) {
-      itemInfoString += "1";
-    } else {
-      itemInfoString += "0";
-    }
+    itemInfoString += doneStatusCode;
   }
 
   itemInfoString = itemInfoString + sD;
@@ -706,6 +756,38 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, theData) {
 function createWibtypeInfoFieldInfoString(wibDataTypeId, required) {
   var itemInfoString = wibDataTypeId + sD + required;
   return itemInfoString;
+}
+
+function css_addClass(elemId, classNameToAdd) {
+if (elemId == "aChangeDoneStatus_Undone") console.log("css_addClass() start, elemId=" + elemId + ", classNameToAdd=" + classNameToAdd); 
+  var theElem = elem(elemId);
+  theElem.classList.add(classNameToAdd);
+if (elemId == "aChangeDoneStatus_Undone") console.log("css_addClass() start, theElem.classList=" + theElem.classList); 
+}
+
+function css_removeAllColors(elemId) {
+  var theElem = elem(elemId);
+  theElem.classList.remove(CONST_cssClassName_brown);
+  theElem.classList.remove(CONST_cssClassName_green);
+  theElem.classList.remove(CONST_cssClassName_red);
+}
+
+function css_removeClass(elemId, classNameToRemove) {
+  var theElem = elem(elemId);
+  theElem.classList.remove(classNameToRemove);
+}
+
+function css_setElemToDoneStatusColor(elemId, doneStatusCode) {
+if (elemId == "aChangeDoneStatus_Undone") console.log("css_setElemToDoneStatusColor() start, elemId=" + elemId + ", doneStatusCode=" + doneStatusCode); 
+  var doneStatusCssClassNameColor = getDoneStatusCssClassNameColor(doneStatusCode, elemId); // TO-DO1: remove elemeId argument (dev only)
+if (elemId == "aChangeDoneStatus_Undone") console.log("css_setElemToDoneStatusColor() middle, doneStatusCssClassNameColor=" + doneStatusCssClassNameColor); 
+  css_removeAllColors(elemId);
+
+  //only add a css-class for the color, if we received a color-name back
+  // (might receive back a blank value, in order to not set the color of the html-element)
+  if ( !isBlank(doneStatusCssClassNameColor) ) {
+    css_addClass(elemId, doneStatusCssClassNameColor);
+  }
 }
 
 function da(text) {
@@ -797,7 +879,7 @@ function displayPage(pageName) {
         let i, hasDisplayedLists = false, displayListItemObj,  hasConnectedItems = false;
 
         if (app.itemObj.isWibtype == "1") {
-          elem("dvItemName").innerHTML = "<div style='color: red'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
+          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
         } else {
           elem("dvItemName").innerHTML = app.itemObj.itemName;
         }
@@ -818,7 +900,7 @@ function displayPage(pageName) {
 
               displayListItemObj = curItemObjForLoop;
               if (displayListItemObj.isWibtype == "1") {
-                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: red'><b>info-field for type:</b></span>&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
+                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span class='" + CONST_cssClassName_red +"'><b>info-field for type:</b></span>&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
               } else {
                 elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
               }
@@ -853,14 +935,24 @@ function displayPage(pageName) {
         }
 
         if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
-          elem("spnPage_ViewItem_NotDone").style.display = "none";
-          elem("spnPage_ViewItem_Done").style.display = "none";
-        } else if (app.itemObj.done == "0") {
-          elem("spnPage_ViewItem_NotDone").style.display = "";
-          elem("spnPage_ViewItem_Done").style.display = "none";
+          elem("spnViewItem_DoneStatusDisplay").style.display = "none";
+          elem("spnViewItem_DoneStatusLink").style.display = "none";
+
+        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
+          elem("spnViewItem_DoneStatusDisplay").style.display = "none";
+          elem("spnViewItem_DoneStatusLink").style.display = "";
+
+          elem("aViewItem_DoneStatusLink").style.display = "";
+          elem("aViewItem_DoneStatusLink").innerHTML = "mark done";
+
         } else {
-          elem("spnPage_ViewItem_NotDone").style.display = "none";
-          elem("spnPage_ViewItem_Done").style.display = "";
+          elem("spnViewItem_DoneStatusDisplay").style.display = "";
+          elem("spnViewItem_DoneStatusDisplay").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode).toUpperCase() + "&nbsp;&nbsp;";
+          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay", app.itemObj.doneStatusCode);
+
+          elem("aViewItem_DoneStatusLink").style.display = "";
+          elem("aViewItem_DoneStatusLink").innerHTML = "change";
+
         }
 
         if ( isBlank(app.itemObj.notes) ) {
@@ -976,6 +1068,8 @@ function elem(elemId) {
 }
 
 function getAppDateTimeObj_fromJSDateTime(jsDateTime) {
+  if ( isBlank(jsDateTime) ) jsDateTime = new Date();
+
   var yyyy = jsDateTime.getFullYear();
   var m = jsDateTime.getMonth() + 1; //January is 0
   var d = jsDateTime.getDate();
@@ -1036,6 +1130,47 @@ function getCurAppDateTimeObj() {
   return curAppDateTimeObj;
 }
 
+function getDoneStatusDisplay(doneStatusCode) {
+  if ( isEqual(doneStatusCode, CONST_doneStatusCode_done) ) {
+    return CONST_doneStatusDisplay_done;
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_notice) ) {
+    return CONST_doneStatusDisplay_notice;
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_okay) ) {
+    return CONST_doneStatusDisplay_okay;
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_undone) ) {
+    return CONST_doneStatusDisplay_undone;
+  }
+}
+
+function getDoneStatusCssClassNameColor(doneStatusCode, dev__elemId) {
+
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() start, dev__elemId=" + dev__elemId + ", doneStatusCode=" + doneStatusCode); 
+
+  var cssClassNameColor;
+
+  if ( isEqual(doneStatusCode, CONST_doneStatusCode_done) ) {
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_done) TRUE (CONST_doneStatusCode_done=" + CONST_doneStatusCode_done); 
+    cssClassNameColor = CONST_cssClassName_green;
+
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_notice) ) {
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_notice) TRUE (CONST_doneStatusCode_notice=" + CONST_doneStatusCode_notice); 
+    cssClassNameColor = CONST_cssClassName_red;
+
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_okay) ) {
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_okay) TRUE (CONST_doneStatusCode_okay=" + CONST_doneStatusCode_okay); 
+    cssClassNameColor = CONST_cssClassName_brown;
+
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_undone) ) {
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_undone) TRUE (CONST_doneStatusCode_undone=" + CONST_doneStatusCode_undone); 
+    cssClassNameColor = "";
+
+  }
+
+if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() end, cssClassNameColor=" + cssClassNameColor); 
+
+  return cssClassNameColor;
+}
+
 function getElemVal(elemId) {
   var theElem, elemType, elemVal;
 
@@ -1059,13 +1194,11 @@ function getElemVal(elemId) {
 }
 
 function getElemFromObjArray_dev(theArray, propName, propValToMatch) {
-//console.log("getElemFromObjArray_dev()", theArray.length, propName, propValToMatch)
   var revisedArray = theArray.filter( (arrayElem) => {
     var returnValue = false;
     if ( isEqual(arrayElem[propName], propValToMatch) ) {
       returnValue = true;
     }
-//console.log("... inside array", arrayElem[propName], returnValue)
     return returnValue;
   });
 
@@ -1345,7 +1478,7 @@ function grabItemObj(itemId) {
   itemDataArray = itemInfoString.split(sD);
   itemObj.itemId = itemId;
   itemObj.itemName = itemDataArray[0];
-  itemObj.done = itemDataArray[1];
+  itemObj.doneStatusCode = itemDataArray[1];
   itemObj.displayCode = itemDataArray[2];
   itemObj.isList = itemDataArray[3];
   itemObj.notes = itemDataArray[4];
@@ -1366,16 +1499,16 @@ function grabItemObj(itemId) {
   // loop through any wibtype-itemIds that are assigned to this item-we-are-creating
   itemObj.assignedWibtypes_itemIds.forEach( (current_assignedWibtype_itemId) => {
 
-    //get the item-object for the current wib-type-itemId in the outer loop
+    //get the item-object for the current wibtype-itemId in the outer loop
     let currentWibType_itemObj = grabItemObj(current_assignedWibtype_itemId);
 
-    //get the list-member-itemIds for the outer-loop-wib-type's item-object
+    //get the list-member-itemIds for the outer-loop-wibtype's item-object
     let currentWibType_listMemberItemIds = currentWibType_itemObj.getListMemberItemIds();
 
     //loop through the list-member-itemIds
     currentWibType_listMemberItemIds.forEach( (currentListMemberItemId_ofTheCurrentWibType) => {
 
-      //we are now in an inner loop, of the list-member-data-itemIds for the wib-type from the outer loop
+      //we are now in an inner loop, of the list-member-data-itemIds for the wibtype from the outer loop
       //
       //each list-member-data-itemId is for a wibType-info-field
       // (the variable is "currentListMemberItemId_ofTheCurrentWibType" in this inner loop)
@@ -1393,7 +1526,7 @@ function grabItemObj(itemId) {
     } );
   } );
 
-  //if this is a wib-type-info-field, set wibtypeInfo for this item-object
+  //if this is a wibtype-info-field, set wibtype-info-field-info properties for this item-object
   if (itemObj.isWibtypeInfoField == "1") {
     let saveKeyText_wibtypeInfoFieldInfo_ofItem = getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemObj.itemId);
     let wibtypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibtypeInfoFieldInfo_ofItem);
@@ -1426,37 +1559,6 @@ function grabItemObjByName(itemName) {
   }
 
   return false; */
-}
-
-function searchForItemObj(searchParam_itemName, onListItemId, returnFirstOnly) {
-  var allItemIds_string, allItemIds_array, i, result_itemObjArray = [];
-  
-  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
-  allItemIds_array = getIdArray(allItemIds_string);
-  
-  for (i = 0; i < allItemIds_array.length; i++) {
-    let curItemObj = grabItemObj(allItemIds_array[i]);
-
-    if ( isEqual(searchParam_itemName, curItemObj.itemName) ) {
-      if ( isBlank(onListItemId) ) {
-        result_itemObjArray.push(curItemObj);
-        if (returnFirstOnly) break;
-      } else {
-        if ( doesValArrayHaveElem(curItemObj.joinedLists_itemIds, onListItemId) ) {
-          result_itemObjArray.push(curItemObj);
-          if (returnFirstOnly) break;
-        }
-      }
-    }
-  }
-
-  if (result_itemObjArray.length == 0) {
-    return null;
-  } else if (returnFirstOnly) {
-    return result_itemObjArray[0];
-  } else {
-    return result_itemObjArray;
-  }
 }
 
 function hidePopUp(popUpCode) {
@@ -1603,7 +1705,7 @@ function itemObjFactory() {
 
   itemObj.itemId = null;
   itemObj.itemName = "";
-  itemObj.done = "0";
+  itemObj.doneStatusCode = CONST_doneStatusCode_undone;
   itemObj.displayCode = "1";
   itemObj.isList = "0";
   itemObj.notes = "";
@@ -1652,9 +1754,9 @@ function itemObjFactory() {
     //TO-DO2: something about grabbing info-field-data-objects?
   };
 
-  itemObj.changeItemInfo = function(itemName, done, displayCode, isList, notes) {
+  itemObj.changeItemInfo = function(itemName, doneStatusCode, displayCode, isList, notes) {
     if ( !isBlank(itemName) ) this.itemName = itemName;
-    if ( !isBlank(done) ) this.done = done;
+    if ( !isBlank(doneStatusCode) ) this.doneStatusCode = doneStatusCode;
     if ( !isBlank(displayCode) ) this.displayCode = displayCode;
     if ( !isBlank(isList) ) this.isList = isList;
     if ( notes !== null ) this.notes = notes;
@@ -1766,6 +1868,15 @@ function itemObjFactory() {
     return listMemberItemIds;
   };
 
+  itemObj.getMainListName = function() {
+    if ( this.joinedLists_itemIds.length == 0 ) {
+      return "";
+    } else {
+      let mainListItemObj = grabItemObj(this.joinedLists_itemIds[0]);
+      return mainListItemObj.itemName;
+    }
+  };
+
   itemObj.getWtifData = function(wtifItemId) {
     for (let i; i < this.wtifDataObjs.length; i++ ) {
       
@@ -1821,17 +1932,28 @@ function itemObjFactory() {
   };
 
   itemObj.makeIntoAList = function() {
-    var saveKeyText_itemListMembers;
+    var saveKeyText_itemListMembers_ofItem, check_listMemberDataObjs_string;
 
     if (this.isList == "1") {
-      //no action needed
+      // no action needed
     } else {
       this.isList = "1";
       this.saveItemInfoToDatastore();
     }
 
-    saveKeyText_itemListMembers = getSaveKeyText_listMembers_ofItem(this.itemId);
-    saveToDatastore(saveKeyText_itemListMembers, "");
+    saveKeyText_itemListMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
+
+    // check any list members are already saved for this item 
+    check_listMemberDataObjs_string = getFromDatastore(saveKeyText_itemListMembers_ofItem);
+
+    if ( isBlank(check_listMemberDataObjs_string) ) {
+      // if the existing list-member save text DID return blank, okay to set to empty-string
+      saveToDatastore(saveKeyText_itemListMembers_ofItem, "");
+    } else {
+      // if the existing list-member save text DID NOT return blank, leave as is
+      //  (there was a previous error where this item was turned into not-a-list, but retained list members)
+      // => no action
+    }
   };
 
   itemObj.markAllListMembers = function(markDirectionIsDone, listMemberDataObjs) {
@@ -1841,12 +1963,12 @@ function itemObjFactory() {
       let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
       
       if (markDirectionIsDone) {
-        if (curItemObj.done == "0") {
-          curItemObj.changeItemInfo(null, "1", null, null, null);
+        if (curItemObj.doneStatusCode !== CONST_doneStatusCode_done) {
+          curItemObj.changeItemInfo(null, CONST_doneStatusCode_done, null, null, null);
         }
       } else {
-        if (curItemObj.done == "1") {
-          curItemObj.changeItemInfo(null, "0", null, null, null);
+        if (curItemObj.doneStatusCode !== CONST_doneStatusCode_undone) {
+          curItemObj.changeItemInfo(null, CONST_doneStatusCode_undone, null, null, null);
         }
       }
     }
@@ -1862,7 +1984,7 @@ function itemObjFactory() {
   };
 
   itemObj.saveItemInfoToDatastore = function() {
-    var itemInfoString = createItemInfoString(this.itemName, this.done, this.displayCode, this.isList, this.notes, this.isWibtype, this.isWibtypeInfoField)
+    var itemInfoString = createItemInfoString(this.itemName, this.doneStatusCode, this.displayCode, this.isList, this.notes, this.isWibtype, this.isWibtypeInfoField)
     saveToDatastore(getSaveKeyText_item(this.itemId), itemInfoString);
   };
 
@@ -1872,17 +1994,17 @@ function itemObjFactory() {
   };
 
   itemObj.saveListMembersToDatastore = function(listMemberDataObjs) {
-    var saveKeyText_itemListMembers, i, curListMemberDataObj, listMemberDataObjs_string = ""; 
+    var saveKeyText_itemListMembers_ofItem, i, listMemberDataObjs_string = ""; 
 
-    saveKeyText_itemListMembers = getSaveKeyText_listMembers_ofItem(this.itemId);
-    
+    saveKeyText_itemListMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
+
     for (i = 0; i < listMemberDataObjs.length; i++) {
-      curListMemberDataObj = listMemberDataObjs[i];
+      let curListMemberDataObj = listMemberDataObjs[i];
       if ( !isBlank(listMemberDataObjs_string) ) listMemberDataObjs_string += sD;
       listMemberDataObjs_string += curListMemberDataObj.itemId + sD + curListMemberDataObj.sortPosition;
     }
 
-    saveToDatastore(saveKeyText_itemListMembers, listMemberDataObjs_string);
+    saveToDatastore(saveKeyText_itemListMembers_ofItem, listMemberDataObjs_string);
   };
 
   itemObj.saveWibtypeAssignmentsToDatastore = function() {
@@ -1933,10 +2055,10 @@ function itemObjFactory() {
   return itemObj;
 }
 
-function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
+function makeNewItem(wibDataTypeId, required, isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
   var newItemObj, allItemIds_string, allItemIds_array, i, itemId_toCheck, maxItemId;
 
-  //if not passed, get item name
+  // if not passed, get item name
   if ( isBlank(itemName) ) {
     if ( isBlank(itemNamePrompt) ) itemNamePrompt = "new item:";
     itemName = prompt(itemNamePrompt, "");
@@ -1944,16 +2066,16 @@ function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemNa
   }
 
   if (!overrideDisallowName) {
-    //TO-DO2: prevent duplication of Time-Tracking wtif names
+    // TO-DO2: prevent duplication of Time-Tracking wtif names
     if ( !itemNameIsAllowed(itemName) ) {
       return false;
     }
   }
 
-  //create item-object
+  // create item-object
   newItemObj = itemObjFactory();
 
-  //generate new itemId
+  // generate new itemId
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
   allItemIds_array = getIdArray(allItemIds_string);
   maxItemId = -1;
@@ -1963,13 +2085,13 @@ function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemNa
   }
   newItemObj.itemId = parseInt(maxItemId) + 1;
 
-  //save item-info to datastore
-  if ( isWibtypeInfoField == "1") {
+  // save item-info to datastore
+  if (isWibtypeInfoField == "1") {
     newItemObj.isWibtypeInfoField = "1";
   } else {
     newItemObj.isWibtypeInfoField = "0";
   }
-  if ( isWibtype == "1") {
+  if (isWibtype == "1") {
     newItemObj.isWibtype = "1";
   } else {
     newItemObj.isWibtype = "0";
@@ -1980,12 +2102,12 @@ function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemNa
   newItemObj.notes = "";
   newItemObj.saveItemInfoToDatastore();
 
-  //if is-list, make into a list
+  // if is-list, make into a list
   if (isList == "1") {
     newItemObj.makeIntoAList();
   }
 
-  //add item to list-of-all-items
+  // add item to list-of-all-items
   if ( isBlank(allItemIds_string) ) {
     allItemIds_string = "";
   } else {
@@ -1994,9 +2116,14 @@ function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemNa
   allItemIds_string = allItemIds_string + newItemObj.itemId;
   saveToDatastore(CONST_stringOfAllItemIds, allItemIds_string);
 
-  //if requested, add this item to a list
+  // if requested, add this item to a list
   if ( !isBlank(addToList_itemId) ) {
     newItemObj.joinList(addToList_itemId);
+  }
+
+  // if this is a wibtype-item-info-field, set the wibtype-item-info-field-info and save to datastore
+  if (isWibtypeInfoField == "1") {
+    newItemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, true);
   }
 
   return newItemObj;
@@ -2028,6 +2155,37 @@ function saveToDatastore(itemKey, itemValue) {
   localStorage.setItem(itemKey, itemValue);
 }
 
+function searchForItemObj(searchParam_itemName, onListItemId, returnFirstOnly) {
+  var allItemIds_string, allItemIds_array, i, result_itemObjArray = [];
+  
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+  
+  for (i = 0; i < allItemIds_array.length; i++) {
+    let curItemObj = grabItemObj(allItemIds_array[i]);
+
+    if ( isEqual(searchParam_itemName, curItemObj.itemName) ) {
+      if ( isBlank(onListItemId) ) {
+        result_itemObjArray.push(curItemObj);
+        if (returnFirstOnly) break;
+      } else {
+        if ( doesValArrayHaveElem(curItemObj.joinedLists_itemIds, onListItemId) ) {
+          result_itemObjArray.push(curItemObj);
+          if (returnFirstOnly) break;
+        }
+      }
+    }
+  }
+
+  if (result_itemObjArray.length == 0) {
+    return null;
+  } else if (returnFirstOnly) {
+    return result_itemObjArray[0];
+  } else {
+    return result_itemObjArray;
+  }
+}
+
 function setAppItemObj(itemObj) {
   app.itemObj = itemObj;
   if ( app.itemObj ) {
@@ -2056,7 +2214,9 @@ function setElemVal(elemId, elemVal) {
 }
 
 function setGrabItem(itemId) {
-  elem(getHtml_aItem(itemId)).style.color = "red";
+  // OLD: elem(getHtml_aItem(itemId)).style.color = "red";
+  css_addClass(getHtml_aItem(itemId), CONST_cssClassName_red);
+
   if ( isBlank(app.grabbing_itemId1) ) {
     app.grabbing_itemId1 = itemId;
   } else {
@@ -2069,6 +2229,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_MakeNewItem").style.display = "none";
   elem("dvPopUp_MakeNewWibtype").style.display = "none";
   elem("dvPopUp_MakeNewWibtypeInfoField").style.display = "none";
+  elem("dvPopUp_ChangeDoneStatus").style.display = "none";
 
   switch (popUpCode) {
 
@@ -2107,6 +2268,8 @@ function showPopUp(popUpCode, popUpFocusElem) {
 
     case "MakeNewWibtypeInfoField":
       {
+        elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
+
         let wibDataTypesArray = getWibDataTypesAsArray(true);
         let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibtypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
     
@@ -2116,6 +2279,47 @@ function showPopUp(popUpCode, popUpFocusElem) {
         resetElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
         resetElemVal("ckMakeNewWibtypeInfoField_Required");
         break;
+      }
+
+    case "ChangeDoneStatus":
+      {
+        elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
+        elem("spnChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
+        elem("spnChangeDoneStatus_currentStatus").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode);
+
+        elem("dvChangeDoneStatus_Done1").style.display = "";
+        elem("dvChangeDoneStatus_Done2").style.display = "";
+        elem("aChangeDoneStatus_Done").innerHTML = CONST_doneStatusDisplay_done;
+        css_setElemToDoneStatusColor("aChangeDoneStatus_Done", CONST_doneStatusCode_done);
+
+        elem("dvChangeDoneStatus_Undone1").style.display = "";
+        elem("dvChangeDoneStatus_Undone2").style.display = "";
+        elem("aChangeDoneStatus_Undone").innerHTML = CONST_doneStatusDisplay_undone;
+        css_setElemToDoneStatusColor("aChangeDoneStatus_Undone", CONST_doneStatusCode_undone);
+
+        elem("dvChangeDoneStatus_Okay1").style.display = "";
+        elem("dvChangeDoneStatus_Okay2").style.display = "";
+        elem("aChangeDoneStatus_Okay").innerHTML = CONST_doneStatusDisplay_okay;
+        css_setElemToDoneStatusColor("aChangeDoneStatus_Okay", CONST_doneStatusCode_okay);
+
+        elem("dvChangeDoneStatus_Notice1").style.display = "";
+        elem("dvChangeDoneStatus_Notice2").style.display = "";
+        elem("aChangeDoneStatus_Notice").innerHTML = CONST_doneStatusDisplay_notice;
+        css_setElemToDoneStatusColor("aChangeDoneStatus_Notice", CONST_doneStatusCode_notice);
+
+        if (app.itemObj.doneStatusCode == CONST_doneStatusCode_done) {
+          elem("dvChangeDoneStatus_Done1").style.display = "none";
+          elem("dvChangeDoneStatus_Done2").style.display = "none";
+        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
+          elem("dvChangeDoneStatus_Undone1").style.display = "none";
+          elem("dvChangeDoneStatus_Undone2").style.display = "none";
+        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_okay) {
+          elem("dvChangeDoneStatus_Okay1").style.display = "none";
+          elem("dvChangeDoneStatus_Okay2").style.display = "none";
+        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_notice) {
+          elem("dvChangeDoneStatus_Notice1").style.display = "none";
+          elem("dvChangeDoneStatus_Notice2").style.display = "none";
+        }
       }
   }
 
@@ -2148,18 +2352,25 @@ function startGrabbingItems() {
   app.grabbing_itemId2 = null;
   app.grabbing_itemIdArray = [];
 
-  elem("aGrabItems1").style.color = "red";
-  elem("aGrabItems2").style.color = "red";
+  // OLD: elem("aGrabItems1").style.color = "red";
+  css_addClass("aGrabItems1", CONST_cssClassName_red);
+
+  // OLD: elem("aGrabItems2").style.color = "red";
+  css_addClass("aGrabItems2", CONST_cssClassName_red);
 
   app.grabbingEnabled = true;
 }
 
 function stopGrabbingItems() {
-  elem("aGrabItems1").style.color = "";
-  elem("aGrabItems2").style.color = "";
+  // OLD: elem("aGrabItems1").style.color = "";
+  css_removeClass("aGrabItems1", CONST_cssClassName_red);
+
+  // OLD: elem("aGrabItems2").style.color = "";
+  css_removeClass("aGrabItems2", CONST_cssClassName_red);
 
   if ( !isBlank(app.grabbing_itemId1) ) {
-    elem(getHtml_aItem(app.grabbing_itemId1)).style.color = "";
+    // OLD: elem(getHtml_aItem(app.grabbing_itemId1)).style.color = "";
+  css_removeClass(getHtml_aItem(app.grabbing_itemId1), CONST_cssClassName_red);
   }
 
   disableGrabbing();
@@ -2571,25 +2782,18 @@ function writeHtml_Items(mainItemObj) {
       {
         ttDisplayForItem = "";
         if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibTypeItemId) ) {
-/*
-          console.log("INDEX="+i)
-          console.log(curItemObj.wtifDataObjs[0]);
-          console.log(curItemObj.wtifDataObjs[1]);
-          console.log(curItemObj.wtifDataObjs[2]);
-          console.log(tt_wtifYMD_itemId, tt_wtifTime_itemId, tt_wtifMinsTracked_itemId);
-*/
           let tt_wtifYMD_dataObj = getElemFromObjArray_dev(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
           let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
           let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
 
           let ttDateAndTimeObj = createAppDateTimeObj2(tt_wtifYMD_dataObj.theData, tt_wtifTime_dataObj.theData);
-//console.log(i, tt_wtifYMD_theData, tt_wtifTime_theData, ttDateAndTimeObj)
+
           if ( ! isBlank(ttDateAndTimeObj) ) {
-            ttDisplayForItem = "TT:&nbsp;&nbsp;" + ttDateAndTimeObj.getYMDHN1(true) + ",&nbsp;&nbsp;" + tt_wtifMinsTracked_dataObj.theData + " mins";
+            ttDisplayForItem = "TT:&nbsp;&nbsp;" + ttDateAndTimeObj.getYMDHN1(true) + "&nbsp;&nbsp;&nbsp;" + tt_wtifMinsTracked_dataObj.theData + " mins";
           }
         }
       }
-//console.log(ttDisplayForItem)
+
       //set html based on item-info values stored as properties of the item-info-js-object
       html += "<tr><td>\n";
       html += " <table cellspacing=0 cellpadding=0>\n";
@@ -2597,7 +2801,7 @@ function writeHtml_Items(mainItemObj) {
       html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
       html += " </table>\n";
       html += "</td><td style='width: 0.5em'></td><td><a id='" + getHtml_aItem(curItemId) + "'" ;
-      if (curItemObj.done == "1") html += " class='green'";
+      html += " class='" + getDoneStatusCssClassNameColor(curItemObj.doneStatusCode) + "'";
       html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a>";
       if (ttDisplayForItem) html += "<br /><span style='font-size: 90%'>" + ttDisplayForItem + "</span>";
       html += "</td></tr>\n";
@@ -2789,6 +2993,10 @@ function begin_import() {
   importBackupText(textToImport);
 }
 
+function cancel_change_done_status() {
+  hidePopUp("ChangeDoneStatus");
+}
+
 function cancel_make_new_item() {
   hidePopUp("MakeNewItem");
 }
@@ -2804,6 +3012,10 @@ function cancel_make_new_type_info_field() {
 function cancel_move() {
   disableGrabbing();
   goToItemView(null, false);
+}
+
+function change_done_status() {
+  showPopUp("ChangeDoneStatus", null);
 }
 
 function change_storage_key_name(curKeyName) {
@@ -2882,8 +3094,6 @@ function clear_storage() {
   if (clearStoragePrompt == "clear it") {
     localStorage.clear();
     alert("storage cleared");
-    loadAppData();
-    displayPage("Home");
   } else {
     alert("storage NOT cleared");
   }
@@ -2946,6 +3156,30 @@ function delete_storage_row(keyName) {
   if ( confirm("Delete this row?") ) {
     deleteFromDatastore(keyName);
     show_storage();
+  }
+}
+
+function do_change_done_status(newDoneStatusDisplay) {
+  var newDoneStatusCode, goToItemId;
+
+  if (newDoneStatusDisplay == CONST_doneStatusDisplay_done) {
+    newDoneStatusCode = CONST_doneStatusCode_done;
+  } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_notice) {
+    newDoneStatusCode = CONST_doneStatusCode_notice;
+  } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_okay) {
+    newDoneStatusCode = CONST_doneStatusCode_okay;
+  } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_undone) {
+    newDoneStatusCode = CONST_doneStatusCode_undone;
+  }
+
+  app.itemObj.changeItemInfo(null, newDoneStatusCode, null, null, null);
+
+  hidePopUp("ChangeDoneStatus");
+
+  if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
+    goToItemView(null, false);
+  } else {
+    goToItemView(app.itemObj.displayedOnList_itemId, false);
   }
 }
 
@@ -3012,7 +3246,7 @@ function do_make_new_item(makeCode) {
     if ( parseInt(ttMinutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
   }
 
-  newItemObj = makeNewItem("0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
 
     if (topOfList == "1") {
@@ -3078,7 +3312,7 @@ function do_make_new_type() {
     return;
   }
 
-  newItemObj = makeNewItem("0", "1", false, itemName, null, null, "1", app.itemObj.itemId);
+  newItemObj = makeNewItem(null, null, "0", "1", false, itemName, null, null, "1", app.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtype");
     displayPage("Wibtypes");
@@ -3106,10 +3340,9 @@ function do_make_new_type_info_field() {
     return;
   }
 
-  newItemObj = makeNewItem("1", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(wibDataTypeId, required, "1", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtypeInfoField");
-    newItemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, true);
     displayPage("ViewItem");
   }
 }
@@ -3165,16 +3398,6 @@ function import_backup_text() {
   displayPage("BackupImport");
 }
 
-function mark_item_as_done() {
-  app.itemObj.changeItemInfo(null, "1", null, null, null);
-
-  if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
-    goToItemView(null, false);
-  } else {
-    goToItemView(app.itemObj.displayedOnList_itemId, false);
-  }
-}
-
 function make_into_a_list() {
   app.itemObj.makeIntoAList();
   goToItemView(null, false);
@@ -3187,7 +3410,7 @@ function make_new_item() {
 function make_new_list() {
   var newItemObj;
 
-  newItemObj = makeNewItem("0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
+  newItemObj = makeNewItem(null, null, "0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
   if ( newItemObj ) {
     setAppItemObj(newItemObj);
     displayPage("ViewItem");
@@ -3199,8 +3422,6 @@ function make_new_type() {
 }
 
 function make_new_type_info_field() {
-  elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
-
   showPopUp("MakeNewWibtypeInfoField", "ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
 }
 
@@ -3212,8 +3433,8 @@ function mark_all() {
   for (i = 0; i < listMemberDataObjs.length; i++) {
     let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
 
-    //if we find at least one that is not-done, that mark-all direction will be towards Done
-    if (curItemObj.done == "0") {
+    //if we find at least one that is undone, that mark-all direction will be towards done
+    if (curItemObj.doneStatusCode == CONST_doneStatusCode_undone) {
       markDirectionIsDone = true;
       break;
     }
@@ -3223,7 +3444,7 @@ function mark_all() {
   if (markDirectionIsDone) {
     confirmText += " done?";
   } else {
-    confirmText += " not done?";
+    confirmText += " undone?";
   }
 
   if ( !confirm(confirmText) ) {
@@ -3279,6 +3500,7 @@ function rename_item() {
 }
 
 function return_home() {
+  if (!app.addDataLoadedSuccessfully) loadAppData();
   setAppItemObj(grabItemObjByName(CONST_listName_homePage));
   displayPage("Home");
 }
@@ -3368,22 +3590,26 @@ function toggle_reorder() {
   if (app.reorderEnabled) {
     app.reorderEnabled = false;
     app.reorderItemId = null;
-    elem("aReorder1").style.color = "";
-    elem("aReorder2").style.color = "";
+
+    // OLD: elem("aReorder1").style.color = "";
+    css_removeClass("aReorder1", CONST_cssClassName_red);
+
+    // OLD: elem("aReorder2").style.color = "";
+    css_removeClass("aReorder2", CONST_cssClassName_red);
+
     if ( !isBlank(app.activatedItemId) ) {
       deactivateItem(app.activatedItemId);
     }
   } else {
     app.reorderEnabled = true;
     app.reorderItemId = null;
-    elem("aReorder1").style.color = "red";
-    elem("aReorder2").style.color = "red";
-  }
-}
 
-function unmark_item_as_done() {
-  app.itemObj.changeItemInfo(null, "0", null, null, null);
-  goToItemView(null, true);
+    // OLD: elem("aReorder1").style.color = "red";
+    css_addClass("aReorder1", CONST_cssClassName_red);
+
+    // OLD: elem("aReorder2").style.color = "red";
+    css_addClass("aReorder2", CONST_cssClassName_red);
+  }
 }
 
 
@@ -3392,12 +3618,12 @@ function unmark_item_as_done() {
 function loadAppData() {
   var homePageListItemObj, wibtypesItemObj, timeTracking_wibTypeItemObj;
 
-  app.dataLoadedSuccessfully = false;
+  app.addDataLoadedSuccessfully = false;
 
   /* if it does not exist, create a home-page-list item */ {
     homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
     if ( isBlank(homePageListItemObj) ) {
-      homePageListItemObj = makeNewItem("0", "0", true, CONST_listName_homePage, null, "0", "1", null)
+      homePageListItemObj = makeNewItem(null, null, "0", "0", true, CONST_listName_homePage, null, "0", "1", null)
     }
   }
 
@@ -3406,7 +3632,7 @@ function loadAppData() {
   /* if it does not exist, create a wibtypes-item */ {
     wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
     if ( isBlank(wibtypesItemObj) ) {
-      wibtypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
+      wibtypesItemObj = makeNewItem(null, null, "0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
     }
   }
 
@@ -3416,24 +3642,24 @@ function loadAppData() {
     timeTracking_wibTypeItemObj = searchForItemObj(CONST_timeTracking_itemName, app.wibtypes_itemId, true);
 
     if ( isBlank(timeTracking_wibTypeItemObj) ) {
-      timeTracking_wibTypeItemObj = makeNewItem("0", "1", true, CONST_timeTracking_itemName, null, "0", "1", app.wibtypes_itemId)
+      timeTracking_wibTypeItemObj = makeNewItem(null, null, "0", "1", true, CONST_timeTracking_itemName, null, "0", "1", app.wibtypes_itemId)
     }
 
     //TO-DO2: handle hypothetical possibility of 2+ Time-Tracking wtifItemIds with the same name
 
     let ttWtif_YMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_YMD_itemObj) ) {
-      makeNewItem("1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+      makeNewItem(CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId); 
     }
 
     let ttWtif_Time_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_Time_itemObj) ) {
-      makeNewItem("1", "0", true, CONST_timeTracking_wtifTime_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+      makeNewItem(CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId);
     }
 
     let ttWtif_MinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
-      makeNewItem("1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+      makeNewItem(CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId);
     }
   }
 
@@ -3447,7 +3673,7 @@ function loadAppData() {
   // set version# on screen
   elem("spnAppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
 
-  app.dataLoadedSuccessfully = true;
+  app.addDataLoadedSuccessfully = true;
 }
 
 function upgradeStoredData() {
@@ -3474,37 +3700,45 @@ function upgradeStoredData() {
     return false;
   }
 
-  if (parseInt(appVersion_minor) >= 36 && parseInt(storedDataVersion_minor) < 36) {
-    if ( upgradeStoredData_0_36() ) {
-      // no action -- continue with function
-    } else {
-      return false;
+  /* old stored-data upgrades, not compatible with existing loadAppData() code, keeping for future reference */ {
+    /*
+    if (parseInt(appVersion_minor) >= 36 && parseInt(storedDataVersion_minor) < 36) {
+      if ( upgradeStoredData_0_36() ) {
+        // no action -- continue with function
+      } else {
+        return false;
+      }
     }
+
+    if (parseInt(appVersion_minor) >= 37 && parseInt(storedDataVersion_minor) < 37) {
+      if ( upgradeStoredData_0_37() ) {
+        // no action -- continue with function
+      } else {
+        return false;
+      }
+    }
+
+    if (parseInt(appVersion_minor) >= 53 && parseInt(storedDataVersion_minor) < 53) {
+      if ( upgradeStoredData_0_53() ) {
+        // no action -- continue with function
+      } else {
+        return false;
+      }
+    }
+
+    if (parseInt(appVersion_minor) >= 54 && parseInt(storedDataVersion_minor) < 54) {
+      if ( upgradeStoredData_0_54() ) {
+        // no action -- continue with function
+      } else {
+        return false;
+      }
+    }
+    */
   }
 
-  if (parseInt(appVersion_minor) >= 37 && parseInt(storedDataVersion_minor) < 37) {
-    if ( upgradeStoredData_0_37() ) {
-      // no action -- continue with function
-    } else {
-      return false;
-    }
-  }
-
-  if (parseInt(appVersion_minor) >= 53 && parseInt(storedDataVersion_minor) < 53) {
-    if ( upgradeStoredData_0_53() ) {
-      // no action -- continue with function
-    } else {
-      return false;
-    }
-  }
-
-  if (parseInt(appVersion_minor) >= 54 && parseInt(storedDataVersion_minor) < 54) {
-    if ( upgradeStoredData_0_54() ) {
-      // no action -- continue with function
-    } else {
-      return false;
-    }
-  }
+  // if stored-data-version wasn't set from upgrade, and does not exist, set it to the current app-version
+  storedDataVersion_string = getFromDatastore(CONST_storedDataVersion);
+  if ( isBlank(storedDataVersion_string) ) saveToDatastore(CONST_storedDataVersion, CONST_appVersion);
 
   return true;
 }
@@ -3618,7 +3852,7 @@ function upgradeStoredData_0_54() {
 loadAppData();
 
 //only show home page is appLevelData loaded successfully
-if ( app.dataLoadedSuccessfully ) {
+if ( app.addDataLoadedSuccessfully ) {
   displayPage("Home");
 }
 
