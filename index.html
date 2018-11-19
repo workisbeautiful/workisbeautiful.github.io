@@ -33,7 +33,7 @@ table {}
 .gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace3 {grid-column: 1/4; padding-bottom: 0.5em}
-.gc1VertSpace4 {grid-column: 1/4; padding-bottom: 1.5em}
+.gc1VertSpace4 {grid-column: 1/4; padding-bottom: 1.8em}
 .gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
 .gc1TextRight {font-style: italic; padding-top: 3px; text-align: left}
 .gc1TextForCheckbox {white-space: nowrap; padding-right: 0.6em; text-align: right}
@@ -481,22 +481,22 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1VertSpace3"></div>
     <div class="grid1Cell gc1Line"></div>
     <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Undone1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Undone2">
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Undone2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Undone" href="javascript:void do_change_done_status('undone')"></a>
     </div>
     <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Done1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Done2">
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Done2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Done" href="javascript:void do_change_done_status('done')"></a>
     </div>
     <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Okay1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2">
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Okay" href="javascript:void do_change_done_status('okay')"></a>
     </div>
     <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Notice1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2">
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Notice" href="javascript:void do_change_done_status('notice')"></a>
     </div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VertSpace4"></div>
     <div class="grid1Cell gc1Line"></div>
     <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Footer">
@@ -511,7 +511,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.63";
+const CONST_appVersion = "0.64";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
