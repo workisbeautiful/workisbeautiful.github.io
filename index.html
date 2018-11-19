@@ -31,6 +31,7 @@ table {}
 .gc1Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
 .gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
 .gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
+.gc1VertSpace3 {grid-column: 1/4; padding-bottom: 0.5em}
 .gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
 .gc1TextForCheckbox {white-space: nowrap; padding-right: 0.6em; text-align: right}
 .gc1TextForActionCheckbox {grid-column: 1/3; padding-right: 0.6em; text-align: right}
@@ -334,7 +335,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
       </span>
       <span id="spnViewItem_MakeNewField1">
-        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
+        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new info-field</a>
       </span>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder1" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
       <span id="spnViewItem_More1">
@@ -386,7 +387,11 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none">
     <div class="grid1Cell gc1Header"><b>Make New Item</b></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1VertSpace3"></div>
+    <div class="grid1Cell gc1Footer" style="">
+      <a style="white-space: nowrap; font-size: 95%" href="javascript:void do_make_new_item_line()">quick line</a>
+    </div>
+    <div class="grid1Cell gc1VertSpace2"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText" style="width: 10em" /></div>
     <div class="grid1Cell gc1VertSpace2"></div>
@@ -464,7 +469,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.59";
+const CONST_appVersion = "0.60";
 const CONST_devText1 = "devText1";
 const CONST_importBlocked = "importBlocked";
 const CONST_stringOfAllItemIds = "string_of_all_item_ids";
@@ -472,7 +477,12 @@ const CONST_listName_homePage = "home_page_list";
 const CONST_listName_wibtypes = "types";
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
+const CONST_propName_wtifItemId = "wtifItemId";
 const CONST_storedDataVersion = "stored_data_version";
+const CONST_timeTracking_itemName = "Time Tracking";
+const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
+const CONST_timeTracking_wtifTime_itemName = "Time";
+const CONST_timeTracking_wtifMinsTracked_itemName = "Mins Tracked";
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
 const CONST_wibDataType_numeric_name = "numeric";
@@ -498,9 +508,10 @@ app.makeNewItem_TimeTracking = "0";
 app.moreOptionsEnabled = false;
 app.reorderEnabled = false;
 app.reorderItemId = null;
-app.timeTrackingDefault_year = null;
-app.timeTrackingDefault_month = null;
-app.timeTrackingDefault_day = null;
+app.timeTracking_defaultYear = null;
+app.timeTracking_defaultMonth = null;
+app.timeTracking_defaultDay = null;
+app.timeTracking_wibTypeItemId = null;
 
 
 ///// REGULAR FUNCTIONS
@@ -512,43 +523,94 @@ function activateItem(itemId) {
   elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
 }
 
-function appDateTimeFactory() {
-  var appDateTime = {};
+function appDateTimeObjFactory() {
+  var appDateTimeObj = {};
 
-  appDateTime.getText = function() {
+  appDateTimeObj.getFullRawText = function() {
     var text = this.yyyy + this.mm + this.dd + this.hh + this.nn + this.ss + this.ms;
     return text;
   };
 
-  return appDateTime;
-}
-
-function doCheckboxClickAction(elemId) {
-  var checkboxIsChecked = false;
-  if ( elem(elemId).checked ) {
-    checkboxIsChecked = true;
-  }
-
-  switch (elemId) {
-    case "ckMakeNewItem_TimeTracking":
-      if (checkboxIsChecked) {
-        html_displayAllElementsOfClass("gc1Group1")
-        elem("ipMakeNewItem_Year").focus();
-      } else {
-        html_hideAllElementsOfClass("gc1Group1")
-      }
-      break;
-  }
-}
-
-function doesValArrayHaveElem(theArray, valToMatch) {
-  for (let i = 0; i < theArray.length; i++) {
-    if (isEqual(theArray[i], valToMatch) ) {
-      return true;
+  appDateTimeObj.getYMDHN1 = function(extraSpace) {
+    var text = this.yyyy + "-" + this.mm + "-" + this.dd;
+    if (extraSpace) {
+      text += "&nbsp;&nbsp;";
+    } else {
+      text += " ";
     }
+    text += this.hh + ":" + this.nn;
+    return text;
+  };
+
+  return appDateTimeObj;
+}
+
+function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
+  var ymd_inWtifStyle_array, time_inWtifStyle_array;
+
+  if ( isBlank(ymd_inWtifStyle) ) return null;
+  if ( isBlank(time_inWtifStyle) ) return null;
+
+  ymd_inWtifStyle_array = ymd_inWtifStyle.split("-");
+  if ( ymd_inWtifStyle_array.length < 1 || ymd_inWtifStyle_array.length > 3 ) return null;
+
+  time_inWtifStyle_array = time_inWtifStyle.split(":");
+  if ( time_inWtifStyle_array.length < 1 || time_inWtifStyle_array.length > 2 ) return null;
+
+  return createAppDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1]);
+}
+
+function createAppDateTimeObj1(year, month, day, hour, minute) {
+  var appDateTimeObj = appDateTimeObjFactory();
+
+  if ( !isValidDate(year, month, day) ) return null;
+  if ( !isValidTime(hour, minute) ) return null;
+
+  year = parseInt(year);
+  if ( !isNumeric(year) || year < 1 || year > 9999) return null;
+  if (year < 10) {
+    appDateTimeObj.yyyy = "000" + year;
+  } else if (year < 100) {
+    appDateTimeObj.yyyy = "00" + year;
+  } else if (year < 1000) {
+    appDateTimeObj.yyyy = "0" + year;
+  } else {
+    appDateTimeObj.yyyy = String(year);
   }
 
-  return false;
+  month = parseInt(month);
+  appDateTimeObj.m = String(month);
+  if (month < 10) {
+    appDateTimeObj.mm = "0" + month;
+  } else {
+    appDateTimeObj.mm = String(month);
+  }
+
+  day = parseInt(day);
+  appDateTimeObj.d = String(day);
+  if (day < 10) {
+    appDateTimeObj.dd = "0" + day;
+  } else {
+    appDateTimeObj.dd = String(day);
+  }
+
+  hour = parseInt(hour);
+  appDateTimeObj.h = String(hour);
+  if (hour < 10) {
+    appDateTimeObj.hh = "0" + hour;
+  } else {
+    appDateTimeObj.hh = String(hour);
+  }
+
+  minute = parseInt(minute);
+  appDateTimeObj.n = String(minute);
+  if (minute < 10) {
+    appDateTimeObj.nn = "0" + minute;
+  } else {
+    appDateTimeObj.nn = String(minute);
+  }
+
+  return appDateTimeObj;
 }
 
 function createItemInfoString(itemName, done, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
@@ -866,48 +928,99 @@ function displayPage(pageName) {
   }
 }
 
+function doCheckboxClickAction(elemId) {
+  var checkboxIsChecked = false;
+  if ( elem(elemId).checked ) {
+    checkboxIsChecked = true;
+  }
+
+  switch (elemId) {
+    case "ckMakeNewItem_TimeTracking":
+      if (checkboxIsChecked) {
+        html_displayAllElementsOfClass("gc1Group1")
+        elem("ipMakeNewItem_Year").focus();
+      } else {
+        html_hideAllElementsOfClass("gc1Group1")
+      }
+      break;
+  }
+}
+
+function doesValArrayHaveElem(theArray, valToMatch) {
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem, valToMatch) ) {
+      returnValue = true;
+    }
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return false;
+  } else {
+    return true;
+  }
+
+/* OLD CODE
+  for (let i = 0; i < theArray.length; i++) {
+    if (isEqual(theArray[i], valToMatch) ) {
+      return true;
+    }
+  }
+  return false;
+*/
+}
+
 function elem(elemId) {
   return document.getElementById(elemId);
 }
 
-function getAppDateTime_fromJSDateTime(jsDateTime) {
+function getAppDateTimeObj_fromJSDateTime(jsDateTime) {
   var yyyy = jsDateTime.getFullYear();
   var m = jsDateTime.getMonth() + 1; //January is 0
   var d = jsDateTime.getDate();
   var h = jsDateTime.getHours();
   var n = jsDateTime.getMinutes();
-  var s = jsDateTime.getSeconds();
-  var msOriginal = jsDateTime.getMilliseconds();
+  //var s = jsDateTime.getSeconds();
+  //var msOriginal = jsDateTime.getMilliseconds();
 
-  if (m < 10) mm = "0" + m
-  if (d < 10) dd = "0" + d
-  if (h < 10) hh = "0" + h
-  if (n < 10) nn = "0" + n
-  if (s < 10) ss = "0" + s
+  /* OLD CODE -- now handled by createAppDateTimeObj1 */ {
+    /*
+    if (m < 10) mm = "0" + m
+    if (d < 10) dd = "0" + d
+    if (h < 10) hh = "0" + h
+    if (n < 10) nn = "0" + n
+    if (s < 10) ss = "0" + s
 
-  if (msOriginal < 100) {
-    ms = "0" + msOriginal
-  } else if (msOriginal < 10) {
-    ms = "00" + msOriginal;
+    if (msOriginal < 100) {
+      ms = "0" + msOriginal
+    } else if (msOriginal < 10) {
+      ms = "00" + msOriginal;
+    }
+    */
   }
 
-  var appDateTime = appDateTimeFactory();
+  var appDateTimeObj = createAppDateTimeObj1(yyyy, m, d, h, n);
 
-  appDateTime.yyyy = yyyy;
-  appDateTime.m = m;
-  appDateTime.mm = mm;
-  appDateTime.d = d;
-  appDateTime.dd = dd;
-  appDateTime.h = h;
-  appDateTime.hh = hh;
-  appDateTime.n = n;
-  appDateTime.nn = nn;
-  appDateTime.s = s;
-  appDateTime.ss = ss;
-  appDateTime.msOriginal = msOriginal;
-  appDateTime.ms = ms;
+  /* OLD CODE -- now handled by createAppDateTimeObj */ {
+    /*
+    appDateTimeObj.yyyy = yyyy;
+    appDateTimeObj.m = m;
+    appDateTimeObj.mm = mm;
+    appDateTimeObj.d = d;
+    appDateTimeObj.dd = dd;
+    appDateTimeObj.h = h;
+    appDateTimeObj.hh = hh;
+    appDateTimeObj.n = n;
+    appDateTimeObj.nn = nn;
+    //appDateTimeObj.s = s;
+    //appDateTimeObj.ss = ss;
+    //appDateTimeObj.msOriginal = msOriginal;
+    //appDateTimeObj.ms = ms;
+    */
+  }
 
-  return appDateTime;
+  return appDateTimeObj;
 }
 
 function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
@@ -918,9 +1031,9 @@ function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
   }
 }
 
-function getCurAppDateTime() {
-  var curAppDateTime = getAppDateTime_fromJSDateTime( new Date() );
-  return curAppDateTime;
+function getCurAppDateTimeObj() {
+  var curAppDateTimeObj = getAppDateTimeObj_fromJSDateTime( new Date() );
+  return curAppDateTimeObj;
 }
 
 function getElemVal(elemId) {
@@ -945,8 +1058,25 @@ function getElemVal(elemId) {
   return elemVal;
 }
 
+function getElemFromObjArray_dev(theArray, propName, propValToMatch) {
+//console.log("getElemFromObjArray_dev()", theArray.length, propName, propValToMatch)
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem[propName], propValToMatch) ) {
+      returnValue = true;
+    }
+//console.log("... inside array", arrayElem[propName], returnValue)
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return null;
+  } else {
+    return revisedArray[0];
+  }
+}
+
 function getElemFromObjArray(theArray, propName, propValToMatch) {
-//console.log(theArray.length, propName, propValToMatch)
   var revisedArray = theArray.filter( (arrayElem) => {
     var returnValue = false;
     if ( isEqual(arrayElem[propName], propValToMatch) ) {
@@ -1278,6 +1408,9 @@ function grabItemObj(itemId) {
 }
 
 function grabItemObjByName(itemName) {
+  return searchForItemObj(itemName, null, true);
+
+/* OLD CODE
   var allItemIds_string, allItemIds_array, i, curItemId, curItemObj;
   
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
@@ -1292,7 +1425,38 @@ function grabItemObjByName(itemName) {
     }
   }
 
-  return false;
+  return false; */
+}
+
+function searchForItemObj(searchParam_itemName, onListItemId, returnFirstOnly) {
+  var allItemIds_string, allItemIds_array, i, result_itemObjArray = [];
+  
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+  
+  for (i = 0; i < allItemIds_array.length; i++) {
+    let curItemObj = grabItemObj(allItemIds_array[i]);
+
+    if ( isEqual(searchParam_itemName, curItemObj.itemName) ) {
+      if ( isBlank(onListItemId) ) {
+        result_itemObjArray.push(curItemObj);
+        if (returnFirstOnly) break;
+      } else {
+        if ( doesValArrayHaveElem(curItemObj.joinedLists_itemIds, onListItemId) ) {
+          result_itemObjArray.push(curItemObj);
+          if (returnFirstOnly) break;
+        }
+      }
+    }
+  }
+
+  if (result_itemObjArray.length == 0) {
+    return null;
+  } else if (returnFirstOnly) {
+    return result_itemObjArray[0];
+  } else {
+    return result_itemObjArray;
+  }
 }
 
 function hidePopUp(popUpCode) {
@@ -1422,7 +1586,7 @@ function itemNameIsAllowed(itemName) {
     disallowedName = true;
   } else if ( isEqual(itemName, CONST_listName_wibtypes) ) {
     disallowedName = true;
-  } else if ( itemName == "Time Tracking" ) {
+  } else if ( itemName == CONST_timeTracking_itemName ) {
     //TO-DO2: handle this differently
     disallowedName = true;
   }
@@ -1780,6 +1944,7 @@ function makeNewItem(isWibtypeInfoField, isWibtype, overrideDisallowName, itemNa
   }
 
   if (!overrideDisallowName) {
+    //TO-DO2: prevent duplication of Time-Tracking wtif names
     if ( !itemNameIsAllowed(itemName) ) {
       return false;
     }
@@ -1923,15 +2088,15 @@ function showPopUp(popUpCode, popUpFocusElem) {
       doCheckboxClickAction("ckMakeNewItem_TimeTracking");
 
       if (app.makeNewItem_TimeTracking == "1") {
-        if ( isBlank(app.timeTrackingDefault_year) || isBlank(app.timeTrackingDefault_month) || isBlank(app.timeTrackingDefault_day) ) {
-          let curAppDateTime = getCurAppDateTime();
-          elem("ipMakeNewItem_Year").value = curAppDateTime.yyyy;
-          elem("ipMakeNewItem_Month").value = curAppDateTime.m;
-          elem("ipMakeNewItem_Day").value = curAppDateTime.d;
+        if ( isBlank(app.timeTracking_defaultYear) || isBlank(app.timeTracking_defaultMonth) || isBlank(app.timeTracking_defaultDay) ) {
+          let curAppDateTimeObj = getCurAppDateTimeObj();
+          elem("ipMakeNewItem_Year").value = curAppDateTimeObj.yyyy;
+          elem("ipMakeNewItem_Month").value = curAppDateTimeObj.m;
+          elem("ipMakeNewItem_Day").value = curAppDateTimeObj.d;
         } else {
-          if ( !isBlank(app.timeTrackingDefault_year) ) elem("ipMakeNewItem_Year").value = app.timeTrackingDefault_year;
-          if ( !isBlank(app.timeTrackingDefault_month) ) elem("ipMakeNewItem_Month").value = app.timeTrackingDefault_month;
-          if ( !isBlank(app.timeTrackingDefault_day) ) elem("ipMakeNewItem_Day").value = app.timeTrackingDefault_day;
+          if ( !isBlank(app.timeTracking_defaultYear) ) elem("ipMakeNewItem_Year").value = app.timeTracking_defaultYear;
+          if ( !isBlank(app.timeTracking_defaultMonth) ) elem("ipMakeNewItem_Month").value = app.timeTracking_defaultMonth;
+          if ( !isBlank(app.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = app.timeTracking_defaultDay;
         }
       }
       break;
@@ -2348,10 +2513,19 @@ function writeHtml_GrabbingMove_ListOptions() {
 }
 
 function writeHtml_Items(mainItemObj) {
-  var listMemberDataObjs, html = "", i;
+  var listMemberDataObjs, html = "", i, tt_wtifYMD_itemId, tt_wtifTime_itemId, tt_wtifMinsTracked_itemId;
 
-  if ( isBlank(mainItemObj) ) {
-    mainItemObj = app.itemObj;
+  if ( isBlank(mainItemObj) ) mainItemObj = app.itemObj;
+
+  /* get Time-Tracking wtif itemIds */ {
+    let tt_wtifYMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibTypeItemId, true);
+    tt_wtifYMD_itemId = tt_wtifYMD_itemObj.itemId;
+
+    let tt_wtifTime_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibTypeItemId, true);
+    tt_wtifTime_itemId = tt_wtifTime_itemObj.itemId;
+
+    let tt_wtifMinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibTypeItemId, true);
+    tt_wtifMinsTracked_itemId = tt_wtifMinsTracked_itemObj.itemId;
   }
 
   if (mainItemObj.isList) {
@@ -2363,7 +2537,7 @@ function writeHtml_Items(mainItemObj) {
 
     //loop through array to write list in HTML
     for (i = 0; i < listMemberDataObjs.length; i++){
-      let curItemId, curItemObj, addAsterisk, itemNameDisplay;
+      let curItemId, curItemObj, addAsterisk, ttDisplayForItem, itemNameDisplay;
 
       curItemId = listMemberDataObjs[i].itemId;
 
@@ -2375,22 +2549,47 @@ function writeHtml_Items(mainItemObj) {
       curItemObj = grabItemObj(curItemId);
 
       //add asterisk to item-name if it has notes or list-members
-      addAsterisk = false;
+      {
+        addAsterisk = false;
 
-      if ( !isBlank(curItemObj.notes) ) {
-        addAsterisk = true;
-      } else {
-        if ( curItemObj.hasListMembers() ) {
+        if ( !isBlank(curItemObj.notes) ) {
           addAsterisk = true;
+        } else {
+          if ( curItemObj.hasListMembers() ) {
+            addAsterisk = true;
+          }
+        }
+
+        if (addAsterisk) {
+          itemNameDisplay = curItemObj.itemName + " *";
+        } else {
+          itemNameDisplay = curItemObj.itemName;
         }
       }
 
-      if (addAsterisk) {
-        itemNameDisplay = curItemObj.itemName + " *";
-      } else {
-        itemNameDisplay = curItemObj.itemName;
-      }
+      //add Time-Tracking info if this is such an item
+      {
+        ttDisplayForItem = "";
+        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibTypeItemId) ) {
+/*
+          console.log("INDEX="+i)
+          console.log(curItemObj.wtifDataObjs[0]);
+          console.log(curItemObj.wtifDataObjs[1]);
+          console.log(curItemObj.wtifDataObjs[2]);
+          console.log(tt_wtifYMD_itemId, tt_wtifTime_itemId, tt_wtifMinsTracked_itemId);
+*/
+          let tt_wtifYMD_dataObj = getElemFromObjArray_dev(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
+          let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
+          let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
 
+          let ttDateAndTimeObj = createAppDateTimeObj2(tt_wtifYMD_dataObj.theData, tt_wtifTime_dataObj.theData);
+//console.log(i, tt_wtifYMD_theData, tt_wtifTime_theData, ttDateAndTimeObj)
+          if ( ! isBlank(ttDateAndTimeObj) ) {
+            ttDisplayForItem = "TT:&nbsp;&nbsp;" + ttDateAndTimeObj.getYMDHN1(true) + ",&nbsp;&nbsp;" + tt_wtifMinsTracked_dataObj.theData + " mins";
+          }
+        }
+      }
+//console.log(ttDisplayForItem)
       //set html based on item-info values stored as properties of the item-info-js-object
       html += "<tr><td>\n";
       html += " <table cellspacing=0 cellpadding=0>\n";
@@ -2399,7 +2598,9 @@ function writeHtml_Items(mainItemObj) {
       html += " </table>\n";
       html += "</td><td style='width: 0.5em'></td><td><a id='" + getHtml_aItem(curItemId) + "'" ;
       if (curItemObj.done == "1") html += " class='green'";
-      html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a></td></tr>\n";
+      html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a>";
+      if (ttDisplayForItem) html += "<br /><span style='font-size: 90%'>" + ttDisplayForItem + "</span>";
+      html += "</td></tr>\n";
       html += "<tr style='height: 0.8em'><td colspan=3></td></tr>\n"
       html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
       if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
@@ -2748,14 +2949,18 @@ function delete_storage_row(keyName) {
   }
 }
 
-function do_make_new_item() {
+function do_make_new_item(makeCode) {
   var itemName, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, newItemObj;
 
-  itemName = getElemVal("ipMakeNewItem_ItemName");
+  if (makeCode == "line") {
+    itemName = "--------------------";
+  } else {
+    itemName = getElemVal("ipMakeNewItem_ItemName");
 
-  if ( !itemNameIsAllowed(itemName) ) {
-    elem("ipMakeNewItem_ItemName").focus();
-    return;
+    if ( !itemNameIsAllowed(itemName) ) {
+      elem("ipMakeNewItem_ItemName").focus();
+      return;
+    }
   }
 
   topOfList = getElemVal("ckMakeNewItem_TopOfList");
@@ -2767,8 +2972,12 @@ function do_make_new_item() {
   addMoreItems = getElemVal("ckMakeNewItem_AddMoreItems");
   app.makeNewItem_AddMoreItems = addMoreItems;
 
-  timeTracking = getElemVal("ckMakeNewItem_TimeTracking");
-  app.makeNewItem_TimeTracking = timeTracking;
+  if (makeCode == "line") {
+    timeTracking = "0";
+  } else {
+    timeTracking = getElemVal("ckMakeNewItem_TimeTracking");
+    app.makeNewItem_TimeTracking = timeTracking;
+  }
 
   if ( isBlank(itemName) ) {
     alert("Item Name is required");
@@ -2777,28 +2986,28 @@ function do_make_new_item() {
   }
 
   if (timeTracking == "1") {
-    //TO-DO2: validate Time Tracking data via standardized wtif-info-field process
+    //TO-DO2: validate Time-Tracking data via standardized wtif-info-field process
     ttYear = getElemVal("ipMakeNewItem_Year");
-    if ( isBlank(ttYear) ) { alert("Year is required for Time Tracking"); elem("ipMakeNewItem_Year").focus(); return; }
+    if ( isBlank(ttYear) ) { alert("Year is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Year").focus(); return; }
 
     ttMonth = getElemVal("ipMakeNewItem_Month");
-    if ( isBlank(ttMonth) ) { alert("Month is required for Time Tracking"); elem("ipMakeNewItem_Month").focus(); return; }
+    if ( isBlank(ttMonth) ) { alert("Month is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Month").focus(); return; }
 
     ttDay = getElemVal("ipMakeNewItem_Day");
-    if ( isBlank(ttDay) ) { alert("Day is required for Time Tracking"); elem("ipMakeNewItem_Day").focus(); return; }
+    if ( isBlank(ttDay) ) { alert("Day is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Day").focus(); return; }
 
     if ( !isValidDate(ttYear, ttMonth, ttDay) ) { alert("The Year/Month/Day entered is not a valid date"); elem("ipMakeNewItem_Year").focus(); return; }
 
     ttHour = getElemVal("ipMakeNewItem_Hour");
-    if ( isBlank(ttHour) ) { alert("Hour is required for Time Tracking"); elem("ipMakeNewItem_Hour").focus(); return; }
+    if ( isBlank(ttHour) ) { alert("Hour is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Hour").focus(); return; }
 
     ttMinute = getElemVal("ipMakeNewItem_Minute");
-    if ( isBlank(ttMinute) ) { alert("Minute is required for Time Tracking"); elem("ipMakeNewItem_Minute").focus(); return; }
+    if ( isBlank(ttMinute) ) { alert("Minute is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Minute").focus(); return; }
 
     if ( !isValidTime(ttHour, ttMinute) ) { alert("The Hour/Minute entered is not a valid time"); elem("ipMakeNewItem_Hour").focus(); return; }
 
     ttMinutesTracked = getElemVal("ipMakeNewItem_MinutesTracked");
-    if ( isBlank(ttMinutesTracked) ) { alert("MinutesTracked is required for Time Tracking"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
+    if ( isBlank(ttMinutesTracked) ) { alert("MinutesTracked is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
     if ( !isNumeric(ttMinutesTracked) ) { alert("MinutesTracked requires a numeric value"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
     if ( parseInt(ttMinutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
   }
@@ -2815,11 +3024,11 @@ function do_make_new_item() {
     }
 
     if (timeTracking == "1") {
-      app.timeTrackingDefault_year = ttYear;
-      app.timeTrackingDefault_month = ttMonth;
-      app.timeTrackingDefault_day = ttDay;
+      app.timeTracking_defaultYear = ttYear;
+      app.timeTracking_defaultMonth = ttMonth;
+      app.timeTracking_defaultDay = ttDay;
 
-      let ttItemObj = grabItemObjByName("Time Tracking");
+      let ttItemObj = grabItemObjByName(CONST_timeTracking_itemName);
       newItemObj.assignToWibtype(ttItemObj.itemId);
 
       let ttWtifItemIds = ttItemObj.getListMemberItemIds();
@@ -2828,13 +3037,13 @@ function do_make_new_item() {
         let ttWtifItemObj = grabItemObj(ttWtifItemId);
         let wtifData = "";
         switch (ttWtifItemObj.itemName) {
-          case "Y / M / D":
+          case CONST_timeTracking_wtifYMD_itemName:
             wtifData = ttYear + "-" + ttMonth + "-" + ttDay;
             break;
-          case "Time":
+          case CONST_timeTracking_wtifTime_itemName:
             wtifData = ttHour + ":" + ttMinute;
             break;
-          case "Mins Tracked":
+          case CONST_timeTracking_wtifMinsTracked_itemName:
             wtifData = ttMinutesTracked;
             break;
         }
@@ -2849,6 +3058,10 @@ function do_make_new_item() {
       showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
     }
   }
+}
+
+function do_make_new_item_line() {
+  do_make_new_item("line");
 }
 
 function do_make_new_type() {
@@ -3177,38 +3390,61 @@ function unmark_item_as_done() {
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData() {
-  var homePageListItemObj, wibtypesItemObj;
+  var homePageListItemObj, wibtypesItemObj, timeTracking_wibTypeItemObj;
 
-  //set success-flag to false
   app.dataLoadedSuccessfully = false;
 
-  //if it does not exist, create a home-page-list item
-  homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
-  if ( !homePageListItemObj ) {
-    homePageListItemObj = makeNewItem("0", "0", true, CONST_listName_homePage, null, "0", "1", null)
+  /* if it does not exist, create a home-page-list item */ {
+    homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
+    if ( isBlank(homePageListItemObj) ) {
+      homePageListItemObj = makeNewItem("0", "0", true, CONST_listName_homePage, null, "0", "1", null)
+    }
   }
 
-  //set home-page-list item-id
   app.homePageList_itemId = homePageListItemObj.itemId;
 
-  //if it does not exist, create a wibtypes item
-  wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
-  if ( !wibtypesItemObj ) {
-    wibtypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
+  /* if it does not exist, create a wibtypes-item */ {
+    wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
+    if ( isBlank(wibtypesItemObj) ) {
+      wibtypesItemObj = makeNewItem("0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
+    }
   }
 
-  //set wibtypes item-id
   app.wibtypes_itemId = wibtypesItemObj.itemId;
 
-  //set app current-item to home-page-list
-  setAppItemObj(homePageListItemObj);
+  /* if they do not exist, create Time-Tracking and its wtifs */ {
+    timeTracking_wibTypeItemObj = searchForItemObj(CONST_timeTracking_itemName, app.wibtypes_itemId, true);
 
-  //update stored-data
-  if ( ! upgradeStoredData() ) {
-    return;
+    if ( isBlank(timeTracking_wibTypeItemObj) ) {
+      timeTracking_wibTypeItemObj = makeNewItem("0", "1", true, CONST_timeTracking_itemName, null, "0", "1", app.wibtypes_itemId)
+    }
+
+    //TO-DO2: handle hypothetical possibility of 2+ Time-Tracking wtifItemIds with the same name
+
+    let ttWtif_YMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    if ( isBlank(ttWtif_YMD_itemObj) ) {
+      makeNewItem("1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+    }
+
+    let ttWtif_Time_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    if ( isBlank(ttWtif_Time_itemObj) ) {
+      makeNewItem("1", "0", true, CONST_timeTracking_wtifTime_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+    }
+
+    let ttWtif_MinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
+      makeNewItem("1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId)
+    }
   }
 
-  //set version# on screen
+  app.timeTracking_wibTypeItemId = timeTracking_wibTypeItemObj.itemId;
+
+  // set app current-item to home-page-list
+  setAppItemObj(homePageListItemObj);
+
+  if ( ! upgradeStoredData() ) return;
+
+  // set version# on screen
   elem("spnAppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
 
   app.dataLoadedSuccessfully = true;
