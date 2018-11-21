@@ -57,6 +57,8 @@ table {}
 .gc2TextRight {white-space: nowrap}
 .gc2Footer {grid-column: 1/3; text-align: left}
 
+.bold {font-weight: bold}
+
 .brown {color: brown}
 .green {color: #00CC66}
 .red {color: red}
@@ -80,311 +82,305 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <div id="dvMainViewOverlay">
 
-<div id="dvAppHeader">
-  <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
-  &nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>dev</nowrap></span></a>
-</div>
-<div style="height:1.2em"></div>
+  <div id="dvAppHeader">
+    <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
+    <span id="spnAppHeader_Home">
+      &nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap; font-size: 110%"><b>home</b></a>
+    </span>
+    &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>(dev)</nowrap></span></a>
+    <div style="height:1.2em"></div>
+  </div>
 
-<div id="dvPage_BackupExport" style="display: none">
-  <div style="display: inline-block">
-    <div><a href="javascript:void return_home()">return home</a></div>
-    <div style="height:1em"></div>
-    <table cellspacing=0 cellpadding=0>
-    <tr><td style="height: 20px; background-color: red"></td></tr>
-    </table>
-    <div style="height:1em"></div>
-  </div>
-  <div style="height:0.8em"></div>
-  <textarea id="taExportedBackupText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
-  <div style="height:0.8em"></div>
-  <div><a href="javascript:void copy_imported_text_to_clipboard()">copy to clipboard</a></div>
-  <div style="height:1em"></div>
-</div>
-
-<div id="dvPage_BackupImport" style="display: none">
-  <div style="display: inline-block">
-    <div><a href="javascript:void return_home()">return home</a></div>
-    <div style="height:1em"></div>
-    <table cellspacing=0 cellpadding=0">
-    <tr><td class="divider"></td></tr>
-    </table>
-    <div style="height:1em"></div>
-  </div>
-  <div style="height:0.8em"></div>
-  <div>Paste text-to-import below:</div>
-  <div style="height:0.4em"></div>
-  <textarea id="taBackupTextToImport" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
-  <div style="height:0.8em"></div>
-  <div><a href="javascript:void begin_import()">begin import</a></div>
-  <div style="height:1em"></div>
-</div>
-
-<div id="dvPage_Dev" style="display: none">
-  <div style="display: inline-block">
-    <div><a href="javascript:void return_home()">return home</a></div>
-    <div style="height:1em"></div>
-    <table cellspacing=0 cellpadding=0">
-    <tr><td class="divider"></td></tr>
-    </table>
-    <div style="height:1em"></div>
-  </div>
-  <div style="height:0.8em"></div>
-  <div><a href="javascript:void export_backup_text()">export backup text</a></div>
-  <div style="height:1.7em"></div>
-  <div><a href="javascript:void import_backup_text()">import backup text</a></div>
-  <div style="height:1.7em"></div>
-  <div><a href="javascript:void toggle_import_blocked()">toggle import-backup-text blocked (for this device)</a></div>
-  <div style="height:1.7em"></div>
-  <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
-  <div style="height:1.7em"></div>
-  <div><a href="javascript:void toggle_app_narrow()">toggle app narrow mode</a></div>
-  <div style="height:1.7em"></div>
-  <div><a href="javascript:void show_storage()">show storage</a></div>
-  <div style="height:100em"></div>
-  <div><a href="javascript:void clear_storage()">clear storage</a></div>
-  <div style="height:1em"></div>
-</div>
-
-<div id="dvPage_GrabbingMove" style="display: none">
-  <div><i>from list:</i>&nbsp;&nbsp;&nbsp;<span id="spnGrabbingMove_FromList"></span></div>
-  <div style="height:1.5em"></div>
-  <div><i>moving these items:</i></div>
-  <div style="height:0.8em"></div>
-  <div style="display: inline-block">
-    <div style="border-bottom: 1px black solid"></div>
-    <div style="height:1em"></div>
-    <div id="dvGrabbingMove_Items"></div>
-    <div style="height:1em"></div>
-    <div style="border-bottom: 1px black solid"></div>
-  </div>
-  <div style="height:1.5em"></div>
-  <div><i>to which list?</i>&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_move()"><nowrap>cancel</nowrap></a></div>
-  <div style="height:0.8em"></div>
-  <div style="display: inline-block">
-    <div style="border-bottom: 1px black solid"></div>
-    <div style="height:1em"></div>
-    <div id="dvGrabbingMove_ListOptions"></div>
-    <div style="height:1em"></div>
-    <div style="border-bottom: 1px black solid"></div>
-  </div>
-  <div style="height:1em"></div>
-</div>
-
-<div id="dvPage_Home" style="display: none">
-  <div style="font-weight: bold">Home</div>
-  <div style="height:0.8em"></div>
-  <div>
-    <a href="javascript:void make_new_list()" style="white-space: nowrap">make new list</a>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_types()" style="white-space: nowrap">show types</a>
-  </div>
-  <div style="height: 1em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
-  </div>
-  <div style="height: 1.4em"></div>
-  <div id="dvHome_Items"></div>
-  <div style="height: 0.4em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
-  </div>
-  <div style="height: 1em"></div>
-  <div><a href="javascript:void make_new_list()">make new list</a></div>
-  <div style="height: 1em"></div>
-</div>
-
-<div id="dvPage_ShowStorage" style="display: none">
-  <div style="display: inline-block">
-    <div><a href="javascript:void return_home_from_storage()">return home</a></div>
-    <hr></hr>
-  </div>
-  <div style="height:0.8em"></div>
-  <div id="dvStorage"></div>
-  <div style="height:0.6em"></div>
-  <div style="display: inline-block">
-    <hr></hr>
+  <div id="dvPage_BackupExport" style="display: none">
+    <div style="display: inline-block">
+      <table cellspacing=0 cellpadding=0>
+      <tr><td style="height: 20px"></td></tr>
+      </table>
+      <div style="height:1em"></div>
+    </div>
     <div style="height:0.8em"></div>
-    <div><a href="javascript:void return_home_from_storage()">return home</a></div>
+    <textarea id="taExportedBackupText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void copy_imported_text_to_clipboard()">copy to clipboard</a></div>
+    <div style="height:1em"></div>
   </div>
-  <div style="height:1em"></div>
-</div>
 
-<div id="dvPage_Wibtypes" style="display: none">
-  <div class="red" style="font-weight: bold">Types</div>
-  <div style="height: 0.8em"></div>
-  <div>
-    <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
+  <div id="dvPage_BackupImport" style="display: none">
+    <div style="display: inline-block">
+      <table cellspacing=0 cellpadding=0">
+      <tr><td class="divider"></td></tr>
+      </table>
+      <div style="height:1em"></div>
+    </div>
+    <div style="height:0.8em"></div>
+    <div>Paste text-to-import below:</div>
+    <div style="height:0.4em"></div>
+    <textarea id="taBackupTextToImport" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void begin_import()">begin import</a></div>
+    <div style="height:1em"></div>
   </div>
-  <div style="height: 1em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
-  </div>
-  <div style="height: 1.4em"></div>
-    <div id="dvWibtypes_Items"></div>
-  <div style="height: 0.4em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
-  </div>
-  <div style="height: 1em"></div>
-  <div>
-    <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
-    &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
-  </div>
-  <div style="height: 1em"></div>
-</div>
 
-<div id="dvPage_ViewItem" style="display: none">
-  <div id="dvItemName" style="font-weight: bold"></div>
-  <div id="dvPage_ViewItem_JoinedListsArea" style="display: none">
-    <div style="height: 0.3em"></div>
-    <div id="dvListNameForItem"></div>
+  <div id="dvPage_Dev" style="display: none">
+    <div style="display: inline-block">
+      <table cellspacing=0 cellpadding=0">
+      <tr><td class="divider"></td></tr>
+      </table>
+      <div style="height:1em"></div>
+    </div>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void export_backup_text()">export backup text</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void import_backup_text()">import backup text</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void toggle_import_blocked()">toggle import-backup-text blocked (for this device)</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void toggle_app_narrow()">toggle app narrow mode</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void show_storage()">show storage</a></div>
+    <div style="height:100em"></div>
+    <div><a href="javascript:void clear_storage()">clear storage</a></div>
+    <div style="height:1em"></div>
   </div>
-  <div style="height: 0.95em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
+
+  <div id="dvPage_MoveOrCopy" style="display: none">
+    <div style="font-weight: bold">Moving or Copying Items</div>
+    <div style="height:0.8em"></div>
+    <div>from list:&nbsp;&nbsp;&nbsp;<span id="spnMoveOrCopy_FromList"></span></div>
+    <div style="height:1.5em"></div>
+    <div>moving or copying these items:</div>
+    <div style="height:0.8em"></div>
+    <div style="display: inline-block">
+      <div style="border-bottom: 1px black solid"></div>
+      <div style="height:1em"></div>
+      <div id="dvMoveOrCopy_ItemsBeingMovedOrCopied"></div>
+      <div style="height:1em"></div>
+      <div style="border-bottom: 1px black solid"></div>
+    </div>
+    <div style="height:1.5em"></div>
+    <div>... to which list?&nbsp;&nbsp;&nbsp;<a id="aMoveOrCopy_Cancel" style="white-space: nowrap" href="javascript:void cancel_move()">cancel</a></div>
+    <div style="height:0.8em"></div>
+    <div style="display: inline-block">
+      <div style="border-bottom: 1px black solid"></div>
+      <div style="height:1em"></div>
+      <div id="dvMoveOrCopy_ListsToMoveOrCopyItemsTo"></div>
+      <div style="height:1em"></div>
+      <div style="border-bottom: 1px black solid"></div>
+    </div>
+    <div style="height:1em"></div>
   </div>
-  <div style="height: 0.95em"></div>
-  <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
-  <div style="height: 0.95em"></div>
-  <div id="dvViewItem_ConnectedItems_Items"></div>
-  <div style="height: 0.95em"></div>
-  <div style="height: 5px; border: 2px solid #AAAAAA">
-    <div style="height: 1px; background-color: #DDDDDD"></div>
-  </div>
-  <div style="height: 0.95em"></div>
-  <div>
+
+  <div id="dvPage_Home" style="display: none">
+    <div style="font-weight: bold">Home</div>
+    <div style="height:0.8em"></div>
     <div>
-      <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
-      <span id="spnViewItem_DoneStatusLink" style="display: none">
-        <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-      </span>
-      <span id="spnMoveToDifferentList" style="display: none">
-        <a id="aMoveToDifferentList" href="javascript:void move_to_different_list()" style="white-space: nowrap">move</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-      </span>
-      <span id="spnViewItem_ShowWibtypes">
-        <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-      </span>
-      <a href="javascript:void return_home()" style="white-space: nowrap">home</a>
+      <a href="javascript:void make_new_list()" style="white-space: nowrap">make new list</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_types()" style="white-space: nowrap">show types</a>
+    </div>
+    <div style="height: 1em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 1.4em"></div>
-    <div>
-      <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
-      <span id="spnViewItem_Delete">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
-      </span>
-      <span id="spnViewItem_Notes_No" style="display: none">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
-      </span>
-    </div>
-  </div>
-  <div id="dvViewItem_Notes_Yes" style="display: none">
-    <div style="height: 0.95em"></div>
+    <div id="dvHome_Items"></div>
+    <div style="height: 0.4em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div id="dvViewItem_Notes"></div>
-    <div style="height: 0.2em"></div>
-    <div>
-      <a style="white-space: nowrap" href="javascript:void edit_notes()">edit notes</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
-    </div>
-  </div>
-  <div id="dvViewItem_Wibtypes" style="display: none">
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-<!--
-    <div><a href="javascript:void assign_item_to_type()" style="white-space: nowrap">assign this item to a type</a></div>
-    <div style="height: 0.95em"></div>
--->
-    <div id="dvViewItem_Wibtypes_WtifData"></div>
-  </div>
-  <div id="dvViewItem_WibtypeInfoFieldInfo" style="display: none">
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div class="grid2">
-      <div class="grid2Cell gc2Header">Info Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
-      <div class="grid2Cell gc2VertSpace1"></div>
-      <div class="grid2Cell gc2TextLeft">Data Type:</div>
-      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
-      <div class="grid2Cell gc2VertSpace2"></div>
-      <div class="grid2Cell gc2TextLeft">Required:</div>
-      <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
-    </div>
-  </div>
-  <div id="dvViewItem_ListMembers_No" style="display: none">
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
-  </div>
-  <div id="dvViewItem_ListMembers_Yes" style="display: none">
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div>
-      <span id="spnViewItem_MakeNewItem1">
-        <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
-      </span>
-      <span id="spnViewItem_MakeNewField1">
-        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new info-field</a>
-      </span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder1" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
-      <span id="spnViewItem_More1">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions1" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
-      </span>
-    </div>
-    <div id="dvMoreOptions1" style="display: none">
-      <div style="height: 1.4em"></div>
-      <div>
-        <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems1' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
-      </div>
     </div>
     <div style="height: 1em"></div>
+    <div><a href="javascript:void make_new_list()">make new list</a></div>
+    <div style="height: 1em"></div>
+  </div>
+
+  <div id="dvPage_ShowStorage" style="display: none">
+    <div id="dvStorage"></div>
+    <div style="height:0.6em"></div>
     <div style="display: inline-block">
-      <div style="border-bottom: 2px solid #BBBBBB"></div>
-      <div style="height: 1.2em"></div>
-      <div id="dvViewItem_ListMembers_Items"></div>
-      <div style="height: 0.3em"></div>
-      <div style="border-bottom: 2px solid #BBBBBB"></div>
+      <hr></hr>
+      <div style="height:0.8em"></div>
+      <div><a href="javascript:void return_home_from_storage()">return home</a></div>
+    </div>
+    <div style="height:1em"></div>
+  </div>
+
+  <div id="dvPage_Wibtypes" style="display: none">
+    <div class="red" style="font-weight: bold">Types</div>
+    <div style="height: 0.8em"></div>
+    <div>
+      <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
+    </div>
+    <div style="height: 1em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 1.4em"></div>
+      <div id="dvWibtypes_Items"></div>
+    <div style="height: 0.4em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 1em"></div>
     <div>
-      <span id="spnViewItem_MakeNewItem2">
-        <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
-      </span>
-      <span id="spnViewItem_MakeNewField2">
-        <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
-      </span>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder2" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
-      <span id="spnViewItem_More2">
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions2" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
-      </span>
+      <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
     </div>
-    <div id="dvMoreOptions2" style="display: none">
+    <div style="height: 1em"></div>
+  </div>
+
+  <div id="dvPage_ViewItem" style="display: none">
+    <div id="dvItemName" style="font-weight: bold"></div>
+    <div id="dvPage_ViewItem_JoinedListsArea" style="display: none">
+      <div style="height: 0.3em"></div>
+      <div id="dvListNameForItem"></div>
+    </div>
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
+    <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+    <div style="height: 0.95em"></div>
+    <div id="dvViewItem_ConnectedItems_Items"></div>
+    <div style="height: 0.95em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 0.95em"></div>
+    <div>
+      <div>
+        <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
+        <span id="spnViewItem_DoneStatusLink" style="display: none">
+          <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
+        </span>
+        <span id="spnViewItem_MoveCopy" style="display: none">
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void move_or_copy_to_different_list()" style="white-space: nowrap">move or copy</a>
+        </span>
+        <span id="spnViewItem_ShowWibtypes">
+          <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>
+        </span>
+      </div>
       <div style="height: 1.4em"></div>
       <div>
-        <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems2' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+        <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
+        <span id="spnViewItem_Delete">
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
+        </span>
+        <span id="spnViewItem_Notes_No" style="display: none">
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
+        </span>
       </div>
     </div>
+    <div id="dvViewItem_Notes_Yes" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div id="dvViewItem_Notes"></div>
+      <div style="height: 0.2em"></div>
+      <div>
+        <a style="white-space: nowrap" href="javascript:void edit_notes()">edit notes</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
+      </div>
+    </div>
+    <div id="dvViewItem_Wibtypes" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+  <!--
+      <div><a href="javascript:void assign_item_to_type()" style="white-space: nowrap">assign this item to a type</a></div>
+      <div style="height: 0.95em"></div>
+  -->
+      <div id="dvViewItem_Wibtypes_WtifData"></div>
+    </div>
+    <div id="dvViewItem_WibtypeInfoFieldInfo" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div class="grid2">
+        <div class="grid2Cell gc2Header">Info Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
+        <div class="grid2Cell gc2VertSpace1"></div>
+        <div class="grid2Cell gc2TextLeft">Data Type:</div>
+        <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
+        <div class="grid2Cell gc2VertSpace2"></div>
+        <div class="grid2Cell gc2TextLeft">Required:</div>
+        <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
+      </div>
+    </div>
+    <div id="dvViewItem_ListMembers_No" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
+    </div>
+    <div id="dvViewItem_ListMembers_Yes" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div>
+        <span id="spnViewItem_MakeNewItem1">
+          <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
+        </span>
+        <span id="spnViewItem_MakeNewField1">
+          <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new info-field</a>
+        </span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder1" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
+        <span id="spnViewItem_More1">
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions1" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
+        </span>
+      </div>
+      <div id="dvMoreOptions1" style="display: none">
+        <div style="height: 1.4em"></div>
+        <div>
+          <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems1' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+        </div>
+      </div>
+      <div style="height: 1em"></div>
+      <div style="display: inline-block">
+        <div style="border-bottom: 2px solid #BBBBBB"></div>
+        <div style="height: 1.2em"></div>
+        <div id="dvViewItem_ListMembers_Items"></div>
+        <div style="height: 0.3em"></div>
+        <div style="border-bottom: 2px solid #BBBBBB"></div>
+      </div>
+      <div style="height: 1em"></div>
+      <div>
+        <span id="spnViewItem_MakeNewItem2">
+          <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
+        </span>
+        <span id="spnViewItem_MakeNewField2">
+          <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
+        </span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aReorder2" style="white-space: nowrap" href="javascript:void toggle_reorder()">reorder</a>
+        <span id="spnViewItem_More2">
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aMoreOptions2" style="white-space: nowrap" href="javascript:void toggle_more_options()">more...</a>
+        </span>
+      </div>
+      <div id="dvMoreOptions2" style="display: none">
+        <div style="height: 1.4em"></div>
+        <div>
+          <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems2' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+        </div>
+      </div>
+    </div>
+    <div style="height:1em"></div>
   </div>
-  <div style="height:1em"></div>
-</div>
 
 </div>
+
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
 
@@ -507,16 +503,20 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 </div>
 
+
 <script type="text/javascript">
 
 "use strict";
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.65";
+const CONST_appVersion = "0.66";
+const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
 const CONST_devText1 = "devText1";
+const CONST_displayCode_normal = "0";
+const CONST_displayCode_hidden1 = "1";
 const CONST_doneStatusCode_done = "1";
 const CONST_doneStatusCode_notice = "3";
 const CONST_doneStatusCode_okay = "2";
@@ -531,7 +531,10 @@ const CONST_listName_homePage = "home_page_list";
 const CONST_listName_wibtypes = "types";
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
+const CONST_propName_itemName = "itemName";
 const CONST_propName_wtifItemId = "wtifItemId";
+const CONST_reordering_mode_normal = "normal";
+const CONST_reordering_mode_moveToOtherItem = "moveToOtherItem";
 const CONST_storedDataVersion = "stored_data_version";
 const CONST_timeTracking_itemName = "Time Tracking";
 const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
@@ -550,18 +553,18 @@ const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
 
 var app = {};
-app.activatedItemId = null;
 app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
-app.grabbingEnabled = false;
+app.grabbingOn = false;
 app.makeNewItem_TopOfList = "1";
 app.makeNewItem_StayListView = "1";
 app.makeNewItem_AddMoreItems = "0";
 app.makeNewItem_TimeTracking = "0";
-app.moreOptionsEnabled = false;
-app.reorderEnabled = false;
-app.reorderItemId = null;
+app.moreOptionsOn = false;
+app.reorderingOn = false;
+app.reordering_activatedItemId = null;
+app.reordering_mode = null;
 app.timeTracking_defaultYear = null;
 app.timeTracking_defaultMonth = null;
 app.timeTracking_defaultDay = null;
@@ -570,11 +573,27 @@ app.timeTracking_wibTypeItemId = null;
 
 ///// REGULAR FUNCTIONS
 
-function activateItem(itemId) {
-  app.activatedItemId = itemId;
-  elem(getHtml_trActivated(itemId)).style.display = "" ;
-  elem(getHtml_tblReorderChoices(itemId)).style.display = "";
-  elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "none";
+function activateItemForReordering(itemId) {
+  app.reordering_activatedItemId = itemId;
+  css_addClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
+  elem(getHtml_reorderingActivated_tr(itemId)).style.display = "" ;
+  toggleReorderingMode_normal(itemId);
+}
+
+function aO(argumentValue) {
+  // EXAMPLE USAGE:
+  // 
+  // function getPetMessage(aO_typeOfPet, aO_petName) {
+  //   return "you have a " + aO_typeOfPet.a + " named " + aO_petName.a;
+  // }
+  // 
+  // console.log( getPetMessage(aO("dog"), aO("Rover")) );
+  // /* prints 'you have a dog named Rover' */
+
+  var argObj = {};
+  argObj.a = argumentValue;
+
+  return argObj;
 }
 
 function appDateTimeObjFactory() {
@@ -597,6 +616,13 @@ function appDateTimeObjFactory() {
   };
 
   return appDateTimeObj;
+}
+
+function copyItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
+  listMembers_itemIdArray.forEach( (curItemId) => {
+    let curItemObj = grabItemObj(curItemId);
+    curItemObj.copyToList(targetListObj.itemId);
+  } );
 }
 
 function createAppDateTimeObj1(year, month, day, hour, minute) {
@@ -678,7 +704,7 @@ function createItemInfoString(itemName, doneStatusCode, displayCode, isList, not
 
   itemInfoString = itemInfoString + sD;
   if ( isBlank(displayCode) ) {
-    itemInfoString += "1";
+    itemInfoString += CONST_displayCode_normal;
   } else {
     itemInfoString += displayCode
   }
@@ -759,10 +785,8 @@ function createWibtypeInfoFieldInfoString(wibDataTypeId, required) {
 }
 
 function css_addClass(elemId, classNameToAdd) {
-if (elemId == "aChangeDoneStatus_Undone") console.log("css_addClass() start, elemId=" + elemId + ", classNameToAdd=" + classNameToAdd); 
   var theElem = elem(elemId);
   theElem.classList.add(classNameToAdd);
-if (elemId == "aChangeDoneStatus_Undone") console.log("css_addClass() start, theElem.classList=" + theElem.classList); 
 }
 
 function css_removeAllColors(elemId) {
@@ -778,9 +802,7 @@ function css_removeClass(elemId, classNameToRemove) {
 }
 
 function css_setElemToDoneStatusColor(elemId, doneStatusCode) {
-if (elemId == "aChangeDoneStatus_Undone") console.log("css_setElemToDoneStatusColor() start, elemId=" + elemId + ", doneStatusCode=" + doneStatusCode); 
-  var doneStatusCssClassNameColor = getDoneStatusCssClassNameColor(doneStatusCode, elemId); // TO-DO1: remove elemeId argument (dev only)
-if (elemId == "aChangeDoneStatus_Undone") console.log("css_setElemToDoneStatusColor() middle, doneStatusCssClassNameColor=" + doneStatusCssClassNameColor); 
+  var doneStatusCssClassNameColor = getDoneStatusCssClassNameColor(doneStatusCode);
   css_removeAllColors(elemId);
 
   //only add a css-class for the color, if we received a color-name back
@@ -794,9 +816,14 @@ function da(text) {
   alert(text);
 }
 
-function deactivateItem(itemId) {
-  app.activatedItemId = null;
-  elem(getHtml_trActivated(itemId)).style.display = "none" ;
+function dc(text) {
+  console.log(text);
+}
+
+function deactivateItemForReordering(itemId) {
+  app.reordering_activatedItemId = null;
+  css_removeClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
+  elem(getHtml_reorderingActivated_tr(itemId)).style.display = "none" ;
 }
 
 function deleteFromDatastore(itemKey) {
@@ -820,24 +847,19 @@ function deleteItem(itemIdToDelete) {
   return true;
 }
 
-function disableGrabbing() {
-  app.grabbing_itemId1 = null;
-  app.grabbing_itemId2 = null;
-  app.grabbing_itemIdArray = [];
-  app.grabbingEnabled = false;
-}
-
 function displayPage(pageName) {
   elem("dvPage_Dev").style.display = "none";
   elem("dvPage_BackupExport").style.display = "none";
   elem("dvPage_BackupImport").style.display = "none";
-  elem("dvPage_GrabbingMove").style.display = "none";
+  elem("dvPage_MoveOrCopy").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_Wibtypes").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "inline-grid";
+
+  elem("spnAppHeader_Home").style.display = "";
 
   switch (pageName) {
 
@@ -850,19 +872,21 @@ function displayPage(pageName) {
       elem("taBackupTextToImport").focus();
       break;
 
-    case "GrabbingMove":
+    case "MoveOrCopy":
+      elem("spnAppHeader_Home").style.display = "none";
       if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
-        //single-item-grab
-        elem("spnGrabbingMove_FromList").innerHTML = grabItemObj(app.itemObj.displayedOnList_itemId).itemName;
+        //single-item-move-or-copy
+        elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(app.itemObj.displayedOnList_itemId).itemName + "</i>";
       } else {
-        elem("spnGrabbingMove_FromList").innerHTML = app.itemObj.itemName;
+        elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + app.itemObj.itemName + "</i>";
       }
 
-      elem("dvGrabbingMove_Items").innerHTML = writeHtml_GrabbingMove_Items();
-      elem("dvGrabbingMove_ListOptions").innerHTML = writeHtml_GrabbingMove_ListOptions();
+      elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
+      elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo();
       break;
 
     case "Home":
+      elem("spnAppHeader_Home").style.display = "none";
       if (!app.itemObj) {
         setAppItemObj(grabItemObjByName(CONST_listName_homePage));
       }
@@ -892,9 +916,8 @@ function displayPage(pageName) {
           for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
             let curItemObjForLoop = grabItemObj(app.itemObj.joinedLists_itemIds[0])
 
-            if (curItemObjForLoop.displayCode == "1") {
+            if (curItemObjForLoop.displayCode == CONST_displayCode_normal) {
               elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
-              elem("spnMoveToDifferentList").style.display = "";
               hasDisplayedLists = true;
               app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
 
@@ -922,14 +945,19 @@ function displayPage(pageName) {
         }
 
         if (app.itemObj.isWibtype == "1") {
-          elem("spnMoveToDifferentList").style.display = "none";
+          elem("spnViewItem_MoveCopy").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "";
           elem("spnViewItem_Delete").style.display = "none";
         } else if (app.itemObj.isWibtypeInfoField == "1") {
-          elem("spnMoveToDifferentList").style.display = "none";
+          elem("spnViewItem_MoveCopy").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_Delete").style.display = "none";
         } else {
+          if (app.itemObj.isList == "0") {
+            elem("spnViewItem_MoveCopy").style.display = "";
+          } else {
+            elem("spnViewItem_MoveCopy").style.display = "none";
+          }
           elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_Delete").style.display = "";
         }
@@ -1010,6 +1038,10 @@ function displayPage(pageName) {
             elem("dvViewItem_ListMembers_No").style.display = "";
             elem("dvViewItem_ListMembers_Items").innerHTML = "";
           }
+        }
+
+        if (app.reordering_activatedItemId) {
+          css_addClass(getHtml_aItem(app.reordering_activatedItemId), CONST_cssClassName_bold);
         }
       }
       break;
@@ -1143,30 +1175,17 @@ function getDoneStatusDisplay(doneStatusCode) {
 }
 
 function getDoneStatusCssClassNameColor(doneStatusCode, dev__elemId) {
-
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() start, dev__elemId=" + dev__elemId + ", doneStatusCode=" + doneStatusCode); 
-
   var cssClassNameColor;
 
   if ( isEqual(doneStatusCode, CONST_doneStatusCode_done) ) {
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_done) TRUE (CONST_doneStatusCode_done=" + CONST_doneStatusCode_done); 
     cssClassNameColor = CONST_cssClassName_green;
-
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_notice) ) {
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_notice) TRUE (CONST_doneStatusCode_notice=" + CONST_doneStatusCode_notice); 
     cssClassNameColor = CONST_cssClassName_red;
-
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_okay) ) {
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_okay) TRUE (CONST_doneStatusCode_okay=" + CONST_doneStatusCode_okay); 
     cssClassNameColor = CONST_cssClassName_brown;
-
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_undone) ) {
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() middle, isEqual(doneStatusCode, CONST_doneStatusCode_undone) TRUE (CONST_doneStatusCode_undone=" + CONST_doneStatusCode_undone); 
     cssClassNameColor = "";
-
   }
-
-if (dev__elemId == "aChangeDoneStatus_Undone") console.log("getDoneStatusCssClassNameColor() end, cssClassNameColor=" + cssClassNameColor); 
 
   return cssClassNameColor;
 }
@@ -1191,22 +1210,6 @@ function getElemVal(elemId) {
   }
 
   return elemVal;
-}
-
-function getElemFromObjArray_dev(theArray, propName, propValToMatch) {
-  var revisedArray = theArray.filter( (arrayElem) => {
-    var returnValue = false;
-    if ( isEqual(arrayElem[propName], propValToMatch) ) {
-      returnValue = true;
-    }
-    return returnValue;
-  });
-
-  if (revisedArray.length == 0) {
-    return null;
-  } else {
-    return revisedArray[0];
-  }
 }
 
 function getElemFromObjArray(theArray, propName, propValToMatch) {
@@ -1250,8 +1253,16 @@ function getHtml_aItem(itemId) {
   return "aItem_" + itemId;
 }
 
-function getHtml_dvReorderItemInstructions(itemId) {
-  return "dvReorderItemInstructions_" + itemId;
+function getHtml_reorderingActivated_tr(itemId) {
+  return "trActivatedForReordering_" + itemId;
+}
+
+function getHtml_reorderingModeIs_normal_tblOptions(itemId) {
+  return "reorderingModeIs_normal_tblOptions_" + itemId;
+}
+
+function getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId) {
+  return "reorderingModeIs_moveToOtherItem_dvInstructions_" + itemId;
 }
 
 function getHtml_selectElem(selectElemId, includeBlank, theArray, defValue, theStyle, onChange, blankDisplay, isDisabled) {
@@ -1297,14 +1308,6 @@ function getHtml_selectElem(selectElemId, includeBlank, theArray, defValue, theS
   html += "</select>\n";
 
   return html;
-}
-
-function getHtml_tblReorderChoices(itemId) {
-  return "tblReorderChoices_" + itemId;
-}
-
-function getHtml_trActivated(itemId) {
-  return "trActivated_" + itemId;
 }
 
 function getIdArray(string_ids){
@@ -1439,25 +1442,130 @@ function getWibDataTypesAsArray() {
   return theArray;
 }
 
+function getWithLeadingZeroes(startingVal, resultingNumberStringLength) {
+  //TO-DO2: allow >5 total string length
+
+  resultingNumberStringLength = parseInt(resultingNumberStringLength);
+  if (resultingNumberStringLength > 5) throw("ERROR: getWithLeadingZeroes limited to resultingNumberStringLength <= 4");
+  if (resultingNumberStringLength < 2) throw("ERROR: getWithLeadingZeroes requires resultingNumberStringLength >= 1");
+
+  if ( isBlank(startingVal) ) return "";
+
+  if ( !isNumeric(startingVal) ) return "";
+
+  var endingVal = "";
+  startingVal = parseInt(startingVal);
+
+  if (startingVal < 10) {
+    if (resultingNumberStringLength == 2) { endingVal = "0" + String(startingVal);
+    } else if (resultingNumberStringLength == 3) { endingVal = "00" + String(startingVal);
+    } else if (resultingNumberStringLength == 4) { endingVal = "000" + String(startingVal);
+    } else if (resultingNumberStringLength == 5) { endingVal = "0000" + String(startingVal);
+    }
+  } else if (startingVal < 100) {
+    if (resultingNumberStringLength == 3) { endingVal = "0" + String(startingVal);
+    } else if (resultingNumberStringLength == 4) { endingVal = "00" + String(startingVal);
+    } else if (resultingNumberStringLength == 5) { endingVal = "000" + String(startingVal);
+    }
+  } else if (startingVal < 1000) {
+    if (resultingNumberStringLength == 4) { endingVal = "0" + String(startingVal);
+    } else if (resultingNumberStringLength == 5) { endingVal = "00" + String(startingVal);
+    }
+  } else if (startingVal < 10000) {
+    if (resultingNumberStringLength == 5) { endingVal = "0" + String(startingVal); }
+  }
+
+  return endingVal;
+}
+
 function goToItemView(itemId, maintainActivatedItem) {
   if ( !isBlank(itemId) ) {
     setAppItemObj(grabItemObj(itemId));
   }
-  if (!maintainActivatedItem) {
-    app.activatedItemId = null;
+
+  if ( !isBlank(app.reordering_activatedItemId) ) {
+    if (!maintainActivatedItem) {
+      css_addClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
+    }
   }
 
   displayPage("ViewItem");
-  stopGrabbingItems();
+  toggleGrabbing_off();
+}
 
-  if ( !isBlank(app.reorderItemId) ) {
-    app.reorderItemId = null;
+
+
+
+
+function transferItemInfo_stringToObject(itemInfoString, itemInfoObj) {
+  var itemInfoArray = transferItemInfo_stringToArray(itemInfoString);
+  transferItemInfo_arrayToObject(itemInfoArray, itemInfoObj);
+}
+
+function transferItemInfo_stringToArray(itemInfoString) {
+  return itemInfoString.split(sD);
+}
+
+function transferItemInfo_arrayToObject(itemInfoArray, itemInfoObj) {
+  var iit = new itemInfoTransfer();
+  iit.receiveArray(itemInfoArray);
+  iit.setObj(itemInfoObj);
+}
+
+function transferItemInfo_objectToString(itemInfoObject) {
+//TO-DO1.5
+}
+
+var getItemInfoTransfer = function() {
+  var itemInfoValues;
+  var itemInfoNames = [];
+
+  itemInfoNames.push("itemName");
+  itemInfoNames.push("doneStatusCode");
+  itemInfoNames.push("displayCode");
+  itemInfoNames.push("isList");
+  itemInfoNames.push("notes");
+  itemInfoNames.push("isWibtype");
+  itemInfoNames.push("isWibtypeInfoField");
+
+  return {
+    getDisplay: function() {
+      let text = "";
+      for (let i = 0; i < itemInfoValues.length; i++) {
+      if (i > 0) text += "\n";
+        text += itemInfoNames[i] + ": " + itemInfoValues[i];
+      }
+      return text;
+    },
+    
+    receiveArray: function(itemInfoArray) {
+      itemInfoValues = [];
+      for (let i = 0; i < itemInfoArray.length; i++ ) {
+        itemInfoValues.push(itemInfoArray[i]);
+      }
+    },
+    
+    receiveString: function(itemInfoString) {
+      itemInfoValues = itemInfoString.split(sD);
+    },
+
+    setObj: function(itemInfoObj) {
+      itemInfoNames.forEach( (itemInfoName, idx) => {
+        itemInfoObj[itemInfoName] = itemInfoValues[idx];
+      } );
+    }
   }
+};
+
+function getItemInfoStringDisplay(itemInfoString) {
+  var iit = getItemInfoTransfer();
+  iit.receiveString(itemInfoString);
+  return iit.getDisplay();
 }
 
-function goToGrabbingMove() {
-  displayPage("GrabbingMove");
-}
+
+
+
 
 function grabItemObj(itemId) {
   var i, saveKeyText_item, itemObj, itemInfoString, itemDataArray;
@@ -1706,7 +1814,7 @@ function itemObjFactory() {
   itemObj.itemId = null;
   itemObj.itemName = "";
   itemObj.doneStatusCode = CONST_doneStatusCode_undone;
-  itemObj.displayCode = "1";
+  itemObj.displayCode = CONST_displayCode_normal;
   itemObj.isList = "0";
   itemObj.notes = "";
   itemObj.joinedLists_itemIds = [];
@@ -1836,6 +1944,18 @@ function itemObjFactory() {
     return firstListItemId;
   };
 
+  itemObj.copyToList = function(listToCopyTo_itemId) {
+    // TO-DO2: need to handle attempt to copy-to-list that this item is already a member of
+
+    // double-check that this is not a wib or witf -- shouldn't be allowed to be copied through UI, but double-checking here due to importance of the wibtype system
+    // TO-DO2: implement this in additional places
+    if (this.isWibtype == "1" || this.isWibtypeInfoField == "1") {
+      throw("ERROR: disallowed operation on a type entry or on a type info-field");
+    }
+  
+    makeNewItem(this.doneStatusCode, null, null, "0", "0", false, this.itemName, null, this.displayCode, this.isList, listToCopyTo_itemId)
+  };
+
   itemObj.getListMemberDataObjs = function() {
     var saveKeyText_listMembers_ofItem, listMembers_string, listMembers_array, i, curListMemberDataObj, listMemberDataObjs = [];
 
@@ -1849,7 +1969,7 @@ function itemObjFactory() {
     }
 
     //for now, we will sort the array by sortPosition every time; in the future, this could be provided as a separate function
-    listMemberDataObjs.sort(sortingObjects(CONST_propName_sortPosition));
+    listMemberDataObjs.sort( sortingObjects_numeric(CONST_propName_sortPosition) );
 
     return listMemberDataObjs;
   };
@@ -2055,7 +2175,7 @@ function itemObjFactory() {
   return itemObj;
 }
 
-function makeNewItem(wibDataTypeId, required, isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
+function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
   var newItemObj, allItemIds_string, allItemIds_array, i, itemId_toCheck, maxItemId;
 
   // if not passed, get item name
@@ -2066,7 +2186,7 @@ function makeNewItem(wibDataTypeId, required, isWibtypeInfoField, isWibtype, ove
   }
 
   if (!overrideDisallowName) {
-    // TO-DO2: prevent duplication of Time-Tracking wtif names
+    // TO-DO2: prevent creation/renaming of duplicate wtif names
     if ( !itemNameIsAllowed(itemName) ) {
       return false;
     }
@@ -2085,21 +2205,28 @@ function makeNewItem(wibDataTypeId, required, isWibtypeInfoField, isWibtype, ove
   }
   newItemObj.itemId = parseInt(maxItemId) + 1;
 
-  // save item-info to datastore
+  // set new-item-object values from function arguments received
+  if ( !isBlank(doneStatusCode) ) newItemObj.doneStatusCode = doneStatusCode;
+
   if (isWibtypeInfoField == "1") {
     newItemObj.isWibtypeInfoField = "1";
   } else {
     newItemObj.isWibtypeInfoField = "0";
   }
+
   if (isWibtype == "1") {
     newItemObj.isWibtype = "1";
   } else {
     newItemObj.isWibtype = "0";
   }
+
   newItemObj.itemName = itemName;
   if ( !isBlank(displayCode) ) newItemObj.displayCode = displayCode;
   if ( !isBlank(isList) ) newItemObj.isList = isList;
   newItemObj.notes = "";
+
+
+  // save item-info to datastore
   newItemObj.saveItemInfoToDatastore();
 
   // if is-list, make into a list
@@ -2129,8 +2256,42 @@ function makeNewItem(wibDataTypeId, required, isWibtypeInfoField, isWibtype, ove
   return newItemObj;
 }
 
-function reorderItemToOtherItem(otherItemId) {
-  if ( walkSortPosition(app.itemObj, app.reorderItemId, null, false, false, otherItemId) ) {
+function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
+  var singleItemGrab, sourceList_itemObj, targetList_itemObj;
+
+  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+    singleItemGrab = true;
+    sourceList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+  } else {
+    singleItemGrab = false;
+    sourceList_itemObj = app.itemObj;
+  }
+
+  targetList_itemObj = grabItemObj(selectedList_itemId);
+
+  if (aO_action.a == "move") {
+    transferItems(sourceList_itemObj, targetList_itemObj, app.grabbing_itemIdArray);
+  } else {
+    copyItems(sourceList_itemObj, targetList_itemObj, app.grabbing_itemIdArray);
+  }
+
+  toggleGrabbing_off();
+
+  if (singleItemGrab) {
+    //reset the display-item-object -- still is correct itemId-property in app.itemObj, but list-membership change means we need to reset the app.itemObj by re-passing in its item-id
+    goToItemView(app.itemObj.itemId, false);
+  } else {
+    //display the item-object for the list where the grabbed-items where moved or copied to
+    goToItemView(selectedList_itemId, false);
+  }
+}
+
+function reorderActivatedItemToOtherItem(otherItemId) {
+  var listItemObj = app.itemObj;
+  var itemIdToMove = app.reordering_activatedItemId;
+  var targetItemId = otherItemId;
+
+  if ( walkSortPosition(listItemObj, itemIdToMove, null, false, false, targetItemId) ) {
     goToItemView(null, true);
   }
 }
@@ -2210,18 +2371,6 @@ function setElemVal(elemId, elemVal) {
 
     default:
       theElem.value = elemVal;
-  }
-}
-
-function setGrabItem(itemId) {
-  // OLD: elem(getHtml_aItem(itemId)).style.color = "red";
-  css_addClass(getHtml_aItem(itemId), CONST_cssClassName_red);
-
-  if ( isBlank(app.grabbing_itemId1) ) {
-    app.grabbing_itemId1 = itemId;
-  } else {
-    app.grabbing_itemId2 = itemId;
-    goToGrabbingMove();
   }
 }
 
@@ -2332,13 +2481,26 @@ function showPopUp(popUpCode, popUpFocusElem) {
   }
 }
 
-function sortingObjects(propNameToSortBy) {
+function sortingObjects_alphabetic(propNameToSortBy) {
   return function(objA, objB) {
     var comparisonCode;
 
-    if ( parseInt(objA[propNameToSortBy]) < parseInt(objB[propNameToSortBy]) ) {
+    var aIsBlank = isBlank(objA[propNameToSortBy]);
+    var bIsBlank = isBlank(objB[propNameToSortBy]);
+
+    var aString, bString;
+    if (!aIsBlank) aString = String(objA[propNameToSortBy]).toLowerCase();
+    if (!bIsBlank) bString = String(objB[propNameToSortBy]).toLowerCase();
+
+    if ( aIsBlank && bIsBlank ) {
+      comparisonCode = 0;
+    } else if (aIsBlank && !bIsBlank) {
+      comparisonCode = 1;
+    } else if (!aIsBlank && bIsBlank) {
       comparisonCode = -1;
-    } else if ( parseInt(objA[propNameToSortBy]) > parseInt(objB[propNameToSortBy]) ) {
+    } else if (aString < bString) {
+      comparisonCode = -1;
+    } else if (aString > bString) {
       comparisonCode = 1;
     } else {
       comparisonCode = 0;
@@ -2348,33 +2510,28 @@ function sortingObjects(propNameToSortBy) {
   };
 }
 
-function startGrabbingItems() {
-  app.grabbing_itemId1 = null;
-  app.grabbing_itemId2 = null;
-  app.grabbing_itemIdArray = [];
+function sortingObjects_numeric(propNameToSortBy) {
+  return function(objA, objB) {
+    var comparisonCode;
+    var aIsBlank = isBlank(objA[propNameToSortBy]);
+    var bIsBlank = isBlank(objB[propNameToSortBy]);
 
-  // OLD: elem("aGrabItems1").style.color = "red";
-  css_addClass("aGrabItems1", CONST_cssClassName_red);
+    if ( aIsBlank && bIsBlank ) {
+      comparisonCode = 0;
+    } else if (aIsBlank && !bIsBlank) {
+      comparisonCode = 1;
+    } else if (!aIsBlank && bIsBlank) {
+      comparisonCode = -1;
+    } else if ( parseInt(objA[propNameToSortBy]) < parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = -1;
+    } else if ( parseInt(objA[propNameToSortBy]) > parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = 1;
+    } else {
+      comparisonCode = 0;
+    }
 
-  // OLD: elem("aGrabItems2").style.color = "red";
-  css_addClass("aGrabItems2", CONST_cssClassName_red);
-
-  app.grabbingEnabled = true;
-}
-
-function stopGrabbingItems() {
-  // OLD: elem("aGrabItems1").style.color = "";
-  css_removeClass("aGrabItems1", CONST_cssClassName_red);
-
-  // OLD: elem("aGrabItems2").style.color = "";
-  css_removeClass("aGrabItems2", CONST_cssClassName_red);
-
-  if ( !isBlank(app.grabbing_itemId1) ) {
-    // OLD: elem(getHtml_aItem(app.grabbing_itemId1)).style.color = "";
-  css_removeClass(getHtml_aItem(app.grabbing_itemId1), CONST_cssClassName_red);
-  }
-
-  disableGrabbing();
+    return comparisonCode;
+  };
 }
 
 function swapSortPosition(itemId, moveUp, moveAmt) {
@@ -2413,22 +2570,84 @@ function swapSortPosition(itemId, moveUp, moveAmt) {
   return false;
 }
 
-function transferItems(oldListObj, newListObj, memberItems_idArray) {
-  var i;
+function toggleGrabbing_off() {
+  css_removeClass("aGrabItems1", CONST_cssClassName_red);
+  css_removeClass("aGrabItems2", CONST_cssClassName_red);
 
-  for (i = 0; i < memberItems_idArray.length; i++) {
-    let curItemObj = grabItemObj(memberItems_idArray[i]);
+  if ( !isBlank(app.grabbing_itemId1) ) {
 
-    curItemObj.joinList(newListObj.itemId);
-    curItemObj.leaveList(oldListObj.itemId);
+    // the HTML element for app.grabbing_itemId1 may or may not exist, depending on which display-page this function is called from
+    
+    let grabbingElemId1 = getHtml_aItem(app.grabbing_itemId1);
+
+    if ( !isBlank(elem(grabbingElemId1) ) ) {
+      css_removeClass(grabbingElemId1, CONST_cssClassName_bold);
+    }
+
   }
+
+  app.grabbing_itemId1 = null;
+  app.grabbing_itemId2 = null;
+  app.grabbing_itemIdArray = [];
+  app.grabbingOn = false;
 }
 
-function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, moveToItemId) {
+function toggleGrabbing_on() {
+  app.grabbing_itemId1 = null;
+  app.grabbing_itemId2 = null;
+  app.grabbing_itemIdArray = [];
+  app.grabbingOn = true;
+
+  css_addClass("aGrabItems1", CONST_cssClassName_red);
+  css_addClass("aGrabItems2", CONST_cssClassName_red);
+}
+
+function toggleReordering_off() {
+  css_removeClass("aReorder1", CONST_cssClassName_red);
+  css_removeClass("aReorder2", CONST_cssClassName_red);
+
+  if ( !isBlank(app.reordering_activatedItemId) ) {
+    deactivateItemForReordering(app.reordering_activatedItemId);
+  }
+
+  app.reorderingOn = false;
+  app.reordering_mode = null;
+}
+
+function toggleReordering_on() {
+  app.reorderingOn = true;
+  app.reordering_mode = CONST_reordering_mode_normal;
+
+  css_addClass("aReorder1", CONST_cssClassName_red);
+  css_addClass("aReorder2", CONST_cssClassName_red);
+}
+
+function toggleReorderingMode_normal(itemId) {
+  app.reordering_mode = CONST_reordering_mode_normal;
+  elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "";
+  elem(getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId)).style.display = "none";
+}
+
+function toggleReorderingMode_moveToOtherItem(itemId) {
+  app.reordering_mode = CONST_reordering_mode_moveToOtherItem;
+  elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "none";
+  elem(getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId)).style.display = "";
+}
+
+function transferItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
+  listMembers_itemIdArray.forEach( (curItemId) => {
+    let curItemObj = grabItemObj(curItemId);
+
+    curItemObj.joinList(targetListObj.itemId);
+    curItemObj.leaveList(sourceListObj.itemId);
+  } );
+}
+
+function walkSortPosition(listItemObj, itemIdToMove, moveAmt, moveToTop, moveToEnd, targetItemId) {
   var memberItemObj, list_memberDataObjs, i, movedAtLeastOneSpot = false;
 
   //grab item-object for the item-being-walked, and the array of list-member-data-objects for the list
-  memberItemObj = grabItemObj(itemId);
+  memberItemObj = grabItemObj(itemIdToMove);
   list_memberDataObjs = listItemObj.getListMemberDataObjs();
 
   //cycle through all list-member-data-objects for the list, until we find our item that is being walked
@@ -2449,11 +2668,11 @@ function walkSortPosition(listItemObj, itemId, moveAmt, moveToTop, moveToEnd, mo
         requestedNewIndex = 0;
       } else if (moveToEnd) {
         requestedNewIndex = list_memberDataObjs.length - 1;
-      } else if ( !isBlank(moveToItemId) ) {
+      } else if ( !isBlank(targetItemId) ) {
         //need to grab the current index of the requested item-to-move-to
         for (let j = 0; j < list_memberDataObjs.length; j++) {
           let memberDataObj_toCheck = list_memberDataObjs[j];
-          if ( isEqual(memberDataObj_toCheck.itemId, moveToItemId) ) {
+          if ( isEqual(memberDataObj_toCheck.itemId, targetItemId) ) {
             //found the requested item-to-move-to
             requestedNewIndex = j;
           }
@@ -2540,7 +2759,7 @@ function writeBackupExport() {
   elem("taExportedBackupText").select();
 }
 
-function writeHtml_GrabbingMove_Items() {
+function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
   var singleItemGrab, displayList_itemObj, curList_listMemberDataObjs, html, i, firstGrabbingItemId = null, secondGrabbingItemId = null, firstWas1 = false, firstWas2 = false, wroteFirstHtmlRow = false;
 
   if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
@@ -2634,7 +2853,7 @@ function writeHtml_GrabbingMove_Items() {
       html += " <tr style='height: 2px'><td></td></tr>\n";
       html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
       html += " </table>\n";
-      html += "</td><td style='width: 0.5em'></td><td>" + curItemObj.itemName + "</td></tr>\n";
+      html += "</td><td style='width: 0.5em'></td><td><i>" + curItemObj.itemName + "</i></td></tr>\n";
 
       wroteFirstHtmlRow = true;
 
@@ -2655,8 +2874,11 @@ function writeHtml_GrabbingMove_Items() {
   return html;
 }
 
-function writeHtml_GrabbingMove_ListOptions() {
-  var singleItemGrab, displayList_itemId, allItemIds_string, allItemIds_array, html = "", i, wroteFirstHtmlRow = false;
+function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
+  var singleItemGrab, displayList_itemId, allItemIds_string, allItemIds_array, html = "", i, wroteFirstHtmlRow = false, listItemObjsToDisplay = [];
+  var sortingPropName = CONST_propName_itemName + "_forSorting";
+  var homePageList_itemObj = grabItemObj(app.homePageList_itemId);
+  var homePageList_listMemberDataObjs = homePageList_itemObj.getListMemberDataObjs();
 
   if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
     singleItemGrab = true;
@@ -2676,22 +2898,22 @@ function writeHtml_GrabbingMove_ListOptions() {
     let curItemId = allItemIds_array[i];
     let curItemObj = grabItemObj(curItemId)
 
-    //don't write the display-list that holds the grabbed-items:
+    // don't write the display-list that holds the grabbed-items:
     if ( isEqual(displayList_itemId, curItemId) ) {
       continue;
     }
 
-    //don't write non-list items:
+    // don't write non-list items:
     if (curItemObj.isList == "0") {
       continue;
     }
 
-    //don't write items without displayCode 1:
-    if ( !isEqual(curItemObj.displayCode, "1") ) {
+    // don't write hidden1 items
+    if ( !isEqual(curItemObj.displayCode, CONST_displayCode_normal) ) {
       continue;
     }
 
-    //don't write items from the list of grabbed-items
+    // don't write items from the list of grabbed-items
     for (j = 0; j < app.grabbing_itemIdArray.length; j++) {
       if ( isEqual(app.grabbing_itemIdArray[j], curItemId) ) {
         skipThisItem = true;
@@ -2702,17 +2924,45 @@ function writeHtml_GrabbingMove_ListOptions() {
       continue;
     }
 
-    //everything else is okay to write as an available list to move the grabbed-items to
-    if (wroteFirstHtmlRow) {
-        html += "<tr style='height: 1.6em'><td></td><td></td></tr>\n";
+    // everything else is okay to write as an available list to move the grabbed-items to
+    // -> push the current-item-object to the designated array
+    //     (after adding a sort-column that will put home-page-list items first)
+
+    if ( isEqual(curItemObj.joinedLists_itemIds[0], app.homePageList_itemId) ) {
+      let curListMemberDataObj = getElemFromObjArray(homePageList_listMemberDataObjs, CONST_propName_itemId, curItemObj.itemId);
+      curItemObj[sortingPropName] = getWithLeadingZeroes(curListMemberDataObj.sortPosition, 5) + "_" + curItemObj.itemName;
+    } else {
+      curItemObj[sortingPropName] = "99999_" + curItemObj.itemName;
     }
 
-    html += "<tr><td>\n";
-    html += " <table cellspacing=0 cellpadding=0>\n";
-    html += " <tr style='height: 2px'><td></td></tr>\n";
-    html += " <tr><td style='color: black; font-size: 125%'>&bull;</td></tr>\n";
-    html += " </table>\n";
-    html += "</td><td style='width: 0.5em'></td><td><a href='javascript:void choose_target_list(\"" + curItemId + "\")'>" + curItemObj.itemName + "</a></td></tr>\n";
+    listItemObjsToDisplay.push(curItemObj);
+  }
+
+  // sort the array of list-item-objects we will be displaying
+  listItemObjsToDisplay.sort( sortingObjects_alphabetic(sortingPropName) );
+
+  //loop through sorted array of list-item-objects to build the associated html
+  for (i = 0; i < listItemObjsToDisplay.length; i++) {
+    let curListItemObj = listItemObjsToDisplay[i];
+
+    if (wroteFirstHtmlRow) {
+        html += "<tr style='height: 1.8em'><td colspan=2></td></tr>\n";
+    }
+
+    html += "<tr><td colspan=2>" + curListItemObj.itemName + "</td></tr>\n";
+    html += "<tr style='height: 0.2em'><td colspan=2></td></tr>\n";
+    if ( !isBlank(curListItemObj.joinedLists_itemIds[0]) ) {
+      let parentListObj = grabItemObj(curListItemObj.joinedLists_itemIds[0]);
+      let parentListName = parentListObj.itemName;
+      if (parentListName == CONST_listName_homePage) parentListName = "Home";
+      html += "<tr><td colspan=2 style='font-size: 95%'>&nbsp;&nbsp;> " + parentListName + "</td></tr>\n";
+      html += "<tr style='height: 0.2em'><td colspan=2></td></tr>\n";
+    }
+
+    html += "<tr><td style='width: 0.0em'></td><td>\n";
+    html += " <a href='javascript:void move_to_this_list(\"" + curListItemObj.itemId + "\")'>move here</a>\n";
+    html += " &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void copy_to_this_list(\"" + curListItemObj.itemId + "\")'>copy here</a>\n";
+    html += "</td></tr>\n";
 
     wroteFirstHtmlRow = true;
   }
@@ -2783,7 +3033,7 @@ function writeHtml_Items(mainItemObj) {
       {
         ttDisplayForItem = "";
         if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibTypeItemId) ) {
-          let tt_wtifYMD_dataObj = getElemFromObjArray_dev(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
+          let tt_wtifYMD_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
           let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
           let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
 
@@ -2807,10 +3057,10 @@ function writeHtml_Items(mainItemObj) {
       if (ttDisplayForItem) html += "<br /><span style='font-size: 90%'>" + ttDisplayForItem + "</span>";
       html += "</td></tr>\n";
       html += "<tr style='height: 0.8em'><td colspan=3></td></tr>\n"
-      html += "<tr id='" + getHtml_trActivated(curItemId) + "' style='display: "
-      if ( ! isEqual(curItemId, app.activatedItemId) ) html += "none";
+      html += "<tr id='" + getHtml_reorderingActivated_tr(curItemId) + "' style='display: "
+      if ( ! isEqual(curItemId, app.reordering_activatedItemId) ) html += "none";
       html += "'><td style='height: 1em' colspan=2></td><td>\n";
-      html += " <table id='" + getHtml_tblReorderChoices(curItemId) + "' cellspacing=0 cellpadding=0>\n";
+      html += " <table id='" + getHtml_reorderingModeIs_normal_tblOptions(curItemId) + "' cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_to_other_item(\"" + curItemId + "\")'>move to other item</a>\n";
       html += " </td></tr>\n";
@@ -2835,7 +3085,7 @@ function writeHtml_Items(mainItemObj) {
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_to_end(\"" + curItemId + "\")'>to end</a>\n";
       html += " </td></tr>\n";
       html += " </table>\n";
-      html += " <div id='" + getHtml_dvReorderItemInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></div>\n";
+      html += " <div id='" + getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></div>\n";
       html += "</td></tr>\n";
     }
 
@@ -3011,7 +3261,7 @@ function cancel_make_new_type_info_field() {
 }
 
 function cancel_move() {
-  disableGrabbing();
+  toggleGrabbing_off();
   goToItemView(null, false);
 }
 
@@ -3062,31 +3312,6 @@ function change_storage_key_name(curKeyName) {
   show_storage();
 }
 
-function choose_target_list(newList_itemId) {
-  var singleItemGrab, oldList_itemObj, newList_itemObj;
-
-  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
-    singleItemGrab = true;
-    oldList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
-  } else {
-    singleItemGrab = false;
-    oldList_itemObj = app.itemObj;
-  }
-
-  newList_itemObj = grabItemObj(newList_itemId);
-  transferItems(oldList_itemObj, newList_itemObj, app.grabbing_itemIdArray);
-
-  disableGrabbing();
-
-  if (singleItemGrab) {
-    //reset the display-item-object -- still is correct itemId-property in app.itemObj, but list-membership change means we need to reset the app.itemObj by re-passing in its item-id
-    goToItemView(app.itemObj.itemId, false);
-  } else {
-    //display the item-object for the list where the grabbed-items where transferred to
-    goToItemView(newList_itemId, false);
-  }
-}
-
 function clear_storage() {
   var clearStoragePrompt;
   
@@ -3100,38 +3325,63 @@ function clear_storage() {
   }
 }
 
-function click_item(itemId) {
-  if (app.grabbingEnabled) {
-    setGrabItem(itemId);
-    return;
-  }
+function click_item(itemIdThatWasClicked) {
 
-  if (app.reorderEnabled) {
+  if (app.reorderingOn) {
 
-    if ( !isBlank(app.reorderItemId) ) {
-      reorderItemToOtherItem(itemId);      
-    } else if ( isBlank(app.activatedItemId) ) {
-      activateItem(itemId);
+    if ( isBlank(app.reordering_activatedItemId) ) {
+
+      activateItemForReordering(itemIdThatWasClicked);
+
+    } else if ( isEqual(itemIdThatWasClicked, app.reordering_activatedItemId) ) {
+
+      deactivateItemForReordering(app.reordering_activatedItemId);
+
+    } else if (app.reordering_mode == CONST_reordering_mode_normal) {
+
+      deactivateItemForReordering(app.reordering_activatedItemId);
+      activateItemForReordering(itemIdThatWasClicked);
+
+    } else if (app.reordering_mode == CONST_reordering_mode_moveToOtherItem) {
+      reorderActivatedItemToOtherItem(itemIdThatWasClicked);      
+
+    }
+
+  } else if (app.grabbingOn) {
+
+    if ( isBlank(app.grabbing_itemId1) ) {
+
+      css_addClass(getHtml_aItem(itemIdThatWasClicked), CONST_cssClassName_bold);
+      app.grabbing_itemId1 = itemIdThatWasClicked;
+
+    } else if ( isEqual(itemIdThatWasClicked, app.grabbing_itemId1) ) {
+
+        css_removeClass(getHtml_aItem(itemIdThatWasClicked), CONST_cssClassName_bold);
+        app.grabbing_itemId1 = null;
+
     } else {
-      if ( isEqual(itemId, app.activatedItemId) ) {
-        goToItemView(itemId, false);
-      } else {
-        deactivateItem(app.activatedItemId);
-        activateItem(itemId);
-      }
+
+      app.grabbing_itemId2 = itemIdThatWasClicked;
+      displayPage("MoveOrCopy");
+
     }
 
   } else {
 
-    goToItemView(itemId, false);
+    goToItemView(itemIdThatWasClicked, false);
 
   }
+
 }
 
 function copy_imported_text_to_clipboard() {
   elem("taExportedBackupText").select();  
   document.execCommand("copy")
   alert("backup text copied to clipboard");
+}
+
+function copy_to_this_list(selectedList_itemId) {
+  moveOrCopyGrabbedItems(selectedList_itemId, aO("copy"))
 }
 
 function delete_item() {
@@ -3185,7 +3435,7 @@ function do_change_done_status(newDoneStatusDisplay) {
 }
 
 function do_make_new_item(makeCode) {
-  var itemName, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, newItemObj;
+  var itemName, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, doneStatusCode = null, newItemObj;
 
   if (makeCode == "line") {
     itemName = "--------------------";
@@ -3245,9 +3495,11 @@ function do_make_new_item(makeCode) {
     if ( isBlank(ttMinutesTracked) ) { alert("MinutesTracked is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
     if ( !isNumeric(ttMinutesTracked) ) { alert("MinutesTracked requires a numeric value"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
     if ( parseInt(ttMinutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
+
+    doneStatusCode = CONST_doneStatusCode_okay;
   }
 
-  newItemObj = makeNewItem(null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(doneStatusCode, null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
 
     if (topOfList == "1") {
@@ -3287,7 +3539,7 @@ function do_make_new_item(makeCode) {
     }
 
     hidePopUp("MakeNewItem");
-    displayPage("ViewItem");
+    goToItemView(null, true);
 
     if (addMoreItems == "1") {
       showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
@@ -3313,7 +3565,7 @@ function do_make_new_type() {
     return;
   }
 
-  newItemObj = makeNewItem(null, null, "0", "1", false, itemName, null, null, "1", app.itemObj.itemId);
+  newItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", false, itemName, null, CONST_displayCode_hidden1, "1", app.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtype");
     displayPage("Wibtypes");
@@ -3341,10 +3593,10 @@ function do_make_new_type_info_field() {
     return;
   }
 
-  newItemObj = makeNewItem(wibDataTypeId, required, "1", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(CONST_doneStatusCode_okay, wibDataTypeId, required, "1", "0", false, itemName, null, CONST_displayCode_hidden1, "0", app.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtypeInfoField");
-    displayPage("ViewItem");
+    goToItemView(null, false);
   }
 }
 
@@ -3384,10 +3636,11 @@ function go_to_list(itemId) {
 }
 
 function grab_items() {
-  if (app.grabbingEnabled) {
-    stopGrabbingItems();
+  if (app.grabbingOn) {
+    toggleGrabbing_off();
   } else {
-    startGrabbingItems();
+    toggleReordering_off();
+    toggleGrabbing_on();
   }
 }
 
@@ -3411,10 +3664,10 @@ function make_new_item() {
 function make_new_list() {
   var newItemObj;
 
-  newItemObj = makeNewItem(null, null, "0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
+  newItemObj = makeNewItem(null, null, null, "0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
   if ( newItemObj ) {
     setAppItemObj(newItemObj);
-    displayPage("ViewItem");
+    goToItemView(null, false);
   }
 }
 
@@ -3457,40 +3710,42 @@ function mark_all() {
   goToItemView(null, true);
 }
 
-function move_item_down(itemId, amount) {
-  if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount), false, false, null) ) {
+function move_item_down(itemIdToMove, amount) {
+  if ( walkSortPosition(app.itemObj, itemIdToMove, Math.abs(amount), false, false, null) ) {
     goToItemView(null, true);
   }
 }
 
-function move_item_to_end(itemId) {
-  if ( walkSortPosition(app.itemObj, itemId, null, false, true, null) ) {
+function move_item_to_end(itemIdToMove) {
+  if ( walkSortPosition(app.itemObj, itemIdToMove, null, false, true, null) ) {
     goToItemView(null, true);
   }
 }
 
-function move_item_to_other_item(itemId) {
-  app.reorderItemId = itemId;
-  elem(getHtml_tblReorderChoices(itemId)).style.display = "none";
-  elem(getHtml_dvReorderItemInstructions(itemId)).style.display = "";
+function move_item_to_other_item(itemIdToMove) {
+  toggleReorderingMode_moveToOtherItem(itemIdToMove);
 }
 
-function move_item_to_top(itemId) {
-  if ( walkSortPosition(app.itemObj, itemId, null, true, false, null) ) {
+function move_item_to_top(itemIdToMove) {
+  if ( walkSortPosition(app.itemObj, itemIdToMove, null, true, false, null) ) {
     goToItemView(null, true);
   }
 }
 
-function move_item_up(itemId, amount) {
-  if ( walkSortPosition(app.itemObj, itemId, Math.abs(amount) * -1, false, false, null) ) {
+function move_item_up(itemIdToMove, amount) {
+  if ( walkSortPosition(app.itemObj, itemIdToMove, Math.abs(amount) * -1, false, false, null) ) {
     goToItemView(null, true);
   }
 }
 
-function move_to_different_list() {
+function move_or_copy_to_different_list() {
   app.grabbing_itemId1 = app.itemObj.itemId;
   app.grabbing_itemId2 = null;
-  goToGrabbingMove();
+  displayPage("MoveOrCopy");
+}
+
+function move_to_this_list(selectedList_itemId) {
+  moveOrCopyGrabbedItems(selectedList_itemId, aO("move"))
 }
 
 function rename_item() {
@@ -3572,44 +3827,28 @@ function toggle_import_blocked() {
 }
 
 function toggle_more_options() {
-  if (app.moreOptionsEnabled) {
+  if (app.moreOptionsOn) {
+    toggleGrabbing_off();
     elem("dvMoreOptions1").style.display = "none";
     elem("dvMoreOptions2").style.display = "none";
     elem("aMoreOptions1").innerHTML = "more...";
     elem("aMoreOptions2").innerHTML = "more...";
-    app.moreOptionsEnabled = false;
+    app.moreOptionsOn = false;
   } else {
     elem("dvMoreOptions1").style.display = "";
     elem("dvMoreOptions2").style.display = "";
     elem("aMoreOptions1").innerHTML = "less...";
     elem("aMoreOptions2").innerHTML = "less...";
-    app.moreOptionsEnabled = true;
+    app.moreOptionsOn = true;
   }
 }
 
 function toggle_reorder() {
-  if (app.reorderEnabled) {
-    app.reorderEnabled = false;
-    app.reorderItemId = null;
-
-    // OLD: elem("aReorder1").style.color = "";
-    css_removeClass("aReorder1", CONST_cssClassName_red);
-
-    // OLD: elem("aReorder2").style.color = "";
-    css_removeClass("aReorder2", CONST_cssClassName_red);
-
-    if ( !isBlank(app.activatedItemId) ) {
-      deactivateItem(app.activatedItemId);
-    }
+  if (app.reorderingOn) {
+    toggleReordering_off();
   } else {
-    app.reorderEnabled = true;
-    app.reorderItemId = null;
-
-    // OLD: elem("aReorder1").style.color = "red";
-    css_addClass("aReorder1", CONST_cssClassName_red);
-
-    // OLD: elem("aReorder2").style.color = "red";
-    css_addClass("aReorder2", CONST_cssClassName_red);
+    toggleGrabbing_off();
+    toggleReordering_on()
   }
 }
 
@@ -3624,7 +3863,7 @@ function loadAppData() {
   /* if it does not exist, create a home-page-list item */ {
     homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
     if ( isBlank(homePageListItemObj) ) {
-      homePageListItemObj = makeNewItem(null, null, "0", "0", true, CONST_listName_homePage, null, "0", "1", null)
+      homePageListItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_homePage, null, CONST_displayCode_hidden1, "1", null)
     }
   }
 
@@ -3633,7 +3872,7 @@ function loadAppData() {
   /* if it does not exist, create a wibtypes-item */ {
     wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
     if ( isBlank(wibtypesItemObj) ) {
-      wibtypesItemObj = makeNewItem(null, null, "0", "0", true, CONST_listName_wibtypes, null, "0", "1", null)
+      wibtypesItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_wibtypes, null, CONST_displayCode_hidden1, "1", null)
     }
   }
 
@@ -3643,24 +3882,24 @@ function loadAppData() {
     timeTracking_wibTypeItemObj = searchForItemObj(CONST_timeTracking_itemName, app.wibtypes_itemId, true);
 
     if ( isBlank(timeTracking_wibTypeItemObj) ) {
-      timeTracking_wibTypeItemObj = makeNewItem(null, null, "0", "1", true, CONST_timeTracking_itemName, null, "0", "1", app.wibtypes_itemId)
+      timeTracking_wibTypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", app.wibtypes_itemId)
     }
 
     //TO-DO2: handle hypothetical possibility of 2+ Time-Tracking wtifItemIds with the same name
 
     let ttWtif_YMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_YMD_itemObj) ) {
-      makeNewItem(CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId); 
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId); 
     }
 
     let ttWtif_Time_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_Time_itemObj) ) {
-      makeNewItem(CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId);
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId);
     }
 
     let ttWtif_MinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibTypeItemObj.itemId, true);
     if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
-      makeNewItem(CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, "0", "0", timeTracking_wibTypeItemObj.itemId);
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId);
     }
   }
 
@@ -3735,6 +3974,14 @@ function upgradeStoredData() {
       }
     }
     */
+  }
+
+  if (parseInt(appVersion_minor) >= 66 && parseInt(storedDataVersion_minor) < 66) {
+    if ( upgradeStoredData_0_66() ) {
+      // no action -- continue with function
+    } else {
+      return false;
+    }
   }
 
   // if stored-data-version wasn't set from upgrade, and does not exist, set it to the current app-version
@@ -3825,7 +4072,7 @@ function upgradeStoredData_0_53() {
 }
 
 function upgradeStoredData_0_54() {
-  var allItemIds_string, allItemIds_array, i, curItemId, saveKeyText_curItem, oldItemInfoString, newItemInfoString, storedDataVersion_string;
+  var allItemIds_string, allItemIds_array, i, curItemId, saveKeyText_curItem, oldItemInfoString, newItemInfoString;
 
   allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
   allItemIds_array = getIdArray(allItemIds_string);
@@ -3842,6 +4089,40 @@ function upgradeStoredData_0_54() {
 
   //update data's version-number to 0.54
   saveToDatastore(CONST_storedDataVersion, "0.54");
+
+  //return success flag
+  return true;
+}
+
+function upgradeStoredData_0_66() {
+  var allItemIds_string, allItemIds_array;
+
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+ 
+  //cycle through all items, swapping displayCode 0 and 1 for each other
+  allItemIds_array.forEach( (curItemId) => {
+    let curItemObj = grabItemObj(curItemId);
+
+    let isHomePageList = isEqual(curItemObj.itemId, app.homePageList_itemId);
+    let isTypesList = isEqual(curItemObj.itemId, CONST_listName_wibtypes);
+
+    if ( isHomePageList || isTypesList || curItemObj.isWibtype == "1" || curItemObj.isWibtypeInfoField == "1" ) {
+      //except don't swap for home-page-list, types, wib-types, and wib-type-info-fields
+      curItemObj.displayCode = CONST_displayCode_hidden1;
+    } else if (curItemObj.displayCode == "1") {
+      curItemObj.displayCode = "0";
+    } else if (curItemObj.displayCode == "0") {
+      curItemObj.displayCode = "1";
+    } else {
+      curItemObj.displayCode = CONST_displayCode_normal;
+    }
+
+    curItemObj.saveItemInfoToDatastore();
+  } ) ;
+
+  //update data's version-number to 0.66
+  saveToDatastore(CONST_storedDataVersion, "0.66");
 
   //return success flag
   return true;
