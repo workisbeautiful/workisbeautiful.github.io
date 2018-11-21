@@ -23,6 +23,7 @@ input.ipTime {width: 1.85em; padding-top: 3px; text-align: center}
 input.ipYear {width: 2.85em; padding-top: 3px; text-align: center}
 select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
 table {}
+td.divider {height: 1px; background-color: 1px solid black}
 
 .grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
 .grid1Cell {/* border: 1px solid red */}
@@ -79,11 +80,13 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 <div id="dvMainViewOverlay">
 
   <div id="dvAppHeader">
-    <span id="spnAppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
+    <span id="spnAppHeader_AppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
     <span id="spnAppHeader_Home">
       &nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap; font-size: 110%"><b>home</b></a>
     </span>
-    &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>(dev)</nowrap></span></a>
+    <span id="spnAppHeader_Dev">
+      &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>(dev)</nowrap></span></a>
+    </span>
     <div style="height:1.2em"></div>
   </div>
 
@@ -198,6 +201,27 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height:0.8em"></div>
       <div><a href="javascript:void return_home_from_storage()">return home</a></div>
     </div>
+    <div style="height:1em"></div>
+  </div>
+
+  <div id="dvPage_WibBuilder" style="display: none">
+    <div style="font-weight: bold">Builder</div>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void alert('nothing here yet for builder link 1')">builder link 1</a></div>
+    <div style="height:0.8em"></div>
+    <div style="display: inline-block">
+      heading for stuff
+      <div style="height:0.2em"></div>
+      <hr />
+      <div style="height:0.8em"></div>
+      <div>more stuff here?</div>
+      <div style="height:0.8em"></div>
+      <hr />
+    </div>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript:void alert('nothing here yet for builder link 2')">builder link 2</a></div>
+    <div style="height:1.7em"></div>
+    <div><a href="javascript:void alert('nothing here yet for builder link 3')">builder link 3</a></div>
     <div style="height:1em"></div>
   </div>
 
@@ -534,8 +558,9 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
+
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.67";
+const CONST_appVersion = "0.68";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -566,6 +591,7 @@ const CONST_timeTracking_itemName = "Time Tracking";
 const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
 const CONST_timeTracking_wtifTime_itemName = "Time";
 const CONST_timeTracking_wtifMinsTracked_itemName = "Mins Tracked";
+const CONST_wibBuilder_itemName = "wib-builder";
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
 const CONST_wibDataType_numeric_name = "numeric";
@@ -581,15 +607,19 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 ///// APP-LEVEL VARIABLES
 
 var app = {};
+app.addDataLoadedSuccessfully = true;
 app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
 app.grabbingOn = false;
+app.homePageList_itemId = null;
 app.makeNewItem_TopOfList = "1";
 app.makeNewItem_StayListView = "1";
 app.makeNewItem_AddMoreItems = "0";
 app.makeNewItem_TimeTracking = "0";
 app.moreOptionsOn = false;
+app.qs_obj = null;
+app.qs_urlParams = null;
 app.reorderingOn = false;
 app.reordering_activatedItemId = null;
 app.reordering_mode = null;
@@ -597,6 +627,8 @@ app.timeTracking_defaultYear = null;
 app.timeTracking_defaultMonth = null;
 app.timeTracking_defaultDay = null;
 app.timeTracking_wibTypeItemId = null;
+app.wibBuilder_itemId = null;
+app.wibtypes_itemId = null;
 
 
 ///// INTERNAL FUNCTIONS
@@ -876,18 +908,20 @@ function deleteItem(itemIdToDelete) {
 }
 
 function displayPage(pageName) {
-  elem("dvPage_Dev").style.display = "none";
   elem("dvPage_BackupExport").style.display = "none";
   elem("dvPage_BackupImport").style.display = "none";
-  elem("dvPage_MoveOrCopy").style.display = "none";
+  elem("dvPage_Dev").style.display = "none";
   elem("dvPage_Home").style.display = "none";
+  elem("dvPage_MoveOrCopy").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
-  elem("dvPage_Wibtypes").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
+  elem("dvPage_WibBuilder").style.display = "none";
+  elem("dvPage_Wibtypes").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "inline-grid";
 
   elem("spnAppHeader_Home").style.display = "";
+  elem("spnAppHeader_Dev").style.display = "";
 
   switch (pageName) {
 
@@ -899,6 +933,20 @@ function displayPage(pageName) {
     case "BackupImport": {
         elem("taBackupTextToImport").value = "";
         elem("taBackupTextToImport").focus();
+        break;
+      }
+
+    case "Dev": {
+        // don't currently need anything special for Dev
+        break;
+      }
+
+    case "Home": {
+        elem("spnAppHeader_Home").style.display = "none";
+        if (!app.itemObj) {
+          setAppItemObj(grabItemObjByName(CONST_listName_homePage));
+        }
+        elem("dvHome_Items").innerHTML = writeHtml_Items();
         break;
       }
 
@@ -916,18 +964,8 @@ function displayPage(pageName) {
         break;
       }
 
-    case "Home": {
-        elem("spnAppHeader_Home").style.display = "none";
-        if (!app.itemObj) {
-          setAppItemObj(grabItemObjByName(CONST_listName_homePage));
-        }
-        elem("dvHome_Items").innerHTML = writeHtml_Items();
-        break;
-      }
-
-    case "Wibtypes": {
-        setAppItemObj(grabItemObj(app.wibtypes_itemId));
-        elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
+    case "ShowStorage": {
+        writeStorage();
         break;
       }
 
@@ -1078,11 +1116,20 @@ function displayPage(pageName) {
         if (app.reordering_activatedItemId) {
           css_addClass(getHtml_aItem(app.reordering_activatedItemId), CONST_cssClassName_bold);
         }
+        break;
       }
-      break;
 
-    case "ShowStorage": {
-        writeStorage();
+    case "WibBuilder": {
+        if (!app.qs_obj.dev) {
+          elem("spnAppHeader_Home").style.display = "none";
+          elem("spnAppHeader_Dev").style.display = "none";
+        }
+        break;
+      }
+
+    case "Wibtypes": {
+        setAppItemObj(grabItemObj(app.wibtypes_itemId));
+        elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
         break;
       }
   }
@@ -1762,7 +1809,7 @@ function importBackupText(textToImport) {
   alert("Import complete");
 
   //refresh app and go to home page
-  loadAppData();
+  loadAppData_andReturnNextDisplayPage();
   displayPage("Home");
 }
 
@@ -3805,13 +3852,13 @@ function rename_item() {
 }
 
 function return_home() {
-  if (!app.addDataLoadedSuccessfully) loadAppData();
+  if (!app.addDataLoadedSuccessfully) loadAppData_andReturnNextDisplayPage();
   setAppItemObj(grabItemObjByName(CONST_listName_homePage));
   displayPage("Home");
 }
 
 function return_home_from_storage() {
-  loadAppData();
+  loadAppData_andReturnNextDisplayPage();
   displayPage("Home");
 }
 
@@ -3908,8 +3955,8 @@ function toggle_reorder() {
 
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
-function loadAppData() {
-  var homePageListItemObj, wibtypesItemObj, timeTracking_wibTypeItemObj;
+function loadAppData_andReturnNextDisplayPage() {
+  var homePageListItemObj, wibBuilderItemObj, wibtypesItemObj, timeTracking_wibTypeItemObj;
 
   app.addDataLoadedSuccessfully = false;
 
@@ -3921,6 +3968,15 @@ function loadAppData() {
   }
 
   app.homePageList_itemId = homePageListItemObj.itemId;
+
+  /* if it does not exist, create a wib-builder item */ {
+    wibBuilderItemObj = grabItemObjByName(CONST_wibBuilder_itemName);
+    if ( isBlank(wibBuilderItemObj) ) {
+      wibBuilderItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wibBuilder_itemName, null, CONST_displayCode_hidden1, "1", null)
+    }
+  }
+
+  app.wibBuilder_itemId = wibBuilderItemObj.itemId;
 
   /* if it does not exist, create a wibtypes-item */ {
     wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
@@ -3964,9 +4020,15 @@ function loadAppData() {
   if ( ! upgradeStoredData() ) return;
 
   // set version# on screen
-  elem("spnAppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
+  elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
 
   app.addDataLoadedSuccessfully = true;
+
+  if (app.qs_obj.wibBuilder) {
+    return "WibBuilder"
+  } else {
+    return "Home"
+  }
 }
 
 function upgradeStoredData() {
@@ -3993,7 +4055,7 @@ function upgradeStoredData() {
     return false;
   }
 
-  /* old stored-data upgrades, not compatible with existing loadAppData() code, keeping for future reference */ {
+  /* old stored-data upgrades, not compatible with existing loadAppData_andReturnNextDisplayPage() code, keeping for future reference */ {
     /*
     if (parseInt(appVersion_minor) >= 36 && parseInt(storedDataVersion_minor) < 36) {
       if ( upgradeStoredData_0_36() ) {
@@ -4182,14 +4244,52 @@ function upgradeStoredData_0_66() {
 }
 
 
-///// RUN APP-DATA-LOAD AND SHOW HOME PAGE
+///// FUNCTIONS TO LOAD APP-DATA AND CALL UP THE APPROPRIATE HOME PAGE
 
-loadAppData();
+function runExampleQueryStringStuff() {
+  // Assuming "?post=1234&action=edit"
 
-//only show home page is appLevelData loaded successfully
-if ( app.addDataLoadedSuccessfully ) {
-  displayPage("Home");
+  var urlParams = new URLSearchParams(window.location.search);
+
+  console.log(urlParams.has('post')); // true
+  console.log(urlParams.get('action')); // "edit"
+  console.log(urlParams.getAll('action')); // ["edit"]
+  console.log(urlParams.toString()); // "?post=1234&action=edit"
+  console.log(urlParams.append('active', '1')); // "?post=1234&action=edit&active=1"
+
+  var keys = urlParams.keys();
+  for(var key of keys) { 
+    console.log(key); 
+  }
+  // post
+  // action
+
+  var entries = urlParams.entries();
+  for(var pair of entries) { 
+    console.log(pair[0], pair[1]); 
+  }
 }
+
+function processQueryString() {
+  app.qs_urlParams = new URLSearchParams(window.location.search);
+}
+
+function startApp() {
+  processQueryString();
+
+  app.qs_obj = {};
+  app.qs_obj.wibBuilder = app.qs_urlParams.has("builder");
+  app.qs_obj.dev = app.qs_urlParams.has("dev");
+dc(app.qs_obj.dev)
+  let nextDisplayPage = loadAppData_andReturnNextDisplayPage();
+
+  //only show home page is appLevelData loaded successfully
+  if ( app.addDataLoadedSuccessfully ) {
+    displayPage(nextDisplayPage);
+  }
+}
+
+startApp();
 
 
 ///// SAVED FROM PREVIOUS PROJECTS, MIGHT USE LATER
