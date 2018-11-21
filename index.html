@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <head>
 
 <style>
@@ -73,12 +71,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 </style>
 
 <title>wib</title>
-
 </head>
-
 <body>
-
 <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
+
 
 <div id="dvMainViewOverlay">
 
@@ -230,49 +226,64 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height: 1em"></div>
   </div>
 
+
   <div id="dvPage_ViewItem" style="display: none">
-    <div id="dvItemName" style="font-weight: bold"></div>
-    <div id="dvPage_ViewItem_JoinedListsArea" style="display: none">
+
+    <div id="dvViewItem_ItemNameArea">
+      <div id="dvItemName" style="font-weight: bold"></div>
+    </div>
+
+    <div id="dvViewItem_JoinedListsArea" style="display: none">
       <div style="height: 0.3em"></div>
       <div id="dvListNameForItem"></div>
     </div>
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
-    <div style="height: 0.95em"></div>
-    <div id="dvViewItem_ConnectedItems_Items"></div>
-    <div style="height: 0.95em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 0.95em"></div>
-    <div>
-      <div>
-        <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
-        <span id="spnViewItem_DoneStatusLink" style="display: none">
-          <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
-        </span>
-        <span id="spnViewItem_MoveCopy" style="display: none">
-          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void move_or_copy_to_different_list()" style="white-space: nowrap">move or copy</a>
-        </span>
-        <span id="spnViewItem_ShowWibtypes">
-          <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>
-        </span>
+
+    <div id="dvViewItem_ConnectedItemsArea">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
       </div>
-      <div style="height: 1.4em"></div>
+      <div style="height: 0.95em"></div>
+      <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+      <div style="height: 0.95em"></div>
+      <div id="dvViewItem_ConnectedItems_Items"></div>
+    </div>
+
+    <div id="dvViewItem_ItemActionsArea">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
       <div>
-        <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
-        <span id="spnViewItem_Delete">
-          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
-        </span>
-        <span id="spnViewItem_Notes_No" style="display: none">
-          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
-        </span>
+        <div>
+          <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
+          <span id="spnViewItem_DoneStatusLink" style="display: none">
+            <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
+          </span>
+          <span id="spnViewItem_MoveCopy" style="display: none">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void move_or_copy_to_different_list()" style="white-space: nowrap">move or copy</a>
+          </span>
+          <span id="spnViewItem_ShowWibtypes" style="display: none">
+            <a href="javascript:void show_types()" style="white-space: nowrap">back to types</a>
+          </span>
+          <span id="spnViewItem_ShowWibtypeInfoField" style="display: none">
+            <span style="white-space: nowrap">back to <a id="aViewItem_BackToType" href="javascript:void back_to_type()">type</a></span>
+          </span>
+        </div>
+        <div style="height: 1.4em"></div>
+        <div>
+          <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
+          <span id="spnViewItem_Delete">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
+          </span>
+          <span id="spnViewItem_Notes_No" style="display: none">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
+          </span>
+        </div>
       </div>
     </div>
+
     <div id="dvViewItem_Notes_Yes" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -286,6 +297,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
       </div>
     </div>
+
     <div id="dvViewItem_Wibtypes" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -298,6 +310,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   -->
       <div id="dvViewItem_Wibtypes_WtifData"></div>
     </div>
+
     <div id="dvViewItem_WibtypeInfoFieldInfo" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -305,7 +318,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       </div>
       <div style="height: 0.95em"></div>
       <div class="grid2">
-        <div class="grid2Cell gc2Header">Info Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
+        <div class="grid2Cell gc2Header">Info-Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
         <div class="grid2Cell gc2VertSpace1"></div>
         <div class="grid2Cell gc2TextLeft">Data Type:</div>
         <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
@@ -314,6 +327,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
       </div>
     </div>
+
     <div id="dvViewItem_ListMembers_No" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -322,6 +336,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 0.95em"></div>
       <div><a href="javascript:void make_into_a_list()">make into a list</a></div>
     </div>
+
     <div id="dvViewItem_ListMembers_Yes" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -376,10 +391,15 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         </div>
       </div>
     </div>
-    <div style="height:1em"></div>
-  </div>
 
-</div>
+    <div id="dvViewItem_EndSpacerArea">
+      <div style="height:1em"></div>
+    </div>
+
+  </div> <!-- END OF: id="dvPage_ViewItem" -->
+
+
+</div> <!-- END OF: id="dvMainViewOverlay" -->
 
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
@@ -406,7 +426,9 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1TextForActionCheckbox">do time tracking:</div>
     <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_TimeTracking" onclick="doCheckboxClickAction('ckMakeNewItem_TimeTracking')" type="checkbox" /></div>
     <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">Y / M / D:</div>
+    <div class="grid1Cell gc1Text gc1Group1">
+      <a style="white-space: nowrap; font-size: 90%" href="javascript:void set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
+    </div>
     <div class="grid1Cell gc1Input gc1Group1">
       <input id="ipMakeNewItem_Year" class="ipYear" maxlength="4" />
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" class="ipMonthDay" maxlength="2" />
@@ -424,7 +446,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1VertSpace2" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="" style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
     </div>
   </div>
 
@@ -506,10 +528,14 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <script type="text/javascript">
 
+
 "use strict";
 
+
+///// CONSTANTS
+
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.66";
+const CONST_appVersion = "0.67";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -548,9 +574,11 @@ const CONST_wibDataType_text_name = "text";
 const CONST_wibDataType_text_id = 1;
 const CONST_wibDataType_timeOfDay_name = "time of day";
 const CONST_wibDataType_timeOfDay_id = 3;
-
 const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
+
+
+///// APP-LEVEL VARIABLES
 
 var app = {};
 app.grabbing_itemId1 = null;
@@ -571,7 +599,7 @@ app.timeTracking_defaultDay = null;
 app.timeTracking_wibTypeItemId = null;
 
 
-///// REGULAR FUNCTIONS
+///// INTERNAL FUNCTIONS
 
 function activateItemForReordering(itemId) {
   app.reordering_activatedItemId = itemId;
@@ -863,47 +891,53 @@ function displayPage(pageName) {
 
   switch (pageName) {
 
-    case "BackupExport":
-      writeBackupExport();
-      break;
-
-    case "BackupImport":
-      elem("taBackupTextToImport").value = "";
-      elem("taBackupTextToImport").focus();
-      break;
-
-    case "MoveOrCopy":
-      elem("spnAppHeader_Home").style.display = "none";
-      if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
-        //single-item-move-or-copy
-        elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(app.itemObj.displayedOnList_itemId).itemName + "</i>";
-      } else {
-        elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + app.itemObj.itemName + "</i>";
+    case "BackupExport": {
+        writeBackupExport();
+        break;
       }
 
-      elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
-      elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo();
-      break;
-
-    case "Home":
-      elem("spnAppHeader_Home").style.display = "none";
-      if (!app.itemObj) {
-        setAppItemObj(grabItemObjByName(CONST_listName_homePage));
+    case "BackupImport": {
+        elem("taBackupTextToImport").value = "";
+        elem("taBackupTextToImport").focus();
+        break;
       }
-      elem("dvHome_Items").innerHTML = writeHtml_Items();
-      break;
 
-    case "Wibtypes":
-      setAppItemObj(grabItemObj(app.wibtypes_itemId));
-      elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
-      break;
+    case "MoveOrCopy": {
+        elem("spnAppHeader_Home").style.display = "none";
+        if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+          //single-item-move-or-copy
+          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(app.itemObj.displayedOnList_itemId).itemName + "</i>";
+        } else {
+          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + app.itemObj.itemName + "</i>";
+        }
 
-    case "ViewItem":
-      {
-        let i, hasDisplayedLists = false, displayListItemObj,  hasConnectedItems = false;
+        elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
+        elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo();
+        break;
+      }
+
+    case "Home": {
+        elem("spnAppHeader_Home").style.display = "none";
+        if (!app.itemObj) {
+          setAppItemObj(grabItemObjByName(CONST_listName_homePage));
+        }
+        elem("dvHome_Items").innerHTML = writeHtml_Items();
+        break;
+      }
+
+    case "Wibtypes": {
+        setAppItemObj(grabItemObj(app.wibtypes_itemId));
+        elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
+        break;
+      }
+
+    case "ViewItem": {
+        let i, wibtypeItemObj, hasDisplayedLists = false, hasConnectedItems = false;
 
         if (app.itemObj.isWibtype == "1") {
           elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
+        } else if (app.itemObj.isWibtypeInfoField == "1") {
+          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
         } else {
           elem("dvItemName").innerHTML = app.itemObj.itemName;
         }
@@ -916,25 +950,21 @@ function displayPage(pageName) {
           for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
             let curItemObjForLoop = grabItemObj(app.itemObj.joinedLists_itemIds[0])
 
-            if (curItemObjForLoop.displayCode == CONST_displayCode_normal) {
-              elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
+            if (app.itemObj.isWibtypeInfoField == "1" && curItemObjForLoop.isWibtype == "1") {
+              wibtypeItemObj = curItemObjForLoop;
+//              elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: " + CONST_cssClassName_red + "'><b>type info-field</b></span>";
+            } else if (curItemObjForLoop.displayCode == CONST_displayCode_normal && curItemObjForLoop.isWibtype == "0") {
               hasDisplayedLists = true;
               app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
-
-              displayListItemObj = curItemObjForLoop;
-              if (displayListItemObj.isWibtype == "1") {
-                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span class='" + CONST_cssClassName_red +"'><b>info-field for type:</b></span>&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
-              } else {
-                elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayListItemObj.itemId + "\")'>" + displayListItemObj.itemName + "</a>";
-              }
+              elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
               break;
             }
           }
 
           if (hasDisplayedLists) {
-            elem("dvPage_ViewItem_JoinedListsArea").style.display = "";
+            elem("dvViewItem_JoinedListsArea").style.display = "";
           } else {
-            elem("dvPage_ViewItem_JoinedListsArea").style.display = "none";
+            elem("dvViewItem_JoinedListsArea").style.display = "none";
           }
         }
 
@@ -947,10 +977,14 @@ function displayPage(pageName) {
         if (app.itemObj.isWibtype == "1") {
           elem("spnViewItem_MoveCopy").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "";
+          elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
           elem("spnViewItem_Delete").style.display = "none";
         } else if (app.itemObj.isWibtypeInfoField == "1") {
           elem("spnViewItem_MoveCopy").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "none";
+          elem("spnViewItem_ShowWibtypeInfoField").style.display = "";
+          elem("aViewItem_BackToType").href = "javascript:void back_to_type(" + wibtypeItemObj.itemId + ")";
+          elem("aViewItem_BackToType").innerHTML = wibtypeItemObj.itemName;
           elem("spnViewItem_Delete").style.display = "none";
         } else {
           if (app.itemObj.isList == "0") {
@@ -959,6 +993,7 @@ function displayPage(pageName) {
             elem("spnViewItem_MoveCopy").style.display = "none";
           }
           elem("spnViewItem_ShowWibtypes").style.display = "none";
+          elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
           elem("spnViewItem_Delete").style.display = "";
         }
 
@@ -1046,9 +1081,10 @@ function displayPage(pageName) {
       }
       break;
 
-    case "ShowStorage":
-      writeStorage();
-      break;
+    case "ShowStorage": {
+        writeStorage();
+        break;
+      }
   }
 }
 
@@ -1497,6 +1533,7 @@ function goToItemView(itemId, maintainActivatedItem) {
 
 
 
+
 function transferItemInfo_stringToObject(itemInfoString, itemInfoObj) {
   var itemInfoArray = transferItemInfo_stringToArray(itemInfoString);
   transferItemInfo_arrayToObject(itemInfoArray, itemInfoObj);
@@ -1562,6 +1599,7 @@ function getItemInfoStringDisplay(itemInfoString) {
   iit.receiveString(itemInfoString);
   return iit.getDisplay();
 }
+
 
 
 
@@ -2354,6 +2392,13 @@ function setAppItemObj(itemObj) {
   }
 }
 
+function setElemsToToday(yyyyElemId, mmElemId, ddElemId) {
+  var appDateTimeObj = getCurAppDateTimeObj();
+  setElemVal(yyyyElemId, appDateTimeObj.yyyy);
+  setElemVal(mmElemId, appDateTimeObj.mm);
+  setElemVal(ddElemId, appDateTimeObj.dd);
+}
+
 function setElemVal(elemId, elemVal) {
   var theElem, elemType;
 
@@ -2397,17 +2442,12 @@ function showPopUp(popUpCode, popUpFocusElem) {
 
       doCheckboxClickAction("ckMakeNewItem_TimeTracking");
 
-      if (app.makeNewItem_TimeTracking == "1") {
-        if ( isBlank(app.timeTracking_defaultYear) || isBlank(app.timeTracking_defaultMonth) || isBlank(app.timeTracking_defaultDay) ) {
-          let curAppDateTimeObj = getCurAppDateTimeObj();
-          elem("ipMakeNewItem_Year").value = curAppDateTimeObj.yyyy;
-          elem("ipMakeNewItem_Month").value = curAppDateTimeObj.m;
-          elem("ipMakeNewItem_Day").value = curAppDateTimeObj.d;
-        } else {
-          if ( !isBlank(app.timeTracking_defaultYear) ) elem("ipMakeNewItem_Year").value = app.timeTracking_defaultYear;
-          if ( !isBlank(app.timeTracking_defaultMonth) ) elem("ipMakeNewItem_Month").value = app.timeTracking_defaultMonth;
-          if ( !isBlank(app.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = app.timeTracking_defaultDay;
-        }
+      if ( isBlank(app.timeTracking_defaultYear) || isBlank(app.timeTracking_defaultMonth) || isBlank(app.timeTracking_defaultDay) ) {
+        setElemsToToday("ipMakeNewItem_Year", "ipMakeNewItem_Month", "ipMakeNewItem_Day")
+      } else {
+        if ( !isBlank(app.timeTracking_defaultYear) ) elem("ipMakeNewItem_Year").value = app.timeTracking_defaultYear;
+        if ( !isBlank(app.timeTracking_defaultMonth) ) elem("ipMakeNewItem_Month").value = app.timeTracking_defaultMonth;
+        if ( !isBlank(app.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = app.timeTracking_defaultDay;
       }
       break;
 
@@ -3069,6 +3109,8 @@ function writeHtml_Items(mainItemObj) {
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 1)'>up 1</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 1)'>down 1</a>\n";
       html += " </td></tr>\n";
+
+      /*
       html += " <tr style='height: 1em'><td colspan=2></td></tr>";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 5)'>up 5</a>\n";
@@ -3079,6 +3121,8 @@ function writeHtml_Items(mainItemObj) {
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 10)'>up 10</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 10)'>down 10</a>\n";
       html += " </td></tr>\n";
+      */
+
       html += " <tr style='height: 1em'><td colspan=2></td></tr>";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_to_top(\"" + curItemId + "\")'>to top</a>\n";
@@ -3236,6 +3280,10 @@ function add_storage_row() {
 
   saveToDatastore(keyName, keyValue);
   show_storage();
+}
+
+function back_to_type(wibTypeItemId) {
+  goToItemView(wibTypeItemId, false)
 }
 
 function begin_import() {
@@ -3435,10 +3483,11 @@ function do_change_done_status(newDoneStatusDisplay) {
 }
 
 function do_make_new_item(makeCode) {
-  var itemName, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, doneStatusCode = null, newItemObj;
+  var itemName, doneStatusCode = null, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, newItemObj;
 
   if (makeCode == "line") {
     itemName = "--------------------";
+    doneStatusCode = CONST_doneStatusCode_okay
   } else {
     itemName = getElemVal("ipMakeNewItem_ItemName");
 
@@ -3466,7 +3515,7 @@ function do_make_new_item(makeCode) {
 
   if ( isBlank(itemName) ) {
     alert("Item Name is required");
-    elem().focus();
+    elem("ipMakeNewItem_ItemName").focus();
     return;
   }
 
@@ -3498,7 +3547,7 @@ function do_make_new_item(makeCode) {
 
     doneStatusCode = CONST_doneStatusCode_okay;
   }
-
+dc(doneStatusCode)
   newItemObj = makeNewItem(doneStatusCode, null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
 
@@ -3764,6 +3813,10 @@ function return_home() {
 function return_home_from_storage() {
   loadAppData();
   displayPage("Home");
+}
+
+function set_ymd_to_today() {
+  setElemsToToday("ipMakeNewItem_Year", "ipMakeNewItem_Month", "ipMakeNewItem_Day");
 }
 
 function show_dev_screen() {
@@ -4139,8 +4192,9 @@ if ( app.addDataLoadedSuccessfully ) {
 }
 
 
-//// SAVED FROM PREVIOUS PROJECTS, MIGHT USE LATER
-/*
+///// SAVED FROM PREVIOUS PROJECTS, MIGHT USE LATER
+
+/* (commented-out, as we are not currently using this)
 // MODULE-LEVEL ERROR HANDLING - TOP
 try {
 
@@ -4946,6 +5000,7 @@ function handleAndReturnError ( theObj ) {
 
 
 */
+
 
 </script>
 
