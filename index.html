@@ -14,7 +14,7 @@ a:focus {text-decoration: underline}
 a:active {text-decoration: none}
 
 body {font-size: 110%; font-family: Helvetica}
-div {padding: 0; margin: 0}
+/* div {padding: 0; margin: 0} */
 input {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9}
 input.ipMonthDay {width: 1.85em; padding-top: 3px; text-align: center}
 input.ipNumeric {width: 3em; padding-left: 4px; padding-right: 4px; padding-top: 3px}
@@ -23,16 +23,15 @@ input.ipTime {width: 1.85em; padding-top: 3px; text-align: center}
 input.ipYear {width: 2.85em; padding-top: 3px; text-align: center}
 select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
 table {}
-td.divider {height: 1px; background-color: 1px solid black}
 
 .grid1 {display: grid; grid-template-columns: auto auto auto; padding: 0.5em; padding-right: 0.75em; padding-bottom: 0.65em}
 .grid1Cell {/* border: 1px solid red */}
 .gc1Header {grid-column: 1/4; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: center}
 .gc1Line {grid-column: 1/4; border-bottom: 1px gray solid}
-.gc1VertSpace1 {grid-column: 1/4; padding-bottom: 1em}
-.gc1VertSpace2 {grid-column: 1/4; padding-bottom: 1em}
-.gc1VertSpace3 {grid-column: 1/4; padding-bottom: 0.5em}
-.gc1VertSpace4 {grid-column: 1/4; padding-bottom: 1.8em}
+.gc1VSpace1 {grid-column: 1/4; padding-bottom: 1em}
+.gc1VSpace2 {grid-column: 1/4; padding-bottom: 1em}
+.gc1VSpace3 {grid-column: 1/4; padding-bottom: 0.5em}
+.gc1VSpace4 {grid-column: 1/4; padding-bottom: 1.8em}
 .gc1Text {white-space: nowrap; padding-right: 0.6em; padding-top: 3px; text-align: right}
 .gc1TextRight {font-style: italic; padding-top: 3px; text-align: left}
 .gc1TextForCheckbox {white-space: nowrap; padding-right: 0.6em; text-align: right}
@@ -49,18 +48,31 @@ td.divider {height: 1px; background-color: 1px solid black}
 .grid2Cell {/* border: 1px solid red */}
 .gc2Header {grid-column: 1/3; padding-bottom: 0.5em; border-bottom: 1px gray solid; text-align: left}
 .gc2Header2 {grid-column: 1/3; padding-bottom: 0.4em; border-bottom: 1px gray solid; text-align: center}
-.gc2VertSpace1 {grid-column: 1/3; padding-bottom: 0.6em}
-.gc2VertSpace2 {grid-column: 1/3; padding-bottom: 0.6em}
-.gc2VertSpace3 {grid-column: 1/3; padding-bottom: 0.5em}
+.gc2VSpace1 {grid-column: 1/3; padding-bottom: 0.6em}
+.gc2VSpace2 {grid-column: 1/3; padding-bottom: 0.6em}
+.gc2VSpace3 {grid-column: 1/3; padding-bottom: 0.5em}
 .gc2TextLeft {white-space: nowrap; padding-right: 0.8em; /* padding-top: 3px; */ text-align: right}
 .gc2TextRight {white-space: nowrap}
 .gc2Footer {grid-column: 1/3; text-align: left}
 
+.grid3 {display: grid; grid-template-columns: auto auto; grid-gap: 10px; border: 2px solid grey; padding: 10px}
+.gc3 {border: 1px solid lightgrey; padding: 5px}
+.gc3TextLeft {width: 150px; padding-right: 5px; text-align: right}
+.gc3TextRight {width: 150px}
+.gc3LikeInput {width: 140px; display: inline-block; text-align: center}
+.gc3InputRight {width: 150px}
+.gc3Header {grid-column: 1/3; font-weight: bold; font-size: 18px; text-align: center}
+.gc3Footer {grid-column: 1/3; text-align: center}
+
 .bold {font-weight: bold}
+.font85 {font-size: 85%}
+.font135 {font-size: 135%}
 
 .brown {color: brown}
 .green {color: #00CC66}
 .red {color: red}
+
+.likeInput {font-size: 95%; background-color: #f9f9f9; border: 1px solid darkgray; box-shadow: 1px 1px 1px 0 lightgray inset}
 
 .popUpMaxTextWidth {width: 10em}
 .popUpText {display: block}
@@ -77,17 +89,19 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 <script type="text/javascript" src="https://momentjs.com/downloads/moment.js"></script>
 
 
-<div id="dvMainViewOverlay">
+<div id="dvMainViewOverlay" style="/* border: 1px solid red */">
 
   <div id="dvAppHeader">
-    <span id="spnAppHeader_AppNameAndVersion" style="font-weight: bold; font-size: 135%">wib v0.0</span>
+    <span id="spnAppHeader_OptionalPageTitle" class="bold" style="display: none"></span>
+    <span id="spnAppHeader_AppNameAndVersion" class="bold font135">wib v0.0</span>
     <span id="spnAppHeader_Home">
       &nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap; font-size: 110%"><b>home</b></a>
     </span>
     <span id="spnAppHeader_Dev">
-      &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="font-size: 80%"><nowrap>(dev)</nowrap></span></a>
+      &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="white-space: nowrap; font-size: 80%">(dev)</span></a>
+      &nbsp;&nbsp;<a href="javascript:void go_to_builder()"><span style="white-space: nowrap; font-size: 80%">(builder)</span></a>
     </span>
-    <div style="height:1.2em"></div>
+    <div style="height:1em"></div>
   </div>
 
   <div id="dvPage_BackupExport" style="display: none">
@@ -105,12 +119,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div id="dvPage_BackupImport" style="display: none">
-    <div style="display: inline-block">
-      <table cellspacing=0 cellpadding=0">
-      <tr><td class="divider"></td></tr>
-      </table>
-      <div style="height:1em"></div>
-    </div>
     <div style="height:0.8em"></div>
     <div>Paste text-to-import below:</div>
     <div style="height:0.4em"></div>
@@ -121,12 +129,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div id="dvPage_Dev" style="display: none">
-    <div style="display: inline-block">
-      <table cellspacing=0 cellpadding=0">
-      <tr><td class="divider"></td></tr>
-      </table>
-      <div style="height:1em"></div>
-    </div>
     <div style="height:0.8em"></div>
     <div><a href="javascript:void export_backup_text()">export backup text</a></div>
     <div style="height:1.7em"></div>
@@ -204,25 +206,31 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1em"></div>
   </div>
 
-  <div id="dvPage_WibBuilder" style="display: none">
-    <div style="font-weight: bold">Builder</div>
-    <div style="height:0.8em"></div>
-    <div><a href="javascript:void alert('nothing here yet for builder link 1')">builder link 1</a></div>
-    <div style="height:0.8em"></div>
-    <div style="display: inline-block">
-      heading for stuff
-      <div style="height:0.2em"></div>
-      <hr />
-      <div style="height:0.8em"></div>
-      <div>more stuff here?</div>
-      <div style="height:0.8em"></div>
-      <hr />
+  <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
+    <div style="display: inline-block; width: 350px; padding: 10px; padding-bottom: 15px; border: 2px solid lightgrey; border-bottom: 0px; font-size: 15px; font-style: italic">
+      <div style="font-weight: bold">Info About This Screen:</div>
+      <div style="height: 15px"></div>
+      <div style="height: 1px; background-color: black"></div>
+      <div style="height: 10px"></div>
+      <div style="display: inline-grid; grid-template-columns: auto auto">
+        <div style="padding-right: 10px; text-align: right">type of thing being created:</div>
+        <div style="">
+          <a id="aWibBuilder_BuildScreen_TypeName" href="javascript:void build_screen__name_type()">(click here)</a>
+        </div>
+      </div>
     </div>
-    <div style="height:0.8em"></div>
-    <div><a href="javascript:void alert('nothing here yet for builder link 2')">builder link 2</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void alert('nothing here yet for builder link 3')">builder link 3</a></div>
-    <div style="height:1em"></div>
+    <div style="width: 500px; border: 2px solid grey; padding: 15px; font-size: 18px">
+      <div style="border: 1px solid lightgrey; padding: 10px; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div style="height: 15px"></div>
+      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 20px">
+        <div style="border: 1px solid lightgrey; width: ; padding: 10px; padding-top: 13px; text-align: right">_______ Name:</div>
+        <div style="border: 1px solid lightgrey; width: ; padding: 10px">
+          <input style="width: 100%" readonly />
+        </div>
+      </div>
+      <div style="height: 15px"></div>
+      <div style="border: 1px solid lightgrey; padding: 10px; color: blue; text-align: center">save</div>
+    </div>
   </div>
 
   <div id="dvPage_Wibtypes" style="display: none">
@@ -249,7 +257,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
     <div style="height: 1em"></div>
   </div>
-
 
   <div id="dvPage_ViewItem" style="display: none">
 
@@ -343,10 +350,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 0.95em"></div>
       <div class="grid2">
         <div class="grid2Cell gc2Header">Info-Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
-        <div class="grid2Cell gc2VertSpace1"></div>
+        <div class="grid2Cell gc2VSpace1"></div>
         <div class="grid2Cell gc2TextLeft">Data Type:</div>
         <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
-        <div class="grid2Cell gc2VertSpace2"></div>
+        <div class="grid2Cell gc2VSpace2"></div>
         <div class="grid2Cell gc2TextLeft">Required:</div>
         <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
       </div>
@@ -430,26 +437,26 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none; padding-top: 0.3em">
     <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Make New Item</b></div>
-    <div class="grid1Cell gc1VertSpace3" style="padding-bottom: 0.3em"></div>
+    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
     <div class="grid1Cell gc1QuickLinks">
       <a style="white-space: nowrap; font-size: 95%" href="javascript:void do_make_new_item_line()">quick line</a>
     </div>
-    <div class="grid1Cell gc1VertSpace3" style="padding-bottom: 0.1em"></div>
+    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.1em"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1TextForActionCheckbox">add to top of list:</div>
     <div class="grid1Cell gc1ActionCheckbox gc1ActionCheckboxFirst"><input id="ckMakeNewItem_TopOfList" type="checkbox" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1TextForActionCheckbox">remain on list view:</div>
     <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_StayListView" type="checkbox" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1TextForActionCheckbox">add additional items:</div>
     <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_AddMoreItems" type="checkbox" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1TextForActionCheckbox">do time tracking:</div>
     <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_TimeTracking" onclick="doCheckboxClickAction('ckMakeNewItem_TimeTracking')" type="checkbox" /></div>
-    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">
       <a style="white-space: nowrap; font-size: 90%" href="javascript:void set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
     </div>
@@ -458,16 +465,16 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" class="ipMonthDay" maxlength="2" />
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Day" class="ipMonthDay" maxlength="2" />
     </div>
-    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Time:</div>
     <div class="grid1Cell gc1Input gc1Group1">
       <input id="ipMakeNewItem_Hour" class="ipTime" maxlength="2" />
       : <input id="ipMakeNewItem_Minute" class="ipTime" maxlength="2" />
     </div>
-    <div class="grid1Cell gc1VertSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
     <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
-    <div class="grid1Cell gc1VertSpace2" style="padding-bottom: 0.8em"></div>
+    <div class="grid1Cell gc1VSpace2" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
@@ -476,10 +483,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_MakeNewWibtype" style="display: none">
     <div class="grid1Cell gc1Header red"><b>Make New Type</b></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1VSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtype_WibtypeName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type()">cancel</a>
@@ -488,19 +495,19 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_MakeNewWibtypeInfoField" style="display: none">
     <div class="grid1Cell gc1Header red"><b>Make New Info-Field</b></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1VSpace1"></div>
     <div class="grid1Cell gc1Text">Type Name:</div>
     <div class="grid1Cell gc1TextRight"><span id="spnMakeNewWibtypeInfoField_WibtypeName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Text">Info-Field Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtypeInfoField_WibtypeInfoFieldName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Text">Data Type:</div>
     <div class="grid1Cell gc1Select"><span id="spnMakeNewWibtypeInfoField_WibDataTypeId" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1TextForCheckbox">Required:</div>
     <div class="grid1Cell gc1Checkbox"><input id="ckMakeNewWibtypeInfoField_Required" type="checkbox" /></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type_info_field()">cancel</a>
@@ -509,39 +516,39 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_ChangeDoneStatus" style="display: none">
     <div class="grid1Cell gc1Header"><b>Change Done Status</b></div>
-    <div class="grid1Cell gc1VertSpace1"></div>
+    <div class="grid1Cell gc1VSpace1"></div>
     <div class="grid1Cell gc1Text">List Name:</div>
     <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_mainListName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Text">Item Name:</div>
 <!--
     <div class="grid1Cell gc1TextRight popUpText popUpMaxTextWidth" id="dvChangeDoneStatus_itemName" style="padding: 0"></div>
 -->
     <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Text">Current Status:</div>
     <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_currentStatus" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VertSpace3"></div>
+    <div class="grid1Cell gc1VSpace3"></div>
     <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Undone1"></div>
+    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Undone1"></div>
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Undone2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Undone" href="javascript:void do_change_done_status('undone')"></a>
     </div>
-    <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Done1"></div>
+    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Done1"></div>
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Done2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Done" href="javascript:void do_change_done_status('done')"></a>
     </div>
-    <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Okay1"></div>
+    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Okay1"></div>
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Okay" href="javascript:void do_change_done_status('okay')"></a>
     </div>
-    <div class="grid1Cell gc1VertSpace4" id="dvChangeDoneStatus_Notice1"></div>
+    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Notice1"></div>
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Notice" href="javascript:void do_change_done_status('notice')"></a>
     </div>
-    <div class="grid1Cell gc1VertSpace4"></div>
+    <div class="grid1Cell gc1VSpace4"></div>
     <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VertSpace2"></div>
+    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void cancel_change_done_status()">cancel</a>
     </div>
@@ -560,7 +567,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.68";
+const CONST_appVersion = "0.69";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -915,11 +922,12 @@ function displayPage(pageName) {
   elem("dvPage_MoveOrCopy").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
-  elem("dvPage_WibBuilder").style.display = "none";
+  elem("dvPage_WibBuilder_BuildScreen").style.display = "none";
   elem("dvPage_Wibtypes").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "inline-grid";
 
+  elem("spnAppHeader_OptionalPageTitle").style.display = "none";
   elem("spnAppHeader_Home").style.display = "";
   elem("spnAppHeader_Dev").style.display = "";
 
@@ -1119,11 +1127,19 @@ function displayPage(pageName) {
         break;
       }
 
-    case "WibBuilder": {
+    case "WibBuilder_BuildScreen": {
+        elem("spnAppHeader_OptionalPageTitle").style.display = "";
+        elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Build Screen";
+
         if (!app.qs_obj.dev) {
           elem("spnAppHeader_Home").style.display = "none";
           elem("spnAppHeader_Dev").style.display = "none";
         }
+
+        css_removeClass("spnAppHeader_AppNameAndVersion", CONST_cssClassName_bold);
+        css_removeClass("spnAppHeader_AppNameAndVersion", "font135");
+        css_addClass("spnAppHeader_AppNameAndVersion", "font85");
+
         break;
       }
 
@@ -2439,6 +2455,18 @@ function setAppItemObj(itemObj) {
   }
 }
 
+function setElemMouseover(elem) {
+  elem.style.color = "blue";
+  elem.style.textDecoration = "underline";
+  elem.style.cursor = "pointer";
+}
+
+function setElemMouseout(elem) {
+  elem.style.color = "";
+  elem.style.textDecoration = "";
+  elem.style.cursor = "";
+}
+
 function setElemsToToday(yyyyElemId, mmElemId, ddElemId) {
   var appDateTimeObj = getCurAppDateTimeObj();
   setElemVal(yyyyElemId, appDateTimeObj.yyyy);
@@ -3206,10 +3234,10 @@ function writeHtml_WtifData() {
     let wibTypeItemObj = grabItemObj(wibtypeItemId);
 
     if (i > 0) {
-      html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+      html += "<div class='grid2Cell gc2VSpace2'></div>\n";
     }
     html += "<div class='grid2Cell gc2Header2'>" + wibTypeItemObj.itemName + "&nbsp;&nbsp;</div>\n";
-    html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+    html += "<div class='grid2Cell gc2VSpace2'></div>\n";
 
     let wtifs_listMemberDataObjs = wibTypeItemObj.getListMemberDataObjs();
 
@@ -3228,7 +3256,7 @@ function writeHtml_WtifData() {
       }
 
       if (j > 0) {
-        html += "<div class='grid2Cell gc2VertSpace2'></div>\n";
+        html += "<div class='grid2Cell gc2VSpace2'></div>\n";
       }
       html += "<div class='grid2Cell gc2TextLeft'>" + wtif_itemObj.itemName + ":</div>\n";
       html += "<div class='grid2Cell gc2TextRight'>" + dataDisplay + "</div>\n";
@@ -3594,7 +3622,7 @@ function do_make_new_item(makeCode) {
 
     doneStatusCode = CONST_doneStatusCode_okay;
   }
-dc(doneStatusCode)
+
   newItemObj = makeNewItem(doneStatusCode, null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
   if ( newItemObj ) {
 
@@ -3725,6 +3753,10 @@ function edit_storage_row(keyName) {
 
 function export_backup_text() {
   displayPage("BackupExport");
+}
+
+function go_to_builder() {
+  window.location = "file:///C:/Users/Todd%20Robinson/Documents/GitHub/workisbeautiful.github.io/index.html?builder";
 }
 
 function go_to_list(itemId) {
@@ -4020,12 +4052,15 @@ function loadAppData_andReturnNextDisplayPage() {
   if ( ! upgradeStoredData() ) return;
 
   // set version# on screen
-  elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
-
+  if (app.qs_obj.wibBuilder) {
+    elem("spnAppHeader_AppNameAndVersion").innerHTML = "&nbsp;&nbsp;(wib v" + CONST_appVersion + ")";
+  } else {
+    elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
+  }
   app.addDataLoadedSuccessfully = true;
 
   if (app.qs_obj.wibBuilder) {
-    return "WibBuilder"
+    return "WibBuilder_BuildScreen"
   } else {
     return "Home"
   }
@@ -4272,15 +4307,15 @@ function runExampleQueryStringStuff() {
 
 function processQueryString() {
   app.qs_urlParams = new URLSearchParams(window.location.search);
+
+  app.qs_obj = {};
+  app.qs_obj.wibBuilder = app.qs_urlParams.has("builder");
+  app.qs_obj.dev = app.qs_urlParams.has("dev");
 }
 
 function startApp() {
   processQueryString();
 
-  app.qs_obj = {};
-  app.qs_obj.wibBuilder = app.qs_urlParams.has("builder");
-  app.qs_obj.dev = app.qs_urlParams.has("dev");
-dc(app.qs_obj.dev)
   let nextDisplayPage = loadAppData_andReturnNextDisplayPage();
 
   //only show home page is appLevelData loaded successfully
