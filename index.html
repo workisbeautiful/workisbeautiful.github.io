@@ -207,29 +207,29 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
-    <div style="display: inline-block; width: 350px; padding: 10px; padding-bottom: 15px; border: 2px solid lightgrey; border-bottom: 0px; font-size: 15px; font-style: italic">
+    <div style="display: grid; width: 23em; margin-left: 1em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 95%; font-style: italic">
       <div style="font-weight: bold">Info About This Screen:</div>
-      <div style="height: 15px"></div>
-      <div style="height: 1px; background-color: black"></div>
-      <div style="height: 10px"></div>
+      <div style="height: 0.7em"></div>
+      <div style="height: 0.1em; background-color: black"></div>
+      <div style="height: 0.7em"></div>
       <div style="display: inline-grid; grid-template-columns: auto auto">
-        <div style="padding-right: 10px; text-align: right">type of thing being created:</div>
+        <div style="padding-right: 0.7em; text-align: right">type of thing being created:</div>
         <div style="">
           <a id="aWibBuilder_BuildScreen_TypeName" href="javascript:void build_screen__name_type()">(click here)</a>
         </div>
       </div>
     </div>
-    <div style="width: 500px; border: 2px solid grey; padding: 15px; font-size: 18px">
-      <div style="border: 1px solid lightgrey; padding: 10px; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
-      <div style="height: 15px"></div>
-      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 20px">
-        <div style="border: 1px solid lightgrey; width: ; padding: 10px; padding-top: 13px; text-align: right">_______ Name:</div>
-        <div style="border: 1px solid lightgrey; width: ; padding: 10px">
-          <input style="width: 100%" readonly />
+    <div style="width: 33em; border: 0.2em solid grey; padding: 1em">
+      <div style="border: 0.2em solid lightgrey; padding: 0.7em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div style="height: 1em"></div>
+      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 1.3em">
+        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.7em; padding-top: 0.9em; text-align: right">_______ Name:</div>
+        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.7em">
+          <input style="width: 100%" />
         </div>
       </div>
-      <div style="height: 15px"></div>
-      <div style="border: 1px solid lightgrey; padding: 10px; color: blue; text-align: center">save</div>
+      <div style="height: 1em"></div>
+      <div style="border: 0.2em solid lightgrey; padding: 0.7em; color: blue; text-align: center">save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
     </div>
   </div>
 
@@ -567,7 +567,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.69";
+const CONST_appVersion = "0.70";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -915,6 +915,17 @@ function deleteItem(itemIdToDelete) {
 }
 
 function displayPage(pageName) {
+  switch (pageName) {
+    case "WibBuilder_BuildScreen":
+      document.body.style.display = "grid";
+      document.body.style.margin = "0.8em";
+      break;
+
+    default:
+      document.body.style.display = "";
+      document.body.style.margin = "";
+  }
+
   elem("dvPage_BackupExport").style.display = "none";
   elem("dvPage_BackupImport").style.display = "none";
   elem("dvPage_Dev").style.display = "none";
@@ -3756,7 +3767,7 @@ function export_backup_text() {
 }
 
 function go_to_builder() {
-  window.location = "file:///C:/Users/Todd%20Robinson/Documents/GitHub/workisbeautiful.github.io/index.html?builder";
+  window.location = "index.html?builder";
 }
 
 function go_to_list(itemId) {
