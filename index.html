@@ -93,15 +93,19 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div id="dvAppHeader">
     <span id="spnAppHeader_OptionalPageTitle" class="bold" style="display: none"></span>
+    <span id="spnAppHeader_AppParen1" class="font85">&nbsp;&nbsp;(</span>
     <span id="spnAppHeader_AppNameAndVersion" class="bold font135">wib v0.0</span>
+    <span id="spnAppHeader_AppParen2" class="font85">)</span>
     <span id="spnAppHeader_Home">
       &nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap; font-size: 110%"><b>home</b></a>
     </span>
     <span id="spnAppHeader_Dev">
       &nbsp;&nbsp;&nbsp;<a href="javascript:void show_dev_screen()"><span style="white-space: nowrap; font-size: 80%">(dev)</span></a>
+    </span>
+    <span id="spnAppHeader_Builder">
       &nbsp;&nbsp;<a href="javascript:void go_to_builder()"><span style="white-space: nowrap; font-size: 80%">(builder)</span></a>
     </span>
-    <div style="height:1em"></div>
+    <div style="height:1.0em"></div>
   </div>
 
   <div id="dvPage_BackupExport" style="display: none">
@@ -203,34 +207,80 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height:0.8em"></div>
       <div><a href="javascript:void return_home_from_storage()">return home</a></div>
     </div>
+    <div id="dvShowStorage_EditAllItemIds">
+      <div style="height:1em"></div>
+      <textarea id="taShowStorage_EditAllItemIds" style="height: 20vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea><br />
+      <a href="javascript:void edit_storage_row__do_all_items_edit()" style="white-space: nowrap">make this edit</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void edit_storage_row__cancel_all_items_edit()" style="white-space: nowrap">cancel</a>
+    </div>
     <div style="height:1em"></div>
   </div>
 
+  <div id="dvPage_WibBuilder_AllScreens" style="display: none">
+    <div style="">
+      <a href="javascript:void all_screens__build_new_screen()">build new screen</a>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.1em; background-color: black"></div>
+    <div style="height: 0.7em"></div>
+    <div id="WibBuilder_AllScreens_Items"></div>
+    <div style="height: 0.7em"></div>
+    <div style="height: 0.1em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div style="">
+      <a href="javascript:void all_screens__build_new_screen()">build new screen</a>
+    </div>
+  </div>
+
   <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
-    <div style="display: grid; width: 20em; margin-left: 0.5em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
+    <div style="display: grid; width: 20em; margin-left: 0.3em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
       <div style="font-weight: bold">Info About This Screen:</div>
       <div style="height: 0.7em"></div>
       <div style="height: 0.1em; background-color: black"></div>
       <div style="height: 0.7em"></div>
-      <div style="display: inline-grid; grid-template-columns: auto auto">
-        <div style="padding-right: 0.7em; text-align: right">type of thing being created:</div>
-        <div style="">
-          <a id="aWibBuilder_BuildScreen_TypeName" href="javascript:void build_screen__name_type()">(click here)</a>
+      <div style="display: grid; grid-template-columns: auto auto">
+        <div style="text-size: 85%; padding-right: 0.3em; text-align: right">type of thing being created:</div>
+        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Link">
+          <a id="aWibBuilder_BuildScreen_TypeName" style="text-size: 85%; font-style: normal" href="javascript:void build_screen__name_type()">(click here)</a>
         </div>
+        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text" style="display: none; text-size: 85%; font-style: normal"></div>
       </div>
     </div>
-    <div style="display: grid; width: 20em; border: 0.2em solid grey; padding: 0.5em">
-      <div style="border: 0.2em solid lightgrey; padding: 0.7em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
-      <div style="height: 1em"></div>
-      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.5em">
-        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.7em; padding-top: 0.9em; text-align: right">_______ Name:</div>
-        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.7em">
+    <div style="display: grid; width: 19.5em; border: 0.2em solid grey; padding: 0.5em">
+      <div id="dvWibBuilder_BuildScreen_HeaderText" style="border: 0.2em solid lightgrey; padding: 0.5em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div style="height: 0.5em"></div>
+      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
+        <div id="dvWibBuilder_BuildScreen_ItemNameText" style="border: 0.2em solid lightgrey; width: ; padding: 0.5em; padding-top: 0.7em; text-align: right">_______ Name:</div>
+        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.5em">
           <input style="width: 100%" />
         </div>
       </div>
-      <div style="height: 1em"></div>
-      <div style="border: 0.2em solid lightgrey; padding: 0.7em; color: blue; text-align: center">save&nbsp;&nbsp;&nbsp;</div>
+      <div style="height: 0.5em"></div>
+      <div style="border: 0.2em solid lightgrey; padding: 0.5em; color: blue; font-style: italic; text-align: center">save&nbsp;&nbsp;&nbsp;</div>
     </div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void build_screen__run_this_screen()">run this screen</a></div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void build_screen__go_to_all_screens()">list of all screens</a></div>
+  </div>
+
+  <div id="dvPage_WibBuilder_RunScreen" style="display: none">
+    <div style="display: grid; width: 19.5em; border: 0.2em solid grey; padding: 0.5em">
+      <div id="dvWibBuilder_RunScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div style="height: 0.5em"></div>
+      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
+        <div id="dvWibBuilder_RunScreen_ItemNameText" style="width: ; padding-top: 0.1em; text-align: right">_______ Name:</div>
+        <div style="width: ">
+          <input id="ipWibBuilder_RunScreen_ItemNameValue" style="width: 100%" />
+        </div>
+      </div>
+      <div style="height: 0.5em"></div>
+      <div style="text-align: center"><a href="javascript:void save()">save</a>&nbsp;&nbsp;&nbsp;</div>
+    </div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void run_screen__build_this_screen()">build this screen</a></div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void run_screen__go_to_all_screens()">list of all screens</a></div>
   </div>
 
   <div id="dvPage_Wibtypes" style="display: none">
@@ -567,7 +617,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.70b";
+const CONST_appVersion = "0.71";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -598,6 +648,12 @@ const CONST_timeTracking_itemName = "Time Tracking";
 const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
 const CONST_timeTracking_wtifTime_itemName = "Time";
 const CONST_timeTracking_wtifMinsTracked_itemName = "Mins Tracked";
+const CONST_wbs_screenList_itemName = "wib-builder-screen-list";
+const CONST_wbs_screenTypeCode_createWibtype = "1";
+const CONST_wbs_screenWibType_itemName = "wib-builder-screen";
+const CONST_wbs_screenTypeCode_createType = "1";
+const CONST_wbs_screenWtifs_screenTypeCode_itemName = "ScreenTypeCode";
+const CONST_wbs_screenWtifs_wibtypeItemId_itemName = "TypeItemId";
 const CONST_wibBuilder_itemName = "wib-builder";
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
@@ -633,8 +689,11 @@ app.reordering_mode = null;
 app.timeTracking_defaultYear = null;
 app.timeTracking_defaultMonth = null;
 app.timeTracking_defaultDay = null;
-app.timeTracking_wibTypeItemId = null;
+app.timeTracking_wibtypeItemId = null;
 app.wibBuilder_itemId = null;
+app.wbs_curScreen_itemObj = null;
+app.wbs_screensWibType_itemId = null;
+app.wbs_screenListItemId = null;
 app.wibtypes_itemId = null;
 
 
@@ -816,7 +875,7 @@ function createListMemberDataObj(itemId, sortPosition) {
   return curListMemberDataObj;
 }
 
-function createWtifDataObj(wibtypeItemId, wtifItemId, theData) {
+function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
   //NOTE:
   //  don't need the itemId of the item whose data is being held here
   //  -> this wtif-data-object will be stored in an array property of that item
@@ -825,8 +884,17 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, theData) {
   var wtifDataObj = {};
 
   wtifDataObj.wibtypeItemId = wibtypeItemId;
+
+  if ( isBlank(wtifItemId) ) {
+    let wtifItemObj = searchForItemObj(wtifItemName, wibtypeItemId, true);
+    wtifItemId = wtifItemObj.itemId;
+  }
+
   wtifDataObj.wtifItemId = wtifItemId;
+
+//if(parseInt(wtifDataObj.wibtypeItemId)==365) dc(".createWtifDataObj() 1, wtifDataObj.wibtypeItemId / .wtifItemId / .theData --- " + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData )
   wtifDataObj.theData = theData;
+//if(parseInt(wtifDataObj.wibtypeItemId)==365) dc(".createWtifDataObj() 2, wtifDataObj.wibtypeItemId / .wtifItemId / .theData --- " + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData )
 
   wtifDataObj.saveToDatastore = function(itemIdAssignedToTheWibtype) {
     //declaring new variables, because:
@@ -915,15 +983,46 @@ function deleteItem(itemIdToDelete) {
 }
 
 function displayPage(pageName) {
-  switch (pageName) {
-    case "WibBuilder_BuildScreen":
-      document.body.style.display = "grid";
-      document.body.style.margin = "0.8em";
-      break;
 
-    default:
-      document.body.style.display = "";
-      document.body.style.margin = "";
+  if ( leftIs(pageName, "WibBuilder") ) {
+
+    document.body.style.display = "grid";
+    document.body.style.margin = "0.8em";
+
+    elem("spnAppHeader_OptionalPageTitle").style.display = "";
+    elem("spnAppHeader_OptionalPageTitle").innerHTML = "";
+    elem("spnAppHeader_AppParen1").style.display = "";
+    elem("spnAppHeader_AppParen2").style.display = "";
+
+    css_removeClass("spnAppHeader_AppNameAndVersion", CONST_cssClassName_bold);
+    css_removeClass("spnAppHeader_AppNameAndVersion", "font135");
+    css_addClass("spnAppHeader_AppNameAndVersion", "font85");
+
+    elem("spnAppHeader_Home").style.display = "none";
+    elem("spnAppHeader_Builder").style.display = "none";
+
+    if (!app.qs_obj.dev) {
+      elem("spnAppHeader_Dev").style.display = "none";
+    }
+
+  } else {
+
+    document.body.style.display = "";
+    document.body.style.margin = "";
+
+    elem("spnAppHeader_OptionalPageTitle").style.display = "none";
+    elem("spnAppHeader_OptionalPageTitle").innerHTML = "";
+    elem("spnAppHeader_AppParen1").style.display = "none";
+    elem("spnAppHeader_AppParen2").style.display = "none";
+
+    css_addClass("spnAppHeader_AppNameAndVersion", CONST_cssClassName_bold);
+    css_removeClass("spnAppHeader_AppNameAndVersion", "font85");
+    css_addClass("spnAppHeader_AppNameAndVersion", "font135");
+
+    elem("spnAppHeader_Home").style.display = "";
+    elem("spnAppHeader_Dev").style.display = "";
+    elem("spnAppHeader_Builder").style.display = "";
+
   }
 
   elem("dvPage_BackupExport").style.display = "none";
@@ -933,14 +1032,12 @@ function displayPage(pageName) {
   elem("dvPage_MoveOrCopy").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
+  elem("dvPage_WibBuilder_AllScreens").style.display = "none";
   elem("dvPage_WibBuilder_BuildScreen").style.display = "none";
+  elem("dvPage_WibBuilder_RunScreen").style.display = "none";
   elem("dvPage_Wibtypes").style.display = "none";
 
   elem("dvPage_" + pageName).style.display = "inline-grid";
-
-  elem("spnAppHeader_OptionalPageTitle").style.display = "none";
-  elem("spnAppHeader_Home").style.display = "";
-  elem("spnAppHeader_Dev").style.display = "";
 
   switch (pageName) {
 
@@ -984,6 +1081,7 @@ function displayPage(pageName) {
       }
 
     case "ShowStorage": {
+        elem("dvShowStorage_EditAllItemIds").style.display = "none";
         writeStorage();
         break;
       }
@@ -1138,29 +1236,101 @@ function displayPage(pageName) {
         break;
       }
 
+    case "WibBuilder_AllScreens": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Screens";
+
+      let html = "";
+
+      let screenList_itemObj = grabItemObj(app.wbs_screenListItemId);
+      let screenList_listMemberDataObjs = screenList_itemObj.getListMemberDataObjs();
+
+      screenList_listMemberDataObjs.forEach( (screenList_listMemberDataObjs) => {
+        let screenItemObj = grabItemObj(screenList_listMemberDataObjs.itemId);
+        if (html !== "") html += "<div style='height: 1.8em'></div>"
+
+        let screenNameDisplay = wbs_getScreenName(screenItemObj);
+        html += "<div>" + screenNameDisplay;
+        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__build_screen(\"" + screenItemObj.itemId + "\")'>build</a>\n";
+        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__run_screen(\"" + screenItemObj.itemId + "\")'>run</a>\n";
+      } );
+
+      if (html == "") html += "(none created yet)";
+
+      elem("WibBuilder_AllScreens_Items").innerHTML = html;
+
+      break;
+    }
+
     case "WibBuilder_BuildScreen": {
-        elem("spnAppHeader_OptionalPageTitle").style.display = "";
-        elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Build Screen";
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Build Screen";
 
-        if (!app.qs_obj.dev) {
-          elem("spnAppHeader_Home").style.display = "none";
-          elem("spnAppHeader_Dev").style.display = "none";
+      /* OLD
+      if (!app.wbs_curScreen_itemObj) {
+        let screenList_itemObj = grabItemObj(app.wbs_screenListItemId);
+        if ( screenList_itemObj.hasListMembers() ) {
+          let screenList_listMemberItemIds = screenList_itemObj.getListMemberItemIds();
+          app.wbs_curScreen_itemObj = grabItemObj(screenList_listMemberItemIds[0]);
         }
-
-        css_removeClass("spnAppHeader_AppNameAndVersion", CONST_cssClassName_bold);
-        css_removeClass("spnAppHeader_AppNameAndVersion", "font135");
-        css_addClass("spnAppHeader_AppNameAndVersion", "font85");
-
-        break;
       }
+      */
+
+      if (app.wbs_curScreen_itemObj) {
+
+        let wibtypeItemId_createdByUsageOfThisScreen = app.wbs_curScreen_itemObj.getWtifData(app.wbs_screensWibType_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+//dc("wibtypeItemId_createdByUsageOfThisScreen="+wibtypeItemId_createdByUsageOfThisScreen)
+        let wibtypeItemObj_createdByUsageOfThisScreen = grabItemObj(wibtypeItemId_createdByUsageOfThisScreen);
+
+        elem("dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Link").style.display = "none";
+        elem("dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text").style.display = "";
+        elem("dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text").innerHTML = wibtypeItemObj_createdByUsageOfThisScreen.itemName;
+        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = wbs_getScreenName(app.wbs_curScreen_itemObj, wibtypeItemObj_createdByUsageOfThisScreen);
+        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = wibtypeItemObj_createdByUsageOfThisScreen.itemName + " Name:";
+
+      } else {
+
+        elem("dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text").style.display = "none";
+        elem("dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Link").style.display = "";
+        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;________";
+        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = "_______ Name:";
+
+      }
+
+      break;
+    }
+
+    case "WibBuilder_RunScreen": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Run Screen";
+      break;
+    }
 
     case "Wibtypes": {
-        setAppItemObj(grabItemObj(app.wibtypes_itemId));
-        elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
-        break;
-      }
+      setAppItemObj(grabItemObj(app.wibtypes_itemId));
+      elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
+      break;
+    }
   }
 }
+
+function wbs_getScreenName(screenItemObj, wibtypeItemObj) {
+  var screenTypeCode = screenItemObj.getWtifData(app.wbs_screensWibType_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName);
+
+  if ( isBlank(wibtypeItemObj) ) {
+    var wibtypeItemId = screenItemObj.getWtifData(app.wbs_screensWibType_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+    wibtypeItemObj = grabItemObj(wibtypeItemId);
+  }
+
+  switch (screenTypeCode) {
+    case CONST_wbs_screenTypeCode_createWibtype:
+      return "Create " + wibtypeItemObj.itemName;
+
+    default:
+      return "";
+  }
+}
+
+
+
+
 
 function doCheckboxClickAction(elemId) {
   var checkboxIsChecked = false;
@@ -1556,8 +1726,11 @@ function getWithLeadingZeroes(startingVal, resultingNumberStringLength) {
   //TO-DO2: allow >5 total string length
 
   resultingNumberStringLength = parseInt(resultingNumberStringLength);
-  if (resultingNumberStringLength > 5) throw("ERROR: getWithLeadingZeroes limited to resultingNumberStringLength <= 4");
-  if (resultingNumberStringLength < 2) throw("ERROR: getWithLeadingZeroes requires resultingNumberStringLength >= 1");
+
+  if (resultingNumberStringLength < 2 || resultingNumberStringLength > 5)  {
+    alert("ERROR: function getWithLeadingZeroes, getWithLeadingZeroes limited to resultingNumberStringLength between 2 and 5 (resultingNumberStringLength=" + resultingNumberStringLength);
+    return;
+  }
 
   if ( isBlank(startingVal) ) return "";
 
@@ -1688,7 +1861,9 @@ function grabItemObj(itemId) {
 
   //this function assumes only existing items will be requested; so, if the item-data-string is blank, the item does not exist, and we must throw an error
   if ( isBlank(itemInfoString) ) {
-    throw("ERROR: item with itemId=" + itemId + " does not exist in data storage");
+    console.log("ERROR: function grabItemObj(), item with itemId=" + itemId + " does not exist in data storage");
+    alert("ERROR: function grabItemObj(), item with itemId=" + itemId + " does not exist in data storage");
+    return;
   }
 
   //create an item-object
@@ -1730,7 +1905,7 @@ function grabItemObj(itemId) {
 
       //we are now in an inner loop, of the list-member-data-itemIds for the wibtype from the outer loop
       //
-      //each list-member-data-itemId is for a wibType-info-field
+      //each list-member-data-itemId is for a wibtype-info-field
       // (the variable is "currentListMemberItemId_ofTheCurrentWibType" in this inner loop)
 
       //get the wtif-related-data from datastore for this item-we-are-creating
@@ -1738,7 +1913,7 @@ function grabItemObj(itemId) {
       let wtifData = getFromDatastore(saveKeyText_wtifData);
 
       //create and fill the wtif-data-object that holds the wtif-data for this item-we-are-creating
-      let wtifDataObj = createWtifDataObj(currentWibType_itemObj, currentListMemberItemId_ofTheCurrentWibType, wtifData);
+      let wtifDataObj = createWtifDataObj(currentWibType_itemObj.itemId, currentListMemberItemId_ofTheCurrentWibType, null, wtifData);
 
       //push tye wtif-data-object to the associated array-property of this item-we-are-creating
       itemObj.wtifDataObjs.push(wtifDataObj);
@@ -1966,12 +2141,12 @@ function itemObjFactory() {
     }
     
     //add the new wibtype's itemId to this list's array of wibtype-assignments
-   this.assignedWibtypes_itemIds.push(wibtypeItemIdToAssign);
+    this.assignedWibtypes_itemIds.push(wibtypeItemIdToAssign);
 
     //save this item's wibtype-assignments to datastore
     this.saveWibtypeAssignmentsToDatastore();
 
-    //TO-DO2: something about grabbing info-field-data-objects?
+    //TO-DO1: something about grabbing info-field-data-objects?
   };
 
   itemObj.changeItemInfo = function(itemName, doneStatusCode, displayCode, isList, notes) {
@@ -1984,18 +2159,22 @@ function itemObjFactory() {
     return true;
   };
 
-  itemObj.changeWtifData = function(wibtypeItemId, wtifItemId, theData) {
+  itemObj.changeWtifData = function(wibtypeItemId, wtifItemId, wtifItemName, theData) {
     if ( isBlank(wibtypeItemId) ){
       let wtifItemObj = grabItemObj(wtifItemId);
 
       if (wtifItemObj.joinedLists_itemIds.length > 1) {
-        throw("ERROR: Could not save data, " + wtifItemObj.itemName + " is on more than one list, can't determine Type's item-id\n\n(wtifItemId=" + wtifItemId);
+        console.log("ERROR: function itemObjFactory -> itemObj.changeWtifData, could not save data, " + wtifItemObj.itemName + " is on more than one list, can't determine Type's item-id\n\n(wtifItemId=" + wtifItemId);
+        alert("ERROR: function itemObjFactory -> itemObj.changeWtifData, could not save data, " + wtifItemObj.itemName + " is on more than one list, can't determine Type's item-id\n\n(wtifItemId=" + wtifItemId);
+        return;
       }
 
       wibtypeItemId = wtifItemObj.joinedLists_itemIds[0];
     }
 
-    return this.setDataFromWtif(wibtypeItemId, wtifItemId, theData, true);
+//if(parseInt(this.itemId)==378) dc(".changeWtifData(), wibtypeItemId=" + wibtypeItemId + ", wtifItemId=" + wtifItemId + ", wtifItemName=" + wtifItemName + ", theData=" + theData)
+//if(parseInt(this.itemId)==378) dc(".changeWtifData(), about to call setDataFromWtif() ...")
+    return this.setDataFromWtif(wibtypeItemId, wtifItemId, wtifItemName, theData, true);
   };
 
   itemObj.doDeletion = function() {
@@ -2062,7 +2241,9 @@ function itemObjFactory() {
     // double-check that this is not a wib or witf -- shouldn't be allowed to be copied through UI, but double-checking here due to importance of the wibtype system
     // TO-DO2: implement this in additional places
     if (this.isWibtype == "1" || this.isWibtypeInfoField == "1") {
-      throw("ERROR: disallowed operation on a type entry or on a type info-field");
+      console.log("ERROR: function itemObjFactory -> itemObj.copyToList, disallowed operation on a type entry or on a type info-field (this.isWibtype=" + this.isWibtype + ", this.isWibtypeInfoField=" + this.isWibtypeInfoField);
+      alert("ERROR: function itemObjFactory -> itemObj.copyToList, disallowed operation on a type entry or on a type info-field (this.isWibtype=" + this.isWibtype + ", this.isWibtypeInfoField=" + this.isWibtypeInfoField);
+      return;
     }
   
     makeNewItem(this.doneStatusCode, null, null, "0", "0", false, this.itemName, null, this.displayCode, this.isList, listToCopyTo_itemId)
@@ -2109,10 +2290,41 @@ function itemObjFactory() {
     }
   };
 
-  itemObj.getWtifData = function(wtifItemId) {
-    for (let i; i < this.wtifDataObjs.length; i++ ) {
-      
+  itemObj.getWtifData = function(wibtypeItemId_toGet, wtifItemId_toGet, wtifItemName_toGet) {
+//if(parseInt(this.itemId)==378) dc(".getWtifData(), 1 -> itemObjFactory/itemObj/this.itemId=" + this.itemId + ", wibtypeItemId_toGet=" + wibtypeItemId_toGet + ", wtifItemId_toGet=" + wtifItemId_toGet + ", wtifItemName_toGet=" + wtifItemName_toGet);
+//if(parseInt(this.itemId)==378) dc(".getWtifData(), 1 -> about to call getWtifDataObj() ...")
+    var wtifDataObj = this.getWtifDataObj(wibtypeItemId_toGet, wtifItemId_toGet, wtifItemName_toGet);
+//let wibtypeItemId_createdByUsageOfThisScreen = app.wbs_curScreen_itemObj.getWtifData(app.wbs_screensWibType_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+//if(parseInt(this.itemId)==378) dc(".getWtifData(), 2 -> wtifDataObj.wibtypeItemId / .wtifItemId / .theData --- " + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData);
+    if (wtifDataObj) {
+      return wtifDataObj.theData;
     }
+    return null;
+  };
+
+  itemObj.getWtifDataObj = function(wibtypeItemId_toGet, wtifItemId_toGet, wtifItemName_toGet) {
+//if(parseInt(this.itemId)==378) dc("itemObjFactory/itemObj.getWtifDataObj(), this.itemId=" + this.itemId + ", this.wtifDataObjs.length="+this.wtifDataObjs.length)
+    for (var i = 0; i < this.wtifDataObjs.length; i++ ) {
+      let wtifDataObj_forThisLoop = this.wtifDataObjs[i];
+//if(parseInt(this.itemId)==378) dc("itemObjFactory/itemObj.getWtifDataObj(), this.wtifDataObjs[i].wtifItemId=" + this.wtifDataObjs[i].wtifItemId)
+//if(parseInt(this.itemId)==378) dc("itemObjFactory/itemObj.getWtifDataObj(), wtifDataObj_forThisLoop.wibtypeItemId="+wtifDataObj_forThisLoop.wibtypeItemId)
+      if ( isEqual(wtifDataObj_forThisLoop.wibtypeItemId, wibtypeItemId_toGet) ) {
+
+        if ( isEqual(wtifDataObj_forThisLoop.wtifItemId, wtifItemId_toGet) ) {
+          return wtifDataObj_forThisLoop;
+        } else if ( !isBlank(wtifItemName_toGet) ) {
+          let wtifItemObj_forThisLoop = grabItemObj(wtifDataObj_forThisLoop.wtifItemId);
+          if ( isEqual(wtifItemObj_forThisLoop.itemName, wtifItemName_toGet) ) {
+            return wtifDataObj_forThisLoop;
+          }
+        }
+
+      }
+
+    }
+
+//if(parseInt(this.itemId)==378) dc("itemObjFactory/itemObj.getWtifDataObj(), did not find wtif for:\nitemId=" + this.itemId + "\nitemName=" + this.itemName + "\nwibtypeItemId_toGet=" + wibtypeItemId_toGet + "\nwtifItemId_toGet=" + wtifItemId_toGet + "\nwtifItemName_toGet=" + wtifItemName_toGet);
+    return null;
   };
 
   itemObj.hasListMembers = function() {
@@ -2249,23 +2461,20 @@ function itemObjFactory() {
     saveToDatastore(getSaveKeyText_wibtypeInfoFieldInfo_ofItem(this.itemId), wibtypeInfoFieldInfoString);
   };
 
-  itemObj.setDataFromWtif = function(wibtypeItemId, wtifItemId, theData, saveToDatastore) {
-    var i, wtifDataObj = null;
-
-    //check if the wtifDataObj already exists
-    for (i = 0; i < this.wtifDataObjs.length; i++) {
-      if ( isEqual(this.wtifDataObjs[i].itemId == wtifItemId ) ) {
-        wtifDataObj = this.wtifDataObjs[i].itemId;
-        break;
-      }
-    }
+  itemObj.setDataFromWtif = function(wibtypeItemId, wtifItemId, wtifItemName, theData, saveToDatastore) {
+//dc(".setDataFromWtif(), about to call getWtifDataObj() ...")
+    var wtifDataObj = this.getWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName);
 
     if ( wtifDataObj == null ) {
       //if the wtifDataObj DOES NOT exist, create a new one
-      wtifDataObj = createWtifDataObj(wibtypeItemId, wtifItemId, theData);
+      wtifDataObj = createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData);
+      this.wtifDataObjs.push(wtifDataObj);
+//dc(".setDataFromWtif() 2b, wtifDataObj.wibtypeItemId / .wtifItemId / .theData" + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData )
     } else {
       //if the wtifDataObj DOES exist, update its data
-      wtifDataObj.theData = theData;
+//dc(".setDataFromWtif() 1, wtifDataObj.wibtypeItemId / .wtifItemId / .theData" + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData )
+     wtifDataObj.theData = theData;
+//dc(".setDataFromWtif() 2, wtifDataObj.wibtypeItemId / .wtifItemId / .theData" + wtifDataObj.wibtypeItemId + " / " + wtifDataObj.wtifItemId + " / " + wtifDataObj.theData )
     }
 
     //if requested, save the wtifDataObject to the datastore
@@ -2285,6 +2494,64 @@ function itemObjFactory() {
   };
 
   return itemObj;
+}
+
+function left(str, numChars) {
+  if (typeof str !== "string") return null;
+  if ( ! isNumeric(numChars) ) return null;
+  if (numChars < 0) return null;
+  if ( isEqual(numChars, 0) ) return "";
+  if (numChars > str.length) return str;
+  var theLeft = str.substr(0, numChars);
+  return theLeft;
+}
+
+function leftIs(haystack, needle) {
+  if (typeof haystack !== "string") return false;
+  if (typeof needle !== "string") return false;
+
+  var lenNeedle = needle.length;
+
+  if ( isEqual(lenNeedle, 0) ) {
+    if ( isEqual(haystack.length, 0) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var haystackLeft = left(haystack, lenNeedle);
+
+  return isEqual(haystackLeft, needle);
+}
+
+function right(str, numChars) {
+  if (typeof str !== "string") return null;
+  if ( ! isNumeric(numChars) ) return null;
+  if (numChars < 0) return null;
+  if ( isEqual(numChars, 0) ) return "";
+  if (numChars > str.length) return str;
+  var theRight = str.substr(str.length - numChars);
+  return theRight;
+}
+
+function rightIs(haystack, needle) {
+  if (typeof haystack !== "string") return false;
+  if (typeof needle !== "string") return false;
+
+  var lenNeedle = needle.length;
+
+  if ( isEqual(lenNeedle, 0) ) {
+    if ( isEqual(haystack.length, 0) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var haystackRight = right(haystack, lenNeedle);
+
+  return isEqual(haystackRight, needle);
 }
 
 function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField, isWibtype, overrideDisallowName, itemName, itemNamePrompt, displayCode, isList, addToList_itemId) {
@@ -3106,13 +3373,13 @@ function writeHtml_Items(mainItemObj) {
   if ( isBlank(mainItemObj) ) mainItemObj = app.itemObj;
 
   /* get Time-Tracking wtif itemIds */ {
-    let tt_wtifYMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibTypeItemId, true);
+    let tt_wtifYMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifYMD_itemId = tt_wtifYMD_itemObj.itemId;
 
-    let tt_wtifTime_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibTypeItemId, true);
+    let tt_wtifTime_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifTime_itemId = tt_wtifTime_itemObj.itemId;
 
-    let tt_wtifMinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibTypeItemId, true);
+    let tt_wtifMinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifMinsTracked_itemId = tt_wtifMinsTracked_itemObj.itemId;
   }
 
@@ -3158,7 +3425,7 @@ function writeHtml_Items(mainItemObj) {
       //add Time-Tracking info if this is such an item
       {
         ttDisplayForItem = "";
-        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibTypeItemId) ) {
+        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibtypeItemId) ) {
           let tt_wtifYMD_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
           let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
           let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
@@ -3242,15 +3509,15 @@ function writeHtml_WtifData() {
 
   for (i = 0; i < app.itemObj.assignedWibtypes_itemIds.length; i++) {
     let wibtypeItemId = app.itemObj.assignedWibtypes_itemIds[i];
-    let wibTypeItemObj = grabItemObj(wibtypeItemId);
+    let wibtypeItemObj = grabItemObj(wibtypeItemId);
 
     if (i > 0) {
       html += "<div class='grid2Cell gc2VSpace2'></div>\n";
     }
-    html += "<div class='grid2Cell gc2Header2'>" + wibTypeItemObj.itemName + "&nbsp;&nbsp;</div>\n";
+    html += "<div class='grid2Cell gc2Header2'>" + wibtypeItemObj.itemName + "&nbsp;&nbsp;</div>\n";
     html += "<div class='grid2Cell gc2VSpace2'></div>\n";
 
-    let wtifs_listMemberDataObjs = wibTypeItemObj.getListMemberDataObjs();
+    let wtifs_listMemberDataObjs = wibtypeItemObj.getListMemberDataObjs();
 
     for (let j = 0; j < wtifs_listMemberDataObjs.length; j++) {
       let wtif_listMemberDataObj = wtifs_listMemberDataObjs[j];
@@ -3368,14 +3635,102 @@ function add_storage_row() {
   show_storage();
 }
 
-function back_to_type(wibTypeItemId) {
-  goToItemView(wibTypeItemId, false)
+function all_screens__build_new_screen() {
+  displayPage("WibBuilder_BuildScreen");
+}
+
+function all_screens__build_screen(screenItemId) {
+  app.wbs_curScreen_itemObj = grabItemObj(screenItemId);
+  displayPage("WibBuilder_BuildScreen");
+}
+
+function all_screens__run_screen(screenItemId) {
+  app.wbs_curScreen_itemObj = grabItemObj(screenItemId);
+  displayPage("WibBuilder_RunScreen");
+}
+
+function back_to_type(wibtypeItemId) {
+  goToItemView(wibtypeItemId, false)
 }
 
 function begin_import() {
   var textToImport = elem("taBackupTextToImport").value;
   if ( isBlank(textToImport) ) return;
   importBackupText(textToImport);
+}
+
+function build_screen__go_to_all_screens() {
+  displayPage("WibBuilder_AllScreens");
+}
+
+function build_screen__name_type() {
+  var newTypeName = prompt("type of thing being created:", "");
+
+  if ( isBlank(newTypeName) ) {
+    return;
+  }
+
+  var wibtypeItemObj_createdByUsageOfThisScreen = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, newTypeName, null, CONST_displayCode_hidden1, "1", app.wibtypes_itemId);
+  if (!wibtypeItemObj_createdByUsageOfThisScreen) {
+    return
+  }
+
+  var screenItemName = wibBuilder_screen_getScreenItemName(CONST_wbs_screenTypeCode_createType, wibtypeItemObj_createdByUsageOfThisScreen.itemId);
+
+  var wibBuilderScreen_itemObj = makeNewItem(null, null, null, "0", "0", false, screenItemName, null, CONST_displayCode_hidden1, "0", app.wbs_screenListItemId);
+  if (!wibBuilderScreen_itemObj) {
+    return
+  }
+
+  var wibtypeItemObj_ofWibBuilderScreens = grabItemObj(app.wbs_screensWibType_itemId);
+
+  setWibtypeAndWtifs(wibBuilderScreen_itemObj, wibtypeItemObj_ofWibBuilderScreens, CONST_wbs_screenWtifs_screenTypeCode_itemName, CONST_wbs_screenTypeCode_createType, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibtypeItemObj_createdByUsageOfThisScreen.itemId);
+
+  app.wbs_curScreen_itemObj = wibBuilderScreen_itemObj;
+  displayPage("WibBuilder_BuildScreen");
+}
+
+function setWibtypeAndWtifs(itemObjToSet, wibtypeItemObj, wtifItemName1, wtifData1, wtifItemName2, wtifData2, wtifItemName3, wtifData3, wtifItemName4, wtifData4, wtifItemName5, wtifData5) {
+  itemObjToSet.assignToWibtype(wibtypeItemObj.itemId);
+
+  if ( !isBlank(wtifItemName1) ) {
+    itemObjToSet.changeWtifData(wibtypeItemObj.itemId, null, wtifItemName1, wtifData1);
+  }
+
+  if ( !isBlank(wtifItemName2) ) {
+    itemObjToSet.changeWtifData(wibtypeItemObj.itemId, null, wtifItemName2, wtifData2);
+  }
+
+  if ( !isBlank(wtifItemName3) ) {
+    itemObjToSet.changeWtifData(wibtypeItemObj.itemId, null, wtifItemName3, wtifData3);
+  }
+
+  if ( !isBlank(wtifItemName4) ) {
+    itemObjToSet.changeWtifData(wibtypeItemObj.itemId, null, wtifItemName4, wtifData4);
+  }
+
+  if ( !isBlank(wtifItemName5) ) {
+    itemObjToSet.changeWtifData(wibtypeItemObj.itemId, null, wtifItemName5, wtifData5);
+  }
+}
+
+function wibBuilder_screen_getScreenItemName(wbsScreenTypeCode, wibtypeItemId) {
+  // the screen's item-name is in the format:
+  // -> wbs__ScreenTypeCode_X__wibtypeItemId_Y
+  //      ... the part "ScreenTypeCode_X" comes from -- X = e.g. wbsScreenTypeCode = CONST_wbs_screenTypeCode_createType (which is "1")
+  //      ... the part "wibtypeItemId_Y" comes from -- Y = the wibtype-itemId of the wibtypeItemObj we created in build_screen__name_type()
+
+  var screenItemName = "wbs__ScreenTypeCode_" + wbsScreenTypeCode + "__wibtypeItemId_" + wibtypeItemId;
+  return screenItemName;
+}
+
+function build_screen__run_this_screen() {
+  if (!app.wbs_curScreen_itemObj) {
+    alert("must set the 'type of thing being created' in order to run this screen");
+    return;
+  }
+
+  displayPage("WibBuilder_RunScreen");
 }
 
 function cancel_change_done_status() {
@@ -3650,6 +4005,7 @@ function do_make_new_item(makeCode) {
       app.timeTracking_defaultMonth = ttMonth;
       app.timeTracking_defaultDay = ttDay;
 
+      //TO-DO1.5: use new function setWibtypeAndWtifs()
       let ttItemObj = grabItemObjByName(CONST_timeTracking_itemName);
       newItemObj.assignToWibtype(ttItemObj.itemId);
 
@@ -3669,7 +4025,7 @@ function do_make_new_item(makeCode) {
             wtifData = ttMinutesTracked;
             break;
         }
-        newItemObj.changeWtifData(ttItemObj.itemId, ttWtifItemObj.itemId, wtifData)
+        newItemObj.changeWtifData(ttItemObj.itemId, ttWtifItemObj.itemId, null, wtifData)
       } );
     }
 
@@ -3748,8 +4104,17 @@ function edit_notes() {
 function edit_storage_row(keyName) {
   var curKeyValue = getFromDatastore(keyName);
 
+  elem("dvShowStorage_EditAllItemIds").style.display = "none";
+
   if (curKeyValue.length > 999) {
-    throw ("curKeyValue.length > 999, so not sure if javascript prompt box will work => exiting with error");
+    if (keyName == CONST_stringOfAllItemIds) {
+      elem("dvShowStorage_EditAllItemIds").style.display = "";
+      elem("taShowStorage_EditAllItemIds").value = getFromDatastore(CONST_stringOfAllItemIds);
+      elem("taShowStorage_EditAllItemIds").focus();
+      return;
+    } else {
+      throw ("curKeyValue.length > 999, so not sure if javascript prompt box will work => exiting with error");
+    }
   }
 
   var editedKeyValue = prompt("Change key value to:", curKeyValue);
@@ -3760,6 +4125,22 @@ function edit_storage_row(keyName) {
 
   saveToDatastore(keyName, editedKeyValue);
   show_storage();
+}
+
+function edit_storage_row__do_all_items_edit() {
+  var editedKeyValue = elem("taShowStorage_EditAllItemIds").value;
+
+  if ( isBlank(editedKeyValue) ) {
+    alert("for now, not allowing blank entry for all-item-ids");
+    return;
+  }
+
+  saveToDatastore(CONST_stringOfAllItemIds, editedKeyValue);
+  show_storage();
+}
+
+function edit_storage_row__cancel_all_items_edit() {
+  elem("dvShowStorage_EditAllItemIds").style.display = "none";
 }
 
 function export_backup_text() {
@@ -3905,6 +4286,19 @@ function return_home_from_storage() {
   displayPage("Home");
 }
 
+function save() {
+//TO-DO1:
+alert("incomplete function")
+}
+
+function run_screen__build_this_screen() {
+  displayPage("WibBuilder_BuildScreen");
+}
+
+function run_screen__go_to_all_screens() {
+  displayPage("WibBuilder_AllScreens");
+}
+
 function set_ymd_to_today() {
   setElemsToToday("ipMakeNewItem_Year", "ipMakeNewItem_Month", "ipMakeNewItem_Day");
 }
@@ -3999,63 +4393,88 @@ function toggle_reorder() {
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData_andReturnNextDisplayPage() {
-  var homePageListItemObj, wibBuilderItemObj, wibtypesItemObj, timeTracking_wibTypeItemObj;
+
+  var homePageListItemObj, wibtypesItemObj, wibBuilderItemObj, wibBuilderScreen_wibtypeItemObj, wibBuilderScreenList_itemObj, timeTracking_wibtypeItemObj;
 
   app.addDataLoadedSuccessfully = false;
 
   /* if it does not exist, create a home-page-list item */ {
     homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
     if ( isBlank(homePageListItemObj) ) {
-      homePageListItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_homePage, null, CONST_displayCode_hidden1, "1", null)
+      homePageListItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_homePage, null, CONST_displayCode_hidden1, "1", null);
     }
+    app.homePageList_itemId = homePageListItemObj.itemId;
   }
-
-  app.homePageList_itemId = homePageListItemObj.itemId;
-
-  /* if it does not exist, create a wib-builder item */ {
-    wibBuilderItemObj = grabItemObjByName(CONST_wibBuilder_itemName);
-    if ( isBlank(wibBuilderItemObj) ) {
-      wibBuilderItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wibBuilder_itemName, null, CONST_displayCode_hidden1, "1", null)
-    }
-  }
-
-  app.wibBuilder_itemId = wibBuilderItemObj.itemId;
 
   /* if it does not exist, create a wibtypes-item */ {
     wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
     if ( isBlank(wibtypesItemObj) ) {
-      wibtypesItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_wibtypes, null, CONST_displayCode_hidden1, "1", null)
+      wibtypesItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_wibtypes, null, CONST_displayCode_hidden1, "1", null);
     }
+    app.wibtypes_itemId = wibtypesItemObj.itemId;
   }
 
-  app.wibtypes_itemId = wibtypesItemObj.itemId;
+  /* if it does not exist, create a wib-builder item */ {
+    wibBuilderItemObj = grabItemObjByName(CONST_wibBuilder_itemName);
+    if ( isBlank(wibBuilderItemObj) ) {
+      wibBuilderItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wibBuilder_itemName, null, CONST_displayCode_hidden1, "1", null);
+    }
+    app.wibBuilder_itemId = wibBuilderItemObj.itemId;
+  }
+
+  /* if it does not exist, create a wib-builder-screen wibtype-item and associated wtifs */ {
+    wibBuilderScreen_wibtypeItemObj = grabItemObjByName(CONST_wbs_screenWibType_itemName);
+    if ( isBlank(wibBuilderScreen_wibtypeItemObj) ) {
+      wibBuilderScreen_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wbs_screenWibType_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+    }
+
+    let wbs_ScreenTypeCode_itemObj = searchForItemObj(CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    if ( isBlank(wbs_ScreenTypeCode_itemObj) ) {
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_screenTypeCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+    }
+
+    let wbs_wibtypeItemId_itemObj = searchForItemObj(CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    if ( isBlank(wbs_wibtypeItemId_itemObj) ) {
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_wibtypeItemId_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+    }
+
+    app.wbs_screensWibType_itemId = wibBuilderScreen_wibtypeItemObj.itemId;
+  }
+
+  /* if it does not exist, create a wib-builder-screen-list item */ {
+    wibBuilderScreenList_itemObj = grabItemObjByName(CONST_wbs_screenList_itemName);
+    if ( isBlank(wibBuilderScreenList_itemObj) ) {
+      wibBuilderScreenList_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wbs_screenList_itemName, null, CONST_displayCode_hidden1, "1", null);
+    }
+    app.wbs_screenListItemId = wibBuilderScreenList_itemObj.itemId;
+  }
 
   /* if they do not exist, create Time-Tracking and its wtifs */ {
-    timeTracking_wibTypeItemObj = searchForItemObj(CONST_timeTracking_itemName, app.wibtypes_itemId, true);
+    timeTracking_wibtypeItemObj = searchForItemObj(CONST_timeTracking_itemName, app.wibtypes_itemId, true);
 
-    if ( isBlank(timeTracking_wibTypeItemObj) ) {
-      timeTracking_wibTypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", app.wibtypes_itemId)
+    if ( isBlank(timeTracking_wibtypeItemObj) ) {
+      timeTracking_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
 
     //TO-DO2: handle hypothetical possibility of 2+ Time-Tracking wtifItemIds with the same name
 
-    let ttWtif_YMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    let ttWtif_YMD_itemObj = searchForItemObj(CONST_timeTracking_wtifYMD_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_YMD_itemObj) ) {
-      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId); 
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId); 
     }
 
-    let ttWtif_Time_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    let ttWtif_Time_itemObj = searchForItemObj(CONST_timeTracking_wtifTime_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_Time_itemObj) ) {
-      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId);
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId);
     }
 
-    let ttWtif_MinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibTypeItemObj.itemId, true);
+    let ttWtif_MinsTracked_itemObj = searchForItemObj(CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
-      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibTypeItemObj.itemId);
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId);
     }
-  }
 
-  app.timeTracking_wibTypeItemId = timeTracking_wibTypeItemObj.itemId;
+    app.timeTracking_wibtypeItemId = timeTracking_wibtypeItemObj.itemId;
+  }
 
   // set app current-item to home-page-list
   setAppItemObj(homePageListItemObj);
@@ -4063,15 +4482,12 @@ function loadAppData_andReturnNextDisplayPage() {
   if ( ! upgradeStoredData() ) return;
 
   // set version# on screen
-  if (app.qs_obj.wibBuilder) {
-    elem("spnAppHeader_AppNameAndVersion").innerHTML = "&nbsp;&nbsp;(wib v" + CONST_appVersion + ")";
-  } else {
-    elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
-  }
+  elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
+
   app.addDataLoadedSuccessfully = true;
 
   if (app.qs_obj.wibBuilder) {
-    return "WibBuilder_BuildScreen"
+    return "WibBuilder_AllScreens"
   } else {
     return "Home"
   }
