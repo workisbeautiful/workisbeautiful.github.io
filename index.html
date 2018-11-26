@@ -119,7 +119,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <textarea id="taExportedBackupText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
     <div style="height:0.8em"></div>
     <div><a href="javascript:void copy_imported_text_to_clipboard()">copy to clipboard</a></div>
-    <div style="height:1em"></div>
+    <div style="height:2em"></div>
   </div>
 
   <div id="dvPage_BackupImport" style="display: none">
@@ -150,6 +150,28 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1em"></div>
   </div>
 
+  <div id="dvPage_Home" style="display: none">
+    <div style="font-weight: bold">Home</div>
+    <div style="height:0.8em"></div>
+    <div>
+      <a href="javascript:void make_new_list()" style="white-space: nowrap">make new list</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_types()" style="white-space: nowrap">show types</a>
+    </div>
+    <div style="height: 1em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 1.4em"></div>
+    <div id="dvHome_Items"></div>
+    <div style="height: 0.4em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 1em"></div>
+    <div><a href="javascript:void make_new_list()">make new list</a></div>
+    <div style="height: 1em"></div>
+  </div>
+
   <div id="dvPage_MoveOrCopy" style="display: none">
     <div style="font-weight: bold">Moving or Copying Items</div>
     <div style="height:0.8em"></div>
@@ -177,25 +199,28 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1em"></div>
   </div>
 
-  <div id="dvPage_Home" style="display: none">
-    <div style="font-weight: bold">Home</div>
-    <div style="height:0.8em"></div>
+  <div id="dvPage_NavigateItems" style="display: none">
+    <div class="red" style="font-weight: bold">Navigation</div>
+    <div style="height: 0.8em"></div>
     <div>
-      <a href="javascript:void make_new_list()" style="white-space: nowrap">make new list</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_types()" style="white-space: nowrap">show types</a>
+      <a href="javascript:void _____()" style="white-space: nowrap">_____</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void _____()" style="white-space: _____">_____</a>
     </div>
     <div style="height: 1em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 1.4em"></div>
-    <div id="dvHome_Items"></div>
+      <div id="dvNavigateItems_Items"></div>
     <div style="height: 0.4em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 1em"></div>
-    <div><a href="javascript:void make_new_list()">make new list</a></div>
+    <div>
+      <a href="javascript:void _____()" style="white-space: nowrap">_____</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void _____()" style="white-space: nowrap">_____</a>
+    </div>
     <div style="height: 1em"></div>
   </div>
 
@@ -630,7 +655,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 //TO-DO1: save below to disallowed-names function
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.72";
+const CONST_appVersion = "0.73";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
@@ -1046,6 +1071,7 @@ function displayPage(pageName) {
   elem("dvPage_Dev").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_MoveOrCopy").style.display = "none";
+  elem("dvPage_NavigateItems").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
   elem("dvPage_WibBuilder_AllScreens").style.display = "none";
@@ -1096,6 +1122,63 @@ function displayPage(pageName) {
         elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo();
         break;
       }
+
+    case "NavigateItems": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Navigate Items";
+
+      let html = "";
+
+      /* --- INSTRUCTIONS ---
+
+      // create and run search object:
+      
+      var sObj = new SearchObj();
+       
+      // include any or all of the following:
+      //   (all must be true for an item to be returned)
+       
+      sObj.set_targetItemName(itemName_toSearchFor);
+      sObj.set_targetJoinedListWithItemId(listItemId_toSearchFor);
+      sObj.set_targetAssignedToWibtypeWithItemId(wibtypeItemId_toSearchFor);
+
+      // can only include one of the following two options:
+
+      // -> option 1:
+      sObj.set_targetCombo_wtifItemId_and_wtifData(wtifItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
+      //
+      //  --- or ---
+      //
+      // -> option 2:
+      sObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
+      
+      sObj.set_returnFirstOnly_false();  // optional (SearchObj() defaults to returnFirstOnly==true)
+
+      var itemObj = sObj.runSearchAndReturnX();       // if returnFirstOnly==true (default)
+      //  --- or ---
+      var itemObjArray = sObj.runSearchAndReturnX();  // if returnFirstOnly==false
+
+      */
+  //TO-DOx:
+      var sObj = new SearchObj();
+      let itemObjs = x
+
+      itemObjs.forEach( (itemObj) => {
+        if (html !== "") html += "<div style='height: 1.8em'></div>"
+
+        html += "<div>" + itemObj.itemName;
+/*
+        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__build_screen(\"" + screenItemObj.itemId + "\")'>build</a>\n";
+        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__run_screen(\"" + screenItemObj.itemId + "\")'>run</a>\n";
+*/
+        html += "</div>\n";
+      } );
+
+      if (html == "") html += "(none created yet)";
+
+      elem("NavigateItems_Items").innerHTML = html;
+
+      break;
+    }
 
     case "ShowStorage": {
         elem("dvShowStorage_EditAllItemIds").style.display = "none";
@@ -1328,11 +1411,6 @@ function displayPage(pageName) {
     }
 
     case "WibBuilder_ShowWibtypeInstances": {
-
-
-//TO-DO1:
-
-
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Show Instances";
 
       let html = "";
@@ -1697,6 +1775,11 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
   return revisedArray;
 }
 
+function getProcessedStringForSave(oldString) {
+  var newString = getStringWithCharsReplaced(oldString, " ", "&nbsp;");
+  return newString;
+}
+
 function getSaveKeyText_item(itemId) {
   return "i_" + itemId;
 }
@@ -1733,6 +1816,31 @@ function getSelectArrayElem(optionId, optionDisplay) {
   }
 
   return theObj;
+}
+
+function getStringWithCharsReplaced(oldString, oldChars, newChars) {
+  if ( oldString == null || oldChars == null ) {
+    return "";
+  }
+
+  if ( newChars == null ) {
+    newChars = "";
+  }
+
+  var newString = oldString;
+
+  for (var i = 1; i <= 100000; i++) {  //use a counter to prevent being stuck in a do-loop if something goes wrong
+dc("1- newString="+newString)
+    if ( !newString.includes(oldChars) ) {
+      return newString;
+    }
+
+dc("2- newString="+newString)
+    newString = newString.replace(oldChars, newChars);
+dc("3- newString="+newString)
+  }
+
+  return newString;
 }
 
 function getValArrayWithoutElem(theArray, valToExclude) {
@@ -2222,6 +2330,10 @@ function itemObjFactory() {
   };
 
   itemObj.changeItemInfo = function(itemName, doneStatusCode, displayCode, isList, notes) {
+    // process itemName and notes strings here, in case they were not processed by the calling function
+    itemName = getProcessedStringForSave(itemName);
+    notes = getProcessedStringForSave(notes);
+
     if ( !isBlank(itemName) ) this.itemName = itemName;
     if ( !isBlank(doneStatusCode) ) this.doneStatusCode = doneStatusCode;
     if ( !isBlank(displayCode) ) this.displayCode = displayCode;
@@ -2481,11 +2593,11 @@ function itemObjFactory() {
       let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
       
       if (markDirectionIsDone) {
-        if (curItemObj.doneStatusCode !== CONST_doneStatusCode_done) {
+        if (curItemObj.doneStatusCode == CONST_doneStatusCode_undone) {
           curItemObj.changeItemInfo(null, CONST_doneStatusCode_done, null, null, null);
         }
       } else {
-        if (curItemObj.doneStatusCode !== CONST_doneStatusCode_undone) {
+        if (curItemObj.doneStatusCode == CONST_doneStatusCode_done) {
           curItemObj.changeItemInfo(null, CONST_doneStatusCode_undone, null, null, null);
         }
       }
@@ -2638,6 +2750,9 @@ function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField
     if ( isBlank(itemName) ) return false;
   }
 
+  // process itemName up here, as it will be used in comparisons below
+  itemName = getProcessedStringForSave(itemName);
+
   if (!overrideDisallowName) {
     // TO-DO2: prevent creation/renaming of duplicate wtif names
     if ( !itemNameIsAllowed(itemName) ) {
@@ -2674,6 +2789,7 @@ function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField
   }
 
   newItemObj.itemName = itemName;
+
   if ( !isBlank(displayCode) ) newItemObj.displayCode = displayCode;
   if ( !isBlank(isList) ) newItemObj.isList = isList;
   newItemObj.notes = "";
@@ -2793,6 +2909,9 @@ function SearchObj() {
   this.target_wtif_itemName = null;
   this.target_wtif_searchForBlankTheData = false;
   this.target_wtif_theData = null;
+
+  //TO-DOx:
+  this.ordering
 
   this.wtifDataSearchHasBeenSet = false;
 
@@ -3948,6 +4067,9 @@ function writeStorage() {
 function add_notes() {
   var newNotes = prompt("Notes:", "");
   if ( isBlank(newNotes) ) return;
+
+  newNotes = getProcessedStringForSave(newNotes);
+
   app.itemObj.changeItemInfo(null, null, null, null, newNotes);
   goToItemView(null, true);
 }
@@ -4267,6 +4389,9 @@ function do_make_new_item(makeCode) {
   } else {
     itemName = getElemVal("ipMakeNewItem_ItemName");
 
+    // process itemName string here, as it will be used in a comparison below
+    itemName = getProcessedStringForSave(itemName);
+
     if ( !itemNameIsAllowed(itemName) ) {
       elem("ipMakeNewItem_ItemName").focus();
       return;
@@ -4382,6 +4507,9 @@ function do_make_new_type() {
 
   itemName = getElemVal("ipMakeNewWibtype_WibtypeName");
 
+  // process itemName string here, as it will be used in a comparison below
+  itemName = getProcessedStringForSave(itemName);
+
   if ( !itemNameIsAllowed(itemName) ) {
     return;
   }
@@ -4404,6 +4532,9 @@ function do_make_new_type_info_field() {
   itemName = getElemVal("ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
   wibDataTypeId = getElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
   required = getElemVal("ckMakeNewWibtypeInfoField_Required");
+
+  // process itemName string here, as it will be used in a comparison below
+  itemName = getProcessedStringForSave(itemName);
 
   if ( !itemNameIsAllowed(itemName) ) {
     return;
@@ -4432,6 +4563,9 @@ function edit_notes() {
     alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
     return;
   }
+
+  editedNotes = getProcessedStringForSave(editedNotes);
+
   app.itemObj.changeItemInfo(null, null, null, null, editedNotes);
   goToItemView(null, true);
 }
@@ -4549,11 +4683,10 @@ function mark_all() {
     }
   }
 
-  confirmText = "mark all items on this list as";
   if (markDirectionIsDone) {
-    confirmText += " done?";
+    confirmText = "mark all undone items on this list as done?";
   } else {
-    confirmText += " undone?";
+    confirmText = "mark all done items on this list as undone?";
   }
 
   if ( !confirm(confirmText) ) {
@@ -4605,7 +4738,10 @@ function move_to_this_list(selectedList_itemId) {
 
 function rename_item() {
   var editedItemName = prompt("Change item name to:", app.itemObj.itemName);
-  if ( isBlank(editedItemName)) return;
+  if ( isBlank(editedItemName) ) return;
+
+  editedItemName = getProcessedStringForSave(editedItemName);
+
   app.itemObj.changeItemInfo(editedItemName, null, null, null, null);
   goToItemView(null, true);
 }
