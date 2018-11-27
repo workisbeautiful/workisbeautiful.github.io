@@ -68,6 +68,7 @@ table {}
 .font85 {font-size: 85%}
 .font135 {font-size: 135%}
 
+.black {color: black}
 .brown {color: brown}
 .green {color: #00CC66}
 .red {color: red}
@@ -348,7 +349,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   <div id="dvPage_ViewItem" style="display: none">
 
     <div id="dvViewItem_ItemNameArea">
-      <div id="dvItemName" style="font-weight: bold"></div>
+      <div id="dvItemName" style="font-weight: bold; font-size: 115%"></div>
     </div>
 
     <div id="dvViewItem_JoinedListsArea" style="display: none">
@@ -361,13 +362,15 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 5px; border: 2px solid #AAAAAA">
         <div style="height: 1px; background-color: #DDDDDD"></div>
       </div>
-      <div style="height: 0.95em"></div>
-      <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+      <div id="dvViewItem_ConnectedItems_LinkArea" style="display: none">
+        <div style="height: 0.95em"></div>
+        <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+      </div>
       <div style="height: 0.95em"></div>
       <div id="dvViewItem_ConnectedItems_Items"></div>
     </div>
 
-    <div id="dvViewItem_ItemActionsArea">
+    <div id="dvViewItem_ItemActionsArea1" style="display: none">
       <div style="height: 0.95em"></div>
       <div style="height: 5px; border: 2px solid #AAAAAA">
         <div style="height: 1px; background-color: #DDDDDD"></div>
@@ -375,11 +378,11 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 0.95em"></div>
       <div>
         <div>
-          <span id="spnViewItem_DoneStatusDisplay" style="display: none">DONE&nbsp;&nbsp;</span>
-          <span id="spnViewItem_DoneStatusLink" style="display: none">
-            <a id="aViewItem_DoneStatusLink" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
+          <span id="spnViewItem_DoneStatusDisplay1" style="display: none">DONE&nbsp;&nbsp;</span>
+          <span id="spnViewItem_DoneStatusLink1" style="display: none">
+            <a id="aViewItem_DoneStatusLink1" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
           </span>
-          <span id="spnViewItem_MoveCopy" style="display: none">
+          <span id="spnViewItem_MoveCopy1" style="display: none">
             &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void move_or_copy_to_different_list()" style="white-space: nowrap">move or copy</a>
           </span>
           <span id="spnViewItem_ShowWibtypes" style="display: none">
@@ -392,10 +395,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         <div style="height: 1.4em"></div>
         <div>
           <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
-          <span id="spnViewItem_Delete">
+          <span id="spnViewItem_Delete1">
             &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
           </span>
-          <span id="spnViewItem_Notes_No" style="display: none">
+          <span id="spnViewItem_Notes_No1" style="display: none">
             &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
           </span>
         </div>
@@ -506,6 +509,35 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         <div>
           <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
           &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems2' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="dvViewItem_ItemActionsArea2" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div>
+        <div>
+          <span id="spnViewItem_DoneStatusDisplay2" style="display: none">DONE&nbsp;&nbsp;</span>
+          <span id="spnViewItem_DoneStatusLink2" style="display: none">
+            <a id="aViewItem_DoneStatusLink2" href="javascript:void change_done_status()" style="white-space: nowrap">mark done</a>
+          </span>
+          <span id="spnViewItem_MoveCopy2" style="display: none">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void move_or_copy_to_different_list()" style="white-space: nowrap">move or copy</a>
+          </span>
+        </div>
+        <div style="height: 1.4em"></div>
+        <div>
+          <a href="javascript:void rename_item()"><nowrap>rename</nowrap></a>
+          <span id="spnViewItem_Delete2">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void delete_item()"><nowrap>delete</nowrap></a>
+          </span>
+          <span id="spnViewItem_Notes_No2" style="display: none">
+            &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
+          </span>
         </div>
       </div>
     </div>
@@ -629,6 +661,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Okay" href="javascript:void do_change_done_status('okay')"></a>
     </div>
+    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Info1"></div>
+    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Info2" style="font-weight: bold">
+      <a style="white-space: nowrap" id="aChangeDoneStatus_Info" href="javascript:void do_change_done_status('info')"></a>
+    </div>
     <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Notice1"></div>
     <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2" style="font-weight: bold">
       <a style="white-space: nowrap" id="aChangeDoneStatus_Notice" href="javascript:void do_change_done_status('notice')"></a>
@@ -643,6 +679,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 </div>
 
+<textarea id="taDev1" style="display: none"></textarea>
 
 <script type="text/javascript">
 
@@ -652,22 +689,23 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-
-//TO-DO1: save below to disallowed-names function
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.73";
+const CONST_appVersion = "0.74";
 const CONST_cssClassName_bold = "bold";
 const CONST_cssClassName_brown = "brown";
+const CONST_cssClassName_black = "black";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
 const CONST_devText1 = "devText1";
 const CONST_displayCode_normal = "0";
 const CONST_displayCode_hidden1 = "1";
 const CONST_doneStatusCode_done = "1";
+const CONST_doneStatusCode_info = "4";
 const CONST_doneStatusCode_notice = "3";
 const CONST_doneStatusCode_okay = "2";
 const CONST_doneStatusCode_undone = "0";
 const CONST_doneStatusDisplay_done = "done";
+const CONST_doneStatusDisplay_info = "info";
 const CONST_doneStatusDisplay_notice = "notice";
 const CONST_doneStatusDisplay_okay = "okay";
 const CONST_doneStatusDisplay_undone = "undone";
@@ -680,7 +718,7 @@ const CONST_propName_itemId = "itemId";
 const CONST_propName_itemName = "itemName";
 const CONST_propName_wtifItemId = "wtifItemId";
 const CONST_reordering_mode_normal = "normal";
-const CONST_reordering_mode_moveToOtherItem = "moveToOtherItem";
+const CONST_reordering_mode_moveAboveOtherItem = "moveAboveOtherItem";
 const CONST_storedDataVersion = "stored_data_version";
 const CONST_timeTracking_itemName = "Time Tracking";
 const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
@@ -695,7 +733,6 @@ const CONST_wbs_screenWibtype_itemName = "wib-builder-screen";
 const CONST_wbs_screenTypeCode_createType = "1";
 const CONST_wbs_screenWtifs_screenTypeCode_itemName = "ScreenTypeCode";
 const CONST_wbs_screenWtifs_wibtypeItemId_itemName = "TypeItemId";
-const CONST_wibBuilder_itemName = "wib-builder";
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
 const CONST_wibDataType_numeric_name = "numeric";
@@ -712,6 +749,7 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 
 var app = {};
 app.addDataLoadedSuccessfully = true;
+app.focusItemId = null;
 app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
@@ -929,7 +967,7 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
   wtifDataObj.wibtypeItemId = wibtypeItemId;
 
   if ( isBlank(wtifItemId) ) {
-    let wtifItemObj = searchForItemObj(null, null, null, null, null, null, wtifItemName, wibtypeItemId, true);
+    let wtifItemObj = searchForItemObj_OLD(null, null, null, null, null, null, wtifItemName, wibtypeItemId, true);
     wtifItemId = wtifItemObj.itemId;
   }
 
@@ -967,6 +1005,7 @@ function css_addClass(elemId, classNameToAdd) {
 
 function css_removeAllColors(elemId) {
   var theElem = elem(elemId);
+  theElem.classList.remove(CONST_cssClassName_black);
   theElem.classList.remove(CONST_cssClassName_brown);
   theElem.classList.remove(CONST_cssClassName_green);
   theElem.classList.remove(CONST_cssClassName_red);
@@ -1224,62 +1263,96 @@ function displayPage(pageName) {
         }
 
         if (hasConnectedItems) {
+          elem("dvViewItem_ConnectedItems_LinkArea").style.display = "";
           elem("dvViewItem_ConnectedItems_Items").innerHTML = "(connected items would go here)";
         } else {
-          elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>";
+          elem("dvViewItem_ConnectedItems_LinkArea").style.display = "none";
+          elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void add_connected_item()\" style=\"white-space: nowrap\">add</a>";
         }
 
         if (app.itemObj.isWibtype == "1") {
-          elem("spnViewItem_MoveCopy").style.display = "none";
+          elem("dvViewItem_ItemActionsArea1").style.display = "";
+          elem("dvViewItem_ItemActionsArea2").style.display = "none";
+          elem("spnViewItem_MoveCopy1").style.display = "none";
+          elem("spnViewItem_MoveCopy2").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "";
           elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
-          elem("spnViewItem_Delete").style.display = "none";
+          elem("spnViewItem_Delete1").style.display = "none";
+          elem("spnViewItem_Delete2").style.display = "none";
         } else if (app.itemObj.isWibtypeInfoField == "1") {
-          elem("spnViewItem_MoveCopy").style.display = "none";
+          elem("dvViewItem_ItemActionsArea1").style.display = "";
+          elem("dvViewItem_ItemActionsArea2").style.display = "none";
+          elem("spnViewItem_MoveCopy1").style.display = "none";
+          elem("spnViewItem_MoveCopy2").style.display = "none";
           elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_ShowWibtypeInfoField").style.display = "";
           elem("aViewItem_BackToType").href = "javascript:void back_to_type(" + wibtypeItemObj.itemId + ")";
           elem("aViewItem_BackToType").innerHTML = wibtypeItemObj.itemName;
-          elem("spnViewItem_Delete").style.display = "none";
+          elem("spnViewItem_Delete1").style.display = "none";
+          elem("spnViewItem_Delete2").style.display = "none";
         } else {
           if (app.itemObj.isList == "0") {
-            elem("spnViewItem_MoveCopy").style.display = "";
+            elem("dvViewItem_ItemActionsArea1").style.display = "";
+            elem("dvViewItem_ItemActionsArea2").style.display = "none";
+            elem("spnViewItem_MoveCopy1").style.display = "";
+            elem("spnViewItem_MoveCopy2").style.display = "";
           } else {
-            elem("spnViewItem_MoveCopy").style.display = "none";
+            elem("dvViewItem_ItemActionsArea1").style.display = "none";
+            elem("dvViewItem_ItemActionsArea2").style.display = "";
+            elem("spnViewItem_MoveCopy1").style.display = "none";
+            elem("spnViewItem_MoveCopy2").style.display = "none";
           }
           elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
-          elem("spnViewItem_Delete").style.display = "";
+          elem("spnViewItem_Delete1").style.display = "";
+          elem("spnViewItem_Delete2").style.display = "";
         }
 
         if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
-          elem("spnViewItem_DoneStatusDisplay").style.display = "none";
-          elem("spnViewItem_DoneStatusLink").style.display = "none";
+          elem("spnViewItem_DoneStatusDisplay1").style.display = "none";
+          elem("spnViewItem_DoneStatusDisplay2").style.display = "none";
+          elem("spnViewItem_DoneStatusLink1").style.display = "none";
+          elem("spnViewItem_DoneStatusLink2").style.display = "none";
 
         } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
-          elem("spnViewItem_DoneStatusDisplay").style.display = "none";
-          elem("spnViewItem_DoneStatusLink").style.display = "";
+          elem("spnViewItem_DoneStatusDisplay1").style.display = "none";
+          elem("spnViewItem_DoneStatusDisplay2").style.display = "none";
 
-          elem("aViewItem_DoneStatusLink").style.display = "";
-          elem("aViewItem_DoneStatusLink").innerHTML = "mark done";
+          elem("spnViewItem_DoneStatusLink1").style.display = "";
+          elem("spnViewItem_DoneStatusLink2").style.display = "";
+
+          elem("aViewItem_DoneStatusLink1").style.display = "";
+          elem("aViewItem_DoneStatusLink2").style.display = "";
+          elem("aViewItem_DoneStatusLink1").innerHTML = "mark done";
+          elem("aViewItem_DoneStatusLink2").innerHTML = "mark done";
 
         } else {
-          elem("spnViewItem_DoneStatusDisplay").style.display = "";
-          elem("spnViewItem_DoneStatusDisplay").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode).toUpperCase() + "&nbsp;&nbsp;";
-          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay", app.itemObj.doneStatusCode);
+          elem("spnViewItem_DoneStatusDisplay1").style.display = "";
+          elem("spnViewItem_DoneStatusDisplay2").style.display = "";
+          elem("spnViewItem_DoneStatusDisplay1").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode).toUpperCase() + "&nbsp;&nbsp;";
+          elem("spnViewItem_DoneStatusDisplay2").innerHTML = elem("spnViewItem_DoneStatusDisplay1").innerHTML;
+          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay1", app.itemObj.doneStatusCode);
+          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay2", app.itemObj.doneStatusCode);
 
-          elem("aViewItem_DoneStatusLink").style.display = "";
-          elem("aViewItem_DoneStatusLink").innerHTML = "change";
+          elem("spnViewItem_DoneStatusLink1").style.display = "";
+          elem("spnViewItem_DoneStatusLink2").style.display = "";
+
+          elem("aViewItem_DoneStatusLink1").style.display = "";
+          elem("aViewItem_DoneStatusLink2").style.display = "";
+          elem("aViewItem_DoneStatusLink1").innerHTML = "change";
+          elem("aViewItem_DoneStatusLink2").innerHTML = "change";
 
         }
 
         if ( isBlank(app.itemObj.notes) ) {
           elem("dvViewItem_Notes_Yes").style.display = "none";
-          elem("spnViewItem_Notes_No").style.display = "";
+          elem("spnViewItem_Notes_No1").style.display = "";
+          elem("spnViewItem_Notes_No2").style.display = "";
           elem("dvViewItem_Notes").innerHTML = "";
         } else {
           elem("dvViewItem_Notes_Yes").style.display = "";
-          elem("spnViewItem_Notes_No").style.display = "none";
+          elem("spnViewItem_Notes_No1").style.display = "none";
+          elem("spnViewItem_Notes_No2").style.display = "none";
           elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
         }
 
@@ -1332,6 +1405,11 @@ function displayPage(pageName) {
 
         if (app.reordering_activatedItemId) {
           css_addClass(getHtml_aItem(app.reordering_activatedItemId), CONST_cssClassName_bold);
+        }
+
+        if (app.focusItemId) {
+          elem( getHtml_aItem(app.focusItemId) ).focus();
+          app.focusItemId = null;
         }
         break;
       }
@@ -1585,6 +1663,8 @@ function getDoneStatusDisplay(doneStatusCode) {
     return CONST_doneStatusDisplay_done;
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_notice) ) {
     return CONST_doneStatusDisplay_notice;
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_info) ) {
+    return CONST_doneStatusDisplay_info;
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_okay) ) {
     return CONST_doneStatusDisplay_okay;
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_undone) ) {
@@ -1597,6 +1677,8 @@ function getDoneStatusCssClassNameColor(doneStatusCode, dev__elemId) {
 
   if ( isEqual(doneStatusCode, CONST_doneStatusCode_done) ) {
     cssClassNameColor = CONST_cssClassName_green;
+  } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_info) ) {
+    cssClassNameColor = CONST_cssClassName_black;
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_notice) ) {
     cssClassNameColor = CONST_cssClassName_red;
   } else if ( isEqual(doneStatusCode, CONST_doneStatusCode_okay) ) {
@@ -1679,8 +1761,8 @@ function getHtml_reorderingModeIs_normal_tblOptions(itemId) {
   return "reorderingModeIs_normal_tblOptions_" + itemId;
 }
 
-function getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId) {
-  return "reorderingModeIs_moveToOtherItem_dvInstructions_" + itemId;
+function getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(itemId) {
+  return "reorderingModeIs_moveAboveOtherItem_dvInstructions_" + itemId;
 }
 
 function getHtml_selectElem(selectElemId, includeBlank, theArray, defValue, theStyle, onChange, blankDisplay, isDisabled) {
@@ -1776,7 +1858,7 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
 }
 
 function getProcessedStringForSave(oldString) {
-  var newString = getStringWithCharsReplaced(oldString, " ", "&nbsp;");
+  var newString = getStringWithCharsReplaced(oldString, "  ", "&nbsp;&nbsp;");
   return newString;
 }
 
@@ -1830,14 +1912,11 @@ function getStringWithCharsReplaced(oldString, oldChars, newChars) {
   var newString = oldString;
 
   for (var i = 1; i <= 100000; i++) {  //use a counter to prevent being stuck in a do-loop if something goes wrong
-dc("1- newString="+newString)
     if ( !newString.includes(oldChars) ) {
       return newString;
     }
 
-dc("2- newString="+newString)
     newString = newString.replace(oldChars, newChars);
-dc("3- newString="+newString)
   }
 
   return newString;
@@ -2116,7 +2195,7 @@ function grabItemObj(itemId) {
 }
 
 function grabItemObjByName(itemName) {
-  return searchForItemObj(null, null, null, null, null, null, itemName, null, true);
+  return searchForItemObj_OLD(null, null, null, null, null, null, itemName, null, true);
 
 /* OLD CODE
   var allItemIds_string, allItemIds_array, i, curItemId, curItemObj;
@@ -2262,11 +2341,21 @@ function itemNameIsAllowed(itemName) {
   if ( isEqual(itemName, CONST_listName_homePage) ) {
     disallowedName = true;
   } else if ( isEqual(itemName, CONST_listName_wibtypes) ) {
+    //TO-DO2: handle this one differently -- okay for non-wibtypes?
     disallowedName = true;
   } else if ( itemName == CONST_timeTracking_itemName ) {
-    //TO-DO2: handle this differently
+    //TO-DO2: handle this one differently -- okay for non-wibtypes?
+    disallowedName = true;
+  } else if ( itemName == CONST_wb_listOfWibtypeInstanceHolderLists_itemName ) {
+    disallowedName = true;
+  } else if ( itemName == CONST_wb_wibtypeInstanceHolderWibtype_itemName ) {
+    disallowedName = true;
+  } else if ( itemName == CONST_wbs_screenList_itemName ) {
+    disallowedName = true;
+  } else if ( itemName == CONST_wbs_screenWibtype_itemName ) {
     disallowedName = true;
   }
+
   if (disallowedName) {
     alert("Item Name '" + itemName + "' is not allowed, as it is reserved by the app");
     return false;
@@ -2855,13 +2944,15 @@ function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
   }
 }
 
-function reorderActivatedItemToOtherItem(otherItemId) {
+function reorderActivatedItemAboveOtherItem(otherItemId) {
   var listItemObj = app.itemObj;
   var itemIdToMove = app.reordering_activatedItemId;
-  var targetItemId = otherItemId;
+  var itemIdToMoveAbove = otherItemId;
 
-  if ( walkSortPosition(listItemObj, itemIdToMove, null, false, false, targetItemId) ) {
-    goToItemView(null, true);
+  if ( walkSortPosition(listItemObj, itemIdToMove, null, false, false, itemIdToMoveAbove) ) {
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -2957,7 +3048,7 @@ function SearchObj() {
     var searchResult = null;
 
   /*
-  function searchForItemObj(
+  function searchForItemObj_OLD(
   1 = searchParam_wtif_searchForBlankTheData
   2 = searchParam_assignedToWibtypeItemId_noWtifConnection
   3 = searchParam_wtif_wibtypeItemId
@@ -2967,10 +3058,10 @@ function SearchObj() {
   7 = searchParam_itemName
   8 = searchParam_onListItemId
   9 = returnFirstOnly
-  function searchForItemObj(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
+  function searchForItemObj_OLD(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
   */
 
-    searchResult = searchForItemObj(
+    searchResult = searchObj_performSearch(
       this.target_wtif_searchForBlankTheData
       , this.target_assignedToWibtypeWithItemId
       , this.target_wtif_isFrom_wibtypeItemId
@@ -3077,17 +3168,15 @@ function SearchObj() {
   };
 }
 
-
-//TO-DO1; make _OLD and _NEW versions, then use _NEW for SearchObj(), and add //notes for each regarding deprecation
-function searchForItemObj(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
+function searchObj_performSearch(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
 
 //dc("--------------------")
 /*
-dc("searchForItemObj(), searchParam_onListItemId="+searchParam_onListItemId)
-dc("searchForItemObj(), searchParam_wtif_itemName="+searchParam_wtif_itemName)
-dc("searchForItemObj(), searchParam_wtif_wibtypeItemId="+searchParam_wtif_wibtypeItemId)
-dc("searchForItemObj(), searchParam_wtif_searchForBlankTheData="+searchParam_wtif_searchForBlankTheData)
-dc("searchForItemObj(), searchParam_wtif_theData="+searchParam_wtif_theData)
+dc("searchForItemObj_OLD(), searchParam_onListItemId="+searchParam_onListItemId)
+dc("searchForItemObj_OLD(), searchParam_wtif_itemName="+searchParam_wtif_itemName)
+dc("searchForItemObj_OLD(), searchParam_wtif_wibtypeItemId="+searchParam_wtif_wibtypeItemId)
+dc("searchForItemObj_OLD(), searchParam_wtif_searchForBlankTheData="+searchParam_wtif_searchForBlankTheData)
+dc("searchForItemObj_OLD(), searchParam_wtif_theData="+searchParam_wtif_theData)
 */
 
   var allItemIds_string, allItemIds_array, i, result_itemObjArray = [];
@@ -3106,11 +3195,11 @@ dc("searchForItemObj(), searchParam_wtif_theData="+searchParam_wtif_theData)
     }
 
     if ( !isBlank(searchParam_onListItemId) ) {
-//dc("searchForItemObj(), inside loop, checking joined-lists, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
+//dc("searchForItemObj_OLD(), inside loop, checking joined-lists, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
       if ( !doesValArrayHaveElem(curItemObj.joinedLists_itemIds, searchParam_onListItemId) ) {
         continue;
       }
-//dc("searchForItemObj(), inside loop, joined-list found, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
+//dc("searchForItemObj_OLD(), inside loop, joined-list found, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
     }
 
     if ( !isBlank(searchParam_assignedToWibtypeItemId_noWtifConnection) ) {
@@ -3133,7 +3222,103 @@ dc("searchForItemObj(), searchParam_wtif_theData="+searchParam_wtif_theData)
           }
 
         } else if ( !isBlank(searchParam_wtif_itemName) ) {
-//dc("searchForItemObj(), inside loop, checking itemName, i="+i+", curItemObj.itemId="+curItemObj.itemId)
+//dc("searchForItemObj_OLD(), inside loop, checking itemName, i="+i+", curItemObj.itemId="+curItemObj.itemId)
+          let wtifItemObj = grabItemObj(curWtifDataObj.wtifItemId);
+
+          if ( isEqual(curWtifDataObj.wibtypeItemId, searchParam_wtif_wibtypeItemId) && isEqual(wtifItemObj.itemName, searchParam_wtif_itemName) ) {
+            wtifIdOrName_found = true;
+          }
+
+        }
+
+        if (wtifIdOrName_found) {
+          if (searchParam_wtif_searchForBlankTheData && isBlank(curWtifDataObj.theData) ) {
+            wtifTheData_matchSuccessful = true;
+          } else if ( isEqual(curWtifDataObj.theData, searchParam_wtif_theData) ) {
+            wtifTheData_matchSuccessful = true;
+          }
+          break;
+        }
+
+      }
+
+      if (!wtifTheData_matchSuccessful) {
+        continue;
+      }
+    }
+
+    result_itemObjArray.push(curItemObj);
+
+    if (returnFirstOnly) {
+      break;
+    }
+  }
+
+  if (result_itemObjArray.length == 0) {
+    return null;
+  } else if (returnFirstOnly) {
+    return result_itemObjArray[0];
+  } else {
+    return result_itemObjArray;
+  }
+}
+
+// searchForItemObj_OLD is deprecated -- other code that calls this, should eventually be migrated to using SearchObj()
+function searchForItemObj_OLD(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
+
+//dc("--------------------")
+/*
+dc("searchForItemObj_OLD(), searchParam_onListItemId="+searchParam_onListItemId)
+dc("searchForItemObj_OLD(), searchParam_wtif_itemName="+searchParam_wtif_itemName)
+dc("searchForItemObj_OLD(), searchParam_wtif_wibtypeItemId="+searchParam_wtif_wibtypeItemId)
+dc("searchForItemObj_OLD(), searchParam_wtif_searchForBlankTheData="+searchParam_wtif_searchForBlankTheData)
+dc("searchForItemObj_OLD(), searchParam_wtif_theData="+searchParam_wtif_theData)
+*/
+
+  var allItemIds_string, allItemIds_array, i, result_itemObjArray = [];
+  
+  allItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
+  allItemIds_array = getIdArray(allItemIds_string);
+  
+  for (i = 0; i < allItemIds_array.length; i++) {
+
+    let curItemObj = grabItemObj(allItemIds_array[i]);
+
+    if ( !isBlank(searchParam_itemName) ) {
+      if ( !isEqual(searchParam_itemName, curItemObj.itemName) ) {
+        continue;
+      }
+    }
+
+    if ( !isBlank(searchParam_onListItemId) ) {
+//dc("searchForItemObj_OLD(), inside loop, checking joined-lists, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
+      if ( !doesValArrayHaveElem(curItemObj.joinedLists_itemIds, searchParam_onListItemId) ) {
+        continue;
+      }
+//dc("searchForItemObj_OLD(), inside loop, joined-list found, i="+i+", searchParam_onListItemId="+searchParam_onListItemId+", curItemObj.itemId="+curItemObj.itemId)
+    }
+
+    if ( !isBlank(searchParam_assignedToWibtypeItemId_noWtifConnection) ) {
+      if ( !doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, searchParam_assignedToWibtypeItemId_noWtifConnection) ) {
+        continue;
+      }
+    }
+
+    if ( !isBlank(searchParam_wtif_itemId) || !isBlank(searchParam_wtif_itemName) ) {
+      let wtifIdOrName_found = false;
+      let wtifTheData_matchSuccessful = false;
+
+      for (let j = 0; j < curItemObj.wtifDataObjs.length; j++) {
+        let curWtifDataObj = curItemObj.wtifDataObjs[j];
+
+        if ( !isBlank(searchParam_wtif_itemId) ) { 
+
+          if ( isEqual(curWtifDataObj.wtifItemId, searchParam_wtif_itemId) ) {
+            wtifIdOrName_found = true;
+          }
+
+        } else if ( !isBlank(searchParam_wtif_itemName) ) {
+//dc("searchForItemObj_OLD(), inside loop, checking itemName, i="+i+", curItemObj.itemId="+curItemObj.itemId)
           let wtifItemObj = grabItemObj(curWtifDataObj.wtifItemId);
 
           if ( isEqual(curWtifDataObj.wibtypeItemId, searchParam_wtif_wibtypeItemId) && isEqual(wtifItemObj.itemName, searchParam_wtif_itemName) ) {
@@ -3228,7 +3413,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
 
   switch (popUpCode) {
 
-    case "MakeNewItem":
+    case "MakeNewItem": {
       resetElemVal("ipMakeNewItem_ItemName");
       resetElemVal("ipMakeNewItem_Year");
       resetElemVal("ipMakeNewItem_Month");
@@ -3251,67 +3436,76 @@ function showPopUp(popUpCode, popUpFocusElem) {
         if ( !isBlank(app.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = app.timeTracking_defaultDay;
       }
       break;
+    }
 
-    case "MakeNewWibtype":
+    case "MakeNewWibtype": {
       resetElemVal("ipMakeNewWibtype_WibtypeName");
       break;
+    }
 
-    case "MakeNewWibtypeInfoField":
-      {
-        elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
+    case "MakeNewWibtypeInfoField": {
+      elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
 
-        let wibDataTypesArray = getWibDataTypesAsArray(true);
-        let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibtypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
+      let wibDataTypesArray = getWibDataTypesAsArray(true);
+      let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibtypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
+  
+      elem("spnMakeNewWibtypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
     
-        elem("spnMakeNewWibtypeInfoField_WibDataTypeId").innerHTML = wibDataTypeSelectHtml;
-      
-        resetElemVal("ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
-        resetElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
-        resetElemVal("ckMakeNewWibtypeInfoField_Required");
-        break;
+      resetElemVal("ipMakeNewWibtypeInfoField_WibtypeInfoFieldName");
+      resetElemVal("selMakeNewWibtypeInfoField_WibDataTypeId");
+      resetElemVal("ckMakeNewWibtypeInfoField_Required");
+      break;
+    }
+
+    case "ChangeDoneStatus": {
+      elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
+      elem("spnChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
+      //elem("dvChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
+      elem("spnChangeDoneStatus_currentStatus").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode);
+
+      elem("dvChangeDoneStatus_Done1").style.display = "";
+      elem("dvChangeDoneStatus_Done2").style.display = "";
+      elem("aChangeDoneStatus_Done").innerHTML = CONST_doneStatusDisplay_done;
+      css_setElemToDoneStatusColor("aChangeDoneStatus_Done", CONST_doneStatusCode_done);
+
+      elem("dvChangeDoneStatus_Undone1").style.display = "";
+      elem("dvChangeDoneStatus_Undone2").style.display = "";
+      elem("aChangeDoneStatus_Undone").innerHTML = CONST_doneStatusDisplay_undone;
+      css_setElemToDoneStatusColor("aChangeDoneStatus_Undone", CONST_doneStatusCode_undone);
+
+      elem("dvChangeDoneStatus_Okay1").style.display = "";
+      elem("dvChangeDoneStatus_Okay2").style.display = "";
+      elem("aChangeDoneStatus_Okay").innerHTML = CONST_doneStatusDisplay_okay;
+      css_setElemToDoneStatusColor("aChangeDoneStatus_Okay", CONST_doneStatusCode_okay);
+
+      elem("dvChangeDoneStatus_Info1").style.display = "";
+      elem("dvChangeDoneStatus_Info2").style.display = "";
+      elem("aChangeDoneStatus_Info").innerHTML = CONST_doneStatusDisplay_info;
+      css_setElemToDoneStatusColor("aChangeDoneStatus_Info", CONST_doneStatusCode_info);
+
+      elem("dvChangeDoneStatus_Notice1").style.display = "";
+      elem("dvChangeDoneStatus_Notice2").style.display = "";
+      elem("aChangeDoneStatus_Notice").innerHTML = CONST_doneStatusDisplay_notice;
+      css_setElemToDoneStatusColor("aChangeDoneStatus_Notice", CONST_doneStatusCode_notice);
+
+      if (app.itemObj.doneStatusCode == CONST_doneStatusCode_done) {
+        elem("dvChangeDoneStatus_Done1").style.display = "none";
+        elem("dvChangeDoneStatus_Done2").style.display = "none";
+      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
+        elem("dvChangeDoneStatus_Undone1").style.display = "none";
+        elem("dvChangeDoneStatus_Undone2").style.display = "none";
+      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_okay) {
+        elem("dvChangeDoneStatus_Okay1").style.display = "none";
+        elem("dvChangeDoneStatus_Okay2").style.display = "none";
+      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_info) {
+        elem("dvChangeDoneStatus_Info1").style.display = "none";
+        elem("dvChangeDoneStatus_Info2").style.display = "none";
+      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_notice) {
+        elem("dvChangeDoneStatus_Notice1").style.display = "none";
+        elem("dvChangeDoneStatus_Notice2").style.display = "none";
       }
+    }
 
-    case "ChangeDoneStatus":
-      {
-        elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
-        elem("spnChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
-        //elem("dvChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
-        elem("spnChangeDoneStatus_currentStatus").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode);
-
-        elem("dvChangeDoneStatus_Done1").style.display = "";
-        elem("dvChangeDoneStatus_Done2").style.display = "";
-        elem("aChangeDoneStatus_Done").innerHTML = CONST_doneStatusDisplay_done;
-        css_setElemToDoneStatusColor("aChangeDoneStatus_Done", CONST_doneStatusCode_done);
-
-        elem("dvChangeDoneStatus_Undone1").style.display = "";
-        elem("dvChangeDoneStatus_Undone2").style.display = "";
-        elem("aChangeDoneStatus_Undone").innerHTML = CONST_doneStatusDisplay_undone;
-        css_setElemToDoneStatusColor("aChangeDoneStatus_Undone", CONST_doneStatusCode_undone);
-
-        elem("dvChangeDoneStatus_Okay1").style.display = "";
-        elem("dvChangeDoneStatus_Okay2").style.display = "";
-        elem("aChangeDoneStatus_Okay").innerHTML = CONST_doneStatusDisplay_okay;
-        css_setElemToDoneStatusColor("aChangeDoneStatus_Okay", CONST_doneStatusCode_okay);
-
-        elem("dvChangeDoneStatus_Notice1").style.display = "";
-        elem("dvChangeDoneStatus_Notice2").style.display = "";
-        elem("aChangeDoneStatus_Notice").innerHTML = CONST_doneStatusDisplay_notice;
-        css_setElemToDoneStatusColor("aChangeDoneStatus_Notice", CONST_doneStatusCode_notice);
-
-        if (app.itemObj.doneStatusCode == CONST_doneStatusCode_done) {
-          elem("dvChangeDoneStatus_Done1").style.display = "none";
-          elem("dvChangeDoneStatus_Done2").style.display = "none";
-        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
-          elem("dvChangeDoneStatus_Undone1").style.display = "none";
-          elem("dvChangeDoneStatus_Undone2").style.display = "none";
-        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_okay) {
-          elem("dvChangeDoneStatus_Okay1").style.display = "none";
-          elem("dvChangeDoneStatus_Okay2").style.display = "none";
-        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_notice) {
-          elem("dvChangeDoneStatus_Notice1").style.display = "none";
-          elem("dvChangeDoneStatus_Notice2").style.display = "none";
-        }
-      }
   }
 
   elem("dvMainViewOverlay").style.display = "none";
@@ -3466,13 +3660,13 @@ function toggleReordering_on() {
 function toggleReorderingMode_normal(itemId) {
   app.reordering_mode = CONST_reordering_mode_normal;
   elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "";
-  elem(getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId)).style.display = "none";
+  elem(getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(itemId)).style.display = "none";
 }
 
-function toggleReorderingMode_moveToOtherItem(itemId) {
-  app.reordering_mode = CONST_reordering_mode_moveToOtherItem;
+function toggleReorderingMode_moveAboveOtherItem(itemId) {
+  app.reordering_mode = CONST_reordering_mode_moveAboveOtherItem;
   elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "none";
-  elem(getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(itemId)).style.display = "";
+  elem(getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(itemId)).style.display = "";
 }
 
 function transferItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
@@ -3484,99 +3678,126 @@ function transferItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
   } );
 }
 
-function walkSortPosition(listItemObj, itemIdToMove, moveAmt, moveToTop, moveToEnd, targetItemId) {
+function walkSortPosition(listItemObj, itemIdToMove, moveAmt, moveToTop, moveToEnd, itemIdToMoveAbove) {
+
+//dc("walkSortPosition(), itemIdToMove=" + itemIdToMove + ", itemIdToMoveAbove=" + itemIdToMoveAbove)
+
   var memberItemObj, list_memberDataObjs, i, movedAtLeastOneSpot = false;
 
-  //grab item-object for the item-being-walked, and the array of list-member-data-objects for the list
+  // grab item-object for the item-being-walked, and the array of list-member-data-objects for the list
   memberItemObj = grabItemObj(itemIdToMove);
   list_memberDataObjs = listItemObj.getListMemberDataObjs();
 
-  //cycle through all list-member-data-objects for the list, until we find our item that is being walked
+  // cycle through all list-member-data-objects for the list, until we find our item that is being walked
   for (i = 0; i < list_memberDataObjs.length; i++) {
 
     let memberItemDataObj, requestedNewIndex = null, curSortIndex, reachedNewIndex = false;
 
     if ( isEqual(list_memberDataObjs[i].itemId, memberItemObj.itemId) ) {
 
-      //found the item that is being walked
+//dc("walkSortPosition(), found the item-to-move, i=" + i)
+
+      // found the item that is being walked
       memberItemDataObj = list_memberDataObjs[i];
 
-      //calculate the requested new index when the walk will be complete
+      // calculate the requested new index when the walk will be complete
       if ( Number.isInteger(moveAmt) ) {
-        //a negative moveAmt sends us towards the top of the list; positive moveAmt sends us towards the end
+        // a negative moveAmt sends us towards the top of the list; positive moveAmt sends us towards the end
         requestedNewIndex = i + parseInt(moveAmt);
       } else if (moveToTop) {
         requestedNewIndex = 0;
       } else if (moveToEnd) {
         requestedNewIndex = list_memberDataObjs.length - 1;
-      } else if ( !isBlank(targetItemId) ) {
-        //need to grab the current index of the requested item-to-move-to
+      } else if ( !isBlank(itemIdToMoveAbove) ) {
+
+        // need to grab the current index of the requested item-to-move-above
         for (let j = 0; j < list_memberDataObjs.length; j++) {
           let memberDataObj_toCheck = list_memberDataObjs[j];
-          if ( isEqual(memberDataObj_toCheck.itemId, targetItemId) ) {
-            //found the requested item-to-move-to
-            requestedNewIndex = j;
+
+          if ( isEqual(memberDataObj_toCheck.itemId, itemIdToMoveAbove) ) {
+
+//dc("walkSortPosition(), found the item-to-move-above, j=" + j)
+
+            // found the requested item-to-move-above
+
+            // if the item-to-move is already directly above the item-to-move-above, we can exit here
+            if (i == j - 1) {
+
+              return false;
+            }
+
+            if (i < j) {
+              // option A: if the item-to-move is ABOVE the item-to-move-above, the new index will be ONE LESS THAN the index of the item-to-move-above
+              requestedNewIndex = j - 1;
+            } else {
+              // option B: if the item-to-move is BELOW the item-to-move-above, the new index will be EQUAL TO the index of the item-to-move-above
+              requestedNewIndex = j;
+            }
           }
         }
       } else {
-        //this occurs if none of the "move" function parameters were set in a valid fashion
+        // this occurs if none of the "move" function parameters were set in a valid fashion
         return false;
       }
 
-      //if there was a problem finding the requested item or spot to walk to, return false
+      // if there was a problem finding the requested item or spot to walk to, return false
       if ( isBlank(requestedNewIndex) || !Number.isInteger(parseInt(requestedNewIndex)) ) {
         return false;
       }
 
-      //don't walk past the top or end of the list
+      // don't walk past the top or end of the list
       if (requestedNewIndex < 0) requestedNewIndex = 0;
       if (requestedNewIndex >= list_memberDataObjs.length) requestedNewIndex = list_memberDataObjs.length - 1;
 
-      //check if the item-being-walked is already at the requested new index
+      // check if the item-being-walked is already at the requested new index
       curSortIndex = i;
       if ( parseInt(curSortIndex) == parseInt(requestedNewIndex) ) {
         reachedNewIndex = true;
       }
 
-      //while we have not yet reached the requested new index, walk one step at a time in its direction
+//dc("walkSortPosition(), starting walking-loop to move item from curSortIndex=" + curSortIndex + " until it gets to its new position requestedNewIndex=" + requestedNewIndex)
+
+      // while we have not yet reached the requested new index, walk one step at a time in its direction
       while(!reachedNewIndex) {
         let memberItemDataObj_toSwapWith, member_oldSortPosition;
 
-        //determine which direction to walk
+        // determine which direction to walk
         if (curSortIndex > requestedNewIndex) {
           curSortIndex = curSortIndex - 1;
         } else {
           curSortIndex = parseInt(curSortIndex) + 1;
         }
 
-        //grab the item-object for the item that our walk has brought us to
+//dc("walkSortPosition(), starting walking-loop to move item from curSortIndex=" + curSortIndex + " until it gets to its new position requestedNewIndex=" + requestedNewIndex)
+
+        // grab the item-object for the item that our walk has brought us to
         memberItemDataObj_toSwapWith = list_memberDataObjs[curSortIndex];
 
-        //save the current sortPosition value for the item-being-walked
-        // (sortPosition is not always the same as list-index: example #1, if an item has been removed from the list); example #2, if items have swapped position)
+        // save the current sortPosition value for the item-being-walked
+        //  (sortPosition is not always the same as list-index: example #1, if an item has been removed from the list); example #2, if items have swapped position)
         member_oldSortPosition = memberItemDataObj.sortPosition;
 
-        //set the sortPosition value for the item-being-walked, to the sortPosition value of the list-member that was already at this index
+        // set the sortPosition value for the item-being-walked, to the sortPosition value of the list-member that was already at this index
         memberItemDataObj.sortPosition = memberItemDataObj_toSwapWith.sortPosition;
 
-        ///... and give the old sortPosition of the item-to-be-walked, to the list-member that was already at this index
+        // /... and give the old sortPosition of the item-to-be-walked, to the list-member that was already at this index
         memberItemDataObj_toSwapWith.sortPosition = member_oldSortPosition;
 
-        //mark that we moved at least one spot
+        // mark that we moved at least one spot
         if (!movedAtLeastOneSpot) movedAtLeastOneSpot = true;
 
-        //check if we have reached our requested index for the walk
+        // check if we have reached our requested index for the walk
         if ( parseInt(curSortIndex) == parseInt(requestedNewIndex) ) {
           reachedNewIndex = true;
         }
       }
 
-      //if we moved at least one spot, save the member-data-objects for the the list
+      // if we moved at least one spot, save the member-data-objects for the the list
       if (movedAtLeastOneSpot) {
         listItemObj.saveListMembersToDatastore(list_memberDataObjs);
       }
 
-      //exit this for-loop -- was only being used to find the item-being-walked
+      // exit this for-loop -- was only being used to find the item-being-walked
       break;
     }
   }
@@ -3821,13 +4042,13 @@ function writeHtml_Items(mainItemObj) {
   if ( isBlank(mainItemObj) ) mainItemObj = app.itemObj;
 
   /* get Time-Tracking wtif itemIds */ {
-    let tt_wtifYMD_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifYMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifYMD_itemId = tt_wtifYMD_itemObj.itemId;
 
-    let tt_wtifTime_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifTime_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifTime_itemId = tt_wtifTime_itemObj.itemId;
 
-    let tt_wtifMinsTracked_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifMinsTracked_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibtypeItemId, true);
     tt_wtifMinsTracked_itemId = tt_wtifMinsTracked_itemObj.itemId;
   }
 
@@ -3897,40 +4118,31 @@ function writeHtml_Items(mainItemObj) {
       html += " href='javascript:void click_item(\"" + curItemId + "\")'>" + itemNameDisplay + "</a>";
       if (ttDisplayForItem) html += "<br /><span style='font-size: 90%'>" + ttDisplayForItem + "</span>";
       html += "</td></tr>\n";
-      html += "<tr style='height: 0.8em'><td colspan=3></td></tr>\n"
+      html += "<tr style='height: 1.4em'><td colspan=3></td></tr>\n"
       html += "<tr id='" + getHtml_reorderingActivated_tr(curItemId) + "' style='display: "
       if ( ! isEqual(curItemId, app.reordering_activatedItemId) ) html += "none";
-      html += "'><td style='height: 1em' colspan=2></td><td>\n";
+      html += "'><td colspan=2></td><td>\n";
       html += " <table id='" + getHtml_reorderingModeIs_normal_tblOptions(curItemId) + "' cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a href='javascript:void move_item_to_other_item(\"" + curItemId + "\")'>move to other item</a>\n";
+      html += "  <a href='javascript:void move_item_above_other_item(\"" + curItemId + "\")'>move above other item</a>\n";
       html += " </td></tr>\n";
-      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
+      html += " <tr style='height: 1.6em'><td colspan=2></td></tr>";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 1)'>up 1</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 1)'>down 1</a>\n";
       html += " </td></tr>\n";
-
-      /*
-      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
-      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 5)'>up 5</a>\n";
-      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 5)'>down 5</a>\n";
-      html += " </td></tr>\n";
-      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
-      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a href='javascript:void move_item_up(\"" + curItemId + "\", 10)'>up 10</a>\n";
-      html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_down(\"" + curItemId + "\", 10)'>down 10</a>\n";
-      html += " </td></tr>\n";
-      */
-
-      html += " <tr style='height: 1em'><td colspan=2></td></tr>";
+      html += " <tr style='height: 1.7em'><td colspan=2></td></tr>";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
       html += "  <a href='javascript:void move_item_to_top(\"" + curItemId + "\")'>to top</a>\n";
       html += "  &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void move_item_to_end(\"" + curItemId + "\")'>to end</a>\n";
       html += " </td></tr>\n";
+      html += " <tr style='height: 1.7em'><td colspan=2></td></tr>";
+      html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
+      html += "  <a href='javascript:void toggle_reorder()'>finished reordering</a>\n";
+      html += " </td></tr>\n";
+      html += " <tr style='height: 0.8em'><td colspan=2></td></tr>";
       html += " </table>\n";
-      html += " <div id='" + getHtml_reorderingModeIs_moveToOtherItem_dvInstructions(curItemId) + "' style='display: none'><i>now click the other item</i></div>\n";
+      html += " <div id='" + getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(curItemId) + "' style='padding-bottom: 0.5em; display: none'><i>now click the other item</i></div>\n";
       html += "</td></tr>\n";
     }
 
@@ -4288,8 +4500,13 @@ function click_item(itemIdThatWasClicked) {
       deactivateItemForReordering(app.reordering_activatedItemId);
       activateItemForReordering(itemIdThatWasClicked);
 
-    } else if (app.reordering_mode == CONST_reordering_mode_moveToOtherItem) {
-      reorderActivatedItemToOtherItem(itemIdThatWasClicked);      
+    } else if (app.reordering_mode == CONST_reordering_mode_moveAboveOtherItem) {
+
+      toggleReorderingMode_normal(app.reordering_activatedItemId)
+
+      if ( reorderActivatedItemAboveOtherItem(itemIdThatWasClicked) ) {
+        goToItemView(null, true);
+      }
 
     }
 
@@ -4361,6 +4578,8 @@ function do_change_done_status(newDoneStatusDisplay) {
 
   if (newDoneStatusDisplay == CONST_doneStatusDisplay_done) {
     newDoneStatusCode = CONST_doneStatusCode_done;
+  } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_info) {
+    newDoneStatusCode = CONST_doneStatusCode_info;
   } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_notice) {
     newDoneStatusCode = CONST_doneStatusCode_notice;
   } else if (newDoneStatusDisplay == CONST_doneStatusDisplay_okay) {
@@ -4376,6 +4595,7 @@ function do_change_done_status(newDoneStatusDisplay) {
   if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
     goToItemView(null, false);
   } else {
+    app.focusItemId = app.itemObj.itemId;
     goToItemView(app.itemObj.displayedOnList_itemId, false);
   }
 }
@@ -4385,7 +4605,7 @@ function do_make_new_item(makeCode) {
 
   if (makeCode == "line") {
     itemName = "--------------------";
-    doneStatusCode = CONST_doneStatusCode_okay
+    doneStatusCode = CONST_doneStatusCode_info
   } else {
     itemName = getElemVal("ipMakeNewItem_ItemName");
 
@@ -4621,6 +4841,10 @@ function go_to_builder() {
 }
 
 function go_to_list(itemId) {
+  if (app.itemObj.itemId) {
+    app.focusItemId = app.itemObj.itemId;
+  }
+
   goToItemView(itemId, false);
 }
 
@@ -4710,8 +4934,8 @@ function move_item_to_end(itemIdToMove) {
   }
 }
 
-function move_item_to_other_item(itemIdToMove) {
-  toggleReorderingMode_moveToOtherItem(itemIdToMove);
+function move_item_above_other_item(itemIdToMove) {
+  toggleReorderingMode_moveAboveOtherItem(itemIdToMove);
 }
 
 function move_item_to_top(itemIdToMove) {
@@ -4807,7 +5031,7 @@ return
   typeInstance_itemObj.assignToWibtype(wibtypeItemObj_createdByUsageOfThisScreen.itemId);
 
 
-//TO-DO1:
+//TO-DO1.5:
 //go to the list of items of this type, related to the builder screen, with the newly-created item highlighted?
 app.wbs_curWibtype_itemObj = wibtypeItemObj_createdByUsageOfThisScreen;
 displayPage("WibBuilder_ShowWibtypeInstances");
@@ -4956,26 +5180,18 @@ function loadAppData_andReturnNextDisplayPage() {
     app.wibtypes_itemId = wibtypesItemObj.itemId;
   }
 
-  /* if it does not exist, create the wib-builder item */ {
-    wibBuilderItemObj = grabItemObjByName(CONST_wibBuilder_itemName);
-    if ( isBlank(wibBuilderItemObj) ) {
-      wibBuilderItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wibBuilder_itemName, null, CONST_displayCode_hidden1, "1", null);
-    }
-    app.wibBuilder_itemId = wibBuilderItemObj.itemId;
-  }
-
   /* if it does not exist, create the wib-builder-screen wibtype-item and associated wtifs */ {
     wibBuilderScreen_wibtypeItemObj = grabItemObjByName(CONST_wbs_screenWibtype_itemName);
     if ( isBlank(wibBuilderScreen_wibtypeItemObj) ) {
       wibBuilderScreen_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wbs_screenWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
 
-    let wbs_ScreenTypeCode_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    let wbs_ScreenTypeCode_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
     if ( isBlank(wbs_ScreenTypeCode_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_screenTypeCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
     }
 
-    let wbs_wibtypeItemId_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    let wbs_wibtypeItemId_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
     if ( isBlank(wbs_wibtypeItemId_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_wibtypeItemId_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
     }
@@ -4992,23 +5208,23 @@ function loadAppData_andReturnNextDisplayPage() {
   }
 
   /* if they do not exist, create the Time-Tracking wibtype and its wtifs */ {
-    timeTracking_wibtypeItemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_itemName, app.wibtypes_itemId, true);
+    timeTracking_wibtypeItemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_itemName, app.wibtypes_itemId, true);
 
     if ( isBlank(timeTracking_wibtypeItemObj) ) {
       timeTracking_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
 
-    let ttWtif_YMD_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, timeTracking_wibtypeItemObj.itemId, true);
+    let ttWtif_YMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_YMD_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_dateTime_id, "1", "1", "0", true, CONST_timeTracking_wtifYMD_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId); 
     }
 
-    let ttWtif_Time_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, timeTracking_wibtypeItemObj.itemId, true);
+    let ttWtif_Time_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_Time_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_timeOfDay_id, "1", "1", "0", true, CONST_timeTracking_wtifTime_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId);
     }
 
-    let ttWtif_MinsTracked_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibtypeItemObj.itemId, true);
+    let ttWtif_MinsTracked_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId);
     }
@@ -5023,12 +5239,12 @@ function loadAppData_andReturnNextDisplayPage() {
     }
     app.wb_listOfWibtypeInstanceHolderLists_itemId = wb_listOfWibtypeInstanceHolderLists_itemObj.itemId;
 
-    wb_wibtypeInstanceHolderWibtype_itemObj = searchForItemObj(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_itemName, app.wibtypes_itemId, true);
+    wb_wibtypeInstanceHolderWibtype_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_itemName, app.wibtypes_itemId, true);
     if ( isBlank(wb_wibtypeInstanceHolderWibtype_itemObj) ) {
       wb_wibtypeInstanceHolderWibtype_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_wibtypeInstanceHolderWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
 
-    let wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId = searchForItemObj(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wb_wibtypeInstanceHolderWibtype_itemObj.itemId, true);
+    let wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wb_wibtypeInstanceHolderWibtype_itemObj.itemId, true);
     if ( isBlank(wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, null, CONST_displayCode_hidden1, "0", wb_wibtypeInstanceHolderWibtype_itemObj.itemId); 
     }
