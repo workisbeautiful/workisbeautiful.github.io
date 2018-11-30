@@ -68,7 +68,18 @@ table {}
 .font85 {font-size: 85%}
 .font135 {font-size: 135%}
 
+.backgroundBlack {background-color: black}
+.backgroundBlue {background-color: blue}
+.backgroundBrown {background-color: brown}
+.backgroundGreen {background-color: #00CC66}
+.backgroundRed {background-color: red}
 .black {color: black}
+.blue {color: blue}
+.borderBlack {border: 0.07em solid black}
+.borderBlue {border: 0.07em solid blue}
+.borderBrown {border: 0.07em solid brown}
+.borderGreen {border: 0.07em solid #00CC66}
+.borderRed {border: 0.07em solid red}
 .brown {color: brown}
 .green {color: #00CC66}
 .red {color: red}
@@ -201,11 +212,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div id="dvPage_NavigateItems" style="display: none">
-    <div class="red" style="font-weight: bold">Navigation</div>
-    <div style="height: 0.8em"></div>
+    <div id="dvNavigateItems_ItemNameDisplay" style="font-size: 100%"></div>
+    <div style="height: 1em"></div>
     <div>
-      <a href="javascript:void _____()" style="white-space: nowrap">_____</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void _____()" style="white-space: _____">_____</a>
+      <a href="javascript:void navigate__cancel()" style="white-space: nowrap">cancel connection process</a>
     </div>
     <div style="height: 1em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
@@ -213,14 +223,13 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
     <div style="height: 1.4em"></div>
       <div id="dvNavigateItems_Items"></div>
-    <div style="height: 0.4em"></div>
+    <div style="height: 1.4em"></div>
     <div style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div style="height: 1em"></div>
     <div>
-      <a href="javascript:void _____()" style="white-space: nowrap">_____</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void _____()" style="white-space: nowrap">_____</a>
+      <a href="javascript:void navigate__cancel()" style="white-space: nowrap">cancel connection process</a>
     </div>
     <div style="height: 1em"></div>
   </div>
@@ -282,7 +291,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         </div>
       </div>
       <div style="height: 0.5em"></div>
-      <div style="border: 0.2em solid lightgrey; padding: 0.5em; color: blue; font-style: italic; text-align: center">save&nbsp;&nbsp;&nbsp;</div>
+      <div class="blue" style="border: 0.2em solid lightgrey; padding: 0.5em; font-style: italic; text-align: center">save&nbsp;&nbsp;&nbsp;</div>
     </div>
     <div style="height: 1.8em"></div>
     <div><a href="javascript:void build_screen__run_this_screen()">run this screen</a></div>
@@ -362,12 +371,23 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 5px; border: 2px solid #AAAAAA">
         <div style="height: 1px; background-color: #DDDDDD"></div>
       </div>
-      <div id="dvViewItem_ConnectedItems_LinkArea" style="display: none">
+      <div id="dvViewItem_ConnectedItems_Header" style="display: none">
         <div style="height: 0.95em"></div>
-        <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+        <div style="display: inline-block">
+          <div>Connected Items:</div>
+          <div style="height: 0.3em"></div>
+          <div style="border-bottom: 2px solid #BBBBBB"></div>
+        </div>
       </div>
       <div style="height: 0.95em"></div>
-      <div id="dvViewItem_ConnectedItems_Items"></div>
+      <div>
+        <div id="dvViewItem_ConnectedItems_ItemsIndent" style="display: inline-block; width: 1em"></div>
+        <div id="dvViewItem_ConnectedItems_Items" style="display: inline-block"></div>
+      </div>
+      <div id="dvViewItem_ConnectedItems_LinkArea" style="display: none">
+        <div style="height: 1.8em"></div>
+        <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
+      </div>
     </div>
 
     <div id="dvViewItem_ItemActionsArea1" style="display: none">
@@ -466,7 +486,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 0.95em"></div>
       <div>
         <span id="spnViewItem_MakeNewItem1">
-          <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
+          <a id="aViewItem_MakeNewItem1" href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
         </span>
         <span id="spnViewItem_MakeNewField1">
           <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new info-field</a>
@@ -494,7 +514,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       <div style="height: 1em"></div>
       <div>
         <span id="spnViewItem_MakeNewItem2">
-          <a href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
+          <a id="aViewItem_MakeNewItem2" href="javascript:void make_new_item()" style="white-space: nowrap">new item</a>
         </span>
         <span id="spnViewItem_MakeNewField2">
           <a href="javascript:void make_new_type_info_field()" style="white-space: nowrap">new field</a>
@@ -690,10 +710,21 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 ///// CONSTANTS
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.74";
-const CONST_cssClassName_bold = "bold";
-const CONST_cssClassName_brown = "brown";
+const CONST_appVersion = "0.75";
+const CONST_cssClassName_backgroundBlack = "backgroundBlack";
+const CONST_cssClassName_backgroundBlue = "backgroundBlue";
+const CONST_cssClassName_backgroundBrown = "backgroundBrown";
+const CONST_cssClassName_backgroundGreen = "backgroundGreen";
+const CONST_cssClassName_backgroundRed = "backgroundRed";
 const CONST_cssClassName_black = "black";
+const CONST_cssClassName_blue = "blue";
+const CONST_cssClassName_bold = "bold";
+const CONST_cssClassName_borderBlack = "borderBlack";
+const CONST_cssClassName_borderBlue = "borderBlue";
+const CONST_cssClassName_borderBrown = "borderBrown";
+const CONST_cssClassName_borderGreen = "borderGreen";
+const CONST_cssClassName_borderRed = "borderRed";
+const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
 const CONST_devText1 = "devText1";
@@ -749,7 +780,8 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 
 var app = {};
 app.addDataLoadedSuccessfully = true;
-app.focusItemId = null;
+app.focusElemId = null;
+app.focusElemId_pre = null;
 app.grabbing_itemId1 = null;
 app.grabbing_itemId2 = null;
 app.grabbing_itemIdArray = [];
@@ -900,6 +932,14 @@ function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
   return createAppDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1]);
 }
 
+function createConnectedItemsDataObj(itemId2) {
+  var connectedItemsDataObj = {};
+
+  connectedItemsDataObj.itemId2 = itemId2;
+
+  return connectedItemsDataObj;
+}
+
 function createItemInfoString(itemName, doneStatusCode, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
   var itemInfoString = itemName + sD;
 
@@ -948,12 +988,12 @@ function createItemInfoString(itemName, doneStatusCode, displayCode, isList, not
 }
 
 function createListMemberDataObj(itemId, sortPosition) {
-  var curListMemberDataObj = {};
+  var listMemberDataObj = {};
 
-  curListMemberDataObj.itemId = itemId;
-  curListMemberDataObj.sortPosition = sortPosition;
+  listMemberDataObj.itemId = itemId;
+  listMemberDataObj.sortPosition = sortPosition;
 
-  return curListMemberDataObj;
+  return listMemberDataObj;
 }
 
 function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
@@ -1163,59 +1203,20 @@ function displayPage(pageName) {
       }
 
     case "NavigateItems": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Navigate Items";
+      elem("dvNavigateItems_ItemNameDisplay").innerHTML = "Connecting to:&nbsp;&nbsp;<b>" + app.itemObj.itemName + "</b>";
 
       let html = "";
 
-      /* --- INSTRUCTIONS ---
+      var listItemIds_alreadyWritten = [];
+      var homePageList_itemObj = grabItemObj(app.homePageList_itemId);
+      var homePageList_memberDataObjs = homePageList_itemObj.getListMemberDataObjs();
 
-      // create and run search object:
-      
-      var sObj = new SearchObj();
-       
-      // include any or all of the following:
-      //   (all must be true for an item to be returned)
-       
-      sObj.set_targetItemName(itemName_toSearchFor);
-      sObj.set_targetJoinedListWithItemId(listItemId_toSearchFor);
-      sObj.set_targetAssignedToWibtypeWithItemId(wibtypeItemId_toSearchFor);
-
-      // can only include one of the following two options:
-
-      // -> option 1:
-      sObj.set_targetCombo_wtifItemId_and_wtifData(wtifItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
-      //
-      //  --- or ---
-      //
-      // -> option 2:
-      sObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
-      
-      sObj.set_returnFirstOnly_false();  // optional (SearchObj() defaults to returnFirstOnly==true)
-
-      var itemObj = sObj.runSearchAndReturnX();       // if returnFirstOnly==true (default)
-      //  --- or ---
-      var itemObjArray = sObj.runSearchAndReturnX();  // if returnFirstOnly==false
-
-      */
-  //TO-DOx:
-      var sObj = new SearchObj();
-      let itemObjs = x
-
-      itemObjs.forEach( (itemObj) => {
-        if (html !== "") html += "<div style='height: 1.8em'></div>"
-
-        html += "<div>" + itemObj.itemName;
-/*
-        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__build_screen(\"" + screenItemObj.itemId + "\")'>build</a>\n";
-        html += "&nbsp;&nbsp;<a href='javascript:void all_screens__run_screen(\"" + screenItemObj.itemId + "\")'>run</a>\n";
-*/
-        html += "</div>\n";
-      } );
+      html += writeHtml_navigationTree(homePageList_memberDataObjs, listItemIds_alreadyWritten, 0);
 
       if (html == "") html += "(none created yet)";
 
-      elem("NavigateItems_Items").innerHTML = html;
-
+//elem("taDev1").innerHTML = html;
+      elem("dvNavigateItems_Items").innerHTML = html;
       break;
     }
 
@@ -1226,7 +1227,7 @@ function displayPage(pageName) {
       }
 
     case "ViewItem": {
-        let i, wibtypeItemObj, hasDisplayedLists = false, hasConnectedItems = false;
+        let i, wibtypeItemObj, hasDisplayedLists = false;
 
         if (app.itemObj.isWibtype == "1") {
           elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
@@ -1262,12 +1263,24 @@ function displayPage(pageName) {
           }
         }
 
-        if (hasConnectedItems) {
+        if (app.itemObj.connectedItemDataObjs.length > 0) {
+          let html = "";
+
+          for (i = 0; i < app.itemObj.connectedItemDataObjs.length; i++) {
+            let x = grabItemObj(app.itemObj.connectedItemDataObjs[i].itemId2);
+            if (html !== "") html += "<div style='height: 1em'></div>"
+            html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
+          }
+
+          elem("dvViewItem_ConnectedItems_Header").style.display = "";
+          elem("dvViewItem_ConnectedItems_ItemsIndent").style.display = "inline-block";
+          elem("dvViewItem_ConnectedItems_Items").innerHTML = html;
           elem("dvViewItem_ConnectedItems_LinkArea").style.display = "";
-          elem("dvViewItem_ConnectedItems_Items").innerHTML = "(connected items would go here)";
         } else {
-          elem("dvViewItem_ConnectedItems_LinkArea").style.display = "none";
+          elem("dvViewItem_ConnectedItems_Header").style.display = "none";
+          elem("dvViewItem_ConnectedItems_ItemsIndent").style.display = "none";
           elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void add_connected_item()\" style=\"white-space: nowrap\">add</a>";
+          elem("dvViewItem_ConnectedItems_LinkArea").style.display = "none";
         }
 
         if (app.itemObj.isWibtype == "1") {
@@ -1407,9 +1420,13 @@ function displayPage(pageName) {
           css_addClass(getHtml_aItem(app.reordering_activatedItemId), CONST_cssClassName_bold);
         }
 
-        if (app.focusItemId) {
-          elem( getHtml_aItem(app.focusItemId) ).focus();
-          app.focusItemId = null;
+        if (app.focusElemId) {
+          if (app.focusElemId_pre) {
+            elem(app.focusElemId_pre).focus();
+            app.focusElemId_pre = null;
+          }
+          elem(app.focusElemId).focus();
+          app.focusElemId = null;
         }
         break;
       }
@@ -1519,6 +1536,114 @@ function displayPage(pageName) {
       break;
     }
   }
+}
+
+function writeHtml_plusMinusSign(itemId, writeMinus, baseSizeInEm) {
+  var html = "";
+
+  if ( !isNumeric(baseSizeInEm) ) {
+    baseSizeInEm = 0.9;
+  }
+
+  baseSizeInEm = parseFloat(baseSizeInEm);
+
+  var borderInEm = baseSizeInEm * 0.1;
+  var paddingInEm = baseSizeInEm * 0.15;
+
+  var overallSizeInEm = baseSizeInEm + 2 * borderInEm + 2 * paddingInEm;
+
+  html += "<div class='borderBlue' onmouseover='setElemCursor_pointer(this)' onmouseout='setElemCursor_none(this)' onclick='toggleNavList(" + itemId + ")'";
+  html += " style='display: grid; grid-template-columns: auto 15% auto; grid-template-rows: auto 14% auto; width: " + overallSizeInEm + "em; height: " + overallSizeInEm + "em; border-width: " + borderInEm + "em; padding: " + paddingInEm + "em'>";
+
+  if (writeMinus) {
+    html += "<div style='grid-column: 1/4'></div>";
+  } else {
+    html += "<div></div><div id='dvNavListMembers_PlusTop_" + itemId + "' class='backgroundBlue'></div><div></div>";
+  }
+
+  html += "<div class='backgroundBlue' style='grid-column: 1/4'></div>";
+
+
+  if (writeMinus) {
+    html += "<div style='grid-column: 1/4'></div>";
+  } else {
+    html += "<div></div><div id='dvNavListMembers_PlusBottom_" + itemId + "' class='backgroundBlue'></div><div></div>";
+  }
+
+  html += "</div>";
+
+  return html;
+}
+
+function writeHtml_navigationTree(curList_memberDataObjs, listItemIds_alreadyWritten, numOfIndents) {
+  var html = "", horzSpaces = "";
+
+  for (var i = 1; i <= numOfIndents; i++) {
+    horzSpaces += "  ";
+  }
+
+  curList_memberDataObjs.forEach( (curList_memberDataObj) => {
+    let curItemObj = grabItemObj(curList_memberDataObj.itemId);
+    let displayListAsList = false;
+
+    if (curItemObj.isList == "1") {
+      if ( !doesValArrayHaveElem(listItemIds_alreadyWritten, curItemObj.itemId) ) {
+        listItemIds_alreadyWritten.push(curItemObj.itemId);
+        displayListAsList = true;
+      }
+    }
+
+    if (html !== "" || numOfIndents > 0) html += horzSpaces + "<div style='height: 1.8em'></div>\n"
+
+    if (numOfIndents > 0) {
+      html += horzSpaces + "<div style='display: inline-block; width: " + numOfIndents + "em'></div>\n";
+    }
+
+    if (curItemObj.isList == "1") {
+      html += horzSpaces + "<div style='display: inline-flex'>";
+
+      if (displayListAsList) {
+        html += writeHtml_plusMinusSign(curItemObj.itemId) + "&nbsp;&nbsp;";
+      }
+
+      html += "<div style='padding-top: 0.15em'>LIST: " + curItemObj.itemName + "</div></div>\n";
+
+    } else {
+      html += horzSpaces + "<div style='display: inline-block'>" + curItemObj.itemName + "</div>\n";
+
+    }
+
+    html += horzSpaces + "<div style='height: 0.3em'></div>\n"
+    if (numOfIndents > 0) {
+      html += horzSpaces + "<div style='display: inline-block; width: " + numOfIndents + "em'></div>\n";
+    }
+
+    let connectLinkText = "connect to this item";
+    if (curItemObj.isList == "1") connectLinkText = "connect to this list";
+
+    html += horzSpaces + "<div style='display: inline-block'><a href='javascript:void navigate__connect_to_item(\"" + curItemObj.itemId + "\")'>" + connectLinkText + "</a></div>\n";
+
+    if (displayListAsList) {
+      let innerListOfMemberDataObjs = curItemObj.getListMemberDataObjs();
+      let newNumOfIndents = parseInt(numOfIndents) + 1;
+
+      html += horzSpaces + "<div id='dvNavListMembers_" + curItemObj.itemId + "' style='display: none'>\n";
+
+      html += writeHtml_navigationTree(innerListOfMemberDataObjs, listItemIds_alreadyWritten, newNumOfIndents);
+
+      html += horzSpaces + "</div>\n";
+    }
+  } );
+
+  if (html == "") {
+    if (html !== "" || numOfIndents > 0) html += horzSpaces + "<div style='height: 1.8em'></div>\n"
+    if (numOfIndents > 0) {
+      html += horzSpaces + "<div style='display: inline-block; width: " + 1.5 * numOfIndents + "em'></div>\n";
+    }
+    html += horzSpaces + "<div style='display: inline-block'><i>(empty list)</i></div>\n";
+  }
+
+  return html;
 }
 
 function wbs_getScreenName(screenItemObj, wibtypeItemObj) {
@@ -1823,12 +1948,12 @@ function getIdString(array_ids){
 }
 
 function getInstanceItemObjsForWibtype(wibtypeItemId) {
-  var sObj = new SearchObj();
+  var igo = new ItemGrabbingObj();
 
-  sObj.set_targetAssignedToWibtypeWithItemId(wibtypeItemId);
-  sObj.set_returnFirstOnly_false();
+  igo.set_targetAssignedToWibtypeWithItemId(wibtypeItemId);
+  igo.set_returnFirstOnly_false();
 
-  var instanceItemObjs_array = sObj.runSearchAndReturnX();
+  var instanceItemObjs_array = igo.runSearchAndReturnX();
 
   return instanceItemObjs_array;
 }
@@ -1860,6 +1985,10 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
 function getProcessedStringForSave(oldString) {
   var newString = getStringWithCharsReplaced(oldString, "  ", "&nbsp;&nbsp;");
   return newString;
+}
+
+function getSaveKeyText_connectedItems_ofItem(itemId) {
+  return "iCI_" + itemId;
 }
 
 function getSaveKeyText_item(itemId) {
@@ -2113,22 +2242,22 @@ function getItemInfoStringDisplay(itemInfoString) {
 function grabItemObj(itemId) {
   var i, saveKeyText_item, itemObj, itemInfoString, itemDataArray;
 
-  //get the item-data-string from the datastore
+  // get the item-data-string from the datastore
   saveKeyText_item = getSaveKeyText_item(itemId);
   itemInfoString = getFromDatastore(saveKeyText_item);
 
-  //this function assumes only existing items will be requested; so, if the item-data-string is blank, the item does not exist, and we must throw an error
+  // this function assumes only existing items will be requested; so, if the item-data-string is blank, the item does not exist, and we must throw an error
   if ( isBlank(itemInfoString) ) {
-    //TO-DO2: showSoftError(funcName, errorText);
+    // TO-DO2: showSoftError(funcName, errorText);
     console.log("ERROR: function grabItemObj(), item with itemId=" + itemId + " does not exist in data storage");
     alert("ERROR: function grabItemObj(), item with itemId=" + itemId + " does not exist in data storage");
     return;
   }
 
-  //create an item-object
+  // create an item-object
   itemObj = itemObjFactory();
 
-  //set the item-object's properties from the retrieved item-data
+  // set the item-object's properties from the retrieved item-data
   itemDataArray = itemInfoString.split(sD);
   itemObj.itemId = itemId;
   itemObj.itemName = itemDataArray[0];
@@ -2139,48 +2268,48 @@ function grabItemObj(itemId) {
   itemObj.isWibtype = itemDataArray[5];
   itemObj.isWibtypeInfoField = itemDataArray[6];
 
-  //set joined-lists array, if any exist for this item
+  // set joined-lists array, if any exist for this item
   let saveKeyText_joinedLists_ofItem = getSaveKeyText_joinedLists_ofItem(itemObj.itemId);
   let joinedLists_itemIds_string = getFromDatastore(saveKeyText_joinedLists_ofItem);
   itemObj.joinedLists_itemIds = getIdArray(joinedLists_itemIds_string);
 
-  //set wibtype-assignments array, if any exist for this item
+  // set wibtype-assignments array, if any exist for this item
   let saveKeyText_wibtypeAssignments_toItem = getSaveKeyText_wibtypeAssignments_toItem(itemObj.itemId);
   let assignedWibtypes_itemIds_string = getFromDatastore(saveKeyText_wibtypeAssignments_toItem);
   itemObj.assignedWibtypes_itemIds = getIdArray(assignedWibtypes_itemIds_string);
 
-  //set data-from-wibtype-assignment-info-fields, if any
-  // loop through any wibtype-itemIds that are assigned to this item-we-are-creating
+  // set data-from-wibtype-assignment-info-fields, if any
+  //  loop through any wibtype-itemIds that are assigned to this item-we-are-creating
   itemObj.assignedWibtypes_itemIds.forEach( (current_assignedWibtype_itemId) => {
 
-    //get the item-object for the current wibtype-itemId in the outer loop
+    // get the item-object for the current wibtype-itemId in the outer loop
     let currentWibtype_itemObj = grabItemObj(current_assignedWibtype_itemId);
 
-    //get the list-member-itemIds for the outer-loop-wibtype's item-object
+    // get the list-member-itemIds for the outer-loop-wibtype's item-object
     let currentWibtype_listMemberItemIds = currentWibtype_itemObj.getListMemberItemIds();
 
-    //loop through the list-member-itemIds
+    // loop through the list-member-itemIds
     currentWibtype_listMemberItemIds.forEach( (currentListMemberItemId_ofTheCurrentWibtype) => {
 
-      //we are now in an inner loop, of the list-member-data-itemIds for the wibtype from the outer loop
-      //
-      //each list-member-data-itemId is for a wibtype-info-field
-      // (the variable is "currentListMemberItemId_ofTheCurrentWibtype" in this inner loop)
+      // we are now in an inner loop, of the list-member-data-itemIds for the wibtype from the outer loop
+      // 
+      // each list-member-data-itemId is for a wibtype-info-field
+      //  (the variable is "currentListMemberItemId_ofTheCurrentWibtype" in this inner loop)
 
-      //get the wtif-related-data from datastore for this item-we-are-creating
+      // get the wtif-related-data from datastore for this item-we-are-creating
       let saveKeyText_wtifData = getSaveKeyText_wtifData(itemObj.itemId, currentListMemberItemId_ofTheCurrentWibtype)
       let wtifData = getFromDatastore(saveKeyText_wtifData);
 
-      //create and fill the wtif-data-object that holds the wtif-data for this item-we-are-creating
+      // create and fill the wtif-data-object that holds the wtif-data for this item-we-are-creating
       let wtifDataObj = createWtifDataObj(currentWibtype_itemObj.itemId, currentListMemberItemId_ofTheCurrentWibtype, null, wtifData);
 
-      //push tye wtif-data-object to the associated array-property of this item-we-are-creating
+      // push tye wtif-data-object to the associated array-property of this item-we-are-creating
       itemObj.wtifDataObjs.push(wtifDataObj);
 
     } );
   } );
 
-  //if this is a wibtype-info-field, set wibtype-info-field-info properties for this item-object
+  // if this is a wibtype-info-field, set wibtype-info-field-info properties for this item-object
   if (itemObj.isWibtypeInfoField == "1") {
     let saveKeyText_wibtypeInfoFieldInfo_ofItem = getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemObj.itemId);
     let wibtypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibtypeInfoFieldInfo_ofItem);
@@ -2190,7 +2319,18 @@ function grabItemObj(itemId) {
     itemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, false);
   }
 
-  //return the item-object
+  // load connected-items
+  var saveKeyText_connectedItems_ofItem = getSaveKeyText_connectedItems_ofItem(itemObj.itemId)  
+  var connectedItems_string = getFromDatastore(saveKeyText_connectedItems_ofItem);
+  var connectedItems_array = [];
+  if ( !isBlank(connectedItems_string) ) connectedItems_array = connectedItems_string.split(sD);
+  for (i = 0; i < connectedItems_array.length; i++) {
+    let itemId2 = connectedItems_array[i];
+    let x = createConnectedItemsDataObj(itemId2);
+    itemObj.connectedItemDataObjs.push(x);
+  }
+
+  // return the item-object
   return itemObj;
 }
 
@@ -2378,6 +2518,7 @@ function itemObjFactory() {
   itemObj.isWibtypeInfoField = "0";
   itemObj.assignedWibtypes_itemIds = [];
   itemObj.wtifDataObjs = [];
+  itemObj.connectedItemDataObjs = [];
 
   itemObj.addItemToListMembers = function(itemIdToAdd) {
     var listMemberDataObjs, curMaxSortPosition, sortPositionToUse, newListMemberDataObj;
@@ -2507,6 +2648,50 @@ function itemObjFactory() {
 
     //return the the item-id of the first joined-list, so the calling functions can move to that item in the UI
     return firstListItemId;
+  };
+
+  itemObj.connectToItem = function(itemId2, saveToDatastore) {
+    var i, thisItemAlreadyHasConnection = false, item2AlreadyHasConnection = false;
+
+    // check for existing connection data for this item
+    for (i = 0; i < this.connectedItemDataObjs.length; i++) {
+      if ( isEqual(itemId2, this.connectedItemDataObjs[i].itemId2) ) {
+        thisItemAlreadyHasConnection = true;
+        break;
+      }
+    }
+
+    if (!thisItemAlreadyHasConnection) {
+      let x = createConnectedItemsDataObj(itemId2);
+      itemObj.connectedItemDataObjs.push(x);
+    }
+
+    var item2Obj = grabItemObj(itemId2);
+
+    // check for existing connection data for item2
+    for (i = 0; i < item2Obj.connectedItemDataObjs.length; i++) {
+      if ( isEqual(this.itemId, item2Obj.connectedItemDataObjs[i].itemId2) ) {
+        item2AlreadyHasConnection = true;
+        break;
+      }
+    }
+
+    if (!item2AlreadyHasConnection) {
+      let x = createConnectedItemsDataObj(this.itemId);
+      item2Obj.connectedItemDataObjs.push(x);
+    }
+
+    if (saveToDatastore) {
+      if (!thisItemAlreadyHasConnection) {
+        this.saveConnectedItemsToDatastore();
+      }
+
+      if (!item2AlreadyHasConnection) {
+        item2Obj.saveConnectedItemsToDatastore();
+      }
+    }
+
+    return true;
   };
 
   itemObj.copyToList = function(listToCopyTo_itemId) {
@@ -2700,6 +2885,18 @@ function itemObjFactory() {
     newListMemberDataObjs = getObjArrayWithoutElem(oldListMemberDataObjs, CONST_propName_itemId, itemIdToRemove)
 
     this.saveListMembersToDatastore(newListMemberDataObjs);
+  };
+
+  itemObj.saveConnectedItemsToDatastore = function() {
+    var saveKeyText_connectedItems_ofItem = getSaveKeyText_connectedItems_ofItem(this.itemId);
+    var connectedItems_string = "";
+
+    this.connectedItemDataObjs.forEach( (x) => {
+      if (connectedItems_string !== "") connectedItems_string += sD;
+      connectedItems_string += x.itemId2;
+    } );
+
+    saveToDatastore(saveKeyText_connectedItems_ofItem, connectedItems_string);
   };
 
   itemObj.saveItemInfoToDatastore = function() {
@@ -2986,7 +3183,7 @@ function showSoftError(funcName, errorText) {
   alert(fullErrorMsg);
 }
 
-function SearchObj() {
+function ItemGrabbingObj() {
   this.errorDuringSettingParams = false;
 
   this.returnFirstOnly = true;
@@ -3001,9 +3198,6 @@ function SearchObj() {
   this.target_wtif_searchForBlankTheData = false;
   this.target_wtif_theData = null;
 
-  //TO-DOx:
-  this.ordering
-
   this.wtifDataSearchHasBeenSet = false;
 
 
@@ -3011,37 +3205,37 @@ function SearchObj() {
 
   // create and run search object:
   
-  var sObj = new SearchObj();
+  var igo = new ItemGrabbingObj();
    
   // include any or all of the following:
   //   (all must be true for an item to be returned)
    
-  sObj.set_targetItemName(itemName_toSearchFor);
-  sObj.set_targetJoinedListWithItemId(listItemId_toSearchFor);
-  sObj.set_targetAssignedToWibtypeWithItemId(wibtypeItemId_toSearchFor);
+  igo.set_targetItemName(itemName_toSearchFor);
+  igo.set_targetJoinedListWithItemId(listItemId_toSearchFor);
+  igo.set_targetAssignedToWibtypeWithItemId(wibtypeItemId_toSearchFor);
 
   // can only include one of the following two options:
 
   // -> option 1:
-  sObj.set_targetCombo_wtifItemId_and_wtifData(wtifItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
+  igo.set_targetCombo_wtifItemId_and_wtifData(wtifItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
   //
   //  --- or ---
   //
   // -> option 2:
-  sObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
+  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
   
-  sObj.set_returnFirstOnly_false();  // optional (SearchObj() defaults to returnFirstOnly==true)
+  igo.set_returnFirstOnly_false();  // optional (ItemGrabbingObj() defaults to returnFirstOnly==true)
 
-  var itemObj = sObj.runSearchAndReturnX();       // if returnFirstOnly==true (default)
+  var itemObj = igo.runSearchAndReturnX();       // if returnFirstOnly==true (default)
   //  --- or ---
-  var itemObjArray = sObj.runSearchAndReturnX();  // if returnFirstOnly==false
+  var itemObjArray = igo.runSearchAndReturnX();  // if returnFirstOnly==false
 
   */
 
 
   this.runSearchAndReturnX = function() {
     if (this.errorDuringSettingParams) {
-      showSoftError("SearchObj.runSearchAndReturnX()", "an error previously occurred during the setting of search parameters, so we cannot run this search")
+      showSoftError("ItemGrabbingObj.runSearchAndReturnX()", "an error previously occurred during the setting of search parameters, so we cannot run this search")
       return;
     }
 
@@ -3099,19 +3293,19 @@ function SearchObj() {
   this.set_targetCombo_wtifItemId_and_wtifData = function(targetWtif_itemId, targetWtif_theData, targetWtif_searchForBlankTheData) {
     if (this.wtifDataSearchHasBeenSet) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemId_and_wtifData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemId=" + targetWtif_itemId + ", targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemId_and_wtifData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemId=" + targetWtif_itemId + ", targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
     if ( isBlank(targetWtif_itemId) ) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemId_and_wtifData()", "received blank value for required parameter targetWtif_itemId")
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemId_and_wtifData()", "received blank value for required parameter targetWtif_itemId")
       return;
     }
 
     if (targetWtif_searchForBlankTheData && !isBlank(targetWtif_theData)) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemId_and_wtifData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemId_and_wtifData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
@@ -3131,25 +3325,25 @@ function SearchObj() {
   this.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData = function(targetWtif_itemName, targetWtif_isFrom_wibTypeItemId, targetWtif_theData, targetWtif_searchForBlankTheData) {
     if (this.wtifDataSearchHasBeenSet) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemName=" + targetWtif_itemName + "targetWtif_isFrom_wibTypeItemId=" + targetWtif_isFrom_wibTypeItemId + ", targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemName=" + targetWtif_itemName + "targetWtif_isFrom_wibTypeItemId=" + targetWtif_isFrom_wibTypeItemId + ", targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
     if ( isBlank(targetWtif_itemName) ) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_itemName")
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_itemName")
       return;
     }
 
     if ( isBlank(targetWtif_isFrom_wibTypeItemId) ) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_isFrom_wibTypeItemId")
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_isFrom_wibTypeItemId")
       return;
     }
 
     if (targetWtif_searchForBlankTheData && !isBlank(targetWtif_theData)) {
       this.errorDuringSettingParams = true;
-      showSoftError("SearchObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
@@ -3259,11 +3453,77 @@ dc("searchForItemObj_OLD(), searchParam_wtif_theData="+searchParam_wtif_theData)
   } else if (returnFirstOnly) {
     return result_itemObjArray[0];
   } else {
+
+    //TO-DO1.5:
+
+    // default sort is:
+    //  1st sort = list position on home-page-list
+    //  2nd sort = list position on the parent list (parent list being the one that was on home-page-list)
+    //  3rd sort = list position on the parent list from 2nd sort above
+    //  4th sort = etc
+ 
+    //TO-DO2: later, can add other sorting options
+
+
+    //example sorting call
+    //listMemberDataObjs.sort( sortingObjects_numeric(CONST_propName_sortPosition) );
+
+    //result_itemObjArray.sort( sortingObjects_defaultListTree() ) ;
+
+
     return result_itemObjArray;
   }
 }
 
-// searchForItemObj_OLD is deprecated -- other code that calls this, should eventually be migrated to using SearchObj()
+function sortingObjects_defaultListTree() {
+  return function(objA, objB) {
+    var comparisonCode;
+
+
+//TO-DO1.5:
+    //  1st sort = list position on home-page-list
+    //  2nd sort = list position on the parent list (parent list being the one that was on home-page-list)
+    //  3rd sort = list position on the parent list from 2nd sort above
+    //  4th sort = etc
+
+
+
+// --> OR... should we write a function that handles this manually? due to walk-through-all-lists process?
+    
+
+    var objA_isOnHomepageList = isMemberOfList(objA.itemId, app.homePageList_itemId);
+    var objB_isOnHomepageList = isMemberOfList(objB.itemId, app.homePageList_itemId);
+
+    var objA_homePageList
+    if (objA_isOnHomepageList)
+
+
+
+
+
+
+    var aIsBlank = isBlank(objA[propNameToSortBy]);
+    var bIsBlank = isBlank(objB[propNameToSortBy]);
+
+    if ( aIsBlank && bIsBlank ) {
+      comparisonCode = 0;
+    } else if (aIsBlank && !bIsBlank) {
+      comparisonCode = 1;
+    } else if (!aIsBlank && bIsBlank) {
+      comparisonCode = -1;
+    } else if ( parseInt(objA[propNameToSortBy]) < parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = -1;
+    } else if ( parseInt(objA[propNameToSortBy]) > parseInt(objB[propNameToSortBy]) ) {
+      comparisonCode = 1;
+    } else {
+      comparisonCode = 0;
+    }
+
+    return comparisonCode;
+  };
+}
+
+// searchForItemObj_OLD is deprecated -- other code that calls this, should eventually be migrated to using ItemGrabbingObj()
 function searchForItemObj_OLD(searchParam_wtif_searchForBlankTheData, searchParam_assignedToWibtypeItemId_noWtifConnection, searchParam_wtif_wibtypeItemId, searchParam_wtif_itemName, searchParam_wtif_itemId, searchParam_wtif_theData, searchParam_itemName, searchParam_onListItemId, returnFirstOnly) {
 
 //dc("--------------------")
@@ -3366,14 +3626,22 @@ function setAppItemObj(itemObj) {
   }
 }
 
+function setElemCursor_none(elem) {
+  elem.style.cursor = "";
+}
+
+function setElemCursor_pointer(elem) {
+  elem.style.cursor = "pointer";
+}
+
 function setElemMouseover(elem) {
-  elem.style.color = "blue";
+  css_addClass(elem.id, CONST_cssClassName_blue)
   elem.style.textDecoration = "underline";
   elem.style.cursor = "pointer";
 }
 
 function setElemMouseout(elem) {
-  elem.style.color = "";
+  css_removeClass(elem.id, CONST_cssClassName_blue)
   elem.style.textDecoration = "";
   elem.style.cursor = "";
 }
@@ -3635,6 +3903,22 @@ function toggleGrabbing_on() {
 
   css_addClass("aGrabItems1", CONST_cssClassName_red);
   css_addClass("aGrabItems2", CONST_cssClassName_red);
+}
+
+function toggleNavList(itemId) {
+  var elemId_plusMinusTop = "dvNavListMembers_PlusTop_" + itemId;
+  var elemId_plusMinusBottom = "dvNavListMembers_PlusBottom_" + itemId;
+  var elem_list = elem("dvNavListMembers_" + itemId);
+
+  if (elem_list.style.display == "none") {
+    elem_list.style.display = "";
+    css_removeClass(elemId_plusMinusTop, CONST_cssClassName_backgroundBlue);
+    css_removeClass(elemId_plusMinusBottom, CONST_cssClassName_backgroundBlue);
+  } else {
+    elem_list.style.display = "none";
+    css_addClass(elemId_plusMinusTop, CONST_cssClassName_backgroundBlue);
+    css_addClass(elemId_plusMinusBottom, CONST_cssClassName_backgroundBlue);
+  }
 }
 
 function toggleReordering_off() {
@@ -4276,6 +4560,10 @@ function writeStorage() {
 
 ///// USER-CLICKABLE FUNCTIONS
 
+function add_connected_item() {
+  displayPage("NavigateItems");
+}
+
 function add_notes() {
   var newNotes = prompt("Notes:", "");
   if ( isBlank(newNotes) ) return;
@@ -4505,6 +4793,7 @@ function click_item(itemIdThatWasClicked) {
       toggleReorderingMode_normal(app.reordering_activatedItemId)
 
       if ( reorderActivatedItemAboveOtherItem(itemIdThatWasClicked) ) {
+        app.focusElemId = getHtml_aItem(app.reordering_activatedItemId);
         goToItemView(null, true);
       }
 
@@ -4595,7 +4884,7 @@ function do_change_done_status(newDoneStatusDisplay) {
   if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
     goToItemView(null, false);
   } else {
-    app.focusItemId = app.itemObj.itemId;
+    app.focusElemId = getHtml_aItem(app.itemObj.itemId);
     goToItemView(app.itemObj.displayedOnList_itemId, false);
   }
 }
@@ -4840,9 +5129,13 @@ function go_to_builder() {
   window.location = "index.html?builder";
 }
 
+function go_to_item(itemId) {
+  goToItemView(itemId, false);
+}
+
 function go_to_list(itemId) {
   if (app.itemObj.itemId) {
-    app.focusItemId = app.itemObj.itemId;
+    app.focusElemId = getHtml_aItem(app.itemObj.itemId);
   }
 
   goToItemView(itemId, false);
@@ -4930,6 +5223,8 @@ function move_item_down(itemIdToMove, amount) {
 
 function move_item_to_end(itemIdToMove) {
   if ( walkSortPosition(app.itemObj, itemIdToMove, null, false, true, null) ) {
+    app.focusElemId_pre = "aViewItem_MakeNewItem2";
+    app.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
@@ -4940,6 +5235,8 @@ function move_item_above_other_item(itemIdToMove) {
 
 function move_item_to_top(itemIdToMove) {
   if ( walkSortPosition(app.itemObj, itemIdToMove, null, true, false, null) ) {
+    app.focusElemId_pre = "aViewItem_MakeNewItem1";
+    app.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
@@ -4958,6 +5255,22 @@ function move_or_copy_to_different_list() {
 
 function move_to_this_list(selectedList_itemId) {
   moveOrCopyGrabbedItems(selectedList_itemId, aO("move"))
+}
+
+function navigate__cancel() {
+  app.focusElemId = getHtml_aItem(app.itemObj.itemId);
+  displayPage("ViewItem");
+}
+
+function navigate__connect_to_item(itemId2) {
+  if ( isEqual(app.itemObj.itemId, itemId2) ) {
+    alert("Can't connect an item to itself --- please choose a different item or list");
+    return;
+  }
+
+  if ( app.itemObj.connectToItem(itemId2, true) ) {
+    displayPage("ViewItem");
+  }
 }
 
 function rename_item() {
@@ -4993,10 +5306,10 @@ function run_screen__save_new_item() {
 
   // find the wibtype called "wb-wibtype-instance-holder-wibtype"
   //   -> this is the wibtype that is assigned to lists that hold the wibtype-intances, for each wibtype created/managed by wib-builder
-  var sObj1 = new SearchObj();
-  sObj1.set_targetItemName(CONST_wb_wibtypeInstanceHolderWibtype_itemName);
-  sObj1.set_targetJoinedListWithItemId(app.wibtypes_itemId);
-  var wibtypeInstanceHolderWibtype_itemObj = sObj1.runSearchAndReturnX();
+  var igo1 = new ItemGrabbingObj();
+  igo1.set_targetItemName(CONST_wb_wibtypeInstanceHolderWibtype_itemName);
+  igo1.set_targetJoinedListWithItemId(app.wibtypes_itemId);
+  var wibtypeInstanceHolderWibtype_itemObj = igo1.runSearchAndReturnX();
 
   // find the list that will hold the current wibtype-instance
   //   -> this list/item will:
@@ -5004,10 +5317,10 @@ function run_screen__save_new_item() {
   //       (b) have a wtif-data-obj whose:
   //             (i)   itemName matches the wtif-itemName "WibtypeInstanceHeldItemId" PLUS said wtif is associated with the wibtype "wb-wibtype-instance-holder-wibtype"
   //             (ii)  theData matches the itemId of the wibtypeItemObj_createdByUsageOfThisScreen
-  var sObj2 = new SearchObj();
-  sObj2.set_targetJoinedListWithItemId(app.wb_listOfWibtypeInstanceHolderLists_itemId);
-  sObj2.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wibtypeInstanceHolderWibtype_itemObj.itemId, wibtypeItemObj_createdByUsageOfThisScreen.itemId, false);
-  var wibtypeInstanceHolderList_itemObj = sObj2.runSearchAndReturnX();
+  var igo2 = new ItemGrabbingObj();
+  igo2.set_targetJoinedListWithItemId(app.wb_listOfWibtypeInstanceHolderLists_itemId);
+  igo2.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wibtypeInstanceHolderWibtype_itemObj.itemId, wibtypeItemObj_createdByUsageOfThisScreen.itemId, false);
+  var wibtypeInstanceHolderList_itemObj = igo2.runSearchAndReturnX();
 /*
 dc("run_screen__save_new_item(), wibtypeInstanceHolderList_itemObj="+wibtypeInstanceHolderList_itemObj)
 dc("run_screen__save_new_item(), exiting function...")
@@ -5047,8 +5360,6 @@ function wb_getWibtypeInstanceHolderList_itemName(wibtypeItemId_heldByThisWibtyp
 
   return wibtypeInstanceHolderList_itemName;
 }
-
-
 
 
 
@@ -5262,6 +5573,8 @@ function loadAppData_andReturnNextDisplayPage() {
 
   if (app.qs_obj.wibBuilder) {
     return "WibBuilder_AllScreens"
+  } else if (app.qs_obj.nav1) {
+    return "NavigateItems"
   } else {
     return "Home"
   }
@@ -5512,6 +5825,7 @@ function processQueryString() {
   app.qs_obj = {};
   app.qs_obj.wibBuilder = app.qs_urlParams.has("builder");
   app.qs_obj.dev = app.qs_urlParams.has("dev");
+  app.qs_obj.nav1 = app.qs_urlParams.has("nav1");
 }
 
 function startApp() {
