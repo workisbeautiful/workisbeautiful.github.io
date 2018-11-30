@@ -213,6 +213,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div id="dvPage_NavigateItems" style="display: none">
     <div id="dvNavigateItems_ItemNameDisplay" style="font-size: 100%"></div>
+    <div id="dvNavigateItems_JoinedListsArea" style="display: none">
+      <div style="height: 0.3em"></div>
+      <div id="dvNavigateItems_JoinedListsDisplay"></div>
+    </div>
     <div style="height: 1em"></div>
     <div>
       <a href="javascript:void navigate__cancel()" style="white-space: nowrap">cancel connection process</a>
@@ -710,7 +714,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 ///// CONSTANTS
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.75";
+const CONST_appVersion = "0.76";
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
 const CONST_cssClassName_backgroundBrown = "backgroundBrown";
@@ -1205,6 +1209,15 @@ function displayPage(pageName) {
     case "NavigateItems": {
       elem("dvNavigateItems_ItemNameDisplay").innerHTML = "Connecting to:&nbsp;&nbsp;<b>" + app.itemObj.itemName + "</b>";
 
+      if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
+        elem("dvNavigateItems_JoinedListsArea").style.display = "none";
+      } else {
+        elem("dvNavigateItems_JoinedListsArea").style.display = "";
+        let displayedOnList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+        //elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayedOnList_itemObj.itemId + "\")'>" + displayedOnList_itemObj.itemName + "</a> )";
+        elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;" + displayedOnList_itemObj.itemName + " )";
+      }
+
       let html = "";
 
       var listItemIds_alreadyWritten = [];
@@ -1247,7 +1260,7 @@ function displayPage(pageName) {
 
             if (app.itemObj.isWibtypeInfoField == "1" && curItemObjForLoop.isWibtype == "1") {
               wibtypeItemObj = curItemObjForLoop;
-//              elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: " + CONST_cssClassName_red + "'><b>type info-field</b></span>";
+              //elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: " + CONST_cssClassName_red + "'><b>type info-field</b></span>";
             } else if (curItemObjForLoop.displayCode == CONST_displayCode_normal && curItemObjForLoop.isWibtype == "0") {
               hasDisplayedLists = true;
               app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
@@ -1613,15 +1626,24 @@ function writeHtml_navigationTree(curList_memberDataObjs, listItemIds_alreadyWri
 
     }
 
-    html += horzSpaces + "<div style='height: 0.3em'></div>\n"
+    if (curItemObj.isList == "1") {
+      html += horzSpaces + "<div style='height: 0.8em'></div>\n"
+    } else {
+      html += horzSpaces + "<div style='height: 0.3em'></div>\n"
+    }
+
     if (numOfIndents > 0) {
       html += horzSpaces + "<div style='display: inline-block; width: " + numOfIndents + "em'></div>\n";
     }
 
     let connectLinkText = "connect to this item";
-    if (curItemObj.isList == "1") connectLinkText = "connect to this list";
+    let connectSpacer = "";
+    if (curItemObj.isList == "1") {
+      connectLinkText = "connect to this list";
+      connectSpacer = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+    }
 
-    html += horzSpaces + "<div style='display: inline-block'><a href='javascript:void navigate__connect_to_item(\"" + curItemObj.itemId + "\")'>" + connectLinkText + "</a></div>\n";
+    html += horzSpaces + "<div style='display: inline-block'>" + connectSpacer + "<a href='javascript:void navigate__connect_to_item(\"" + curItemObj.itemId + "\")'>" + connectLinkText + "</a></div>\n";
 
     if (displayListAsList) {
       let innerListOfMemberDataObjs = curItemObj.getListMemberDataObjs();
@@ -5258,7 +5280,6 @@ function move_to_this_list(selectedList_itemId) {
 }
 
 function navigate__cancel() {
-  app.focusElemId = getHtml_aItem(app.itemObj.itemId);
   displayPage("ViewItem");
 }
 
