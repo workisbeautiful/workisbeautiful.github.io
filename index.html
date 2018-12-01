@@ -626,47 +626,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
-  <div class="grid1" id="dvPopUp_ChangeDoneStatus2" style="display: none">
-    <div class="grid1Cell gc1Header"><b>Change Done Status</b></div>
-    <div class="grid1Cell gc1VSpace1"></div>
-    <div class="grid1Cell gc1Text">List Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus2_mainListName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Item Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus2_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Current Status:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus2_currentStatus" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace3"></div>
-    <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus2_Undone1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus2_Undone2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus2_Undone" href="javascript:void do_change_done_status('undone')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus2_Done1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus2_Done2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus2_Done" href="javascript:void do_change_done_status('done')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus2_Okay1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus2_Okay2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus2_Okay" href="javascript:void do_change_done_status('okay')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus2_Info1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus2_Info2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus2_Info" href="javascript:void do_change_done_status('info')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus2_Notice1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus2_Notice2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus2_Notice" href="javascript:void do_change_done_status('notice')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4"></div>
-    <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void cancel_change_done_status()">cancel</a>
-    </div>
-  </div>
-
   <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none; padding-top: 0.3em">
     <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Make New Item</b></div>
     <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
@@ -746,11 +705,11 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
-  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype" style="display: none">
+  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype2" style="display: none">
     <div class="grid1Cell gc1Header"><b>use existing type...</b></div>
   </div>
 
-  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype2" style="display: none">
+  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype" style="display: none">
     <div class="grid1Cell gc1Header"><b>Use Existing Type</b></div>
     <div class="grid1Cell gc1VSpace1"></div>
     <div class="grid1Cell gc1Footer">Set the 'type of thing' for this screen from the existing list of types that screens have created?<br /><br />(selecting 'No' will allow you to enter a new type)</div>
@@ -787,7 +746,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 ///// CONSTANTS
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.78";
+const CONST_appVersion = "0.79";
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
 const CONST_cssClassName_backgroundBrown = "backgroundBrown";
@@ -1238,7 +1197,9 @@ function displayPage(pageName) {
   elem("dvPage_WibBuilder_ShowWibtypeInstances").style.display = "none";
   elem("dvPage_Wibtypes").style.display = "none";
 
-  elem("dvPage_" + pageName).style.display = "inline-grid";
+  if ( !isBlank(pageName) ) {
+    elem("dvPage_" + pageName).style.display = "inline-grid";
+  }
 
   switch (pageName) {
 
@@ -1620,6 +1581,9 @@ function displayPage(pageName) {
       elem("dvWibtypes_Items").innerHTML = writeHtml_Items();
       break;
     }
+
+    default:
+      // no action -- but keeping this as part of resetting the UI when moving from one pop-up to another pop-up
   }
 }
 
@@ -3781,6 +3745,9 @@ function setElemVal(elemId, elemVal) {
 }
 
 function showPopUp(popUpCode, popUpFocusElem) {
+  // when switching directly from one pop-up to another, we were getting too-wide layout, so calling a blank displayPage in order to reset the UI first
+  displayPage("");
+
   elem("dvPopUp_ChangeDoneStatus").style.display = "none";
   elem("dvPopUp_MakeNewItem").style.display = "none";
   elem("dvPopUp_MakeNewWibtype").style.display = "none";
@@ -3792,10 +3759,6 @@ function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_" + popUpCode).style.display = "grid";
 
   switch (popUpCode) {
-
-    case "ChangeDoneStatus2": {
-break;
-    }
 
     case "ChangeDoneStatus": {
       elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
@@ -4968,7 +4931,7 @@ function all_screens__run_screen(screenItemId) {
 }
 
 function back_to_type(wibtypeItemId) {
-  goToItemView(wibtypeItemId, false)
+  goToItemView(wibtypeItemId, false);
 }
 
 function begin_import() {
@@ -5012,16 +4975,18 @@ function build_screen__use_existing_type(answer) {
 
 
 //TO-DO1:
-      showPage("WibBuilder_ChooseExistingWibtype");
+      displayPage("WibBuilder_ChooseExistingWibtype");
       break;
 
     case "no":
       wbs_promptNewWibtypeName();
       hidePopUp("WibBuilder_UseExistingWibtype");
+      displayPage("WibBuilder_BuildScreen");
       break;
 
     case "cancel":
       hidePopUp("WibBuilder_UseExistingWibtype");
+      displayPage("WibBuilder_BuildScreen");
       break;
   }
 }
@@ -5066,26 +5031,29 @@ return false;
 
 
 function build_screen__set_type_of_thing() {
-  showPopUp("ChangeDoneStatus2", null);
-  //showPopUp("WibBuilder_UseExistingWibtype", null);
+  showPopUp("WibBuilder_UseExistingWibtype", null);
 }
 
 
 
 function cancel_change_done_status() {
   hidePopUp("ChangeDoneStatus");
+  goToItemView();
 }
 
 function cancel_make_new_item() {
   hidePopUp("MakeNewItem");
+  goToItemView();
 }
 
 function cancel_make_new_type() {
   hidePopUp("MakeNewWibtype");
+  displayPage("Wibtypes");
 }
 
 function cancel_make_new_type_info_field() {
   hidePopUp("MakeNewWibtypeInfoField");
+  goToItemView();
 }
 
 function cancel_move() {
@@ -5640,7 +5608,7 @@ function move_to_this_list(selectedList_itemId) {
 }
 
 function navigate__cancel() {
-  displayPage("ViewItem");
+  goToItemView();
 }
 
 function navigate__connect_to_item(itemId2) {
@@ -5650,7 +5618,7 @@ function navigate__connect_to_item(itemId2) {
   }
 
   if ( app.itemObj.connectToItem(itemId2, true) ) {
-    displayPage("ViewItem");
+    goToItemView();
   }
 }
 
