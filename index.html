@@ -787,7 +787,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 ///// CONSTANTS
 
 const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.77";
+const CONST_appVersion = "0.78";
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
 const CONST_cssClassName_backgroundBrown = "backgroundBrown";
@@ -3798,7 +3798,6 @@ break;
     }
 
     case "ChangeDoneStatus": {
-break;
       elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
       elem("spnChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
       //elem("dvChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
@@ -5067,7 +5066,7 @@ return false;
 
 
 function build_screen__set_type_of_thing() {
-  showPopUp("ChangeDoneStatus", null);
+  showPopUp("ChangeDoneStatus2", null);
   //showPopUp("WibBuilder_UseExistingWibtype", null);
 }
 
