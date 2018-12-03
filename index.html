@@ -772,7 +772,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.81"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.82"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -6425,7 +6425,7 @@ function wb_app_createAndReturn(appItemName) {
 
   var firstScreenForWbApp_itemObj = wb_screen_createAndReturn("Home Screen for My Starter App", null, null);
 
-  wb_scriptRow_createAndReturn(firstScriptForWbApp_itemObj.itemId, "1", CONST_wb_scriptRow_ActionCode_displayScreen, firstScreenForWbApp_itemObj.itemId)
+  wb_scriptRow_createAndReturn(firstScriptForWbApp_itemObj.itemId, "1", CONST_wb_script_actionCode_displayScreen, firstScreenForWbApp_itemObj.itemId)
 
   wbApp_itemObj.setWibtypeAndWtifs(wapp.wb_appWibtype_itemId, CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName, firstScriptForWbApp_itemObj.itemId)
 
@@ -6466,7 +6466,7 @@ function wb_script_createAndReturn(scriptItemName) {
 function wb_getScriptRowActionDisplay(actionCode) {
   switch (actionCode) {
 
-    case CONST_wb_scriptRow_ActionCode_displayScreen:
+    case CONST_wb_script_actionCode_displayScreen:
       return "display screen";
 
     default:
@@ -6480,7 +6480,7 @@ function wb_generateScriptRowItemName(actionCode, actionData) {
 
   switch (actionCode) {
 
-    case CONST_wb_scriptRow_ActionCode_displayScreen:
+    case CONST_wb_script_actionCode_displayScreen:
       itemName = "display screen ";
 
       let displayScreenItemObj = grabItemObj(actionData);
