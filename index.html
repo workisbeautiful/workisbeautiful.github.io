@@ -152,9 +152,9 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1.7em"></div>
     <div><a href="javascript:void toggle_import_blocked()">toggle import-backup-text blocked (for this device)</a></div>
     <div style="height:1.7em"></div>
-    <div><a href="javascript:void toggle_dev()">toggle dev mode</a></div>
+    <div><a href="javascript:void toggle_wibapp_dev()">toggle dev mode</a></div>
     <div style="height:1.7em"></div>
-    <div><a href="javascript:void toggle_app_narrow()">toggle app narrow mode</a></div>
+    <div><a href="javascript:void toggle_wibapp_narrow()">toggle app narrow mode</a></div>
     <div style="height:1.7em"></div>
     <div><a href="javascript:void show_storage()">show storage</a></div>
     <div style="height:100em"></div>
@@ -272,7 +272,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
-    <div style="display: grid; width: 20em; margin-left: 0.3em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
+    <div style="display: grid; width: 19.5em; margin-left: 0.3em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
       <div style="font-weight: bold">Info About This Screen:</div>
       <div style="height: 0.7em"></div>
       <div style="height: 0.1em; background-color: black"></div>
@@ -292,7 +292,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
       </div>
     </div>
-    <div style="display: grid; width: 19.5em; border: 0.2em solid grey; padding: 0.5em">
+    <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.5em">
       <div id="dvWibBuilder_BuildScreen_HeaderText" style="border: 0.2em solid lightgrey; padding: 0.5em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
       <div style="height: 0.5em"></div>
       <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
@@ -326,8 +326,27 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
+  <div id="dvPage_WibBuilder_DisplayScreen" style="display: none">
+    <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
+      <div id="dvWibBuilder_DisplayScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div style="height: 1em"></div>
+      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
+        <div id="dvWibBuilder_DisplayScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
+        <div style="width: ">
+          <input class="ipText" id="ipWibBuilder_DisplayScreen_ItemNameValue" style="width: 100%" />
+        </div>
+      </div>
+      <div style="height: 1em"></div>
+      <div style="text-align: center"><a href="javascript:void display_screen__save_new_item()">save</a>&nbsp;&nbsp;&nbsp;</div>
+    </div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void display_screen__build_this_screen()">build this screen</a></div>
+    <div style="height: 1.8em"></div>
+    <div><a href="javascript:void display_screen__go_to_all_screens()">list of all screens</a></div>
+  </div>
+
   <div id="dvPage_WibBuilder_RunScreen" style="display: none">
-    <div style="display: grid; width: 19.5em; border: 0.2em solid grey; padding: 0.8em">
+    <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
       <div id="dvWibBuilder_RunScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
       <div style="height: 1em"></div>
       <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
@@ -753,8 +772,8 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_appNarrow = "app_narrow";
-const CONST_appVersion = "0.80";
+const CONST_wibappVersion = "0.81"; // leave this at top for easy editing
+
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
 const CONST_cssClassName_backgroundBrown = "backgroundBrown";
@@ -771,9 +790,10 @@ const CONST_cssClassName_borderRed = "borderRed";
 const CONST_cssClassName_brown = "brown";
 const CONST_cssClassName_green = "green";
 const CONST_cssClassName_red = "red";
-const CONST_devText1 = "devText1";
+
 const CONST_displayCode_normal = "0";
 const CONST_displayCode_hidden1 = "1";
+
 const CONST_doneStatusCode_done = "1";
 const CONST_doneStatusCode_info = "4";
 const CONST_doneStatusCode_notice = "3";
@@ -784,31 +804,63 @@ const CONST_doneStatusDisplay_info = "info";
 const CONST_doneStatusDisplay_notice = "notice";
 const CONST_doneStatusDisplay_okay = "okay";
 const CONST_doneStatusDisplay_undone = "undone";
+
 const CONST_importBlocked = "importBlocked";
-const CONST_stringOfAllItemIds = "string_of_all_item_ids";
+
 const CONST_listName_homePage = "home_page_list";
 const CONST_listName_wibtypes = "types";
+
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
 const CONST_propName_itemName = "itemName";
 const CONST_propName_wtifItemId = "wtifItemId";
+
 const CONST_reordering_mode_normal = "normal";
 const CONST_reordering_mode_moveAboveOtherItem = "moveAboveOtherItem";
+
 const CONST_storedDataVersion = "stored_data_version";
+
+const CONST_stringOfAllItemIds = "string_of_all_item_ids";
+
 const CONST_timeTracking_itemName = "Time Tracking";
 const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
 const CONST_timeTracking_wtifTime_itemName = "Time";
 const CONST_timeTracking_wtifMinsTracked_itemName = "Mins Tracked";
+
+const CONST_wb_appList_itemName = "wib-builder-app-list";
+const CONST_wb_appWibtype_itemName = "wib-builder-app";
+const CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName = "FirstScriptItemId";
+
 const CONST_wb_listOfWibtypeInstanceHolderLists_itemName = "wb-list-of-wibtype-instance-holder-lists";
+
+const CONST_wb_screenList_itemName = "wib-builder-screen-list";
+const CONST_wb_screenTypeCode_createWibtype = "1";
+const CONST_wb_screenTypeCode_editWibtype = "2";
+const CONST_wb_screenWibtype_itemName = "wib-builder-screen";
+
+const CONST_wb_script_actionCode_displayScreen = "1";
+const CONST_wb_scriptList_itemName = "wib-builder-script-list";
+const CONST_wb_scriptRowWibtype_itemName = "wib-builder-script-row";
+const CONST_wb_scriptRowWibtype_wtif_RowNum_itemName = "RowNum";
+const CONST_wb_scriptRowWibtype_wtif_ActionCode_itemName = "ActionCode";
+const CONST_wb_scriptRowWibtype_wtif_ActionData_itemName = "ActionData";
+const CONST_wb_scriptWibtype_itemName = "wib-builder-script";
+
 const CONST_wb_wibtypeInstanceHolderWibtype_itemName = "wb-wibtype-instance-holder-wibtype";
 const CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName = "WibtypeInstanceHeldItemId";
-const CONST_wbs_screenList_itemName = "wib-builder-screen-list";
-const CONST_wbs_screenTypeCode_createWibtype = "1";
-const CONST_wbs_screenTypeCode_editWibtype = "2";
-const CONST_wbs_screenWibtype_itemName = "wib-builder-screen";
-const CONST_wbs_screenTypeCode_createType = "1";
+
 const CONST_wbs_screenWtifs_screenTypeCode_itemName = "ScreenTypeCode";
 const CONST_wbs_screenWtifs_wibtypeItemId_itemName = "WibtypeItemId";
+
+
+//TO-DO2: can delete these wibapp instances are all changed by running 0.81-ish code
+const CONST_appNarrow_OLD = "app_narrow";
+const CONST_devText1_OLD = "devText1";
+
+
+const CONST_wibapp_narrow = "wibapp_narrow";
+const CONST_wibapp_dev1 = "wibapp_dev1";
+
 const CONST_wibDataType_dateTime_name = "date & time";
 const CONST_wibDataType_dateTime_id = 2;
 const CONST_wibDataType_numeric_name = "numeric";
@@ -817,49 +869,55 @@ const CONST_wibDataType_text_name = "text";
 const CONST_wibDataType_text_id = 1;
 const CONST_wibDataType_timeOfDay_name = "time of day";
 const CONST_wibDataType_timeOfDay_id = 3;
+
 const sD = "`"; // sD = storageDivider
 const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
 
 
 ///// APP-LEVEL VARIABLES
 
-var app = {};
-app.addDataLoadedSuccessfully = true;
-app.focusElemId = null;
-app.focusElemId_pre = null;
-app.grabbing_itemId1 = null;
-app.grabbing_itemId2 = null;
-app.grabbing_itemIdArray = [];
-app.grabbingOn = false;
-app.homePageList_itemId = null;
-app.makeNewItem_TopOfList = "1";
-app.makeNewItem_StayListView = "1";
-app.makeNewItem_AddMoreItems = "0";
-app.makeNewItem_TimeTracking = "0";
-app.moreOptionsOn = false;
-app.qs_obj = null;
-app.qs_urlParams = null;
-app.reorderingOn = false;
-app.reordering_activatedItemId = null;
-app.reordering_mode = null;
-app.timeTracking_defaultYear = null;
-app.timeTracking_defaultMonth = null;
-app.timeTracking_defaultDay = null;
-app.timeTracking_wibtypeItemId = null;
-app.wibBuilder_itemId = null;
-app.wb_listOfWibtypeInstanceHolderLists_itemId = null;
-app.wb_wibtypeInstanceHolderWibtype_itemId = null;
-app.wb_curScreen_itemObj = null;
-app.wbs_curWibtype_itemObj = null;
-app.wbs_screensWibtype_itemId = null;
-app.wbs_screenListItemId = null;
-app.wibtypes_itemId = null;
+var wapp = {};
+wapp.focusElemId = null;
+wapp.focusElemId_pre = null;
+wapp.grabbing_itemId1 = null;
+wapp.grabbing_itemId2 = null;
+wapp.grabbing_itemIdArray = [];
+wapp.grabbingOn = false;
+wapp.homePageList_itemId = null;
+wapp.isDev1 = false;
+wapp.makeNewItem_TopOfList = "1";
+wapp.makeNewItem_StayListView = "1";
+wapp.makeNewItem_AddMoreItems = "0";
+wapp.makeNewItem_TimeTracking = "0";
+wapp.moreOptionsOn = false;
+wapp.qs_obj = null;
+wapp.qs_urlParams = null;
+wapp.reorderingOn = false;
+wapp.reordering_activatedItemId = null;
+wapp.reordering_mode = null;
+wapp.timeTracking_defaultYear = null;
+wapp.timeTracking_defaultMonth = null;
+wapp.timeTracking_defaultDay = null;
+wapp.timeTracking_wibtypeItemId = null;
+wapp.wappDataLoadedSuccessfully = true;
+wapp.wb_appListItemId = null;
+wapp.wb_appWibtype_itemId = null;
+wapp.wb_curScreen_itemObj = null;
+wapp.wb_curWibtype_itemObj = null;
+wapp.wb_listOfWibtypeInstanceHolderLists_itemId = null;
+wapp.wb_screenListItemId = null;
+wapp.wb_screenWibtype_itemId = null;
+wapp.wb_scriptListItemId = null;
+wapp.wb_scriptRowWibtype_itemId = null;
+wapp.wb_scriptWibtype_itemId = null;
+wapp.wb_wibtypeInstanceHolderWibtype_itemId = null;
+wapp.wibtypes_itemId = null;
 
 
 ///// INTERNAL FUNCTIONS
 
 function activateItemForReordering(itemId) {
-  app.reordering_activatedItemId = itemId;
+  wapp.reordering_activatedItemId = itemId;
   css_addClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
   elem(getHtml_reorderingActivated_tr(itemId)).style.display = "" ;
   toggleReorderingMode_normal(itemId);
@@ -1090,7 +1148,7 @@ function dc(text) {
 }
 
 function deactivateItemForReordering(itemId) {
-  app.reordering_activatedItemId = null;
+  wapp.reordering_activatedItemId = null;
   css_removeClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
   elem(getHtml_reorderingActivated_tr(itemId)).style.display = "none" ;
 }
@@ -1110,13 +1168,19 @@ function deleteItem(itemIdToDelete) {
   } else if (returnValue == false) {
     return false;
   } else {
-    setAppItemObj(grabItemObj(returnValue));
+    setWappItemObj(grabItemObj(returnValue));
   }
 
   return true;
 }
 
 function displayPage(pageName) {
+
+  if (wapp.isDev1) {
+    elem("spnAppHeader_Dev").style.display = "";
+  } else {
+    elem("spnAppHeader_Dev").style.display = "none";
+  }
 
   if ( leftIs(pageName, "WibBuilder") ) {
 
@@ -1135,10 +1199,6 @@ function displayPage(pageName) {
     elem("spnAppHeader_Home").style.display = "none";
     elem("spnAppHeader_Builder").style.display = "none";
 
-    if (!app.qs_obj.dev) {
-      elem("spnAppHeader_Dev").style.display = "none";
-    }
-
   } else {
 
     document.body.style.display = "";
@@ -1154,7 +1214,6 @@ function displayPage(pageName) {
     css_addClass("spnAppHeader_AppNameAndVersion", "font135");
 
     elem("spnAppHeader_Home").style.display = "";
-    elem("spnAppHeader_Dev").style.display = "";
     elem("spnAppHeader_Builder").style.display = "";
 
   }
@@ -1198,8 +1257,8 @@ function displayPage(pageName) {
 
     case "Home": {
         elem("spnAppHeader_Home").style.display = "none";
-        if (!app.itemObj) {
-          setAppItemObj(grabItemObjByName(CONST_listName_homePage));
+        if (!wapp.itemObj) {
+          setWappItemObj(grabItemObjByName(CONST_listName_homePage));
         }
         elem("dvHome_Items").innerHTML = writeHtml_items();
         break;
@@ -1207,11 +1266,11 @@ function displayPage(pageName) {
 
     case "MoveOrCopy": {
         elem("spnAppHeader_Home").style.display = "none";
-        if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+        if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
           //single-item-move-or-copy
-          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(app.itemObj.displayedOnList_itemId).itemName + "</i>";
+          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(wapp.itemObj.displayedOnList_itemId).itemName + "</i>";
         } else {
-          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + app.itemObj.itemName + "</i>";
+          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + wapp.itemObj.itemName + "</i>";
         }
 
         elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
@@ -1220,13 +1279,13 @@ function displayPage(pageName) {
       }
 
     case "NavigateItems": {
-      elem("dvNavigateItems_ItemNameDisplay").innerHTML = "Connecting to:&nbsp;&nbsp;<b>" + app.itemObj.itemName + "</b>";
+      elem("dvNavigateItems_ItemNameDisplay").innerHTML = "Connecting to:&nbsp;&nbsp;<b>" + wapp.itemObj.itemName + "</b>";
 
-      if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
+      if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
         elem("dvNavigateItems_JoinedListsArea").style.display = "none";
       } else {
         elem("dvNavigateItems_JoinedListsArea").style.display = "";
-        let displayedOnList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+        let displayedOnList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
         //elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayedOnList_itemObj.itemId + "\")'>" + displayedOnList_itemObj.itemName + "</a> )";
         elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;" + displayedOnList_itemObj.itemName + " )";
       }
@@ -1234,7 +1293,7 @@ function displayPage(pageName) {
       let html = "";
 
       var listItemIds_alreadyWritten = [];
-      var homePageList_itemObj = grabItemObj(app.homePageList_itemId);
+      var homePageList_itemObj = grabItemObj(wapp.homePageList_itemId);
       var homePageList_memberDataObjs = homePageList_itemObj.getListMemberDataObjs();
 
       html += writeHtml_navigationTree(homePageList_memberDataObjs, listItemIds_alreadyWritten, 0);
@@ -1255,28 +1314,28 @@ function displayPage(pageName) {
     case "ViewItem": {
         let i, wibtypeItemObj, hasDisplayedLists = false;
 
-        if (app.itemObj.isWibtype == "1") {
-          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
-        } else if (app.itemObj.isWibtypeInfoField == "1") {
-          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + app.itemObj.itemName;
+        if (wapp.itemObj.isWibtype == "1") {
+          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
+        } else if (wapp.itemObj.isWibtypeInfoField == "1") {
+          elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
         } else {
-          elem("dvItemName").innerHTML = app.itemObj.itemName;
+          elem("dvItemName").innerHTML = wapp.itemObj.itemName;
         }
 
         //TO-DO2: display multiple list names, if this item is a member of 2+
         
         elem("dvListNameForItem").innerHTML = "";
 
-        if (app.itemObj.isWibtype == "0") {
-          for (i = 0; i < app.itemObj.joinedLists_itemIds.length; i++) {
-            let curItemObjForLoop = grabItemObj(app.itemObj.joinedLists_itemIds[0])
+        if (wapp.itemObj.isWibtype == "0") {
+          for (i = 0; i < wapp.itemObj.joinedLists_itemIds.length; i++) {
+            let curItemObjForLoop = grabItemObj(wapp.itemObj.joinedLists_itemIds[0])
 
-            if (app.itemObj.isWibtypeInfoField == "1" && curItemObjForLoop.isWibtype == "1") {
+            if (wapp.itemObj.isWibtypeInfoField == "1" && curItemObjForLoop.isWibtype == "1") {
               wibtypeItemObj = curItemObjForLoop;
               //elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;<span style='color: " + CONST_cssClassName_red + "'><b>type info-field</b></span>";
             } else if (curItemObjForLoop.displayCode == CONST_displayCode_normal && curItemObjForLoop.isWibtype == "0") {
               hasDisplayedLists = true;
-              app.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
+              wapp.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
               elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
               break;
             }
@@ -1289,11 +1348,11 @@ function displayPage(pageName) {
           }
         }
 
-        if (app.itemObj.connectedItemDataObjs.length > 0) {
+        if (wapp.itemObj.connectedItemDataObjs.length > 0) {
           let html = "";
 
-          for (i = 0; i < app.itemObj.connectedItemDataObjs.length; i++) {
-            let x = grabItemObj(app.itemObj.connectedItemDataObjs[i].itemId2);
+          for (i = 0; i < wapp.itemObj.connectedItemDataObjs.length; i++) {
+            let x = grabItemObj(wapp.itemObj.connectedItemDataObjs[i].itemId2);
             if (html !== "") html += "<div style='height: 1em'></div>"
             html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
           }
@@ -1309,7 +1368,7 @@ function displayPage(pageName) {
           elem("dvViewItem_ConnectedItems_LinkArea").style.display = "none";
         }
 
-        if (app.itemObj.isWibtype == "1") {
+        if (wapp.itemObj.isWibtype == "1") {
           elem("dvViewItem_ItemActionsArea1").style.display = "";
           elem("dvViewItem_ItemActionsArea2").style.display = "none";
           elem("spnViewItem_MoveCopy1").style.display = "none";
@@ -1318,7 +1377,7 @@ function displayPage(pageName) {
           elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
           elem("spnViewItem_Delete1").style.display = "none";
           elem("spnViewItem_Delete2").style.display = "none";
-        } else if (app.itemObj.isWibtypeInfoField == "1") {
+        } else if (wapp.itemObj.isWibtypeInfoField == "1") {
           elem("dvViewItem_ItemActionsArea1").style.display = "";
           elem("dvViewItem_ItemActionsArea2").style.display = "none";
           elem("spnViewItem_MoveCopy1").style.display = "none";
@@ -1330,7 +1389,7 @@ function displayPage(pageName) {
           elem("spnViewItem_Delete1").style.display = "none";
           elem("spnViewItem_Delete2").style.display = "none";
         } else {
-          if (app.itemObj.isList == "0") {
+          if (wapp.itemObj.isList == "0") {
             elem("dvViewItem_ItemActionsArea1").style.display = "";
             elem("dvViewItem_ItemActionsArea2").style.display = "none";
             elem("spnViewItem_MoveCopy1").style.display = "";
@@ -1347,13 +1406,13 @@ function displayPage(pageName) {
           elem("spnViewItem_Delete2").style.display = "";
         }
 
-        if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
+        if (wapp.itemObj.isWibtype == "1" || wapp.itemObj.isWibtypeInfoField == "1") {
           elem("spnViewItem_DoneStatusDisplay1").style.display = "none";
           elem("spnViewItem_DoneStatusDisplay2").style.display = "none";
           elem("spnViewItem_DoneStatusLink1").style.display = "none";
           elem("spnViewItem_DoneStatusLink2").style.display = "none";
 
-        } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
+        } else if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
           elem("spnViewItem_DoneStatusDisplay1").style.display = "none";
           elem("spnViewItem_DoneStatusDisplay2").style.display = "none";
 
@@ -1368,10 +1427,10 @@ function displayPage(pageName) {
         } else {
           elem("spnViewItem_DoneStatusDisplay1").style.display = "";
           elem("spnViewItem_DoneStatusDisplay2").style.display = "";
-          elem("spnViewItem_DoneStatusDisplay1").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode).toUpperCase() + "&nbsp;&nbsp;";
+          elem("spnViewItem_DoneStatusDisplay1").innerHTML = getDoneStatusDisplay(wapp.itemObj.doneStatusCode).toUpperCase() + "&nbsp;&nbsp;";
           elem("spnViewItem_DoneStatusDisplay2").innerHTML = elem("spnViewItem_DoneStatusDisplay1").innerHTML;
-          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay1", app.itemObj.doneStatusCode);
-          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay2", app.itemObj.doneStatusCode);
+          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay1", wapp.itemObj.doneStatusCode);
+          css_setElemToDoneStatusColor("spnViewItem_DoneStatusDisplay2", wapp.itemObj.doneStatusCode);
 
           elem("spnViewItem_DoneStatusLink1").style.display = "";
           elem("spnViewItem_DoneStatusLink2").style.display = "";
@@ -1383,7 +1442,7 @@ function displayPage(pageName) {
 
         }
 
-        if ( isBlank(app.itemObj.notes) ) {
+        if ( isBlank(wapp.itemObj.notes) ) {
           elem("dvViewItem_Notes_Yes").style.display = "none";
           elem("spnViewItem_Notes_No1").style.display = "";
           elem("spnViewItem_Notes_No2").style.display = "";
@@ -1392,25 +1451,25 @@ function displayPage(pageName) {
           elem("dvViewItem_Notes_Yes").style.display = "";
           elem("spnViewItem_Notes_No1").style.display = "none";
           elem("spnViewItem_Notes_No2").style.display = "none";
-          elem("dvViewItem_Notes").innerHTML = app.itemObj.notes;
+          elem("dvViewItem_Notes").innerHTML = wapp.itemObj.notes;
         }
 
-        if (app.itemObj.isWibtype == "1" || app.itemObj.isWibtypeInfoField == "1") {
+        if (wapp.itemObj.isWibtype == "1" || wapp.itemObj.isWibtypeInfoField == "1") {
           elem("dvViewItem_Wibtypes").style.display = "none";
         } else {
           elem("dvViewItem_Wibtypes").style.display = "";
           elem("dvViewItem_Wibtypes_WtifData").innerHTML = writeHtml_WtifData(); 
         }
 
-        if (app.itemObj.isWibtypeInfoField == "1") {
+        if (wapp.itemObj.isWibtypeInfoField == "1") {
           elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "";
-          elem("spn_ViewItem_WibtypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(app.itemObj.wibDataTypeId);
-          elem("spn_ViewItem_WibtypeInfoFieldInfo_Required").innerHTML = getBooleanFieldTextDisplay(app.itemObj.required);
+          elem("spn_ViewItem_WibtypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(wapp.itemObj.wibDataTypeId);
+          elem("spn_ViewItem_WibtypeInfoFieldInfo_Required").innerHTML = getBooleanFieldTextDisplay(wapp.itemObj.required);
         } else {
           elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "none";
         }
 
-        if (app.itemObj.isWibtype == "1") {
+        if (wapp.itemObj.isWibtype == "1") {
           elem("dvViewItem_ListMembers_Yes").style.display = "";
           elem("dvViewItem_ListMembers_No").style.display = "none";
           elem("spnViewItem_MakeNewItem1").style.display = "none";
@@ -1420,7 +1479,7 @@ function displayPage(pageName) {
           elem("spnViewItem_More1").style.display = "none";
           elem("spnViewItem_More2").style.display = "none";
           elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_items();
-        } else if (app.itemObj.isWibtypeInfoField == "1") {
+        } else if (wapp.itemObj.isWibtypeInfoField == "1") {
           elem("dvViewItem_ListMembers_No").style.display = "none";
           elem("dvViewItem_ListMembers_Yes").style.display = "none";
           elem("dvViewItem_ListMembers_Items").innerHTML = "";
@@ -1431,7 +1490,7 @@ function displayPage(pageName) {
           elem("spnViewItem_MakeNewField2").style.display = "none";
           elem("spnViewItem_More1").style.display = "";
           elem("spnViewItem_More2").style.display = "";
-          if (app.itemObj.isList == "1") {
+          if (wapp.itemObj.isList == "1") {
             elem("dvViewItem_ListMembers_Yes").style.display = "";
             elem("dvViewItem_ListMembers_No").style.display = "none";
             elem("dvViewItem_ListMembers_Items").innerHTML = writeHtml_items();
@@ -1442,17 +1501,17 @@ function displayPage(pageName) {
           }
         }
 
-        if (app.reordering_activatedItemId) {
-          css_addClass(getHtml_aItem(app.reordering_activatedItemId), CONST_cssClassName_bold);
+        if (wapp.reordering_activatedItemId) {
+          css_addClass(getHtml_aItem(wapp.reordering_activatedItemId), CONST_cssClassName_bold);
         }
 
-        if (app.focusElemId) {
-          if (app.focusElemId_pre) {
-            elem(app.focusElemId_pre).focus();
-            app.focusElemId_pre = null;
+        if (wapp.focusElemId) {
+          if (wapp.focusElemId_pre) {
+            elem(wapp.focusElemId_pre).focus();
+            wapp.focusElemId_pre = null;
           }
-          elem(app.focusElemId).focus();
-          app.focusElemId = null;
+          elem(wapp.focusElemId).focus();
+          wapp.focusElemId = null;
         }
         break;
       }
@@ -1462,7 +1521,7 @@ function displayPage(pageName) {
 
       let html = "";
 
-      let screenList_itemObj = grabItemObj(app.wbs_screenListItemId);
+      let screenList_itemObj = grabItemObj(wapp.wb_screenListItemId);
       let screenList_listMemberDataObjs = screenList_itemObj.getListMemberDataObjs();
 
       screenList_listMemberDataObjs.forEach( (screenList_listMemberDataObj) => {
@@ -1470,6 +1529,7 @@ function displayPage(pageName) {
         if (html !== "") html += "<div style='height: 1.8em'></div>"
 
         let screenNameDisplay = wb_getScreenNameDisplay(screenItemObj);
+
         html += "<div>" + screenNameDisplay + "\n";
         html += " &nbsp;&nbsp;<a href='javascript:void all_screens__build_screen(\"" + screenItemObj.itemId + "\")'>build</a>\n";
         html += " &nbsp;&nbsp;<a href='javascript:void all_screens__run_screen(\"" + screenItemObj.itemId + "\")'>run</a>\n";
@@ -1490,21 +1550,21 @@ function displayPage(pageName) {
 
       let screenTypeCodes_array = wb_getScreenTypeCodesAarray();
 
-      if (app.wb_curScreen_itemObj) {
+      if (wapp.wb_curScreen_itemObj) {
 
-        let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(app.wb_curScreen_itemObj)
-        let screenTypeCode = app.wb_curScreen_itemObj.getWtifData(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName)
+        let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj)
+        let screenTypeCode = wapp.wb_curScreen_itemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName)
         let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, screenTypeCode, "width: 7.2em", "build_screen__changeScreenType()", null, false);
 
         elem("aWibBuilder_BuildScreen_TypeName").innerHTML = wibtypeItemObj_associatedWithScreen.itemName;
         elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
 
-        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(app.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
+        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
         elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
 
       } else {
 
-        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, CONST_wbs_screenTypeCode_createWibtype, "width: 7.2em", "build_screen__changeScreenType()", null, false);
+        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, CONST_wb_screenTypeCode_createWibtype, "width: 7.2em", "build_screen__changeScreenType()", null, false);
 
         elem("aWibBuilder_BuildScreen_TypeName").innerHTML = "(click here)";
         elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
@@ -1522,7 +1582,7 @@ function displayPage(pageName) {
       let uniqueWibTypeItemIds = [];
 
       let i, html = "";
-      let allScreens_itemObj = grabItemObj(app.wbs_screenListItemId);
+      let allScreens_itemObj = grabItemObj(wapp.wb_screenListItemId);
       let allScreens_itemIdList = allScreens_itemObj.getListMemberItemIds();
 
       for (i = 0; i < allScreens_itemIdList.length; i++) {
@@ -1551,11 +1611,22 @@ function displayPage(pageName) {
 
     }
 
+    case "WibBuilder_DisplayScreen": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "[SCREEN TITLE WILL GO HERE]";
+/*
+      elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
+      elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
+      elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
+      elem("ipWibBuilder_RunScreen_ItemNameValue").focus();
+*/
+      break;
+    }
+
     case "WibBuilder_RunScreen": {
-      let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(app.wb_curScreen_itemObj);
+      let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
 
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Run Screen";
-      elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(app.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
+      elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
       elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
       elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
       elem("ipWibBuilder_RunScreen_ItemNameValue").focus();
@@ -1567,7 +1638,7 @@ function displayPage(pageName) {
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Show Instances";
 
       let html = "";
-      let wibtypeInstance_itemObjs = getInstanceItemObjsForWibtype(app.wbs_curWibtype_itemObj.itemId);
+      let wibtypeInstance_itemObjs = getInstanceItemObjsForWibtype(wapp.wb_curWibtype_itemObj.itemId);
 
       wibtypeInstance_itemObjs.forEach( (wibtypeInstance_itemObj) => {
         if (html !== "") html += "<div style='height: 1.8em'></div>"
@@ -1586,7 +1657,7 @@ function displayPage(pageName) {
     }
 
     case "Wibtypes": {
-      setAppItemObj(grabItemObj(app.wibtypes_itemId));
+      setWappItemObj(grabItemObj(wapp.wibtypes_itemId));
       elem("dvWibtypes_Items").innerHTML = writeHtml_items();
       break;
     }
@@ -2136,10 +2207,10 @@ function getYearAsFourDigitString(y) {
 
 function goToItemView(itemId, maintainActivatedItem) {
   if ( !isBlank(itemId) ) {
-    setAppItemObj(grabItemObj(itemId));
+    setWappItemObj(grabItemObj(itemId));
   }
 
-  if ( !isBlank(app.reordering_activatedItemId) ) {
+  if ( !isBlank(wapp.reordering_activatedItemId) ) {
     if (!maintainActivatedItem) {
       css_addClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
     }
@@ -2393,14 +2464,6 @@ function isBlank(val) {
   return false;
 }
 
-function isDev() {
-  if ( getFromDatastore(CONST_devText1) == "1" ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function isEqual(val1, val2) {
   if ( isBlank(val1) && isBlank(val2) ) return true;
   if ( val1 == val2 ) return true;
@@ -2517,7 +2580,7 @@ function ItemGrabbingObj() {
   //  --- or ---
   //
   // -> option 2:
-  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
+  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor, searchForBlankTheData);  // searchForBlankTheData -> true/false
   
   igo.set_returnFirstOnly_false();  // optional (ItemGrabbingObj() defaults to returnFirstOnly==true)
 
@@ -2728,28 +2791,28 @@ function ItemGrabbingObj() {
     this.wtifDataSearchHasBeenSet = true;
   };
 
-  this.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData = function(targetWtif_itemName, targetWtif_isFrom_wibTypeItemId, targetWtif_theData, targetWtif_searchForBlankTheData) {
+  this.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData = function(targetWtif_itemName, targetWtif_isFrom_wibTypeItemId, targetWtif_theData, targetWtif_searchForBlankTheData) {
     if (this.wtifDataSearchHasBeenSet) {
       this.errorDuringSettingParams = true;
-      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemName=" + targetWtif_itemName + "targetWtif_isFrom_wibTypeItemId=" + targetWtif_isFrom_wibTypeItemId + ", targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData()", "wtifDataSearchHasBeenSet is already *true* (received targetWtif_itemName=" + targetWtif_itemName + "targetWtif_isFrom_wibTypeItemId=" + targetWtif_isFrom_wibTypeItemId + ", targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
     if ( isBlank(targetWtif_itemName) ) {
       this.errorDuringSettingParams = true;
-      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_itemName")
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData()", "received blank value for required parameter targetWtif_itemName")
       return;
     }
 
     if ( isBlank(targetWtif_isFrom_wibTypeItemId) ) {
       this.errorDuringSettingParams = true;
-      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received blank value for required parameter targetWtif_isFrom_wibTypeItemId")
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData()", "received blank value for required parameter targetWtif_isFrom_wibTypeItemId")
       return;
     }
 
     if (targetWtif_searchForBlankTheData && !isBlank(targetWtif_theData)) {
       this.errorDuringSettingParams = true;
-      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
+      showSoftError("ItemGrabbingObj.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData()", "received targetWtif_searchForBlankTheData=true, but received non-blank value for targetWtif_theData (targetWtif_theData=" + targetWtif_theData)
       return;
     }
 
@@ -2768,6 +2831,31 @@ function ItemGrabbingObj() {
   };
 }
 
+function grabItemObj__wtifItemName_and_wibtypeItemId_and_wtifTheData(wtifItemName, wtifWibtypeItemId, wtifTheData){
+  var igo = new ItemGrabbingObj();
+
+  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData(wtifItemName_toSearchFor, wtifWibtypeItemId_toSearchFor, wtifTheData_toSearchFor);
+
+  var itemObj = igo.runSearchAndReturnX();
+
+  return itemObj;
+}
+
+function grabItemObj__listItemId_and_memberItemName(listItemId, memberItemName){
+  var igo = new ItemGrabbingObj();
+
+  igo.set_targetJoinedListWithItemId(listItemId);
+  igo.set_targetItemName(memberItemName);
+
+  var itemObj = igo.runSearchAndReturnX();
+
+  return itemObj;
+}
+
+
+
+
+
 function itemNameIsAllowed(itemName) {
   var disallowedName = false;
 
@@ -2776,16 +2864,20 @@ function itemNameIsAllowed(itemName) {
   } else if ( isEqual(itemName, CONST_listName_wibtypes) ) {
     //TO-DO2: handle this one differently -- okay for non-wibtypes?
     disallowedName = true;
-  } else if ( itemName == CONST_timeTracking_itemName ) {
+  } else if ( isEqual(itemName, CONST_timeTracking_itemName ) ) {
     //TO-DO2: handle this one differently -- okay for non-wibtypes?
     disallowedName = true;
-  } else if ( itemName == CONST_wb_listOfWibtypeInstanceHolderLists_itemName ) {
+  } else if ( isEqual(itemName, CONST_wb_listOfWibtypeInstanceHolderLists_itemName ) ) {
     disallowedName = true;
-  } else if ( itemName == CONST_wb_wibtypeInstanceHolderWibtype_itemName ) {
+  } else if ( isEqual(itemName, CONST_wb_wibtypeInstanceHolderWibtype_itemName ) ) {
     disallowedName = true;
-  } else if ( itemName == CONST_wbs_screenList_itemName ) {
+  } else if ( isEqual(itemName, CONST_wb_screenList_itemName ) ) {
     disallowedName = true;
-  } else if ( itemName == CONST_wbs_screenWibtype_itemName ) {
+  } else if ( isEqual(itemName, CONST_wb_screenWibtype_itemName ) ) {
+    disallowedName = true;
+  } else if ( isEqual(itemName, CONST_wb_appWibtype_itemName ) ) {
+    disallowedName = true;
+  } else if ( isEqual(itemName, CONST_wb_appList_itemName ) ) {
     disallowedName = true;
   }
 
@@ -2900,10 +2992,10 @@ function itemObjFactory() {
     }
 
     //delete joined-list-info for this item
-    deleteFromDatastore(getSaveKeyText_joinedLists_ofItem(this.itemId));
+    deleteFromDatastore( getSaveKeyText_joinedLists_ofItem(this.itemId) );
 
     //delete list-members entry for this item
-    deleteFromDatastore(saveKeyText_listMembers_ofItem);
+    deleteFromDatastore( getSaveKeyText_listMembers_ofItem(this.itemId) );
 
     //remove from all-items array
     curAllItemIds_string = getFromDatastore(CONST_stringOfAllItemIds);
@@ -2920,7 +3012,7 @@ function itemObjFactory() {
     deleteFromDatastore(getSaveKeyText_item(this.itemId));
 
     //clear app-level current-item-id
-    setAppItemObj(null);
+    setWappItemObj(null);
 
     //return the the item-id of the first joined-list, so the calling functions can move to that item in the UI
     return firstListItemId;
@@ -3483,27 +3575,27 @@ function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField
 function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
   var singleItemGrab, sourceList_itemObj, targetList_itemObj;
 
-  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+  if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    sourceList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+    sourceList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
   } else {
     singleItemGrab = false;
-    sourceList_itemObj = app.itemObj;
+    sourceList_itemObj = wapp.itemObj;
   }
 
   targetList_itemObj = grabItemObj(selectedList_itemId);
 
   if (aO_action.a == "move") {
-    transferItems(sourceList_itemObj, targetList_itemObj, app.grabbing_itemIdArray);
+    transferItems(sourceList_itemObj, targetList_itemObj, wapp.grabbing_itemIdArray);
   } else {
-    copyItems(sourceList_itemObj, targetList_itemObj, app.grabbing_itemIdArray);
+    copyItems(sourceList_itemObj, targetList_itemObj, wapp.grabbing_itemIdArray);
   }
 
   toggleGrabbing_off();
 
   if (singleItemGrab) {
-    //reset the display-item-object -- still is correct itemId-property in app.itemObj, but list-membership change means we need to reset the app.itemObj by re-passing in its item-id
-    goToItemView(app.itemObj.itemId, false);
+    //reset the display-item-object -- still is correct itemId-property in wapp.itemObj, but list-membership change means we need to reset the wapp.itemObj by re-passing in its item-id
+    goToItemView(wapp.itemObj.itemId, false);
   } else {
     //display the item-object for the list where the grabbed-items where moved or copied to
     goToItemView(selectedList_itemId, false);
@@ -3511,8 +3603,8 @@ function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
 }
 
 function reorderActivatedItemAboveOtherItem(otherItemId) {
-  var listItemObj = app.itemObj;
-  var itemIdToMove = app.reordering_activatedItemId;
+  var listItemObj = wapp.itemObj;
+  var itemIdToMove = wapp.reordering_activatedItemId;
   var itemIdToMoveAbove = otherItemId;
 
   if ( walkSortPosition(listItemObj, itemIdToMove, null, false, false, itemIdToMoveAbove) ) {
@@ -3564,8 +3656,8 @@ function sortingObjects_defaultListTree() {
 // --> OR... should we write a function that handles this manually? due to walk-through-all-lists process?
     
 
-    var objA_isOnHomepageList = isMemberOfList(objA.itemId, app.homePageList_itemId);
-    var objB_isOnHomepageList = isMemberOfList(objB.itemId, app.homePageList_itemId);
+    var objA_isOnHomepageList = isMemberOfList(objA.itemId, wapp.homePageList_itemId);
+    var objB_isOnHomepageList = isMemberOfList(objB.itemId, wapp.homePageList_itemId);
 
     var objA_homePageList
     if (objA_isOnHomepageList)
@@ -3691,13 +3783,6 @@ dc("searchForItemObj_OLD(), searchParam_wtif_theData="+searchParam_wtif_theData)
   }
 }
 
-function setAppItemObj(itemObj) {
-  app.itemObj = itemObj;
-  if ( app.itemObj ) {
-    app.itemObj.displayedOnList_itemId = null;
-  }
-}
-
 function setElemCursor_none(elem) {
   elem.style.cursor = "";
 }
@@ -3745,6 +3830,13 @@ function setElemVal(elemId, elemVal) {
   }
 }
 
+function setWappItemObj(itemObj) {
+  wapp.itemObj = itemObj;
+  if ( wapp.itemObj ) {
+    wapp.itemObj.displayedOnList_itemId = null;
+  }
+}
+
 function showPopUp(popUpCode, popUpFocusElem) {
   // when switching directly from one pop-up to another, we were getting too-wide layout, so calling a blank displayPage in order to reset the UI first
   displayPage("");
@@ -3762,10 +3854,10 @@ function showPopUp(popUpCode, popUpFocusElem) {
   switch (popUpCode) {
 
     case "ChangeDoneStatus": {
-      elem("spnChangeDoneStatus_mainListName").innerHTML = app.itemObj.getMainListName();
-      elem("spnChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
-      //elem("dvChangeDoneStatus_itemName").innerHTML = app.itemObj.itemName;
-      elem("spnChangeDoneStatus_currentStatus").innerHTML = getDoneStatusDisplay(app.itemObj.doneStatusCode);
+      elem("spnChangeDoneStatus_mainListName").innerHTML = wapp.itemObj.getMainListName();
+      elem("spnChangeDoneStatus_itemName").innerHTML = wapp.itemObj.itemName;
+      //elem("dvChangeDoneStatus_itemName").innerHTML = wapp.itemObj.itemName;
+      elem("spnChangeDoneStatus_currentStatus").innerHTML = getDoneStatusDisplay(wapp.itemObj.doneStatusCode);
 
       elem("dvChangeDoneStatus_Done1").style.display = "";
       elem("dvChangeDoneStatus_Done2").style.display = "";
@@ -3792,19 +3884,19 @@ function showPopUp(popUpCode, popUpFocusElem) {
       elem("aChangeDoneStatus_Notice").innerHTML = CONST_doneStatusDisplay_notice;
       css_setElemToDoneStatusColor("aChangeDoneStatus_Notice", CONST_doneStatusCode_notice);
 
-      if (app.itemObj.doneStatusCode == CONST_doneStatusCode_done) {
+      if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_done) {
         elem("dvChangeDoneStatus_Done1").style.display = "none";
         elem("dvChangeDoneStatus_Done2").style.display = "none";
-      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
+      } else if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_undone) {
         elem("dvChangeDoneStatus_Undone1").style.display = "none";
         elem("dvChangeDoneStatus_Undone2").style.display = "none";
-      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_okay) {
+      } else if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_okay) {
         elem("dvChangeDoneStatus_Okay1").style.display = "none";
         elem("dvChangeDoneStatus_Okay2").style.display = "none";
-      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_info) {
+      } else if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_info) {
         elem("dvChangeDoneStatus_Info1").style.display = "none";
         elem("dvChangeDoneStatus_Info2").style.display = "none";
-      } else if (app.itemObj.doneStatusCode == CONST_doneStatusCode_notice) {
+      } else if (wapp.itemObj.doneStatusCode == CONST_doneStatusCode_notice) {
         elem("dvChangeDoneStatus_Notice1").style.display = "none";
         elem("dvChangeDoneStatus_Notice2").style.display = "none";
       }
@@ -3818,19 +3910,19 @@ function showPopUp(popUpCode, popUpFocusElem) {
       resetElemVal("ipMakeNewItem_Hour");
       resetElemVal("ipMakeNewItem_Minute");
       resetElemVal("ipMakeNewItem_MinutesTracked");
-      setElemVal("ckMakeNewItem_TopOfList", app.makeNewItem_TopOfList);
-      setElemVal("ckMakeNewItem_StayListView", app.makeNewItem_StayListView);
-      setElemVal("ckMakeNewItem_AddMoreItems", app.makeNewItem_AddMoreItems);
-      setElemVal("ckMakeNewItem_TimeTracking", app.makeNewItem_TimeTracking);
+      setElemVal("ckMakeNewItem_TopOfList", wapp.makeNewItem_TopOfList);
+      setElemVal("ckMakeNewItem_StayListView", wapp.makeNewItem_StayListView);
+      setElemVal("ckMakeNewItem_AddMoreItems", wapp.makeNewItem_AddMoreItems);
+      setElemVal("ckMakeNewItem_TimeTracking", wapp.makeNewItem_TimeTracking);
 
       doCheckboxClickAction("ckMakeNewItem_TimeTracking");
 
-      if ( isBlank(app.timeTracking_defaultYear) || isBlank(app.timeTracking_defaultMonth) || isBlank(app.timeTracking_defaultDay) ) {
+      if ( isBlank(wapp.timeTracking_defaultYear) || isBlank(wapp.timeTracking_defaultMonth) || isBlank(wapp.timeTracking_defaultDay) ) {
         setElemsToToday("ipMakeNewItem_Year", "ipMakeNewItem_Month", "ipMakeNewItem_Day")
       } else {
-        if ( !isBlank(app.timeTracking_defaultYear) ) elem("ipMakeNewItem_Year").value = app.timeTracking_defaultYear;
-        if ( !isBlank(app.timeTracking_defaultMonth) ) elem("ipMakeNewItem_Month").value = app.timeTracking_defaultMonth;
-        if ( !isBlank(app.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = app.timeTracking_defaultDay;
+        if ( !isBlank(wapp.timeTracking_defaultYear) ) elem("ipMakeNewItem_Year").value = wapp.timeTracking_defaultYear;
+        if ( !isBlank(wapp.timeTracking_defaultMonth) ) elem("ipMakeNewItem_Month").value = wapp.timeTracking_defaultMonth;
+        if ( !isBlank(wapp.timeTracking_defaultDay) ) elem("ipMakeNewItem_Day").value = wapp.timeTracking_defaultDay;
       }
       break;
     }
@@ -3841,7 +3933,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
     }
 
     case "MakeNewWibtypeInfoField": {
-      elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = app.itemObj.itemName;
+      elem("spnMakeNewWibtypeInfoField_WibtypeName").innerHTML = wapp.itemObj.itemName;
 
       let wibDataTypesArray = getWibDataTypesAsArray(true);
       let wibDataTypeSelectHtml = getHtml_selectElem("selMakeNewWibtypeInfoField_WibDataTypeId", true, wibDataTypesArray, null, "width: 10em", null, null, false);
@@ -4004,7 +4096,7 @@ function sortingObjects_numeric(propNameToSortBy) {
 function swapSortPosition(itemId, moveUp, moveAmt) {
   var listItemObj, memberItemObj, list_memberDataObjs, i = null;
   
-  listItemObj = app.itemObj;
+  listItemObj = wapp.itemObj;
   memberItemObj = grabItemObj(itemId);
   list_memberDataObjs = listItemObj.getListMemberDataObjs();
 
@@ -4041,11 +4133,11 @@ function toggleGrabbing_off() {
   css_removeClass("aGrabItems1", CONST_cssClassName_red);
   css_removeClass("aGrabItems2", CONST_cssClassName_red);
 
-  if ( !isBlank(app.grabbing_itemId1) ) {
+  if ( !isBlank(wapp.grabbing_itemId1) ) {
 
-    // the HTML element for app.grabbing_itemId1 may or may not exist, depending on which display-page this function is called from
+    // the HTML element for wapp.grabbing_itemId1 may or may not exist, depending on which display-page this function is called from
     
-    let grabbingElemId1 = getHtml_aItem(app.grabbing_itemId1);
+    let grabbingElemId1 = getHtml_aItem(wapp.grabbing_itemId1);
 
     if ( !isBlank(elem(grabbingElemId1) ) ) {
       css_removeClass(grabbingElemId1, CONST_cssClassName_bold);
@@ -4053,17 +4145,17 @@ function toggleGrabbing_off() {
 
   }
 
-  app.grabbing_itemId1 = null;
-  app.grabbing_itemId2 = null;
-  app.grabbing_itemIdArray = [];
-  app.grabbingOn = false;
+  wapp.grabbing_itemId1 = null;
+  wapp.grabbing_itemId2 = null;
+  wapp.grabbing_itemIdArray = [];
+  wapp.grabbingOn = false;
 }
 
 function toggleGrabbing_on() {
-  app.grabbing_itemId1 = null;
-  app.grabbing_itemId2 = null;
-  app.grabbing_itemIdArray = [];
-  app.grabbingOn = true;
+  wapp.grabbing_itemId1 = null;
+  wapp.grabbing_itemId2 = null;
+  wapp.grabbing_itemIdArray = [];
+  wapp.grabbingOn = true;
 
   css_addClass("aGrabItems1", CONST_cssClassName_red);
   css_addClass("aGrabItems2", CONST_cssClassName_red);
@@ -4089,30 +4181,30 @@ function toggleReordering_off() {
   css_removeClass("aReorder1", CONST_cssClassName_red);
   css_removeClass("aReorder2", CONST_cssClassName_red);
 
-  if ( !isBlank(app.reordering_activatedItemId) ) {
-    deactivateItemForReordering(app.reordering_activatedItemId);
+  if ( !isBlank(wapp.reordering_activatedItemId) ) {
+    deactivateItemForReordering(wapp.reordering_activatedItemId);
   }
 
-  app.reorderingOn = false;
-  app.reordering_mode = null;
+  wapp.reorderingOn = false;
+  wapp.reordering_mode = null;
 }
 
 function toggleReordering_on() {
-  app.reorderingOn = true;
-  app.reordering_mode = CONST_reordering_mode_normal;
+  wapp.reorderingOn = true;
+  wapp.reordering_mode = CONST_reordering_mode_normal;
 
   css_addClass("aReorder1", CONST_cssClassName_red);
   css_addClass("aReorder2", CONST_cssClassName_red);
 }
 
 function toggleReorderingMode_normal(itemId) {
-  app.reordering_mode = CONST_reordering_mode_normal;
+  wapp.reordering_mode = CONST_reordering_mode_normal;
   elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "";
   elem(getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(itemId)).style.display = "none";
 }
 
 function toggleReorderingMode_moveAboveOtherItem(itemId) {
-  app.reordering_mode = CONST_reordering_mode_moveAboveOtherItem;
+  wapp.reordering_mode = CONST_reordering_mode_moveAboveOtherItem;
   elem(getHtml_reorderingModeIs_normal_tblOptions(itemId)).style.display = "none";
   elem(getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(itemId)).style.display = "";
 }
@@ -4261,27 +4353,20 @@ function wb_createOrChangeScreenType(existingWibtypeItemId, newWibtypeName) {
   if (existingWibtypeItemId) {
     wibtypeItemObj_associatedWithScreen = grabItemObj(existingWibtypeItemId);
   } else {
-    wibtypeItemObj_associatedWithScreen = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, newWibtypeName, null, CONST_displayCode_hidden1, "1", app.wibtypes_itemId);
+    wibtypeItemObj_associatedWithScreen = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, newWibtypeName, null, CONST_displayCode_hidden1, "1", wapp.wibtypes_itemId);
   }
 
   if (!wibtypeItemObj_associatedWithScreen) {
     return false;
   }
 
-  if (app.wb_curScreen_itemObj == null) {
+  if (!wapp.wb_curScreen_itemObj) {
 
-    let screenItemName = wb_generateScreenItemName(screenTypeCode, wibtypeItemObj_associatedWithScreen.itemId);
+    wapp.wb_curScreen_itemObj = wb_screen_createAndReturn(null, screenTypeCode, wibtypeItemObj_associatedWithScreen.itemId);
 
-    let wibBuilderScreen_itemObj = makeNewItem(null, null, null, "0", "0", false, screenItemName, null, CONST_displayCode_hidden1, "0", app.wbs_screenListItemId);
-    if (!wibBuilderScreen_itemObj) {
-      return
+    if (!wapp.wb_curScreen_itemObj) {
+      return null;
     }
-
-    let wibtypeItemObj_ofWibBuilderScreens = grabItemObj(app.wbs_screensWibtype_itemId);
-
-    wibBuilderScreen_itemObj.setWibtypeAndWtifs(wibtypeItemObj_ofWibBuilderScreens.itemId, CONST_wbs_screenWtifs_screenTypeCode_itemName, screenTypeCode, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibtypeItemObj_associatedWithScreen.itemId);
-
-    app.wb_curScreen_itemObj = wibBuilderScreen_itemObj;
 
   } else {
 
@@ -4317,14 +4402,14 @@ function wb_deleteScreen(screenItemId) {
     return false;
   }
 
-  var allScreens_itemObj = grabItemObj(app.wbs_screenListItemId);
+  var allScreens_itemObj = grabItemObj(wapp.wb_screenListItemId);
   var allScreens_itemIdList = allScreens_itemObj.getListMemberItemIds();
   var anotherScreenIsUsingTheAssociatedWibtype = false;
 
   for (i = 0; i < allScreens_itemIdList.length; i++) {
     let screenInLoop_itemObj = grabItemObj(allScreens_itemIdList[i]);
 
-    if ( screenInLoop_itemObj.hasWtifValue(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibtypeItemObj_associatedWithScreen.itemId) ) {
+    if ( screenInLoop_itemObj.hasWtifValue(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibtypeItemObj_associatedWithScreen.itemId) ) {
       anotherScreenIsUsingTheAssociatedWibtype = true;
       break;
     }
@@ -4364,7 +4449,7 @@ function wb_deleteScreen(screenItemId) {
 function wb_generateScreenItemName(wbsScreenTypeCode, wibtypeItemId) {
   // the screen's item-name is in the format:
   // -> wbs__ScreenTypeCode_X__wibtypeItemId_Y
-  //      ... the part "ScreenTypeCode_X" comes from -- X = e.g. wbsScreenTypeCode = CONST_wbs_screenTypeCode_createType (which is "1")
+  //      ... the part "ScreenTypeCode_X" comes from -- X = e.g. wbsScreenTypeCode = CONST_wb_screenTypeCode_createWibtype (which is "1")
   //      ... the part "wibtypeItemId_Y" comes from -- Y = the wibtype-itemId of the wibtypeItemObj we created in wb_createOrChangeScreenType()
 
   var screenItemName = "wbs__ScreenTypeCode_" + wbsScreenTypeCode + "__wibtypeItemId_" + wibtypeItemId;
@@ -4383,22 +4468,24 @@ function wb_generateWibtypeInstanceHolderList_itemName(wibtypeItemId_heldByThisW
 }
 
 function wb_getScreenNameDisplay(screenItemObj, wibtypeItemObj) {
-  var screenTypeCode = screenItemObj.getWtifData(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName);
+  var screenTypeCode = screenItemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName);
 
   if ( isBlank(wibtypeItemObj) ) {
-    var wibtypeItemId = screenItemObj.getWtifData(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
-    wibtypeItemObj = grabItemObj(wibtypeItemId);
+    var wibtypeItemId = screenItemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+    if ( !isBlank(wibtypeItemId) ) {
+      wibtypeItemObj = grabItemObj(wibtypeItemId);
+    }
   }
 
   switch (screenTypeCode) {
-    case CONST_wbs_screenTypeCode_createWibtype:
+    case CONST_wb_screenTypeCode_createWibtype:
       return "Create " + wibtypeItemObj.itemName;
 
-    case CONST_wbs_screenTypeCode_editWibtype:
+    case CONST_wb_screenTypeCode_editWibtype:
       return "Edit " + wibtypeItemObj.itemName;
 
     default:
-      return "";
+      return screenItemObj.itemName;
   }
 }
 
@@ -4406,10 +4493,10 @@ function wb_getScreenTypeCodesAarray() {
   var anObj;
   var theArray = [];
 
-  anObj = getSelectArrayElem(CONST_wbs_screenTypeCode_createWibtype, "create type");
+  anObj = getSelectArrayElem(CONST_wb_screenTypeCode_createWibtype, "create type");
   theArray.push(anObj);
 
-  anObj = getSelectArrayElem(CONST_wbs_screenTypeCode_editWibtype, "edit type");
+  anObj = getSelectArrayElem(CONST_wb_screenTypeCode_editWibtype, "edit type");
   theArray.push(anObj);
 
   return theArray;
@@ -4417,7 +4504,13 @@ function wb_getScreenTypeCodesAarray() {
 }
 
 function wb_getWibtypeItemObj_associatedWithScreen(screenItemObj) {
-  var wibtypeItemId_associatedWithScreen = screenItemObj.getWtifData(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+  var wibtypeItemId_associatedWithScreen = screenItemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName);
+
+  if ( isBlank(wibtypeItemId_associatedWithScreen) ) {
+    // not all screens have a wibtype associated now, so we need to return null here
+    return null;
+  }
+
   var wibtypeItemObj_associatedWithScreen = grabItemObj(wibtypeItemId_associatedWithScreen);
   return wibtypeItemObj_associatedWithScreen;
 }
@@ -4425,20 +4518,20 @@ function wb_getWibtypeItemObj_associatedWithScreen(screenItemObj) {
 function wb_getWibtypeInstanceHolderList_itemObj(targetWibtypeItemId) {
   // find the list that holds the target wibtype-instance
   //   -> this list/item will:
-  //       (a) be a member of the list "wb-list-of-wibtype-instance-holder-lists" (whose itemId is held in app.wb_listOfWibtypeInstanceHolderLists_itemId)
+  //       (a) be a member of the list "wb-list-of-wibtype-instance-holder-lists" (whose itemId is held in wapp.wb_listOfWibtypeInstanceHolderLists_itemId)
   //       (b) have a wtif-data-obj whose:
   //             (i)   itemName matches the wtif-itemName "WibtypeInstanceHeldItemId" PLUS said wtif is associated with the wibtype "wb-wibtype-instance-holder-wibtype"
   //             (ii)  theData matches the targetWibtypeItemId received
   var igo = new ItemGrabbingObj();
-  igo.set_targetJoinedListWithItemId(app.wb_listOfWibtypeInstanceHolderLists_itemId);
-  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifData(CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, app.wb_wibtypeInstanceHolderWibtype_itemId, targetWibtypeItemId, false);
+  igo.set_targetJoinedListWithItemId(wapp.wb_listOfWibtypeInstanceHolderLists_itemId);
+  igo.set_targetCombo_wtifItemName_and_wibTypeItemId_and_wtifTheData(CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wapp.wb_wibtypeInstanceHolderWibtype_itemId, targetWibtypeItemId, false);
   var wibtypeInstanceHolderList_itemObj = igo.runSearchAndReturnX();
 
   return wibtypeInstanceHolderList_itemObj;
 }
 
 function wb_promptNewWibtypeName() {
-  if (app.wb_curScreen_itemObj == null) {
+  if (wapp.wb_curScreen_itemObj == null) {
 
     let newWibtypeName = prompt("type of thing:", "");
 
@@ -4477,16 +4570,16 @@ function writeBackupExport() {
 function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
   var singleItemGrab, displayList_itemObj, curList_listMemberDataObjs, html, i, firstGrabbingItemId = null, secondGrabbingItemId = null, firstWas1 = false, firstWas2 = false, wroteFirstHtmlRow = false;
 
-  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+  if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    displayList_itemObj = grabItemObj(app.itemObj.displayedOnList_itemId);
+    displayList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
   } else {
     singleItemGrab = false;
-    displayList_itemObj = app.itemObj;
+    displayList_itemObj = wapp.itemObj;
   }
 
   html = "<table cellspacing=0 cellpadding=0>\n";
-  app.grabbing_itemIdArray = [];
+  wapp.grabbing_itemIdArray = [];
 
   curList_listMemberDataObjs = displayList_itemObj.getListMemberDataObjs();
 
@@ -4499,22 +4592,22 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
       
       //we HAVE NOT found the earliest-sort-position grabbed-item yet
 
-      if ( isEqual(curItemId, app.grabbing_itemId1) ) {
+      if ( isEqual(curItemId, wapp.grabbing_itemId1) ) {
         //the current item matches grab-item-1
 
         //... set info about first-grabbed-item found
-        firstGrabbingItemId = app.grabbing_itemId1;
+        firstGrabbingItemId = wapp.grabbing_itemId1;
         firstWas1 = true;
 
         //... mark that we should write the current item
         writeCurItem = true;
       }
 
-      if ( isEqual(curItemId, app.grabbing_itemId2) ) {
+      if ( isEqual(curItemId, wapp.grabbing_itemId2) ) {
         //the current item matches grab-item-2
 
         //... set info about first-grabbed-item found
-        firstGrabbingItemId = app.grabbing_itemId2;
+        firstGrabbingItemId = wapp.grabbing_itemId2;
         firstWas2 = true;
 
         //... mark that we should write the current item
@@ -4533,19 +4626,19 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
       if (firstWas1) {
 
         //the earliest-sort-position grabbed-item was 1, so check 2 to see if we're done after the current item
-        if ( isEqual(curItemId, app.grabbing_itemId2) ) {
+        if ( isEqual(curItemId, wapp.grabbing_itemId2) ) {
 
           //the current item matches grab-item-2, so mark it as the second-grabbed-item found
-          secondGrabbingItemId = app.grabbing_itemId2;
+          secondGrabbingItemId = wapp.grabbing_itemId2;
         }
 
       } else {
 
         //the earliest-sort-position grabbed-item was 2, so check 1 to see if we're done after the current item
-        if ( isEqual(curItemId, app.grabbing_itemId1) ) {
+        if ( isEqual(curItemId, wapp.grabbing_itemId1) ) {
 
           //the current item matches grab-item-1, so mark it as the second-grabbed-item found
-          secondGrabbingItemId = app.grabbing_itemId1;
+          secondGrabbingItemId = wapp.grabbing_itemId1;
         }
 
       }
@@ -4557,7 +4650,7 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
       curItemObj = grabItemObj(curItemId);
 
       //save the item in an array, for use in the next step
-      app.grabbing_itemIdArray.push(curItemId);
+      wapp.grabbing_itemIdArray.push(curItemId);
 
       if (wroteFirstHtmlRow) {
         html += "<tr style='height: 0.8em'><td></td><td></td></tr>\n";
@@ -4592,15 +4685,15 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
 function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
   var singleItemGrab, displayList_itemId, allItemIds_array, html = "", i, wroteFirstHtmlRow = false, listItemObjsToDisplay = [];
   var sortingPropName = CONST_propName_itemName + "_forSorting";
-  var homePageList_itemObj = grabItemObj(app.homePageList_itemId);
+  var homePageList_itemObj = grabItemObj(wapp.homePageList_itemId);
   var homePageList_listMemberDataObjs = homePageList_itemObj.getListMemberDataObjs();
 
-  if ( !isBlank(app.grabbing_itemId1) && isBlank(app.grabbing_itemId2) ) {
+  if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    displayList_itemId = app.itemObj.displayedOnList_itemId;
+    displayList_itemId = wapp.itemObj.displayedOnList_itemId;
   } else {
     singleItemGrab = false;
-    displayList_itemId = app.itemObj.itemId;
+    displayList_itemId = wapp.itemObj.itemId;
   }
 
   allItemIds_array = getAllItemsArray();
@@ -4628,8 +4721,8 @@ function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
     }
 
     // don't write items from the list of grabbed-items
-    for (j = 0; j < app.grabbing_itemIdArray.length; j++) {
-      if ( isEqual(app.grabbing_itemIdArray[j], curItemId) ) {
+    for (j = 0; j < wapp.grabbing_itemIdArray.length; j++) {
+      if ( isEqual(wapp.grabbing_itemIdArray[j], curItemId) ) {
         skipThisItem = true;
         continue;
       }
@@ -4642,7 +4735,7 @@ function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
     // -> push the current-item-object to the designated array
     //     (after adding a sort-column that will put home-page-list items first)
 
-    if ( isEqual(curItemObj.joinedLists_itemIds[0], app.homePageList_itemId) ) {
+    if ( isEqual(curItemObj.joinedLists_itemIds[0], wapp.homePageList_itemId) ) {
       let curListMemberDataObj = getElemFromObjArray(homePageList_listMemberDataObjs, CONST_propName_itemId, curItemObj.itemId);
       curItemObj[sortingPropName] = getWithLeadingZeroes(curListMemberDataObj.sortPosition, 5) + "_" + curItemObj.itemName;
     } else {
@@ -4691,16 +4784,16 @@ function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
 function writeHtml_items(mainItemObj) {
   var listMemberDataObjs, html = "", i, tt_wtifYMD_itemId, tt_wtifTime_itemId, tt_wtifMinsTracked_itemId;
 
-  if ( isBlank(mainItemObj) ) mainItemObj = app.itemObj;
+  if ( isBlank(mainItemObj) ) mainItemObj = wapp.itemObj;
 
   /* get Time-Tracking wtif itemIds */ {
-    let tt_wtifYMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifYMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, wapp.timeTracking_wibtypeItemId, true);
     tt_wtifYMD_itemId = tt_wtifYMD_itemObj.itemId;
 
-    let tt_wtifTime_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifTime_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, wapp.timeTracking_wibtypeItemId, true);
     tt_wtifTime_itemId = tt_wtifTime_itemObj.itemId;
 
-    let tt_wtifMinsTracked_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, app.timeTracking_wibtypeItemId, true);
+    let tt_wtifMinsTracked_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, wapp.timeTracking_wibtypeItemId, true);
     tt_wtifMinsTracked_itemId = tt_wtifMinsTracked_itemObj.itemId;
   }
 
@@ -4746,7 +4839,7 @@ function writeHtml_items(mainItemObj) {
       //add Time-Tracking info if this is such an item
       {
         ttDisplayForItem = "";
-        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, app.timeTracking_wibtypeItemId) ) {
+        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, wapp.timeTracking_wibtypeItemId) ) {
           let tt_wtifYMD_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
           let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
           let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
@@ -4772,7 +4865,7 @@ function writeHtml_items(mainItemObj) {
       html += "</td></tr>\n";
       html += "<tr style='height: 1.4em'><td colspan=3></td></tr>\n"
       html += "<tr id='" + getHtml_reorderingActivated_tr(curItemId) + "' style='display: "
-      if ( ! isEqual(curItemId, app.reordering_activatedItemId) ) html += "none";
+      if ( ! isEqual(curItemId, wapp.reordering_activatedItemId) ) html += "none";
       html += "'><td colspan=2></td><td>\n";
       html += " <table id='" + getHtml_reorderingModeIs_normal_tblOptions(curItemId) + "' cellspacing=0 cellpadding=0>\n";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
@@ -4936,8 +5029,8 @@ function writeHtml_WtifData() {
 
   html += "<div class='grid2'>\n";
 
-  for (i = 0; i < app.itemObj.assignedWibtypes_itemIds.length; i++) {
-    let wibtypeItemId = app.itemObj.assignedWibtypes_itemIds[i];
+  for (i = 0; i < wapp.itemObj.assignedWibtypes_itemIds.length; i++) {
+    let wibtypeItemId = wapp.itemObj.assignedWibtypes_itemIds[i];
     let wibtypeItemObj = grabItemObj(wibtypeItemId);
 
     if (i > 0) {
@@ -4952,7 +5045,7 @@ function writeHtml_WtifData() {
       let wtif_listMemberDataObj = wtifs_listMemberDataObjs[j];
       let wtif_itemObj = grabItemObj(wtif_listMemberDataObj.itemId);
 
-      let wtifDataObj = getElemFromObjArray(app.itemObj.wtifDataObjs, "wtifItemId", wtif_itemObj.itemId);
+      let wtifDataObj = getElemFromObjArray(wapp.itemObj.wtifDataObjs, "wtifItemId", wtif_itemObj.itemId);
       let dataDisplay = "(blank)";
 
       if ( wtifDataObj !== null ) {
@@ -4970,7 +5063,7 @@ function writeHtml_WtifData() {
     }
   }
 
-  if (app.itemObj.assignedWibtypes_itemIds == 0) {
+  if (wapp.itemObj.assignedWibtypes_itemIds == 0) {
     html += "<div class='grid2Cell gc2Footer'>types: <i>none</i></div>\n";
   }
 
@@ -4983,7 +5076,7 @@ function writeHtml_WtifData() {
 function writeStorage() {
   var i, keyName, keyValue, html = "", curListId, curListName, appNarrow;
 
-  appNarrow = getFromDatastore(CONST_appNarrow);
+  appNarrow = getFromDatastore(CONST_wibapp_narrow);
 
   html += "<div><a href='javascript:void add_storage_row()'>add</a></div>\n";
   html += "<div style='height:0.8em'></div>\n";
@@ -5055,7 +5148,7 @@ function add_notes() {
 
   newNotes = getProcessedStringForSave(newNotes);
 
-  app.itemObj.changeItemInfo(null, null, null, null, newNotes);
+  wapp.itemObj.changeItemInfo(null, null, null, null, newNotes);
   goToItemView(null, true);
 }
 
@@ -5071,25 +5164,34 @@ function add_storage_row() {
   show_storage();
 }
 
-function all_screens__show_type_instances(screenItemId) {
-  var screenItemObj = grabItemObj(screenItemId);
-  app.wbs_curWibtype_itemObj = wb_getWibtypeItemObj_associatedWithScreen(screenItemObj);
-  displayPage("WibBuilder_ShowWibtypeInstances");
-}
-
 function all_screens__build_new_screen() {
-  app.wb_curScreen_itemObj = null;
+  wapp.wb_curScreen_itemObj = null;
   displayPage("WibBuilder_BuildScreen");
 }
 
 function all_screens__build_screen(screenItemId) {
-  app.wb_curScreen_itemObj = grabItemObj(screenItemId);
+  wapp.wb_curScreen_itemObj = grabItemObj(screenItemId);
+
+  wapp.wb_curWibtype_itemObj = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
+
+  if (!wapp.wb_curWibtype_itemObj) {
+    alert("only screens with an associated type can be built from this link");
+    return;
+  }
+
   displayPage("WibBuilder_BuildScreen");
 }
 
 function all_screens__delete_screen(screenItemId) {
   var screenItemObj = grabItemObj(screenItemId);
   var screenNameDisplay = wb_getScreenNameDisplay(screenItemObj);
+
+  var wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(screenItemObj);
+
+  if (!wibtypeItemObj_associatedWithScreen) {
+    alert("only screens with an associated type can be deleted from this link");
+    return;
+  }
 
   if ( !confirm("Delete screen '" + screenNameDisplay + "' ?" ) ) {
     return;
@@ -5104,8 +5206,28 @@ function all_screens__delete_screen(screenItemId) {
 }
 
 function all_screens__run_screen(screenItemId) {
-  app.wb_curScreen_itemObj = grabItemObj(screenItemId);
+  wapp.wb_curScreen_itemObj = grabItemObj(screenItemId);
+
+  wapp.wb_curWibtype_itemObj = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
+
+  if (!wapp.wb_curWibtype_itemObj) {
+    alert("only screens with an associated type can be run from this link");
+    return;
+  }
+
   displayPage("WibBuilder_RunScreen");
+}
+
+function all_screens__show_type_instances(screenItemId) {
+  var screenItemObj = grabItemObj(screenItemId);
+  wapp.wb_curWibtype_itemObj = wb_getWibtypeItemObj_associatedWithScreen(screenItemObj);
+
+  if (!wapp.wb_curWibtype_itemObj) {
+    alert("only screens with an associated type can show instances");
+    return;
+  }
+
+  displayPage("WibBuilder_ShowWibtypeInstances");
 }
 
 function back_to_type(wibtypeItemId) {
@@ -5122,26 +5244,26 @@ function build_screen__changeScreenType() {
   var newScreenTypeCode = getElemVal("selWibBuilder_BuildScreen_ScreenTypeCode");
   var wibtypeName = "________";
 
-  if (app.wb_curScreen_itemObj) {
-    app.wb_curScreen_itemObj.setWtifData(app.wbs_screensWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, newScreenTypeCode, true)
-    let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(app.wb_curScreen_itemObj);
+  if (wapp.wb_curScreen_itemObj) {
+    wapp.wb_curScreen_itemObj.setWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, newScreenTypeCode, true)
+    let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
     wibtypeName = wibtypeItemObj_associatedWithScreen.itemName;
   }
 
-  if ( isEqual(newScreenTypeCode, CONST_wbs_screenTypeCode_createWibtype) ) {
+  if ( isEqual(newScreenTypeCode, CONST_wb_screenTypeCode_createWibtype) ) {
     elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;" + wibtypeName;
-  } else if ( isEqual(newScreenTypeCode, CONST_wbs_screenTypeCode_editWibtype) ) {
+  } else if ( isEqual(newScreenTypeCode, CONST_wb_screenTypeCode_editWibtype) ) {
     elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Edit&nbsp;&nbsp;" + wibtypeName;
   }
 }
 
 function build_screen__go_to_all_screens() {
-  app.wb_curScreen_itemObj = null;
+  wapp.wb_curScreen_itemObj = null;
   displayPage("WibBuilder_AllScreens");
 }
 
 function build_screen__run_this_screen() {
-  if (!app.wb_curScreen_itemObj) {
+  if (!wapp.wb_curScreen_itemObj) {
     alert("must set the 'type of thing being created' in order to run this screen");
     return;
   }
@@ -5150,7 +5272,7 @@ function build_screen__run_this_screen() {
 }
 
 function build_screen__set_type_of_thing() {
-  if (app.wb_curScreen_itemObj !== null) {
+  if (wapp.wb_curScreen_itemObj !== null) {
     alert("Changing the type of thing for a screen is currently disabled")
     return;
   }
@@ -5274,47 +5396,47 @@ function clear_storage() {
 
 function click_item(itemIdThatWasClicked) {
 
-  if (app.reorderingOn) {
+  if (wapp.reorderingOn) {
 
-    if ( isBlank(app.reordering_activatedItemId) ) {
+    if ( isBlank(wapp.reordering_activatedItemId) ) {
 
       activateItemForReordering(itemIdThatWasClicked);
 
-    } else if ( isEqual(itemIdThatWasClicked, app.reordering_activatedItemId) ) {
+    } else if ( isEqual(itemIdThatWasClicked, wapp.reordering_activatedItemId) ) {
 
-      deactivateItemForReordering(app.reordering_activatedItemId);
+      deactivateItemForReordering(wapp.reordering_activatedItemId);
 
-    } else if (app.reordering_mode == CONST_reordering_mode_normal) {
+    } else if (wapp.reordering_mode == CONST_reordering_mode_normal) {
 
-      deactivateItemForReordering(app.reordering_activatedItemId);
+      deactivateItemForReordering(wapp.reordering_activatedItemId);
       activateItemForReordering(itemIdThatWasClicked);
 
-    } else if (app.reordering_mode == CONST_reordering_mode_moveAboveOtherItem) {
+    } else if (wapp.reordering_mode == CONST_reordering_mode_moveAboveOtherItem) {
 
-      toggleReorderingMode_normal(app.reordering_activatedItemId)
+      toggleReorderingMode_normal(wapp.reordering_activatedItemId)
 
       if ( reorderActivatedItemAboveOtherItem(itemIdThatWasClicked) ) {
-        app.focusElemId = getHtml_aItem(app.reordering_activatedItemId);
+        wapp.focusElemId = getHtml_aItem(wapp.reordering_activatedItemId);
         goToItemView(null, true);
       }
 
     }
 
-  } else if (app.grabbingOn) {
+  } else if (wapp.grabbingOn) {
 
-    if ( isBlank(app.grabbing_itemId1) ) {
+    if ( isBlank(wapp.grabbing_itemId1) ) {
 
       css_addClass(getHtml_aItem(itemIdThatWasClicked), CONST_cssClassName_bold);
-      app.grabbing_itemId1 = itemIdThatWasClicked;
+      wapp.grabbing_itemId1 = itemIdThatWasClicked;
 
-    } else if ( isEqual(itemIdThatWasClicked, app.grabbing_itemId1) ) {
+    } else if ( isEqual(itemIdThatWasClicked, wapp.grabbing_itemId1) ) {
 
         css_removeClass(getHtml_aItem(itemIdThatWasClicked), CONST_cssClassName_bold);
-        app.grabbing_itemId1 = null;
+        wapp.grabbing_itemId1 = null;
 
     } else {
 
-      app.grabbing_itemId2 = itemIdThatWasClicked;
+      wapp.grabbing_itemId2 = itemIdThatWasClicked;
       displayPage("MoveOrCopy");
 
     }
@@ -5338,9 +5460,9 @@ function copy_to_this_list(selectedList_itemId) {
 }
 
 function delete_item() {
-  if ( confirm("Delete this item?\n\nItem Name: " + app.itemObj.itemName) ) {
-    if ( deleteItem(app.itemObj.itemId) ) {
-      if ( !isBlank(app.itemObj) ) {
+  if ( confirm("Delete this item?\n\nItem Name: " + wapp.itemObj.itemName) ) {
+    if ( deleteItem(wapp.itemObj.itemId) ) {
+      if ( !isBlank(wapp.itemObj) ) {
         goToItemView(null, false);
       } else {
         return_home();
@@ -5350,8 +5472,8 @@ function delete_item() {
 }
 
 function delete_notes() {
-  if ( confirm("Delete all Notes for this item?\n\nItem Name: " + app.itemObj.itemName + "\n\nNotes: " + app.itemObj.notes) ) {
-    app.itemObj.changeItemInfo(null, null, null, null, "");
+  if ( confirm("Delete all Notes for this item?\n\nItem Name: " + wapp.itemObj.itemName + "\n\nNotes: " + wapp.itemObj.notes) ) {
+    wapp.itemObj.changeItemInfo(null, null, null, null, "");
     goToItemView(null, true);
   }
 }
@@ -5378,15 +5500,15 @@ function do_change_done_status(newDoneStatusDisplay) {
     newDoneStatusCode = CONST_doneStatusCode_undone;
   }
 
-  app.itemObj.changeItemInfo(null, newDoneStatusCode, null, null, null);
+  wapp.itemObj.changeItemInfo(null, newDoneStatusCode, null, null, null);
 
   hidePopUp("ChangeDoneStatus");
 
-  if ( isBlank(app.itemObj.displayedOnList_itemId) ) {
+  if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
     goToItemView(null, false);
   } else {
-    app.focusElemId = getHtml_aItem(app.itemObj.itemId);
-    goToItemView(app.itemObj.displayedOnList_itemId, false);
+    wapp.focusElemId = getHtml_aItem(wapp.itemObj.itemId);
+    goToItemView(wapp.itemObj.displayedOnList_itemId, false);
   }
 }
 
@@ -5409,19 +5531,19 @@ function do_make_new_item(makeCode) {
   }
 
   topOfList = getElemVal("ckMakeNewItem_TopOfList");
-  app.makeNewItem_TopOfList = topOfList;
+  wapp.makeNewItem_TopOfList = topOfList;
 
   stayListView = getElemVal("ckMakeNewItem_StayListView");
-  app.makeNewItem_StayListView = stayListView;
+  wapp.makeNewItem_StayListView = stayListView;
 
   addMoreItems = getElemVal("ckMakeNewItem_AddMoreItems");
-  app.makeNewItem_AddMoreItems = addMoreItems;
+  wapp.makeNewItem_AddMoreItems = addMoreItems;
 
   if (makeCode == "line") {
     timeTracking = "0";
   } else {
     timeTracking = getElemVal("ckMakeNewItem_TimeTracking");
-    app.makeNewItem_TimeTracking = timeTracking;
+    wapp.makeNewItem_TimeTracking = timeTracking;
   }
 
   if ( isBlank(itemName) ) {
@@ -5459,21 +5581,21 @@ function do_make_new_item(makeCode) {
     doneStatusCode = CONST_doneStatusCode_okay;
   }
 
-  newItemObj = makeNewItem(doneStatusCode, null, null, "0", "0", false, itemName, null, null, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(doneStatusCode, null, null, "0", "0", false, itemName, null, null, "0", wapp.itemObj.itemId);
   if ( newItemObj ) {
 
     if (topOfList == "1") {
-      walkSortPosition(app.itemObj, newItemObj.itemId, null, true, false, null);
+      walkSortPosition(wapp.itemObj, newItemObj.itemId, null, true, false, null);
     }
 
     if (stayListView == "0" && addMoreItems == "0") {
-      setAppItemObj(newItemObj);
+      setWappItemObj(newItemObj);
     }
 
     if (timeTracking == "1") {
-      app.timeTracking_defaultYear = ttYear;
-      app.timeTracking_defaultMonth = ttMonth;
-      app.timeTracking_defaultDay = ttDay;
+      wapp.timeTracking_defaultYear = ttYear;
+      wapp.timeTracking_defaultMonth = ttMonth;
+      wapp.timeTracking_defaultDay = ttDay;
 
       //TO-DO1.5: use new function .setWibtypeAndWtifs() ?
       let ttItemObj = grabItemObjByName(CONST_timeTracking_itemName);
@@ -5529,7 +5651,7 @@ function do_make_new_type() {
     return;
   }
 
-  newItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", false, itemName, null, CONST_displayCode_hidden1, "1", app.itemObj.itemId);
+  newItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", false, itemName, null, CONST_displayCode_hidden1, "1", wapp.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtype");
     displayPage("Wibtypes");
@@ -5560,7 +5682,7 @@ function do_make_new_type_info_field() {
     return;
   }
 
-  newItemObj = makeNewItem(CONST_doneStatusCode_okay, wibDataTypeId, required, "1", "0", false, itemName, null, CONST_displayCode_hidden1, "0", app.itemObj.itemId);
+  newItemObj = makeNewItem(CONST_doneStatusCode_okay, wibDataTypeId, required, "1", "0", false, itemName, null, CONST_displayCode_hidden1, "0", wapp.itemObj.itemId);
   if ( newItemObj ) {
     hidePopUp("MakeNewWibtypeInfoField");
     goToItemView(null, false);
@@ -5568,7 +5690,7 @@ function do_make_new_type_info_field() {
 }
 
 function edit_notes() {
-  var editedNotes = prompt("Notes:", app.itemObj.notes);
+  var editedNotes = prompt("Notes:", wapp.itemObj.notes);
   if ( isBlank(editedNotes)) {
     alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
     return;
@@ -5576,7 +5698,7 @@ function edit_notes() {
 
   editedNotes = getProcessedStringForSave(editedNotes);
 
-  app.itemObj.changeItemInfo(null, null, null, null, editedNotes);
+  wapp.itemObj.changeItemInfo(null, null, null, null, editedNotes);
   goToItemView(null, true);
 }
 
@@ -5635,15 +5757,15 @@ function go_to_item(itemId) {
 }
 
 function go_to_list(itemId) {
-  if (app.itemObj.itemId) {
-    app.focusElemId = getHtml_aItem(app.itemObj.itemId);
+  if (wapp.itemObj.itemId) {
+    wapp.focusElemId = getHtml_aItem(wapp.itemObj.itemId);
   }
 
   goToItemView(itemId, false);
 }
 
 function grab_items() {
-  if (app.grabbingOn) {
+  if (wapp.grabbingOn) {
     toggleGrabbing_off();
   } else {
     toggleReordering_off();
@@ -5660,7 +5782,7 @@ function import_backup_text() {
 }
 
 function make_into_a_list() {
-  app.itemObj.makeIntoAList();
+  wapp.itemObj.makeIntoAList();
   goToItemView(null, false);
 }
 
@@ -5671,9 +5793,9 @@ function make_new_item() {
 function make_new_list() {
   var newItemObj;
 
-  newItemObj = makeNewItem(null, null, null, "0", "0", false, null, "new list name:", null, "1", app.homePageList_itemId);
+  newItemObj = makeNewItem(null, null, null, "0", "0", false, null, "new list name:", null, "1", wapp.homePageList_itemId);
   if ( newItemObj ) {
-    setAppItemObj(newItemObj);
+    setWappItemObj(newItemObj);
     goToItemView(null, false);
   }
 }
@@ -5689,7 +5811,7 @@ function make_new_type_info_field() {
 function mark_all() {
   var markDirectionIsDone = false, listMemberDataObjs, i, confirmText;
   
-  listMemberDataObjs = app.itemObj.getListMemberDataObjs();
+  listMemberDataObjs = wapp.itemObj.getListMemberDataObjs();
 
   for (i = 0; i < listMemberDataObjs.length; i++) {
     let curItemObj = grabItemObj(listMemberDataObjs[i].itemId);
@@ -5711,21 +5833,21 @@ function mark_all() {
     return;
   }
 
-  app.itemObj.markAllListMembers(markDirectionIsDone, listMemberDataObjs);
+  wapp.itemObj.markAllListMembers(markDirectionIsDone, listMemberDataObjs);
 
   goToItemView(null, true);
 }
 
 function move_item_down(itemIdToMove, amount) {
-  if ( walkSortPosition(app.itemObj, itemIdToMove, Math.abs(amount), false, false, null) ) {
+  if ( walkSortPosition(wapp.itemObj, itemIdToMove, Math.abs(amount), false, false, null) ) {
     goToItemView(null, true);
   }
 }
 
 function move_item_to_end(itemIdToMove) {
-  if ( walkSortPosition(app.itemObj, itemIdToMove, null, false, true, null) ) {
-    app.focusElemId_pre = "aViewItem_MakeNewItem2";
-    app.focusElemId = getHtml_aItem(itemIdToMove);
+  if ( walkSortPosition(wapp.itemObj, itemIdToMove, null, false, true, null) ) {
+    wapp.focusElemId_pre = "aViewItem_MakeNewItem2";
+    wapp.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
@@ -5735,22 +5857,22 @@ function move_item_above_other_item(itemIdToMove) {
 }
 
 function move_item_to_top(itemIdToMove) {
-  if ( walkSortPosition(app.itemObj, itemIdToMove, null, true, false, null) ) {
-    app.focusElemId_pre = "aViewItem_MakeNewItem1";
-    app.focusElemId = getHtml_aItem(itemIdToMove);
+  if ( walkSortPosition(wapp.itemObj, itemIdToMove, null, true, false, null) ) {
+    wapp.focusElemId_pre = "aViewItem_MakeNewItem1";
+    wapp.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
 
 function move_item_up(itemIdToMove, amount) {
-  if ( walkSortPosition(app.itemObj, itemIdToMove, Math.abs(amount) * -1, false, false, null) ) {
+  if ( walkSortPosition(wapp.itemObj, itemIdToMove, Math.abs(amount) * -1, false, false, null) ) {
     goToItemView(null, true);
   }
 }
 
 function move_or_copy_to_different_list() {
-  app.grabbing_itemId1 = app.itemObj.itemId;
-  app.grabbing_itemId2 = null;
+  wapp.grabbing_itemId1 = wapp.itemObj.itemId;
+  wapp.grabbing_itemId2 = null;
   displayPage("MoveOrCopy");
 }
 
@@ -5763,30 +5885,30 @@ function navigate__cancel() {
 }
 
 function navigate__connect_to_item(itemId2) {
-  if ( isEqual(app.itemObj.itemId, itemId2) ) {
+  if ( isEqual(wapp.itemObj.itemId, itemId2) ) {
     alert("Can't connect an item to itself --- please choose a different item or list");
     return;
   }
 
-  if ( app.itemObj.connectToItem(itemId2, true) ) {
+  if ( wapp.itemObj.connectToItem(itemId2, true) ) {
     goToItemView();
   }
 }
 
 function rename_item() {
-  var editedItemName = prompt("Change item name to:", app.itemObj.itemName);
+  var editedItemName = prompt("Change item name to:", wapp.itemObj.itemName);
   if ( isBlank(editedItemName) ) return;
 
   editedItemName = getProcessedStringForSave(editedItemName);
 
-  if ( app.itemObj.changeItemInfo(editedItemName, null, null, null, null) ) {
+  if ( wapp.itemObj.changeItemInfo(editedItemName, null, null, null, null) ) {
     goToItemView(null, true);
   }
 }
 
 function return_home() {
-  if (!app.addDataLoadedSuccessfully) loadAppData_andReturnNextDisplayPage();
-  setAppItemObj(grabItemObjByName(CONST_listName_homePage));
+  if (!wapp.wappDataLoadedSuccessfully) loadAppData_andReturnNextDisplayPage();
+  setWappItemObj(grabItemObjByName(CONST_listName_homePage));
   displayPage("Home");
 }
 
@@ -5796,7 +5918,7 @@ function return_home_from_storage() {
 }
 
 function run_screen__save_new_item() {
-  var wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(app.wb_curScreen_itemObj);
+  var wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
 
   var typeInstance_itemName = elem("ipWibBuilder_RunScreen_ItemNameValue").value;
   if ( isBlank(typeInstance_itemName) ) {
@@ -5810,8 +5932,8 @@ function run_screen__save_new_item() {
   // if the wibtype-holder-instance-list does not exist yet, create it
   if (!wibtypeInstanceHolderList_itemObj) {
     let itemName = wb_generateWibtypeInstanceHolderList_itemName(wibtypeItemObj_associatedWithScreen.itemId);
-    wibtypeInstanceHolderList_itemObj = makeNewItem(null, null, null, "0", "0", false, itemName, null, CONST_displayCode_hidden1, "1", app.wb_listOfWibtypeInstanceHolderLists_itemId);
-    wibtypeInstanceHolderList_itemObj.assignToWibtype(app.wb_wibtypeInstanceHolderWibtype_itemId);
+    wibtypeInstanceHolderList_itemObj = makeNewItem(null, null, null, "0", "0", false, itemName, null, CONST_displayCode_hidden1, "1", wapp.wb_listOfWibtypeInstanceHolderLists_itemId);
+    wibtypeInstanceHolderList_itemObj.assignToWibtype(wapp.wb_wibtypeInstanceHolderWibtype_itemId);
     //TO-DO2: if the wibtypeItemObj_associatedWithScreen has wtifs, we might need/want to set their values here
   }
 
@@ -5822,7 +5944,7 @@ function run_screen__save_new_item() {
 
 //TO-DO1.5:
 //go to the list of items of this type, related to the builder screen, with the newly-created item highlighted?
-app.wbs_curWibtype_itemObj = wibtypeItemObj_associatedWithScreen;
+wapp.wb_curWibtype_itemObj = wibtypeItemObj_associatedWithScreen;
 displayPage("WibBuilder_ShowWibtypeInstances");
 }
 
@@ -5831,7 +5953,7 @@ function run_screen__build_this_screen() {
 }
 
 function run_screen__go_to_all_screens() {
-  app.wb_curScreen_itemObj = null;
+  wapp.wb_curScreen_itemObj = null;
   displayPage("WibBuilder_AllScreens");
 }
 
@@ -5874,36 +5996,36 @@ function show_types() {
   displayPage("Wibtypes");
 }
 
-function toggle_app_narrow() {
-  var curAppNarrow, newAppNarrow;
+function toggle_wibapp_narrow() {
+  var curWibappppNarrow, newWibappppNarrow;
 
-  curAppNarrow = getFromDatastore(CONST_appNarrow);
+  curWibappppNarrow = getFromDatastore(CONST_wibapp_narrow);
 
-  if ( curAppNarrow == "1" ) {
-    newAppNarrow = "0";
+  if ( curWibappppNarrow == "1" ) {
+    newWibappppNarrow = "0";
   } else {
-    newAppNarrow = "1";
+    newWibappppNarrow = "1";
   }
 
-  saveToDatastore(CONST_appNarrow, newAppNarrow);
+  saveToDatastore(CONST_wibapp_narrow, newWibappppNarrow);
 
-  alert("app_narrow set to " + newAppNarrow);
+  alert(CONST_wibapp_narrow + " set to " + newWibappppNarrow);
 }
 
-function toggle_dev() {
-  var curDevText1, newDevText1;
+function toggle_wibapp_dev() {
+  var curDev1, newDev1;
 
-  curDevText1 = getFromDatastore(CONST_devText1);
+  curDev1 = getFromDatastore(CONST_wibapp_dev1);
 
-  if (curDevText1 == "1") {
-    newDevText1 = "0";
+  if (curDev1 == "1") {
+    newDev1 = "0";
   } else {
-    newDevText1 = "1";
+    newDev1 = "1";
   }
 
-  saveToDatastore(CONST_devText1, newDevText1);
+  saveToDatastore(CONST_wibapp_dev1, newDev1);
 
-  alert("devText1 set to " + newDevText1);
+  alert(CONST_wibapp_dev1 + " set to " + newDev1);
 }
 
 function toggle_import_blocked() {
@@ -5923,24 +6045,24 @@ function toggle_import_blocked() {
 }
 
 function toggle_more_options() {
-  if (app.moreOptionsOn) {
+  if (wapp.moreOptionsOn) {
     toggleGrabbing_off();
     elem("dvMoreOptions1").style.display = "none";
     elem("dvMoreOptions2").style.display = "none";
     elem("aMoreOptions1").innerHTML = "more...";
     elem("aMoreOptions2").innerHTML = "more...";
-    app.moreOptionsOn = false;
+    wapp.moreOptionsOn = false;
   } else {
     elem("dvMoreOptions1").style.display = "";
     elem("dvMoreOptions2").style.display = "";
     elem("aMoreOptions1").innerHTML = "less...";
     elem("aMoreOptions2").innerHTML = "less...";
-    app.moreOptionsOn = true;
+    wapp.moreOptionsOn = true;
   }
 }
 
 function toggle_reorder() {
-  if (app.reorderingOn) {
+  if (wapp.reorderingOn) {
     toggleReordering_off();
   } else {
     toggleGrabbing_off();
@@ -5952,61 +6074,39 @@ function toggle_reorder() {
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
 function loadAppData_andReturnNextDisplayPage() {
+  var homePageListItemObj, wibtypesItemObj, timeTracking_wibtypeItemObj;
+  var wibBuilderScreen_wibtypeItemObj, wibBuilderScreenList_itemObj;
+  var wibBuilderScreenBox_wibtypeItemObj;
+  var wibBuilderScript_wibtypeItemObj, wb_scriptList_itemObj;
+  var wibBuilderScriptRow_wibtypeItemObj;
+  var wibBuilderApp_wibtypeItemObj, wb_appList_itemObj;
 
-  var homePageListItemObj, wibtypesItemObj, wibBuilderItemObj, wibBuilderScreen_wibtypeItemObj, wibBuilderScreenList_itemObj, timeTracking_wibtypeItemObj, wb_listOfWibtypeInstanceHolderLists_itemObj;
-  var wb_wibtypeInstanceHolderWibtype_itemObj;
+  var wb_listOfWibtypeInstanceHolderLists_itemObj, wb_wibtypeInstanceHolderWibtype_itemObj;  // OLD-ISH
 
-  app.addDataLoadedSuccessfully = false;
+  wapp.wappDataLoadedSuccessfully = false;
 
-  /* if it does not exist, create the home-page-list item */ {
+  /* home-page-list item */ {
     homePageListItemObj = grabItemObjByName(CONST_listName_homePage);
     if ( isBlank(homePageListItemObj) ) {
       homePageListItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_homePage, null, CONST_displayCode_hidden1, "1", null);
     }
-    app.homePageList_itemId = homePageListItemObj.itemId;
+    wapp.homePageList_itemId = homePageListItemObj.itemId;
   }
 
-  /* if it does not exist, create the wibtypes-item */ {
+  /* wibtypes item */ {
     wibtypesItemObj = grabItemObjByName(CONST_listName_wibtypes);
     if ( isBlank(wibtypesItemObj) ) {
       wibtypesItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_listName_wibtypes, null, CONST_displayCode_hidden1, "1", null);
     }
-    app.wibtypes_itemId = wibtypesItemObj.itemId;
+    wapp.wibtypes_itemId = wibtypesItemObj.itemId;
   }
 
-  /* if it does not exist, create the wib-builder-screen wibtype-item and associated wtifs */ {
-    wibBuilderScreen_wibtypeItemObj = grabItemObjByName(CONST_wbs_screenWibtype_itemName);
-    if ( isBlank(wibBuilderScreen_wibtypeItemObj) ) {
-      wibBuilderScreen_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wbs_screenWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
-    }
-
-    let wbs_ScreenTypeCode_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
-    if ( isBlank(wbs_ScreenTypeCode_itemObj) ) {
-      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_screenTypeCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
-    }
-
-    let wbs_wibtypeItemId_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
-    if ( isBlank(wbs_wibtypeItemId_itemObj) ) {
-      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_wibtypeItemId_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
-    }
-
-    app.wbs_screensWibtype_itemId = wibBuilderScreen_wibtypeItemObj.itemId;
-  }
-
-  /* if it does not exist, create the wib-builder-screen-list item */ {
-    wibBuilderScreenList_itemObj = grabItemObjByName(CONST_wbs_screenList_itemName);
-    if ( isBlank(wibBuilderScreenList_itemObj) ) {
-      wibBuilderScreenList_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wbs_screenList_itemName, null, CONST_displayCode_hidden1, "1", null);
-    }
-    app.wbs_screenListItemId = wibBuilderScreenList_itemObj.itemId;
-  }
-
-  /* if they do not exist, create the Time-Tracking wibtype and its wtifs */ {
-    timeTracking_wibtypeItemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_itemName, app.wibtypes_itemId, true);
-
+  /* Time-Tracking wibtype and its wtifs */ {
+    timeTracking_wibtypeItemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_itemName, wapp.wibtypes_itemId, true);
     if ( isBlank(timeTracking_wibtypeItemObj) ) {
       timeTracking_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
+    wapp.timeTracking_wibtypeItemId = timeTracking_wibtypeItemObj.itemId;
 
     let ttWtif_YMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_YMD_itemObj) ) {
@@ -6022,28 +6122,181 @@ function loadAppData_andReturnNextDisplayPage() {
     if ( isBlank(ttWtif_MinsTracked_itemObj) ) {
       makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "1", "1", "0", true, CONST_timeTracking_wtifMinsTracked_itemName, null, CONST_displayCode_hidden1, "0", timeTracking_wibtypeItemObj.itemId);
     }
-
-    app.timeTracking_wibtypeItemId = timeTracking_wibtypeItemObj.itemId;
   }
 
-  /* if it does not exist, create the wb-list-of-wibtype-instance-holder-lists item, the wibtype-instance-holder wibtype, and associated wtif */ {
+  /* Wib-Builder Screens, Scripts, & Apps */ {
+
+    /* Wib-Builder Screens */ {
+
+      // wibtype for Wib-Builder Screens
+      wibBuilderScreen_wibtypeItemObj = grabItemObjByName(CONST_wb_screenWibtype_itemName);
+      if ( isBlank(wibBuilderScreen_wibtypeItemObj) ) {
+        wibBuilderScreen_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_screenWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+      }
+      wapp.wb_screenWibtype_itemId = wibBuilderScreen_wibtypeItemObj.itemId;
+
+      // wtif for Wib-Builder Screens -- NumColumns
+      let wb_screenWibtype_wtif_NumColumns_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreen_wibtypeItemObj.itemId, CONST_wb_screenWibtype_wtif_NumColumns_itemName)
+      if ( isBlank(wb_screenWibtype_wtif_NumColumns_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenWibtype_wtif_NumColumns_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder Screens -- NumRows
+      let wb_screenWibtype_wtif_NumRows_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreen_wibtypeItemObj.itemId, CONST_wb_screenWibtype_wtif_NumRows_itemName)
+      if ( isBlank(wb_screenWibtype_wtif_NumRows_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenWibtype_wtif_NumRows_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+      }
+
+      // item that is the list of Wib-Builder Screens
+      wibBuilderScreenList_itemObj = grabItemObjByName(CONST_wb_screenList_itemName);
+      if ( isBlank(wibBuilderScreenList_itemObj) ) {
+        wibBuilderScreenList_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wb_screenList_itemName, null, CONST_displayCode_hidden1, "1", null);
+      }
+      wapp.wb_screenListItemId = wibBuilderScreenList_itemObj.itemId;
+
+      // wibtype for Wib-Builder ScreenBoxes
+      wibBuilderScreenBox_wibtypeItemObj = grabItemObjByName(CONST_wb_screenBoxWibtype_itemName);
+      if ( isBlank(wibBuilderScreenBox_wibtypeItemObj) ) {
+        wibBuilderScreenBox_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_screenBoxWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+      }
+      wapp.wb_screenBoxWibtype_itemId = wibBuilderScreenBox_wibtypeItemObj.itemId;
+
+      // wtif for Wib-Builder ScreenBoxes -- StartColumn
+      let wb_screenBoxWibtype_wtif_StartColumn_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_StartColumn_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_StartColumn_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_StartColumn_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScreenBoxes -- StartRow
+      let wb_screenBoxWibtype_wtif_StartRow_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_StartRow_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_StartRow_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_StartRow_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScreenBoxes -- SizeAcross
+      let wb_screenBoxWibtype_wtif_SizeAcross_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_SizeAcross_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_SizeAcross_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_SizeAcross_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScreenBoxes -- SizeDown
+      let wb_screenBoxWibtype_wtif_SizeDown_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_SizeDown_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_SizeDown_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_SizeDown_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScreenBoxes -- ContentTypeCode
+      let wb_screenBoxWibtype_wtif_ContentTypeCode_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_ContentTypeCode_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_ContentTypeCode_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_ContentTypeCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScreenBoxes -- ContentData
+      let wb_screenBoxWibtype_wtif_ContentData_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScreenBox_wibtypeItemObj.itemId, CONST_wb_screenBoxWibtype_wtif_ContentData_itemName)
+      if ( isBlank(wb_screenBoxWibtype_wtif_ContentData_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_screenBoxWibtype_wtif_ContentData_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreenBox_wibtypeItemObj.itemId); 
+      }
+    }
+
+    /* Wib-Builder Scripts */ {
+
+      // wibtype for Wib-Builder Scripts
+      wibBuilderScript_wibtypeItemObj = grabItemObjByName(CONST_wb_scriptWibtype_itemName);
+      if ( isBlank(wibBuilderScript_wibtypeItemObj) ) {
+        wibBuilderScript_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_scriptWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+      }
+      wapp.wb_scriptWibtype_itemId = wibBuilderScript_wibtypeItemObj.itemId;
+
+      // wtif for Wib-Builder Scripts -- ??
+      // ...
+
+      // item that is the list of Wib-Builder Scripts
+      wb_scriptList_itemObj = grabItemObjByName(CONST_wb_scriptList_itemName);
+      if ( isBlank(wb_scriptList_itemObj) ) {
+        wb_scriptList_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wb_scriptList_itemName, null, CONST_displayCode_hidden1, "1", null);
+      }
+      wapp.wb_scriptListItemId = wb_scriptList_itemObj.itemId;
+
+      // wibtype for Wib-Builder ScriptRows
+      wibBuilderScriptRow_wibtypeItemObj = grabItemObjByName(CONST_wb_scriptRowWibtype_itemName);
+      if ( isBlank(wibBuilderScriptRow_wibtypeItemObj) ) {
+        wibBuilderScriptRow_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_scriptRowWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+      }
+      wapp.wb_scriptRowWibtype_itemId = wibBuilderScriptRow_wibtypeItemObj.itemId;
+
+      // wtif for Wib-Builder ScriptRows -- RowNum
+      let wb_scriptRowWibtype_wtif_RowNum_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScriptRow_wibtypeItemObj.itemId, CONST_wb_scriptRowWibtype_wtif_RowNum_itemName)
+      if ( isBlank(wb_scriptRowWibtype_wtif_RowNum_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_scriptRowWibtype_wtif_RowNum_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScriptRow_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScriptRows -- ActionCode
+      let wb_scriptRowWibtype_wtif_ActionCode_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScriptRow_wibtypeItemObj.itemId, CONST_wb_scriptRowWibtype_wtif_ActionCode_itemName)
+      if ( isBlank(wb_scriptRowWibtype_wtif_ActionCode_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_text_id, "0", "1", "0", true, CONST_wb_scriptRowWibtype_wtif_ActionCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScriptRow_wibtypeItemObj.itemId); 
+      }
+
+      // wtif for Wib-Builder ScriptRows -- ActionData
+      let wb_scriptRowWibtype_wtif_ActionData_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderScriptRow_wibtypeItemObj.itemId, CONST_wb_scriptRowWibtype_wtif_ActionData_itemName)
+      if ( isBlank(wb_scriptRowWibtype_wtif_ActionData_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_scriptRowWibtype_wtif_ActionData_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScriptRow_wibtypeItemObj.itemId); 
+      }
+    }
+
+    /* Wib-Builder Apps */ {
+
+      // wibtype for Wib-Builder Apps
+      wibBuilderApp_wibtypeItemObj = grabItemObjByName(CONST_wb_appWibtype_itemName);
+      if ( isBlank(wibBuilderApp_wibtypeItemObj) ) {
+        wibBuilderApp_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_appWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
+      }
+      wapp.wb_appWibtype_itemId = wibBuilderApp_wibtypeItemObj.itemId;
+
+      // wtif for Wib-Builder Apps -- FirstScriptItemId
+      let wb_appWibtype_wtif_FirstScriptItemId_itemObj = grabItemObj__listItemId_and_memberItemName(wibBuilderApp_wibtypeItemObj.itemId, CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName)
+      if ( isBlank(wb_appWibtype_wtif_FirstScriptItemId_itemObj) ) {
+        makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderApp_wibtypeItemObj.itemId); 
+      }
+
+      // item that is the list of Wib-Builder Apps
+      wb_appList_itemObj = grabItemObjByName(CONST_wb_appList_itemName);
+      if ( isBlank(wb_appList_itemObj) ) {
+        wb_appList_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wb_appList_itemName, null, CONST_displayCode_hidden1, "1", null);
+      }
+      wapp.wb_appListItemId = wb_appList_itemObj.itemId;
+
+      // if no apps exist, create a starter one
+      if ( !wb_appList_itemObj.hasListMembers() ) {
+        //TO-DO1: ?? move "starter app" stuff here (keep out of wb_app_create function) ??
+        let starterWbApp = wb_app_createAndReturn("My Starter App");
+      }
+    }
+  }
+
+  /* OLD-ISH? -- previous wb-screen wtifs */ {
+    let wbs_ScreenTypeCode_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    if ( isBlank(wbs_ScreenTypeCode_itemObj) ) {
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_screenTypeCode_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+    }
+
+    let wbs_wibtypeItemId_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
+    if ( isBlank(wbs_wibtypeItemId_itemObj) ) {
+      makeNewItem(CONST_doneStatusCode_okay, CONST_wibDataType_numeric_id, "0", "1", "0", true, CONST_wbs_screenWtifs_wibtypeItemId_itemName, null, CONST_displayCode_hidden1, "0", wibBuilderScreen_wibtypeItemObj.itemId); 
+    }
+  }
+
+  /* OLD-ISH? -- the wb-list-of-wibtype-instance-holder-lists item, the wibtype-instance-holder wibtype, and associated wtif */ {
     wb_listOfWibtypeInstanceHolderLists_itemObj = grabItemObjByName(CONST_wb_listOfWibtypeInstanceHolderLists_itemName);
     if ( isBlank(wb_listOfWibtypeInstanceHolderLists_itemObj) ) {
       wb_listOfWibtypeInstanceHolderLists_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", true, CONST_wb_listOfWibtypeInstanceHolderLists_itemName, null, CONST_displayCode_hidden1, "1", null);
     }
-    app.wb_listOfWibtypeInstanceHolderLists_itemId = wb_listOfWibtypeInstanceHolderLists_itemObj.itemId;
+    wapp.wb_listOfWibtypeInstanceHolderLists_itemId = wb_listOfWibtypeInstanceHolderLists_itemObj.itemId;
 
-    /* new search code that can be used for this:
-      var igo = new ItemGrabbingObj();
-      igo.set_targetItemName(CONST_wb_wibtypeInstanceHolderWibtype_itemName);
-      igo.set_targetJoinedListWithItemId(app.wibtypes_itemId);
-      var wibtypeInstanceHolderWibtype_itemObj = igo.runSearchAndReturnX();
-    */
-    wb_wibtypeInstanceHolderWibtype_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_itemName, app.wibtypes_itemId, true);
+    wb_wibtypeInstanceHolderWibtype_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_itemName, wapp.wibtypes_itemId, true);
     if ( isBlank(wb_wibtypeInstanceHolderWibtype_itemObj) ) {
       wb_wibtypeInstanceHolderWibtype_itemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_wb_wibtypeInstanceHolderWibtype_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
-    app.wb_wibtypeInstanceHolderWibtype_itemId = wb_wibtypeInstanceHolderWibtype_itemObj.itemId;
+    wapp.wb_wibtypeInstanceHolderWibtype_itemId = wb_wibtypeInstanceHolderWibtype_itemObj.itemId;
 
     let wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemName, wb_wibtypeInstanceHolderWibtype_itemObj.itemId, true);
     if ( isBlank(wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId) ) {
@@ -6051,31 +6304,233 @@ function loadAppData_andReturnNextDisplayPage() {
     }
   }
 
-  // set app current-item to home-page-list
-  setAppItemObj(homePageListItemObj);
+  setWappItemObj(homePageListItemObj);
 
   if ( ! upgradeStoredData() ) return;
 
-  // set version# on screen
-  elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_appVersion;
+  elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_wibappVersion;
 
-  app.addDataLoadedSuccessfully = true;
+  /* change (1) app_narrow to wibapp_narrow; (2) devText1 to wibapp_dev1 */ {
+    let curNarrow = getFromDatastore(CONST_appNarrow_OLD);
+    if (curNarrow !== null) {
+      saveToDatastore(CONST_wibapp_narrow, curNarrow);
+      deleteFromDatastore(CONST_appNarrow_OLD);
+    }
 
-  if (app.qs_obj.wibBuilder) {
+    let curDev1 = getFromDatastore(CONST_devText1_OLD);
+    if (curDev1 !== null) {
+      saveToDatastore(CONST_wibapp_dev1, curDev1);
+      deleteFromDatastore(CONST_devText1_OLD);
+    }
+  }
+
+  wapp.wappDataLoadedSuccessfully = true;
+
+  if (wapp.qs_obj.wibBuilder) {
+
+
+//TO-DO1: go to first wb-app, etc
+
     return "WibBuilder_AllScreens"
-  } else if (app.qs_obj.nav1) {
-    return "NavigateItems"
   } else {
     return "Home"
   }
 }
+
+
+
+
+//TO-DO1:
+// - should _heading be a subtype of _text ??
+// - should _input have subtypes for text, select, checkbox ??
+//
+const CONST_wb_screen_contentTypeCode_text = "1";
+const CONST_wb_screen_contentTypeCode_heading = "22";
+const CONST_wb_screen_contentTypeCode_input = "333";
+const CONST_wb_screen_contentTypeCode_link = "4444";
+
+
+const CONST_wb_screenBoxWibtype_itemName = "wib-builder-screen-box";
+
+const CONST_wb_screenBoxWibtype_wtif_ContentData_itemName = "ContentData";
+const CONST_wb_screenBoxWibtype_wtif_ContentTypeCode_itemName = "ContentTypeCode";
+
+const CONST_wb_screenBoxWibtype_wtif_SizeAcross_itemName = "SizeAcross";
+const CONST_wb_screenBoxWibtype_wtif_SizeDown_itemName = "SizeDown";
+
+const CONST_wb_screenBoxWibtype_wtif_StartColumn_itemName = "StartColumn";
+const CONST_wb_screenBoxWibtype_wtif_StartRow_itemName = "StartRow";
+
+const CONST_wb_screenWibtype_wtif_NumColumns_itemName = "NumColumns";
+const CONST_wb_screenWibtype_wtif_NumRows_itemName = "NumRows";
+
+
+wapp.wb_screenBoxWibtype_itemId = null;
+
+
+
+
+function DEV_wb_app_deleteByName(appItemName) {
+  var wbApp_itemObj = grabItemObj__listItemId_and_memberItemName(wapp.wb_appListItemId, appItemName);
+  var wbApp_itemId = wbApp_itemObj.itemId;
+  wbApp_itemObj.doDeletion();
+  dc("wbApp_itemId=" + wbApp_itemId + " was deleted");
+  return true;
+}
+
+function DEV_wb_script_deleteByName(scriptItemName) {
+  var wbScript_itemObj = grabItemObj__listItemId_and_memberItemName(wapp.wb_scriptListItemId , scriptItemName);
+  var wbScript_itemId = wbScript_itemObj.itemId;
+  wbScript_itemObj.doDeletion();
+  dc("wbScript_itemId=" + wbScript_itemId + " was deleted");
+  return true;
+}
+
+function DEV_wb_scriptRow_deleteByScriptName(scriptItemName) {
+  var wbScript_itemObj = grabItemObj__listItemId_and_memberItemName(wapp.wb_scriptListItemId , scriptItemName);
+  var wbScript_itemId = wbScript_itemObj.itemId;
+  var wbScriptRows_array = wbScript_itemObj.getListMemberItemIds();
+  wbScriptRows_array.forEach( (wbScriptRow_itemId) => {
+    let wbScriptRow_itemObj = grabItemObj(wbScriptRow_itemId);
+    wbScriptRow_itemObj.doDeletion();
+    dc("wbScriptRow_itemId=" + wbScriptRow_itemId + " was deleted");
+  } );
+  return true;
+}
+
+function DEV_wb_screen_deleteByName(screenItemName) {
+  var wbScreen_itemObj = grabItemObj__listItemId_and_memberItemName(wapp.wb_screenListItemId , screenItemName);
+  var wbScreen_itemId = wbScreen_itemObj.itemId;
+  wbScreen_itemObj.doDeletion();
+  dc("wbScreen_itemId=" + wbScreen_itemId + " was deleted");
+  return true;
+}
+
+function DEV_deleteStarterWb() {
+  if ( DEV_wb_screen_deleteByName("Home Screen for My Starter App") ) {
+    if ( DEV_wb_scriptRow_deleteByScriptName("first script for app") ) {
+      if ( DEV_wb_script_deleteByName("first script for app") ) {
+        if ( DEV_wb_app_deleteByName("My Starter App") ) {
+          return "DEV_deleteStarterWb() ran successfully";
+        }
+      }
+    }
+  }
+}
+
+function wb_app_createAndReturn(appItemName) {
+  var wbApp_itemObj = makeNewItem(null, null, null, null, null, null, appItemName, null, null, null, wapp.wb_appListItemId);
+
+  var firstScriptForWbApp_itemObj = wb_script_createAndReturn("first script for app");
+
+  var firstScreenForWbApp_itemObj = wb_screen_createAndReturn("Home Screen for My Starter App", null, null);
+
+  wb_scriptRow_createAndReturn(firstScriptForWbApp_itemObj.itemId, "1", CONST_wb_scriptRow_ActionCode_displayScreen, firstScreenForWbApp_itemObj.itemId)
+
+  wbApp_itemObj.setWibtypeAndWtifs(wapp.wb_appWibtype_itemId, CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName, firstScriptForWbApp_itemObj.itemId)
+
+  return wbApp_itemObj;
+}
+
+function wb_screen_createAndReturn(screenItemName, screenTypeCode, wibtypeItemObj_associatedWithScreen_itemId) {
+  var wbScreen_itemObj;
+
+  if ( isBlank(screenItemName) ) {
+    screenItemName = wb_generateScreenItemName(screenTypeCode, wibtypeItemObj_associatedWithScreen_itemId);
+  }
+
+  wbScreen_itemObj = makeNewItem(null, null, null, "0", "0", false, screenItemName, null, CONST_displayCode_hidden1, "0", wapp.wb_screenListItemId);
+
+  if (!wbScreen_itemObj) {
+    return null;
+  }
+
+  wbScreen_itemObj.assignToWibtype(wapp.wb_screenWibtype_itemId);
+
+  if ( !isBlank(screenTypeCode) ) {
+    wbScreen_itemObj.setWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, screenTypeCode, true);
+    wbScreen_itemObj.setWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_wibtypeItemId_itemName, wibtypeItemObj_associatedWithScreen_itemId, true);
+  }
+
+  return wbScreen_itemObj;
+}
+
+function wb_script_createAndReturn(scriptItemName) {
+  var wbScript_itemObj = makeNewItem(null, null, null, null, null, null, scriptItemName, null, null, "1", wapp.wb_scriptListItemId);
+
+  wbScript_itemObj.assignToWibtype(wapp.wb_scriptWibtype_itemId);
+
+  return wbScript_itemObj;
+}
+
+function wb_getScriptRowActionDisplay(actionCode) {
+  switch (actionCode) {
+
+    case CONST_wb_scriptRow_ActionCode_displayScreen:
+      return "display screen";
+
+    default:
+      showSoftError("wb_getScriptRowActionDisplay()", "received invalid actionCode=" + actionCode);
+      return null;
+  }
+}
+
+function wb_generateScriptRowItemName(actionCode, actionData) {
+  var itemName;
+
+  switch (actionCode) {
+
+    case CONST_wb_scriptRow_ActionCode_displayScreen:
+      itemName = "display screen ";
+
+      let displayScreenItemObj = grabItemObj(actionData);
+
+      if (displayScreenItemObj) {
+        itemName += displayScreenItemObj.itemName;
+      } else {
+        itemName += "INVALID_SCREEN (actionData=" + actionData + ")";
+      }
+
+      break;
+
+    default:
+      showSoftError("wb_generateScriptRowItemName()", "received invalid actionCode=" + actionCode);
+      return null;
+  }
+
+  return itemName
+}
+
+function wb_getNextScriptRowNum(scriptItemId) {
+//TO-DO1:
+return "1";
+}
+
+function wb_scriptRow_createAndReturn(scriptItemId, rowNum, actionCode, actionData) {
+  var wbScriptRowItemName = wb_generateScriptRowItemName(actionCode, actionData);
+
+  var wbScriptRow_itemObj = makeNewItem(null, null, null, null, null, null, wbScriptRowItemName, null, null, null, scriptItemId);
+
+  if ( isBlank(rowNum) ) {
+    rowNum = wb_getNextScriptRowNum(scriptItemId);
+  }
+
+  wbScriptRow_itemObj.setWibtypeAndWtifs(wapp.wb_scriptRowWibtype_itemId, CONST_wb_scriptRowWibtype_wtif_RowNum_itemName, rowNum
+    , CONST_wb_scriptRowWibtype_wtif_ActionCode_itemName, actionCode, CONST_wb_scriptRowWibtype_wtif_ActionData_itemName, actionData);
+
+  return wbScriptRow_itemObj;
+}
+
+
+
+
 
 function upgradeStoredData() {
   var appVersion_array, appVersion_major, appVersion_minor;
   var storedDataVersion_string, storedDataVersion_array, storedDataVersion_major, storedDataVersion_minor;
 
   //split app-version into major and minor
-  appVersion_array = CONST_appVersion.split(".");
+  appVersion_array = CONST_wibappVersion.split(".");
   appVersion_major = Number(appVersion_array[0]);
   appVersion_minor = Number(appVersion_array[1]);
 
@@ -6108,7 +6563,7 @@ function upgradeStoredData() {
 
   // if stored-data-version wasn't set from upgrade, and does not exist, set it to the current app-version
   storedDataVersion_string = getFromDatastore(CONST_storedDataVersion);
-  if ( isBlank(storedDataVersion_string) ) saveToDatastore(CONST_storedDataVersion, CONST_appVersion);
+  if ( isBlank(storedDataVersion_string) ) saveToDatastore(CONST_storedDataVersion, CONST_wibappVersion);
 
   return true;
 }
@@ -6122,7 +6577,7 @@ function upgradeStoredData_0_66() {
   allItemIds_array.forEach( (curItemId) => {
     let curItemObj = grabItemObj(curItemId);
 
-    let isHomePageList = isEqual(curItemObj.itemId, app.homePageList_itemId);
+    let isHomePageList = isEqual(curItemObj.itemId, wapp.homePageList_itemId);
     let isTypesList = isEqual(curItemObj.itemId, CONST_listName_wibtypes);
 
     if ( isHomePageList || isTypesList || curItemObj.isWibtype == "1" || curItemObj.isWibtypeInfoField == "1" ) {
@@ -6174,12 +6629,14 @@ function runExampleQueryStringStuff() {
 }
 
 function processQueryString() {
-  app.qs_urlParams = new URLSearchParams(window.location.search);
+  wapp.qs_urlParams = new URLSearchParams(window.location.search);
 
-  app.qs_obj = {};
-  app.qs_obj.wibBuilder = app.qs_urlParams.has("builder");
-  app.qs_obj.dev = app.qs_urlParams.has("dev");
-  app.qs_obj.nav1 = app.qs_urlParams.has("nav1");
+  wapp.qs_obj = {};
+  wapp.qs_obj.wibBuilder = wapp.qs_urlParams.has("builder");
+
+  if ( wapp.qs_urlParams.has("dev1") ) {
+    saveToDatastore(CONST_wibapp_dev1, "1");
+  }
 }
 
 function startApp() {
@@ -6187,8 +6644,13 @@ function startApp() {
 
   let nextDisplayPage = loadAppData_andReturnNextDisplayPage();
 
+  wapp.isDev1 = false;
+  if ( getFromDatastore(CONST_wibapp_dev1) == "1" ) {
+    wapp.isDev1 = true;
+  }
+
   //only show home page is appLevelData loaded successfully
-  if ( app.addDataLoadedSuccessfully ) {
+  if ( wapp.wappDataLoadedSuccessfully ) {
     displayPage(nextDisplayPage);
   }
 }
