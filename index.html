@@ -736,6 +736,36 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     </div>
   </div>
 
+  <div class="grid1" id="dvPopUp_EditTimeTracking" style="display: none; padding-top: 0.3em">
+    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Edit Time Tracking</b></div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text">Item Name:</div>
+    <div class="grid1Cell gc1TextRight"><span id="spnEditTimeTracking_itemName" class="popUpText popUpMaxTextWidth"></span></div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">
+      <a style="white-space: nowrap; font-size: 90%" href="javascript:void edit_time_tracking__set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
+    </div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipEditTimeTracking_Year" class="ipYear" maxlength="4" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_Month" class="ipMonthDay" maxlength="2" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_Day" class="ipMonthDay" maxlength="2" />
+    </div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Time:</div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipEditTimeTracking_Hour" class="ipTime" maxlength="2" />
+      : <input id="ipEditTimeTracking_Minute" class="ipTime" maxlength="2" />
+    </div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
+    <div class="grid1Cell gc1Input gc1Group1"><input id="ipEditTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Footer">
+      <a style="white-space: nowrap" href="javascript:void edit_time_tracking__make_this_edit()">make this edit</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_time_tracking__cancel()">cancel</a>
+    </div>
+  </div>
+
   <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none; padding-top: 0.3em">
     <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Make New Item</b></div>
     <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
@@ -847,7 +877,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.83"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.84"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -908,10 +938,21 @@ const CONST_wb_appWibtype_wtif_FirstScriptItemId_itemName = "FirstScriptItemId";
 
 const CONST_wb_listOfWibtypeInstanceHolderLists_itemName = "wb-list-of-wibtype-instance-holder-lists";
 
+const CONST_wb_screenBoxWibtype_itemName = "wib-builder-screen-box";
+const CONST_wb_screenBoxWibtype_wtif_BoxesAcross_itemName = "BoxesAcross";
+const CONST_wb_screenBoxWibtype_wtif_BoxesDown_itemName = "BoxesDown";
+const CONST_wb_screenBoxWibtype_wtif_ContentData_itemName = "ContentData";
+const CONST_wb_screenBoxWibtype_wtif_ContentTypeCode_itemName = "ContentTypeCode";
+const CONST_wb_screenBoxWibtype_wtif_StartColumn_itemName = "StartColumn";
+const CONST_wb_screenBoxWibtype_wtif_StartRow_itemName = "StartRow";
+
 const CONST_wb_screenList_itemName = "wib-builder-screen-list";
 const CONST_wb_screenTypeCode_createWibtype = "1";
 const CONST_wb_screenTypeCode_editWibtype = "2";
 const CONST_wb_screenWibtype_itemName = "wib-builder-screen";
+const CONST_wb_screenWibtype_wtif_NumColumns_itemName = "NumColumns";
+const CONST_wb_screenWibtype_wtif_NumRows_itemName = "NumRows";
+const CONST_wb_screenWibtype_wtif_WbAppItemId_itemName = "WbAppItemId";
 
 const CONST_wb_script_actionCode_displayScreen = "1";
 const CONST_wb_scriptList_itemName = "wib-builder-script-list";
@@ -983,6 +1024,7 @@ wapp.wb_curApp_itemObj = null;
 wapp.wb_curScreen_itemObj = null;
 wapp.wb_curWibtype_itemObj = null;
 wapp.wb_listOfWibtypeInstanceHolderLists_itemId = null;
+wapp.wb_screenBoxWibtype_itemId = null;
 wapp.wb_screenListItemId = null;
 wapp.wb_screenWibtype_itemId = null;
 wapp.wb_scriptListItemId = null;
@@ -1017,15 +1059,15 @@ function aO(argumentValue) {
   return argObj;
 }
 
-function appDateTimeObjFactory() {
-  var appDateTimeObj = {};
+function wwappDateTimeObjFactory() {
+  var wappDateTimeObj = {};
 
-  appDateTimeObj.getFullRawText = function() {
+  wappDateTimeObj.getFullRawText = function() {
     var text = this.yyyy + this.mm + this.dd + this.hh + this.nn + this.ss + this.ms;
     return text;
   };
 
-  appDateTimeObj.getYMDHN1 = function(extraSpace) {
+  wappDateTimeObj.getYMDHN1 = function(extraSpace) {
     var text = this.yyyy + "-" + this.mm + "-" + this.dd;
     if (extraSpace) {
       text += "&nbsp;&nbsp;";
@@ -1036,7 +1078,7 @@ function appDateTimeObjFactory() {
     return text;
   };
 
-  return appDateTimeObj;
+  return wappDateTimeObj;
 }
 
 function copyItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
@@ -1046,8 +1088,8 @@ function copyItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
   } );
 }
 
-function createAppDateTimeObj1(year, month, day, hour, minute) {
-  var appDateTimeObj = appDateTimeObjFactory();
+function createWappDateTimeObj1(year, month, day, hour, minute, minutesTracked) {
+  var wappDateTimeObj = wwappDateTimeObjFactory();
 
   year = getYearAsFourDigitString(year);
   month = getMonthAsTwoDigitString(month);
@@ -1058,16 +1100,37 @@ function createAppDateTimeObj1(year, month, day, hour, minute) {
   if ( !isValidDate(year, month, day) ) return null;
   if ( !isValidTime(hour, minute) ) return null;
 
-  appDateTimeObj.yyyy = year;
-  appDateTimeObj.mm = month;
-  appDateTimeObj.dd = day;
-  appDateTimeObj.hh = hour;
-  appDateTimeObj.nn = minute;
+  if ( isBlank(minutesTracked) ) minutesTracked = null;
 
-  return appDateTimeObj;
+  wappDateTimeObj.yyyy = year;
+  wappDateTimeObj.mm = month;
+  wappDateTimeObj.dd = day;
+  wappDateTimeObj.hh = hour;
+  wappDateTimeObj.nn = minute;
+  wappDateTimeObj.minutesTracked = minutesTracked;
+
+  wappDateTimeObj.monthDisplay = "";
+  wappDateTimeObj.dayDisplay = "";
+  wappDateTimeObj.minutesTrackedDisplay = "";
+  wappDateTimeObj.minutesTrackedDisplay2 = "--";
+
+  if ( isNumeric(wappDateTimeObj.mm) ) {
+    wappDateTimeObj.monthDisplay = parseInt(wappDateTimeObj.mm);
+  }
+
+  if ( isNumeric(wappDateTimeObj.dd) ) {
+    wappDateTimeObj.dayDisplay = parseInt(wappDateTimeObj.dd);
+  }
+
+  if ( isNumeric(wappDateTimeObj.minutesTracked) ) {
+    wappDateTimeObj.minutesTrackedDisplay = parseInt(wappDateTimeObj.minutesTracked);
+    wappDateTimeObj.minutesTrackedDisplay2 = parseInt(wappDateTimeObj.minutesTracked);
+  }
+
+  return wappDateTimeObj;
 }
 
-function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
+function createWappDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle, minutesTracked) {
   var ymd_inWtifStyle_array, time_inWtifStyle_array;
 
   if ( isBlank(ymd_inWtifStyle) ) return null;
@@ -1079,7 +1142,7 @@ function createAppDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle) {
   time_inWtifStyle_array = time_inWtifStyle.split(":");
   if ( time_inWtifStyle_array.length < 1 || time_inWtifStyle_array.length > 2 ) return null;
 
-  return createAppDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1]);
+  return createWappDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1], minutesTracked);
 }
 
 function createConnectedItemsDataObj(itemId2) {
@@ -1946,7 +2009,7 @@ function getAllItemsArray() {
   return allItemIds_array;
 }
 
-function getAppDateTimeObj_fromJSDateTime(jsDateTime) {
+function getWappDateTimeObj_fromJSDateTime(jsDateTime) {
   if ( isBlank(jsDateTime) ) jsDateTime = new Date();
 
   var yyyy = jsDateTime.getFullYear();
@@ -1955,9 +2018,9 @@ function getAppDateTimeObj_fromJSDateTime(jsDateTime) {
   var h = jsDateTime.getHours();
   var n = jsDateTime.getMinutes();
 
-  var appDateTimeObj = createAppDateTimeObj1(yyyy, m, d, h, n);
+  var wappDateTimeObj = createWappDateTimeObj1(yyyy, m, d, h, n, null);
 
-  return appDateTimeObj;
+  return wappDateTimeObj;
 }
 
 function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
@@ -1968,9 +2031,9 @@ function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
   }
 }
 
-function getCurAppDateTimeObj() {
-  var curAppDateTimeObj = getAppDateTimeObj_fromJSDateTime( new Date() );
-  return curAppDateTimeObj;
+function getCurWappDateTimeObj() {
+  var curWappDateTimeObj = getWappDateTimeObj_fromJSDateTime( new Date() );
+  return curWappDateTimeObj;
 }
 
 function getDayAsTwoDigitString(d) {
@@ -3178,7 +3241,7 @@ function itemObjFactory() {
 
   itemObj.assignToWibtype = function(wibtypeItemIdToAssign) {
     //confirm that this item is not already assigned to the wibtype
-    if ( doesValArrayHaveElem(this.assignedWibtypes_itemIds, wibtypeItemIdToAssign) ) {
+    if ( this.isAssignedToType(wibtypeItemIdToAssign) ) {
       return false;
     }
     
@@ -3457,6 +3520,14 @@ function itemObjFactory() {
     }
 
     if ( isEqual(wtifData_grabbed, wtifData_toMatch) ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  itemObj.isAssignedToType = function(wibtypeItemId) {
+    if ( doesValArrayHaveElem(this.assignedWibtypes_itemIds, wibtypeItemId) ) {
       return true;
     } else {
       return false;
@@ -4066,10 +4137,10 @@ function setElemMouseout(elem) {
 }
 
 function setElemsToToday(yyyyElemId, mmElemId, ddElemId) {
-  var appDateTimeObj = getCurAppDateTimeObj();
-  setElemVal(yyyyElemId, appDateTimeObj.yyyy);
-  setElemVal(mmElemId, appDateTimeObj.mm);
-  setElemVal(ddElemId, appDateTimeObj.dd);
+  var wappDateTimeObj = getCurWappDateTimeObj();
+  setElemVal(yyyyElemId, wappDateTimeObj.yyyy);
+  setElemVal(mmElemId, wappDateTimeObj.mm);
+  setElemVal(ddElemId, wappDateTimeObj.dd);
 }
 
 function setElemVal(elemId, elemVal) {
@@ -4104,6 +4175,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
   displayPage("");
 
   elem("dvPopUp_ChangeDoneStatus").style.display = "none";
+  elem("dvPopUp_EditTimeTracking").style.display = "none";
   elem("dvPopUp_MakeNewItem").style.display = "none";
   elem("dvPopUp_MakeNewWibtype").style.display = "none";
   elem("dvPopUp_MakeNewWibtypeInfoField").style.display = "none";
@@ -4162,6 +4234,21 @@ function showPopUp(popUpCode, popUpFocusElem) {
         elem("dvChangeDoneStatus_Notice1").style.display = "none";
         elem("dvChangeDoneStatus_Notice2").style.display = "none";
       }
+    }
+
+    case "EditTimeTracking": {
+      elem("spnEditTimeTracking_itemName").innerHTML = wapp.itemObj.itemName;
+
+      let ttWappDateTimeObj = tt_createWappDateTimeObj_fromItemObj(wapp.itemObj);
+
+      setElemVal("ipEditTimeTracking_Year", ttWappDateTimeObj.yyyy);
+      setElemVal("ipEditTimeTracking_Month", ttWappDateTimeObj.monthDisplay);
+      setElemVal("ipEditTimeTracking_Day", ttWappDateTimeObj.dayDisplay);
+      setElemVal("ipEditTimeTracking_Hour", ttWappDateTimeObj.hh);
+      setElemVal("ipEditTimeTracking_Minute", ttWappDateTimeObj.nn);
+      setElemVal("ipEditTimeTracking_MinutesTracked", ttWappDateTimeObj.minutesTrackedDisplay);
+
+      break;
     }
 
     case "MakeNewItem": {
@@ -4558,6 +4645,76 @@ function transferItems(sourceListObj, targetListObj, listMembers_itemIdArray) {
     curItemObj.joinList(targetListObj.itemId);
     curItemObj.leaveList(sourceListObj.itemId);
   } );
+}
+
+function tt_createWappDateTimeObj_fromItemObj(itemObj) {
+  let ttWibtypeItemObj = grabItemObj(wapp.timeTracking_wibtypeItemId);
+  let ymd_fromDatastore = itemObj.getWtifData(ttWibtypeItemObj.itemId, null, CONST_timeTracking_wtifYMD_itemName);
+  let time_fromDatastore = itemObj.getWtifData(ttWibtypeItemObj.itemId, null, CONST_timeTracking_wtifTime_itemName);
+  let minutesTracked = itemObj.getWtifData(ttWibtypeItemObj.itemId, null, CONST_timeTracking_wtifMinsTracked_itemName);
+
+  let ttWappDateTimeObj = createWappDateTimeObj2(ymd_fromDatastore, time_fromDatastore, minutesTracked);
+
+  return ttWappDateTimeObj;
+}
+
+function tt_getForDatastore_Time(hour, minute) {
+  hour = getHourAsTwoDigitString(hour);
+  minute = getMinuteAsTwoDigitString(minute);
+
+  var time = hour + ":" + minute;
+
+  return time;
+}
+
+function tt_getForDatastore_YMD(year, month, day) {
+  year = getYearAsFourDigitString(year);
+  month = getMonthAsTwoDigitString(month);
+  day = getDayAsTwoDigitString(day);
+
+  var ymd = year + "-" + month + "-" + day;
+
+  return ymd;
+}
+
+function tt_isEntryValid(displayBaseText, ttUiDataObj) {
+
+  //TO-DO2: validate Time-Tracking data via standardized wtif-info-field process
+  ttUiDataObj.year = getElemVal("ip" + displayBaseText + "_Year");
+  if ( isBlank(ttUiDataObj.year) ) { alert("Year is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_Year").focus(); return false; }
+
+  ttUiDataObj.month = getElemVal("ip" + displayBaseText + "_Month");
+  if ( isBlank(ttUiDataObj.month) ) { alert("Month is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_Month").focus(); return false; }
+
+  ttUiDataObj.day = getElemVal("ip" + displayBaseText + "_Day");
+  if ( isBlank(ttUiDataObj.day) ) { alert("Day is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_Day").focus(); return false; }
+
+  if ( !isValidDate(ttUiDataObj.year, ttUiDataObj.month, ttUiDataObj.day) ) { alert("The Year/Month/Day entered is not a valid date"); elem("ip" + displayBaseText + "_Year").focus(); return false; }
+
+  ttUiDataObj.hour = getElemVal("ip" + displayBaseText + "_Hour");
+  if ( isBlank(ttUiDataObj.hour) ) { alert("Hour is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_Hour").focus(); return false; }
+
+  ttUiDataObj.minute = getElemVal("ip" + displayBaseText + "_Minute");
+  if ( isBlank(ttUiDataObj.minute) ) { alert("Minute is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_Minute").focus(); return false; }
+
+  if ( !isValidTime(ttUiDataObj.hour, ttUiDataObj.minute) ) { alert("The Hour/Minute entered is not a valid time"); elem("ip" + displayBaseText + "_Hour").focus(); return false; }
+
+  ttUiDataObj.minutesTracked = getElemVal("ip" + displayBaseText + "_MinutesTracked");
+  if ( isBlank(ttUiDataObj.minutesTracked) ) { alert("MinutesTracked is required for " + CONST_timeTracking_itemName); elem("ip" + displayBaseText + "_MinutesTracked").focus(); return false; }
+  if ( !isNumeric(ttUiDataObj.minutesTracked) ) { alert("MinutesTracked requires a numeric value"); elem("ip" + displayBaseText + "_MinutesTracked").focus(); return false; }
+  if ( parseInt(ttUiDataObj.minutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ip" + displayBaseText + "_MinutesTracked").focus(); return false; }
+
+  return true;
+}
+
+function tt_saveWtifData(itemObj, ttUiDataObj) {
+  var ttWibtypeItemObj = grabItemObj(wapp.timeTracking_wibtypeItemId);
+  var ymd = tt_getForDatastore_YMD(ttUiDataObj.year, ttUiDataObj.month, ttUiDataObj.day);
+  var time = tt_getForDatastore_Time(ttUiDataObj.hour, ttUiDataObj.minute);
+
+  //TO-DO2: could have function param to not assign tt-wibtype when editing
+  itemObj.setWibtypeAndWtifs(ttWibtypeItemObj.itemId, CONST_timeTracking_wtifYMD_itemName, ymd
+    , CONST_timeTracking_wtifTime_itemName, time, CONST_timeTracking_wtifMinsTracked_itemName, ttUiDataObj.minutesTracked);
 }
 
 function walkSortPosition(listItemObj, itemIdToMove, moveAmt, moveToTop, moveToEnd, itemIdToMoveAbove) {
@@ -5124,20 +5281,9 @@ function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
 }
 
 function writeHtml_items(mainItemObj) {
-  var listMemberDataObjs, html = "", i, tt_wtifYMD_itemId, tt_wtifTime_itemId, tt_wtifMinsTracked_itemId;
+  var listMemberDataObjs, html = "", i;
 
   if ( isBlank(mainItemObj) ) mainItemObj = wapp.itemObj;
-
-  /* get Time-Tracking wtif itemIds */ {
-    let tt_wtifYMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifYMD_itemName, wapp.timeTracking_wibtypeItemId, true);
-    tt_wtifYMD_itemId = tt_wtifYMD_itemObj.itemId;
-
-    let tt_wtifTime_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifTime_itemName, wapp.timeTracking_wibtypeItemId, true);
-    tt_wtifTime_itemId = tt_wtifTime_itemObj.itemId;
-
-    let tt_wtifMinsTracked_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifMinsTracked_itemName, wapp.timeTracking_wibtypeItemId, true);
-    tt_wtifMinsTracked_itemId = tt_wtifMinsTracked_itemObj.itemId;
-  }
 
   if (mainItemObj.isList) {
     //get array of list-member-item-ids
@@ -5181,15 +5327,11 @@ function writeHtml_items(mainItemObj) {
       //add Time-Tracking info if this is such an item
       {
         ttDisplayForItem = "";
-        if ( doesValArrayHaveElem(curItemObj.assignedWibtypes_itemIds, wapp.timeTracking_wibtypeItemId) ) {
-          let tt_wtifYMD_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifYMD_itemId);
-          let tt_wtifTime_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifTime_itemId);
-          let tt_wtifMinsTracked_dataObj = getElemFromObjArray(curItemObj.wtifDataObjs, CONST_propName_wtifItemId, tt_wtifMinsTracked_itemId);
+        if ( curItemObj.isAssignedToType(wapp.timeTracking_wibtypeItemId) ) {
+          let ttWappDateAndTimeObj = tt_createWappDateTimeObj_fromItemObj(curItemObj);
 
-          let ttDateAndTimeObj = createAppDateTimeObj2(tt_wtifYMD_dataObj.theData, tt_wtifTime_dataObj.theData);
-
-          if ( ! isBlank(ttDateAndTimeObj) ) {
-            ttDisplayForItem = "TT:&nbsp;&nbsp;" + ttDateAndTimeObj.getYMDHN1(true) + "&nbsp;&nbsp;&nbsp;" + tt_wtifMinsTracked_dataObj.theData + " mins";
+          if ( ! isBlank(ttWappDateAndTimeObj) ) {
+            ttDisplayForItem = "TT:&nbsp;&nbsp;" + ttWappDateAndTimeObj.getYMDHN1(true) + "&nbsp;&nbsp;&nbsp;" + ttWappDateAndTimeObj.minutesTrackedDisplay2 + " mins";
           }
         }
       }
@@ -5378,7 +5520,11 @@ function writeHtml_WtifData() {
     if (i > 0) {
       html += "<div class='grid2Cell gc2VSpace2'></div>\n";
     }
-    html += "<div class='grid2Cell gc2Header2'>" + wibtypeItemObj.itemName + "&nbsp;&nbsp;</div>\n";
+    html += "<div class='grid2Cell gc2Header2'>" + wibtypeItemObj.itemName
+    if ( isEqual(CONST_timeTracking_itemName, wibtypeItemObj.itemName) ) {
+      html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void edit_time_tracking()'>edit</a>";
+    }
+    html += "&nbsp;&nbsp;</div>\n";
     html += "<div class='grid2Cell gc2VSpace2'></div>\n";
 
     let wtifs_listMemberDataObjs = wibtypeItemObj.getListMemberDataObjs();
@@ -5927,7 +6073,7 @@ function do_change_done_status(newDoneStatusDisplay) {
 }
 
 function do_make_new_item(makeCode) {
-  var itemName, doneStatusCode = null, topOfList, stayListView, addMoreItems, timeTracking, ttYear, ttMonth, ttDay, ttHour, ttMinute, ttMinutesTracked, newItemObj;
+  var itemName, doneStatusCode = null, topOfList, stayListView, addMoreItems, timeTracking, ttUiDataObj = {}, newItemObj;
 
   if (makeCode == "line") {
     itemName = "--------------------";
@@ -5967,30 +6113,9 @@ function do_make_new_item(makeCode) {
   }
 
   if (timeTracking == "1") {
-    //TO-DO2: validate Time-Tracking data via standardized wtif-info-field process
-    ttYear = getElemVal("ipMakeNewItem_Year");
-    if ( isBlank(ttYear) ) { alert("Year is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Year").focus(); return; }
-
-    ttMonth = getElemVal("ipMakeNewItem_Month");
-    if ( isBlank(ttMonth) ) { alert("Month is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Month").focus(); return; }
-
-    ttDay = getElemVal("ipMakeNewItem_Day");
-    if ( isBlank(ttDay) ) { alert("Day is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Day").focus(); return; }
-
-    if ( !isValidDate(ttYear, ttMonth, ttDay) ) { alert("The Year/Month/Day entered is not a valid date"); elem("ipMakeNewItem_Year").focus(); return; }
-
-    ttHour = getElemVal("ipMakeNewItem_Hour");
-    if ( isBlank(ttHour) ) { alert("Hour is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Hour").focus(); return; }
-
-    ttMinute = getElemVal("ipMakeNewItem_Minute");
-    if ( isBlank(ttMinute) ) { alert("Minute is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_Minute").focus(); return; }
-
-    if ( !isValidTime(ttHour, ttMinute) ) { alert("The Hour/Minute entered is not a valid time"); elem("ipMakeNewItem_Hour").focus(); return; }
-
-    ttMinutesTracked = getElemVal("ipMakeNewItem_MinutesTracked");
-    if ( isBlank(ttMinutesTracked) ) { alert("MinutesTracked is required for " + CONST_timeTracking_itemName); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
-    if ( !isNumeric(ttMinutesTracked) ) { alert("MinutesTracked requires a numeric value"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
-    if ( parseInt(ttMinutesTracked) < 0 ) { alert("MinutesTracked must be greater than 0"); elem("ipMakeNewItem_MinutesTracked").focus(); return; }
+    if ( ! tt_isEntryValid("MakeNewItem", ttUiDataObj) ) {
+      return;
+    }
 
     doneStatusCode = CONST_doneStatusCode_okay;
   }
@@ -6007,32 +6132,11 @@ function do_make_new_item(makeCode) {
     }
 
     if (timeTracking == "1") {
-      wapp.timeTracking_defaultYear = ttYear;
-      wapp.timeTracking_defaultMonth = ttMonth;
-      wapp.timeTracking_defaultDay = ttDay;
+      wapp.timeTracking_defaultYear = ttUiDataObj.year;
+      wapp.timeTracking_defaultMonth = ttUiDataObj.month;
+      wapp.timeTracking_defaultDay = ttUiDataObj.day;
 
-      //TO-DO1.5: use new function .setWibtypeAndWtifs() ?
-      let ttItemObj = grabItemObjByName(CONST_timeTracking_itemName);
-      newItemObj.assignToWibtype(ttItemObj.itemId);
-
-      let ttWtifItemIds = ttItemObj.getListMemberItemIds();
-
-      ttWtifItemIds.forEach( (ttWtifItemId) => {
-        let ttWtifItemObj = grabItemObj(ttWtifItemId);
-        let wtifData = "";
-        switch (ttWtifItemObj.itemName) {
-          case CONST_timeTracking_wtifYMD_itemName:
-            wtifData = ttYear + "-" + ttMonth + "-" + ttDay;
-            break;
-          case CONST_timeTracking_wtifTime_itemName:
-            wtifData = ttHour + ":" + ttMinute;
-            break;
-          case CONST_timeTracking_wtifMinsTracked_itemName:
-            wtifData = ttMinutesTracked;
-            break;
-        }
-        newItemObj.setWtifData(ttItemObj.itemId, ttWtifItemObj.itemId, null, wtifData, true)
-      } );
+      tt_saveWtifData(newItemObj, ttUiDataObj);
     }
 
     hidePopUp("MakeNewItem");
@@ -6156,6 +6260,32 @@ function edit_storage_row__do_all_items_edit() {
 
 function edit_storage_row__cancel_all_items_edit() {
   elem("dvShowStorage_EditAllItemIds").style.display = "none";
+}
+
+function edit_time_tracking() {
+  showPopUp("EditTimeTracking", "ipEditTimeTracking_Hour");
+}
+
+function edit_time_tracking__cancel() {
+  hidePopUp("EditTimeTracking");
+  displayPage("ViewItem");
+}
+
+function edit_time_tracking__make_this_edit() {
+  var ttUiDataObj = {};
+
+  if ( ! tt_isEntryValid("EditTimeTracking", ttUiDataObj) ) {
+    return;
+  }
+
+  tt_saveWtifData(wapp.itemObj, ttUiDataObj);
+
+  hidePopUp("EditTimeTracking");
+  goToItemView(null, true);
+}
+
+function edit_time_tracking__set_ymd_to_today() {
+alert("--- incomplete ---")
 }
 
 function export_backup_text() {
@@ -6789,22 +6919,6 @@ const CONST_wb_screen_contentTypeCode_clicky = "300";
 const CONST_wb_screen_contentTypeCode_heading = "120";
 const CONST_wb_screen_contentTypeCode_input = "200";
 const CONST_wb_screen_contentTypeCode_text = "100";
-
-const CONST_wb_screenBoxWibtype_itemName = "wib-builder-screen-box";
-
-const CONST_wb_screenBoxWibtype_wtif_BoxesAcross_itemName = "BoxesAcross";
-const CONST_wb_screenBoxWibtype_wtif_BoxesDown_itemName = "BoxesDown";
-const CONST_wb_screenBoxWibtype_wtif_ContentData_itemName = "ContentData";
-const CONST_wb_screenBoxWibtype_wtif_ContentTypeCode_itemName = "ContentTypeCode";
-const CONST_wb_screenBoxWibtype_wtif_StartColumn_itemName = "StartColumn";
-const CONST_wb_screenBoxWibtype_wtif_StartRow_itemName = "StartRow";
-
-const CONST_wb_screenWibtype_wtif_NumColumns_itemName = "NumColumns";
-const CONST_wb_screenWibtype_wtif_NumRows_itemName = "NumRows";
-const CONST_wb_screenWibtype_wtif_WbAppItemId_itemName = "WbAppItemId";
-
-
-wapp.wb_screenBoxWibtype_itemId = null;
 
 
 ///////////////
