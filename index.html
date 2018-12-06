@@ -695,6 +695,36 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <div id="dvPopUp" style="display: none; border: 2px black solid">
 
+  <div class="grid1" id="dvPopUp_AddTimeTracking" style="display: none; padding-top: 0.3em">
+    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Edit Time Tracking</b></div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text">Item Name:</div>
+    <div class="grid1Cell gc1TextRight"><span id="spnAddTimeTracking_itemName" class="popUpText popUpMaxTextWidth"></span></div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">
+      <a style="white-space: nowrap; font-size: 90%" href="javascript:void add_time_tracking__set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
+    </div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipAddTimeTracking_Year" class="ipYear" maxlength="4" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipAddTimeTracking_Month" class="ipMonthDay" maxlength="2" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipAddTimeTracking_Day" class="ipMonthDay" maxlength="2" />
+    </div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Time:</div>
+    <div class="grid1Cell gc1Input gc1Group1">
+      <input id="ipAddTimeTracking_Hour" class="ipTime" maxlength="2" />
+      : <input id="ipAddTimeTracking_Minute" class="ipTime" maxlength="2" />
+    </div>
+    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
+    <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
+    <div class="grid1Cell gc1Input gc1Group1"><input id="ipAddTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Footer">
+      <a style="white-space: nowrap" href="javascript:void add_time_tracking__add_this()">add this</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void add_time_tracking__cancel()">cancel</a>
+    </div>
+  </div>
+
   <div class="grid1" id="dvPopUp_ChangeDoneStatus" style="display: none">
     <div class="grid1Cell gc1Header"><b>Change Done Status</b></div>
     <div class="grid1Cell gc1VSpace1"></div>
@@ -877,7 +907,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.84"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.85"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -918,6 +948,7 @@ const CONST_listName_wibtypes = "types";
 const CONST_propName_sortPosition = "sortPosition";
 const CONST_propName_itemId = "itemId";
 const CONST_propName_itemName = "itemName";
+const CONST_propName_wibtypeItemId = "wibtypeItemId";
 const CONST_propName_wtifItemId = "wtifItemId";
 
 const CONST_reordering_mode_normal = "normal";
@@ -1227,6 +1258,20 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
   wtifDataObj.wtifItemId = wtifItemId;
 
   wtifDataObj.theData = theData;
+
+  wtifDataObj.deleteFromDatastore = function(itemIdAssignedToTheWibtype) {
+    //declaring new variables, because:
+    //  accidentally using wtifItemId or theData
+    //  (instead of this.theData or this.wtifItemId)
+    //  would not throw an error even with "use strict"
+    //  (because the former variables are used/available in the parent function)
+    let wtifItemId_toDelete = this.wtifItemId;
+
+    //NOTE: "itemIdAssignedToTheWibtype" is the item whose wtif-data is being deleted
+    var saveKeyText_wtifData = getSaveKeyText_wtifData(itemIdAssignedToTheWibtype, wtifItemId_toDelete);
+
+    deleteFromDatastore(saveKeyText_wtifData);
+  };
 
   wtifDataObj.saveToDatastore = function(itemIdAssignedToTheWibtype) {
     //declaring new variables, because:
@@ -2009,20 +2054,6 @@ function getAllItemsArray() {
   return allItemIds_array;
 }
 
-function getWappDateTimeObj_fromJSDateTime(jsDateTime) {
-  if ( isBlank(jsDateTime) ) jsDateTime = new Date();
-
-  var yyyy = jsDateTime.getFullYear();
-  var m = jsDateTime.getMonth() + 1; //January is 0
-  var d = jsDateTime.getDate();
-  var h = jsDateTime.getHours();
-  var n = jsDateTime.getMinutes();
-
-  var wappDateTimeObj = createWappDateTimeObj1(yyyy, m, d, h, n, null);
-
-  return wappDateTimeObj;
-}
-
 function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
   if ( booleanFieldZeroOrOne == "1" ) {
     return "yes";
@@ -2297,6 +2328,7 @@ function getMonthAsTwoDigitString(m) {
 function getObjArrayAsString(theArray, propName1, propName2) {
   var i, str = "";
   for (i = 0; i < theArray.length; i++ ){
+    str += "array item #" + (parseInt(i) + 1) + " ----- ";
     str += propName1 + ": " + theArray[i][propName1];
     if ( !isBlank(propName2) ) str += ", " + propName2 + ": " + theArray[i][propName2];
     str += "\n";
@@ -2316,6 +2348,19 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
   });
 
   return revisedArray;
+
+  /* test code for this function:
+  var x1 = {prop1: "a"};
+  var x2 = {prop1: "b"};
+  var x3 = {prop1: "b"};
+  var x4 = {prop1: "a"};
+
+  var ay = [x1, x2, x3, x4];
+
+  var ay2 = getObjArrayWithoutElem(ay, "prop1", "b")
+
+  dc(getObjArrayAsString(ay2, "prop1"))
+  */
 }
 
 function getProcessedStringForSave(oldString) {
@@ -2399,6 +2444,20 @@ function getValArrayWithoutElem(theArray, valToExclude) {
   });
 
   return revisedArray;
+}
+
+function getWappDateTimeObj_fromJSDateTime(jsDateTime) {
+  if ( isBlank(jsDateTime) ) jsDateTime = new Date();
+
+  var yyyy = jsDateTime.getFullYear();
+  var m = jsDateTime.getMonth() + 1; //January is 0
+  var d = jsDateTime.getDate();
+  var h = jsDateTime.getHours();
+  var n = jsDateTime.getMinutes();
+
+  var wappDateTimeObj = createWappDateTimeObj1(yyyy, m, d, h, n, null);
+
+  return wappDateTimeObj;
 }
 
 function getWibDataTypeNameFromId(wibDataTypeId) {
@@ -3619,6 +3678,34 @@ function itemObjFactory() {
     this.saveListMembersToDatastore(newListMemberDataObjs);
   };
 
+  itemObj.removeWibtype = function(wibtypeItemId_toRemove) {
+    // create replacement array for wtif-data-objects that don't match the wibtypeItemId_toRemove function parameter
+    var newWtifDataObjs = {};
+
+    // cycle through all wtif-data-objects:
+    //
+    //   - if the wibtype  DOES      match wibtypeItemId_toRemove  -->  delete from datastore
+    //
+    //   - if the wibtype  DOES NOT  match wibtypeItemId_toRemove  -->  save the wtif-data-object to the replacement array
+    //
+    this.wtifDataObjs.forEach( (wtifDataObj) => {
+      if ( isEqual(wibtypeItemId_toRemove, wtifDataObj.wibtypeItemId) ) {
+        wtifDataObj.deleteFromDatastore(this.itemId);
+      } else {
+        newWtifDataObjs.push(wtifDataObj);
+      }
+    } );
+
+    // set the item's live wtif-data-objects array to the replacement array
+    this.wtifDataObjs = newWtifDataObjs;
+
+    // remove the wibtypeItemId_toRemove
+    this.assignedWibtypes_itemIds = getValArrayWithoutElem(this.assignedWibtypes_itemIds, wibtypeItemId_toRemove);
+
+    // save the revised wibtype-itemId-array to the datastore
+    this.saveWibtypeAssignmentsToDatastore();
+  };
+
   itemObj.saveConnectedItemsToDatastore = function() {
     var saveKeyText_connectedItems_ofItem = getSaveKeyText_connectedItems_ofItem(this.itemId);
     var connectedItems_string = "";
@@ -3657,7 +3744,14 @@ function itemObjFactory() {
 
   itemObj.saveWibtypeAssignmentsToDatastore = function() {
     var assignedWibtypes_itemIds_string = getIdString(this.assignedWibtypes_itemIds);
-    saveToDatastore(getSaveKeyText_wibtypeAssignments_toItem(this.itemId), assignedWibtypes_itemIds_string);
+    var saveKeyText = getSaveKeyText_wibtypeAssignments_toItem(this.itemId);
+
+    // if the string is empty, we can delete the wibtype-assignments key from the datastore
+    if ( isBlank(assignedWibtypes_itemIds_string) ) {
+      deleteFromDatastore(saveKeyText);
+    } else {
+      saveToDatastore(saveKeyText, assignedWibtypes_itemIds_string);
+    }
   };
 
   itemObj.saveWibtypeInfoFieldInfoToDatastore = function() {
@@ -4174,6 +4268,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
   // when switching directly from one pop-up to another, we were getting too-wide layout, so calling a blank displayPage in order to reset the UI first
   displayPage("");
 
+  elem("dvPopUp_AddTimeTracking").style.display = "none";
   elem("dvPopUp_ChangeDoneStatus").style.display = "none";
   elem("dvPopUp_EditTimeTracking").style.display = "none";
   elem("dvPopUp_MakeNewItem").style.display = "none";
@@ -4186,6 +4281,27 @@ function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_" + popUpCode).style.display = "grid";
 
   switch (popUpCode) {
+
+    case "AddTimeTracking": {
+      elem("spnAddTimeTracking_itemName").innerHTML = wapp.itemObj.itemName;
+
+      resetElemVal("ipAddTimeTracking_Year");
+      resetElemVal("ipAddTimeTracking_Month");
+      resetElemVal("ipAddTimeTracking_Day");
+      resetElemVal("ipAddTimeTracking_Hour");
+      resetElemVal("ipAddTimeTracking_Minute");
+      resetElemVal("ipAddTimeTracking_MinutesTracked");
+
+      if ( isBlank(wapp.timeTracking_defaultYear) || isBlank(wapp.timeTracking_defaultMonth) || isBlank(wapp.timeTracking_defaultDay) ) {
+        setElemsToToday("ipAddTimeTracking_Year", "ipAddTimeTracking_Month", "ipAddTimeTracking_Day")
+      } else {
+        if ( !isBlank(wapp.timeTracking_defaultYear) ) elem("ipAddTimeTracking_Year").value = wapp.timeTracking_defaultYear;
+        if ( !isBlank(wapp.timeTracking_defaultMonth) ) elem("ipAddTimeTracking_Month").value = wapp.timeTracking_defaultMonth;
+        if ( !isBlank(wapp.timeTracking_defaultDay) ) elem("ipAddTimeTracking_Day").value = wapp.timeTracking_defaultDay;
+      }
+
+      break;
+    }
 
     case "ChangeDoneStatus": {
       elem("spnChangeDoneStatus_mainListName").innerHTML = wapp.itemObj.getMainListName();
@@ -5523,6 +5639,7 @@ function writeHtml_WtifData() {
     html += "<div class='grid2Cell gc2Header2'>" + wibtypeItemObj.itemName
     if ( isEqual(CONST_timeTracking_itemName, wibtypeItemObj.itemName) ) {
       html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void edit_time_tracking()'>edit</a>";
+      html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void remove_time_tracking()'>remove</a>";
     }
     html += "&nbsp;&nbsp;</div>\n";
     html += "<div class='grid2Cell gc2VSpace2'></div>\n";
@@ -5552,7 +5669,8 @@ function writeHtml_WtifData() {
   }
 
   if (wapp.itemObj.assignedWibtypes_itemIds == 0) {
-    html += "<div class='grid2Cell gc2Footer'>types: <i>none</i></div>\n";
+    html += "<div class='grid2Cell gc2Footer'>types: <i>none</i>";
+    html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void view_item__add_time_tracking()'>add TT</a></div>\n";
   }
 
   html += "</div>\n";
@@ -5650,6 +5768,28 @@ function add_storage_row() {
 
   saveToDatastore(keyName, keyValue);
   show_storage();
+}
+
+function add_time_tracking__add_this() {
+  var ttUiDataObj = {};
+
+  if ( ! tt_isEntryValid("AddTimeTracking", ttUiDataObj) ) {
+    return;
+  }
+
+  tt_saveWtifData(wapp.itemObj, ttUiDataObj);
+
+  hidePopUp("AddTimeTracking");
+  goToItemView(null, true);
+}
+
+function add_time_tracking__cancel() {
+  hidePopUp("AddTimeTracking");
+  displayPage("ViewItem");
+}
+
+function add_time_tracking__set_ymd_to_today() {
+alert("--- incomplete ---")
 }
 
 function all_apps__create_new_app() {
@@ -6450,6 +6590,17 @@ function rename_item() {
   }
 }
 
+function remove_time_tracking() {
+  if ( ! confirm("Remove " + CONST_timeTracking_itemName + " info?") ) {
+    return;
+  }
+
+  wapp.itemObj.removeWibtype(wapp.timeTracking_wibtypeItemId);
+
+  hidePopUp("AddTimeTracking");
+  goToItemView(null, true);
+}
+
 function return_home() {
   if (!wapp.wappDataLoadedSuccessfully) loadAppData_andReturnNextDisplayPage();
   setWappItemObj(grabItemObjByName(CONST_listName_homePage));
@@ -6632,6 +6783,9 @@ function view_app__run_app() {
   wb_app_run(wapp.wb_curApp_itemObj);
 }
 
+function view_item__add_time_tracking() {
+  showPopUp("AddTimeTracking", "ipAddTimeTracking_Hour");
+}
 
 
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
