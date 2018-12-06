@@ -907,7 +907,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.85"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.86"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -3396,6 +3396,10 @@ function itemObjFactory() {
     return true;
   };
 
+  itemObj.changeDoneStatus = function(newDoneStatusCode) {
+    this.changeItemInfo(null, newDoneStatusCode, null, null, null);
+  }
+
   itemObj.connectToItem = function(itemId2, saveToDatastore) {
     var i, thisItemAlreadyHasConnection = false, item2AlreadyHasConnection = false;
 
@@ -4350,6 +4354,8 @@ function showPopUp(popUpCode, popUpFocusElem) {
         elem("dvChangeDoneStatus_Notice1").style.display = "none";
         elem("dvChangeDoneStatus_Notice2").style.display = "none";
       }
+
+      break;
     }
 
     case "EditTimeTracking": {
@@ -5779,6 +5785,8 @@ function add_time_tracking__add_this() {
 
   tt_saveWtifData(wapp.itemObj, ttUiDataObj);
 
+  wapp.itemObj.changeDoneStatus(CONST_doneStatusCode_okay);
+
   hidePopUp("AddTimeTracking");
   goToItemView(null, true);
 }
@@ -6200,7 +6208,7 @@ function do_change_done_status(newDoneStatusDisplay) {
     newDoneStatusCode = CONST_doneStatusCode_undone;
   }
 
-  wapp.itemObj.changeItemInfo(null, newDoneStatusCode, null, null, null);
+  wapp.itemObj.changeDoneStatus(newDoneStatusCode);
 
   hidePopUp("ChangeDoneStatus");
 
