@@ -190,7 +190,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:0.8em"></div>
     <div>from list:&nbsp;&nbsp;&nbsp;<span id="spnMoveOrCopy_FromList"></span></div>
     <div style="height:1.5em"></div>
-    <div>moving or copying these items:</div>
+    <div id="MoveOrCopy_Info1">moving or copying these items:</div>
     <div style="height:0.8em"></div>
     <div style="display: inline-block">
       <div style="border-bottom: 1px black solid"></div>
@@ -684,6 +684,30 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       </div>
     </div>
 
+    <div id="dvViewItem_WibtypesForListMembersArea" style="display: none">
+      <div style="height: 0.95em"></div>
+      <div style="height: 5px; border: 2px solid #AAAAAA">
+        <div style="height: 1px; background-color: #DDDDDD"></div>
+      </div>
+      <div id="dvViewItem_WibtypesForListMembers_Header" style="display: none">
+        <div style="height: 0.95em"></div>
+        <div style="display: inline-block">
+          <div>Types for List Members:</div>
+          <div style="height: 0.3em"></div>
+          <div style="border-bottom: 2px solid #BBBBBB"></div>
+        </div>
+      </div>
+      <div style="height: 0.95em"></div>
+      <div>
+        <div id="dvViewItem_WibtypesForListMembers_ItemsIndent" style="display: inline-block; width: 1em"></div>
+        <div id="dvViewItem_WibtypesForListMembers_Items" style="display: inline-block"></div>
+      </div>
+      <div id="dvViewItem_WibtypesForListMembers_LinkArea" style="display: none">
+        <div style="height: 1.8em"></div>
+        <div><a href="javascript:void view_item__add_type_for_list_members()" style="white-space: nowrap">add type for list members</a></div>
+      </div>
+    </div>
+
     <div id="dvViewItem_EndSpacerArea">
       <div style="height:1em"></div>
     </div>
@@ -908,7 +932,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.87"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.88"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -1000,12 +1024,6 @@ const CONST_wb_wibtypeInstanceHolderWibtype_wtif_wibtypeInstanceHeldItemId_itemN
 
 const CONST_wbs_screenWtifs_screenTypeCode_itemName = "ScreenTypeCode";
 const CONST_wbs_screenWtifs_wibtypeItemId_itemName = "WibtypeItemId";
-
-
-//TO-DO2: can delete these wibapp instances are all changed by running 0.81-ish code
-const CONST_appNarrow_OLD = "app_narrow";
-const CONST_devText1_OLD = "devText1";
-
 
 const CONST_wibapp_narrow = "wibapp_narrow";
 const CONST_wibapp_dev1 = "wibapp_dev1";
@@ -1177,12 +1195,12 @@ function createWappDateTimeObj2(ymd_inWtifStyle, time_inWtifStyle, minutesTracke
   return createWappDateTimeObj1(ymd_inWtifStyle_array[0], ymd_inWtifStyle_array[1], ymd_inWtifStyle_array[2], time_inWtifStyle_array[0], time_inWtifStyle_array[1], minutesTracked);
 }
 
-function createConnectedItemsDataObj(itemId2) {
-  var connectedItemsDataObj = {};
+function createConnectedItemDataObj(itemId2) {
+  var connectedItemDataObj = {};
 
-  connectedItemsDataObj.itemId2 = itemId2;
+  connectedItemDataObj.itemId2 = itemId2;
 
-  return connectedItemsDataObj;
+  return connectedItemDataObj;
 }
 
 function createItemInfoString(itemName, doneStatusCode, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
@@ -1239,6 +1257,14 @@ function createListMemberDataObj(itemId, sortPosition) {
   listMemberDataObj.sortPosition = sortPosition;
 
   return listMemberDataObj;
+}
+
+function createWibtypeForListMembersDataObj(wibtypeItemId) {
+  var wibtypeForListMembersDataObj = {};
+
+  wibtypeForListMembersDataObj.wibtypeItemId = wibtypeItemId;
+
+  return wibtypeForListMembersDataObj;
 }
 
 function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
@@ -1468,12 +1494,42 @@ function displayPage(pageName) {
       }
 
     case "MoveOrCopy": {
+        let isSingleItem, isSingleItemListMove;
+
         elem("spnAppHeader_Home").style.display = "none";
+
         if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
           //single-item-move-or-copy
-          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(wapp.itemObj.displayedOnList_itemId).itemName + "</i>";
+
+          isSingleItem = true;
+
+          let grabbingItemObj1 = grabItemObj(wapp.grabbing_itemId1);
+          if (grabbingItemObj1.isList == "1") {
+            isSingleItemListMove = true;
+          }
+          
+          if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+            elem("spnMoveOrCopy_FromList").innerHTML = "<i>Home</i>";
+          } else {
+            elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(wapp.itemObj.displayedOnList_itemId).itemName + "</i>";
+          }
+
         } else {
+
+          isSingleItem = false;
+
           elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + wapp.itemObj.itemName + "</i>";
+
+        }
+
+        if (isSingleItem) {
+          if (isSingleItemListMove) {
+            elem("MoveOrCopy_Info1").innerHTML = "moving this item:";
+          } else {
+            elem("MoveOrCopy_Info1").innerHTML = "moving or copying this item:";
+          }
+        } else {
+          elem("MoveOrCopy_Info1").innerHTML = "moving or copying these items:";
         }
 
         elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
@@ -1600,8 +1656,8 @@ function displayPage(pageName) {
           } else {
             elem("dvViewItem_ItemActionsArea1").style.display = "none";
             elem("dvViewItem_ItemActionsArea2").style.display = "";
-            elem("spnViewItem_MoveCopy1").style.display = "none";
-            elem("spnViewItem_MoveCopy2").style.display = "none";
+            elem("spnViewItem_MoveCopy1").style.display = "";
+            elem("spnViewItem_MoveCopy2").style.display = "";
           }
           elem("spnViewItem_ShowWibtypes").style.display = "none";
           elem("spnViewItem_ShowWibtypeInfoField").style.display = "none";
@@ -1706,6 +1762,38 @@ function displayPage(pageName) {
 
         if (wapp.reordering_activatedItemId) {
           css_addClass(getHtml_aItem(wapp.reordering_activatedItemId), CONST_cssClassName_bold);
+        }
+
+        // dvViewItem_WibtypesForListMembersArea
+        if (wapp.itemObj.isWibtype == "1" || wapp.itemObj.isWibtypeInfoField == "1" || wapp.itemObj.isList == "0" ) {
+
+          elem("dvViewItem_WibtypesForListMembersArea").style.display = "none";
+
+        } else {
+
+          elem("dvViewItem_WibtypesForListMembersArea").style.display = "";
+
+          if (wapp.itemObj.connectedItemDataObjs.length > 0) {
+            let html = "";
+
+            for (i = 0; i < wapp.itemObj.wibtypeForListMembersDataObjs.length; i++) {
+              let x = grabItemObj(wapp.itemObj.wibtypeForListMembersDataObjs[i].wibtypeItemId);
+              if (html !== "") html += "<div style='height: 1em'></div>"
+              //html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
+              html += " <div>" + x.itemName + "</div>\n";
+            }
+
+            elem("dvViewItem_WibtypesForListMembers_Header").style.display = "";
+            elem("dvViewItem_WibtypesForListMembers_ItemsIndent").style.display = "inline-block";
+            elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = html;
+            elem("dvViewItem_WibtypesForListMembers_LinkArea").style.display = "";
+          } else {
+            elem("dvViewItem_WibtypesForListMembers_Header").style.display = "none";
+            elem("dvViewItem_WibtypesForListMembers_ItemsIndent").style.display = "none";
+            elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = "types for list members: <i>none</i>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void view_item__add_type_for_list_members()\" style=\"white-space: nowrap\">add</a>";
+            elem("dvViewItem_WibtypesForListMembers_LinkArea").style.display = "none";
+          }
+
         }
 
         if (wapp.focusElemId) {
@@ -1980,6 +2068,21 @@ function doCheckboxClickAction(elemId) {
   }
 }
 
+function doesObjArrayHaveElem(theArray, propName, propValToMatch) {
+  for (var i = 0; i < theArray.length; i++) {
+
+    if ( ! doesObjHaveProp(theArray[i],propName) ) {
+      continue;
+    }
+
+    if ( isEqual(theArray[i][propName], propValToMatch) ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function doesObjHaveProp(obj, propName) {
   if (obj == null) {
     return false;
@@ -2021,28 +2124,16 @@ function doesObjHaveProp(obj, propName) {
 }
 
 function doesValArrayHaveElem(theArray, valToMatch) {
-  var revisedArray = theArray.filter( (arrayElem) => {
-    var returnValue = false;
-    if ( isEqual(arrayElem, valToMatch) ) {
-      returnValue = true;
-    }
-    return returnValue;
-  });
 
-  if (revisedArray.length == 0) {
-    return false;
-  } else {
-    return true;
-  }
+  for (var i = 0; i < theArray.length; i++) {
 
-/* OLD CODE
-  for (let i = 0; i < theArray.length; i++) {
-    if (isEqual(theArray[i], valToMatch) ) {
+    if ( isEqual(theArray[i], valToMatch) ) {
       return true;
     }
+
   }
+
   return false;
-*/
 }
 
 function elem(elemId) {
@@ -2391,6 +2482,10 @@ function getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemId) {
 
 function getSaveKeyText_wibtypeAssignments_toItem(itemId) {
   return "iWTAs_" + itemId;
+}
+
+function getSaveKeyText_wibtypesForListMembers_ofItem(itemId) {
+  return "iWTFLMs_" + itemId;
 }
 
 function getSaveKeyText_wtifData(itemIdAssignedToTheWibtype, wtifItemId) {
@@ -2742,8 +2837,19 @@ function grabItemObj(itemId, suppressErrorMsgIfNotFound) {
   if ( !isBlank(connectedItems_string) ) connectedItems_array = connectedItems_string.split(sD);
   for (i = 0; i < connectedItems_array.length; i++) {
     let itemId2 = connectedItems_array[i];
-    let x = createConnectedItemsDataObj(itemId2);
+    let x = createConnectedItemDataObj(itemId2);
     itemObj.connectedItemDataObjs.push(x);
+  }
+
+  // load wibtypes-for-list-members
+  var saveKeyText_wibtypesForListMembers_ofItem = getSaveKeyText_wibtypesForListMembers_ofItem(itemObj.itemId)  
+  var wibtypesForListMembers_string = getFromDatastore(saveKeyText_wibtypesForListMembers_ofItem);
+  var wibtypesForListMembers_array = [];
+  if ( !isBlank(wibtypesForListMembers_string) ) wibtypesForListMembers_array = wibtypesForListMembers_string.split(sD);
+  for (i = 0; i < wibtypesForListMembers_array.length; i++) {
+    let wibtypeItemId = wibtypesForListMembers_array[i];
+    let x = createWibtypeForListMembersDataObj(wibtypeItemId);
+    itemObj.wibtypeForListMembersDataObjs.push(x);
   }
 
   // return the item-object
@@ -3276,6 +3382,7 @@ function itemObjFactory() {
   itemObj.assignedWibtypes_itemIds = [];
   itemObj.wtifDataObjs = [];
   itemObj.connectedItemDataObjs = [];
+  itemObj.wibtypeForListMembersDataObjs = [];
 
   itemObj.addItemToListMembers = function(itemIdToAdd) {
     var listMemberDataObjs, curMaxSortPosition, sortPositionToUse, newListMemberDataObj;
@@ -3299,10 +3406,27 @@ function itemObjFactory() {
     this.saveListMembersToDatastore(listMemberDataObjs);
   };
 
+  itemObj.addWibtypeForListMembers = function(wibtypeItemId) {
+    // add this wibtype to the array of wibtypes-for-list-members for this item (if not already present)
+    if ( ! doesObjArrayHaveElem(this.wibtypeForListMembersDataObjs, CONST_propName_wibtypeItemId, wibtypeItemId) ) {
+      let x = createWibtypeForListMembersDataObj(wibtypeItemId);
+      this.wibtypeForListMembersDataObjs.push(x);
+    }
+
+    // assign the wibtype to all existing list-members
+    var listMemberItemObjs = this.getListMemberItemObjs();
+    listMemberItemObjs.forEach( (listMemberItemObj) => {
+      listMemberItemObj.assignToWibtype(wibtypeItemId);
+    } );
+
+    //save this item's wibtypes-for-list-members to the datastore
+    this.saveWibtypesForListMembersToDatastore();
+  };
+
   itemObj.assignToWibtype = function(wibtypeItemIdToAssign) {
     //confirm that this item is not already assigned to the wibtype
     if ( this.isAssignedToType(wibtypeItemIdToAssign) ) {
-      return false;
+      return;
     }
     
     //add the new wibtype's itemId to this list's array of wibtype-assignments
@@ -3413,7 +3537,7 @@ function itemObjFactory() {
     }
 
     if (!thisItemAlreadyHasConnection) {
-      let x = createConnectedItemsDataObj(itemId2);
+      let x = createConnectedItemDataObj(itemId2);
       itemObj.connectedItemDataObjs.push(x);
     }
 
@@ -3428,7 +3552,7 @@ function itemObjFactory() {
     }
 
     if (!item2AlreadyHasConnection) {
-      let x = createConnectedItemsDataObj(this.itemId);
+      let x = createConnectedItemDataObj(this.itemId);
       item2Obj.connectedItemDataObjs.push(x);
     }
 
@@ -3764,6 +3888,18 @@ function itemObjFactory() {
     saveToDatastore(getSaveKeyText_wibtypeInfoFieldInfo_ofItem(this.itemId), wibtypeInfoFieldInfoString);
   };
 
+  itemObj.saveWibtypesForListMembersToDatastore = function() {
+    var saveKeyText = getSaveKeyText_wibtypesForListMembers_ofItem(this.itemId);
+    var theString = "";
+
+    this.wibtypeForListMembersDataObjs.forEach( (x) => {
+      if (theString !== "") theString += sD;
+      theString += x.wibtypeItemId;
+    } );
+
+    saveToDatastore(saveKeyText, theString);
+  };
+
   itemObj.setWtifData = function(wibtypeItemId, wtifItemId, wtifItemName, theData, saveToDatastore) {
     if ( isBlank(wibtypeItemId) ){
 
@@ -4009,7 +4145,11 @@ function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
 
   if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    sourceList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+    if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+      sourceList_itemObj = grabItemObjByName(CONST_listName_homePage);
+    } else {
+      sourceList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+    }
   } else {
     singleItemGrab = false;
     sourceList_itemObj = wapp.itemObj;
@@ -5194,7 +5334,11 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
 
   if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    displayList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+    if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+      displayList_itemObj = grabItemObjByName(CONST_listName_homePage);
+    } else {
+      displayList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+    }
   } else {
     singleItemGrab = false;
     displayList_itemObj = wapp.itemObj;
@@ -5305,14 +5449,19 @@ function writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied() {
 }
 
 function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
-  var singleItemGrab, displayList_itemId, allItemIds_array, html = "", i, wroteFirstHtmlRow = false, listItemObjsToDisplay = [];
+  var singleItemGrab, grabbingItemObj1, displayList_itemId, allItemIds_array, html = "", i, wroteFirstHtmlRow = false, listItemObjsToDisplay = [];
   var sortingPropName = CONST_propName_itemName + "_forSorting";
   var homePageList_itemObj = grabItemObj(wapp.homePageList_itemId);
   var homePageList_listMemberDataObjs = homePageList_itemObj.getListMemberDataObjs();
 
   if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
     singleItemGrab = true;
-    displayList_itemId = wapp.itemObj.displayedOnList_itemId;
+    grabbingItemObj1 = grabItemObj(wapp.grabbing_itemId1);
+    if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+      displayList_itemId = grabItemObjByName(CONST_listName_homePage).itemId;
+    } else {
+      displayList_itemId = wapp.itemObj.displayedOnList_itemId;
+    }
   } else {
     singleItemGrab = false;
     displayList_itemId = wapp.itemObj.itemId;
@@ -5390,7 +5539,14 @@ function writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo() {
 
     html += "<tr><td style='width: 0.0em'></td><td>\n";
     html += " <a href='javascript:void move_to_this_list(\"" + curListItemObj.itemId + "\")'>move here</a>\n";
-    html += " &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void copy_to_this_list(\"" + curListItemObj.itemId + "\")'>copy here</a>\n";
+
+    if ( singleItemGrab && grabbingItemObj1.isList == "1" ) {
+      // if we are moving a single item that is a list, don't offer the "copy here" option
+      //  (copying duplicates items but not their list-members, which we will allow for multi-items because it might be helpful)
+    } else {
+      html += " &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript:void copy_to_this_list(\"" + curListItemObj.itemId + "\")'>copy here</a>\n";
+    }
+
     html += "</td></tr>\n";
 
     wroteFirstHtmlRow = true;
@@ -5799,6 +5955,10 @@ function add_time_tracking__cancel() {
 
 function add_time_tracking__set_ymd_to_today() {
 alert("--- incomplete ---")
+}
+
+function view_item__add_type_for_list_members() {
+alert("--- incomplete function ---");
 }
 
 function all_apps__create_new_app() {
@@ -7008,6 +7168,10 @@ function loadAppData_andReturnNextDisplayPage() {
     }
   }
 
+  /* asd */ {
+    
+  }
+
   /* OLD-ISH? -- previous wb-screen wtifs */ {
     let wbs_ScreenTypeCode_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_wbs_screenWtifs_screenTypeCode_itemName, wibBuilderScreen_wibtypeItemObj.itemId, true);
     if ( isBlank(wbs_ScreenTypeCode_itemObj) ) {
@@ -7044,20 +7208,6 @@ function loadAppData_andReturnNextDisplayPage() {
   if ( ! upgradeStoredData() ) return;
 
   elem("spnAppHeader_AppNameAndVersion").innerHTML = "wib v" + CONST_wibappVersion;
-
-  /* change (1) app_narrow to wibapp_narrow; (2) devText1 to wibapp_dev1 */ {
-    let curNarrow = getFromDatastore(CONST_appNarrow_OLD);
-    if (curNarrow !== null) {
-      saveToDatastore(CONST_wibapp_narrow, curNarrow);
-      deleteFromDatastore(CONST_appNarrow_OLD);
-    }
-
-    let curDev1 = getFromDatastore(CONST_devText1_OLD);
-    if (curDev1 !== null) {
-      saveToDatastore(CONST_wibapp_dev1, curDev1);
-      deleteFromDatastore(CONST_devText1_OLD);
-    }
-  }
 
   wapp.wappDataLoadedSuccessfully = true;
 
