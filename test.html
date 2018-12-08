@@ -121,49 +121,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1.0em"></div>
   </div>
 
-  <div id="dvPage_BackupExport" style="display: none">
-    <div style="display: inline-block">
-      <table cellspacing=0 cellpadding=0>
-      <tr><td style="height: 20px"></td></tr>
-      </table>
-      <div style="height:1em"></div>
-    </div>
-    <div style="height:0.8em"></div>
-    <textarea id="taExportedBackupText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
-    <div style="height:0.8em"></div>
-    <div><a href="javascript:void copy_imported_text_to_clipboard()">copy to clipboard</a></div>
-    <div style="height:2em"></div>
-  </div>
-
-  <div id="dvPage_BackupImport" style="display: none">
-    <div style="height:0.8em"></div>
-    <div>Paste text-to-import below:</div>
-    <div style="height:0.4em"></div>
-    <textarea id="taBackupTextToImport" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
-    <div style="height:0.8em"></div>
-    <div><a href="javascript:void begin_import()">begin import</a></div>
-    <div style="height:1em"></div>
-  </div>
-
-  <div id="dvPage_Dev" style="display: none">
-    <div style="height:0.8em"></div>
-    <div><a href="javascript:void export_backup_text()">export backup text</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void import_backup_text()">import backup text</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void toggle_import_blocked()">toggle import-backup-text blocked (for this device)</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void toggle_wibapp_dev()">toggle dev mode</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void toggle_wibapp_narrow()">toggle app narrow mode</a></div>
-    <div style="height:1.7em"></div>
-    <div><a href="javascript:void show_storage()">show storage</a></div>
-    <div style="height:100em"></div>
-    <div><a href="javascript:void clear_storage()">clear storage</a></div>
-    <div style="height:1em"></div>
-  </div>
-
-  <div id="dvPage_Home" style="display: none">
+  <div id="dvPage_Home">
     <div style="font-weight: bold">Home</div>
     <div style="height:0.8em"></div>
     <div>
@@ -188,331 +146,10 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height: 1em"></div>
   </div>
 
-  <div id="dvPage_MoveOrCopy" style="display: none">
-    <div style="font-weight: bold">Moving or Copying Items</div>
-    <div style="height:0.8em"></div>
-    <div>from list:&nbsp;&nbsp;&nbsp;<span id="spnMoveOrCopy_FromList"></span></div>
-    <div style="height:1.5em"></div>
-    <div id="MoveOrCopy_Info1">moving or copying these items:</div>
-    <div style="height:0.8em"></div>
-    <div style="display: inline-block">
-      <div style="border-bottom: 1px black solid"></div>
-      <div style="height:1em"></div>
-      <div id="dvMoveOrCopy_ItemsBeingMovedOrCopied"></div>
-      <div style="height:1em"></div>
-      <div style="border-bottom: 1px black solid"></div>
-    </div>
-    <div style="height:1.5em"></div>
-    <div>... to which list?&nbsp;&nbsp;&nbsp;<a id="aMoveOrCopy_Cancel" style="white-space: nowrap" href="javascript:void cancel_move()">cancel</a></div>
-    <div style="height:0.8em"></div>
-    <div style="display: inline-block">
-      <div style="border-bottom: 1px black solid"></div>
-      <div style="height:1em"></div>
-      <div id="dvMoveOrCopy_ListsToMoveOrCopyItemsTo"></div>
-      <div style="height:1em"></div>
-      <div style="border-bottom: 1px black solid"></div>
-    </div>
-    <div style="height:1em"></div>
-  </div>
-
-  <div id="dvPage_NavigateItems" style="display: none">
-    <div id="dvNavigateItems_ItemNameDisplay" style="font-size: 100%"></div>
-    <div id="dvNavigateItems_JoinedListsArea" style="display: none">
-      <div style="height: 0.3em"></div>
-      <div id="dvNavigateItems_JoinedListsDisplay"></div>
-    </div>
-    <div style="height: 1em"></div>
-    <div>
-      <a href="javascript:void navigate__cancel()" style="white-space: nowrap">cancel connection process</a>
-    </div>
-    <div style="height: 1em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 1.4em"></div>
-      <div id="dvNavigateItems_Items"></div>
-    <div style="height: 1.4em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 1em"></div>
-    <div>
-      <a href="javascript:void navigate__cancel()" style="white-space: nowrap">cancel connection process</a>
-    </div>
-    <div style="height: 1em"></div>
-  </div>
-
-  <div id="dvPage_ShowStorage" style="display: none">
-    <div id="dvStorage"></div>
-    <div style="height:0.6em"></div>
-    <div style="display: inline-block">
-      <hr></hr>
-      <div style="height:0.8em"></div>
-      <div><a href="javascript:void return_home_from_storage()">return home</a></div>
-    </div>
-    <div id="dvShowStorage_EditAllItemIds">
-      <div style="height:1em"></div>
-      <textarea id="taShowStorage_EditAllItemIds" style="height: 20vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea><br />
-      <a href="javascript:void edit_storage_row__do_all_items_edit()" style="white-space: nowrap">make this edit</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void edit_storage_row__cancel_all_items_edit()" style="white-space: nowrap">cancel</a>
-    </div>
-    <div style="height:1em"></div>
-  </div>
-
-  <div id="dvPage_WibBuilder_AllApps" style="display: none">
-    <div>
-      <a href="javascript:void all_apps__create_new_app()" style="white-space: nowrap">create new app</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_scripts()" style="white-space: nowrap">all scripts</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_screens()" style="white-space: nowrap">all screens</a>
-    </div>
-    <div style="height: 1.2em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 0.7em"></div>
-    <div>
-      <div id="dvWibBuilder_AllApps_Items" style="display: inline-grid; grid-template-columns: auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
-    </div>
-    <div style="height: 0.7em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 1.2em"></div>
-    <div>
-      <a href="javascript:void all_apps__create_new_app()" style="white-space: nowrap">create new app</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_scripts()" style="white-space: nowrap">all scripts</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_screens()" style="white-space: nowrap">all screens</a>
-    </div>
-  </div>
-
-  <div id="dvPage_WibBuilder_AllScreens" style="display: none">
-    <div>
-      <a href="javascript:void all_screens__build_new_screen()" style="white-space: nowrap">build new screen</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_screens__go_to_all_apps()" style="white-space: nowrap">all apps</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_screens__go_to_all_scripts()" style="white-space: nowrap">all scripts</a>
-    </div>
-    <div style="height: 1.2em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_AllScreens_Items"></div>
-    <div style="height: 0.7em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 1.2em"></div>
-    <div>
-      <a href="javascript:void all_screens__build_new_screen()" style="white-space: nowrap">build new screen</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_screens__go_to_all_apps()" style="white-space: nowrap">all apps</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_screens__go_to_all_scripts()" style="white-space: nowrap">all scripts</a>
-    </div>
-  </div>
-
-  <div id="dvPage_WibBuilder_AllScripts" style="display: none">
-    <div>
-      <a href="javascript:void all_scripts__create_new_script()" style="white-space: nowrap">create new script</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_scripts__go_to_all_apps()" style="white-space: nowrap">all apps</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_scripts__go_to_all_screens()" style="white-space: nowrap">all screens</a>
-    </div>
-    <div style="height: 1.2em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 0.7em"></div>
-    <div>
-      <div id="dvWibBuilder_AllScripts_Items" style="display: inline-grid; grid-template-columns: auto auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
-    </div>
-    <div style="height: 0.7em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 1.2em"></div>
-    <div>
-      <a href="javascript:void all_scripts__create_new_script()" style="white-space: nowrap">create new script</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_scripts__go_to_all_apps()" style="white-space: nowrap">all apps</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_scripts__go_to_all_screens()" style="white-space: nowrap">all screens</a>
-    </div>
-  </div>
-
-  <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
-    <div style="display: grid; width: 19.5em; margin-left: 0.3em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
-      <div style="font-weight: bold">Info About This Screen:</div>
-      <div style="height: 0.7em"></div>
-      <div style="height: 0.1em; background-color: black"></div>
-      <div style="height: 0.7em"></div>
-      <div style="display: grid; grid-template-columns: auto auto">
-        <div style="text-size: 85%; padding-right: 0.5em; padding-top: 0.2em; text-align: right">type of screen:</div>
-        <div style="text-size: 85%; font-style: normal"><span id="spnWibBuilder_BuildScreen__ScreenTypeCode"></span></div>
-        <div style="grid-column: 1/3; height: 0.8em"></div>
-        <div style="text-size: 85%; padding-right: 0.5em; text-align: right">type of thing:</div>
-        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Link">
-          <a id="aWibBuilder_BuildScreen_TypeName" style="text-size: 85%; font-style: normal" href="javascript:void build_screen__set_type_of_thing()">(click here)</a>
-        </div>
-
-<!-- OLD
-        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text" style="display: none; text-size: 85%; font-style: normal"></div>
--->
-
-      </div>
-    </div>
-    <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.5em">
-      <div id="dvWibBuilder_BuildScreen_HeaderText" style="border: 0.2em solid lightgrey; padding: 0.5em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
-      <div style="height: 0.5em"></div>
-      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-        <div id="dvWibBuilder_BuildScreen_ItemNameText" style="border: 0.2em solid lightgrey; width: ; padding: 0.5em; padding-top: 0.7em; text-align: right">_______ Name:</div>
-        <div style="border: 0.2em solid lightgrey; width: ; padding: 0.5em">
-          <input style="width: 100%" />
-        </div>
-      </div>
-      <div style="height: 0.5em"></div>
-      <div class="blue" style="border: 0.2em solid lightgrey; padding: 0.5em; font-style: italic; text-align: center">save&nbsp;&nbsp;&nbsp;</div>
-    </div>
-    <div style="height: 1.8em"></div>
-    <div><a href="javascript:void build_screen__run_this_screen()">run this screen</a></div>
-    <div style="height: 1.8em"></div>
-    <div><a href="javascript:void build_screen__go_to_all_screens()">list of all screens</a></div>
-  </div>
-
-  <div id="dvPage_WibBuilder_ChooseExistingWibtype" style="display: none">
-    <div style="">
-      <a href="javascript:void choose_existing_type__cancel()">cancel</a>
-    </div>
-    <div style="height: 1.2em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_ChooseExistingWibtype_Items"></div>
-    <div style="height: 0.7em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 1.2em"></div>
-    <div style="">
-      <a href="javascript:void choose_existing_type__cancel()">cancel</a>
-    </div>
-  </div>
-
-  <div id="dvPage_WibBuilder_DisplayScreen" style="display: none">
-    <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
-      <div id="dvWibBuilder_DisplayScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
-      <div style="height: 1em"></div>
-      <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-        <div id="dvWibBuilder_DisplayScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
-        <div style="width: ">
-          <input class="ipText" id="ipWibBuilder_DisplayScreen_ItemNameValue" style="width: 100%" />
-        </div>
-      </div>
-      <div style="height: 1em"></div>
-      <div style="text-align: center"><a href="javascript:void display_screen__save_new_item()">save</a>&nbsp;&nbsp;&nbsp;</div>
-    </div>
-    <div style="height: 1.8em"></div>
-    <div><a href="javascript:void display_screen__build_this_screen()">build this screen</a></div>
-    <div style="height: 1.8em"></div>
-    <div><a href="javascript:void display_screen__go_to_all_screens()">list of all screens</a></div>
-  </div>
-
-  <div id="dvPage_WibBuilder_RunScreen" style="display: none">
-
-    <div id="dvWibBuilder_RunScreen_OldSection" style="display: none">
-      <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
-        <div id="dvWibBuilder_RunScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
-        <div style="height: 1em"></div>
-        <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-          <div id="dvWibBuilder_RunScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
-          <div style="width: ">
-            <input class="ipText" id="ipWibBuilder_RunScreen_ItemNameValue" style="width: 100%" />
-          </div>
-        </div>
-        <div style="height: 1em"></div>
-        <div style="text-align: center"><a href="javascript:void run_screen__save_new_item()">save</a>&nbsp;&nbsp;&nbsp;</div>
-      </div>
-      <div style="height: 1.8em"></div>
-      <div><a href="javascript:void run_screen__build_this_screen()">build this screen</a></div>
-      <div style="height: 1.8em"></div>
-      <div><a href="javascript:void run_screen__go_to_all_screens()">list of all screens</a></div>
-    </div>
-
-    <div id="dvWibBuilder_RunScreen_NewSection" style="display: none">
-      <div id="dvWibBuilder_RunScreen_NewGrid" style="display: inline-grid">
-        (new grid HTML goes here)
-      </div>
-      <div style="height: 1.8em"></div>
-      <div><a href="javascript:void run_screen__back_to_app()">back to app</a></div>
-    </div>
-
-  </div>
-
-  <div id="dvPage_WibBuilder_ShowWibtypeInstances" style="display: none">
-    <div>
-      <a id="aWibBuilder_ShowWibtypeInstances_RunScreenAgain" href="javascript:void show_instances__run_screen_again()" style="white-space: nowrap">run screen again</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_instances__go_to_all_screens()" style="white-space: nowrap">go to all screens</a>
-    </div>
-    <div style="height: 1.2em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_ShowWibtypeInstances_Items"></div>
-    <div style="height: 0.7em"></div>
-    <div style="height: 0.1em; background-color: black"></div>
-    <div style="height: 1.2em"></div>
-    <div>
-      <a href="javascript:void show_instances__run_screen_again()" style="white-space: nowrap">run screen again</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_instances__go_to_all_screens()" style="white-space: nowrap">go to all screens</a>
-    </div>
-  </div>
-
-  <div id="dvPage_WibBuilder_ViewApp" style="display: none">
-    <div id="dvWibBuilder_ViewApp_ItemName">(app item name goes here)</div>
-    <div style="height: 1.8em"></div>
-    <div>
-      <a href="javascript:void view_app__run_app()" style="white-space: nowrap">run this app</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void view_app__go_to_all_apps()" style="white-space: nowrap">go to all apps</a>
-    </div>
-  </div>
-
-  <div id="dvPage_Wibtypes" style="display: none">
-    <div class="red" style="font-weight: bold">Types</div>
-    <div style="height: 0.8em"></div>
-    <div>
-      <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
-    </div>
-    <div style="height: 1em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 1.4em"></div>
-      <div id="dvWibtypes_Items"></div>
-    <div style="height: 0.4em"></div>
-    <div style="height: 5px; border: 2px solid #AAAAAA">
-      <div style="height: 1px; background-color: #DDDDDD"></div>
-    </div>
-    <div style="height: 1em"></div>
-    <div>
-      <a href="javascript:void make_new_type()" style="white-space: nowrap">make new type</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void return_home()" style="white-space: nowrap">home</a>
-    </div>
-    <div style="height: 1em"></div>
-  </div>
-
-  <div id="dvPage_ViewItem" style="display: none">
+  <div id="dvPage_ViewItem">
 
     <div id="dvViewItem_ItemNameArea">
       <div id="dvItemName" style="font-weight: bold; font-size: 115%"></div>
-    </div>
-
-    <div id="dvViewItem_JoinedListsArea" style="display: none">
-      <div style="height: 0.3em"></div>
-      <div id="dvListNameForItem"></div>
-    </div>
-
-    <div id="dvViewItem_ConnectedItemsArea">
-      <div style="height: 0.95em"></div>
-      <div style="height: 5px; border: 2px solid #AAAAAA">
-        <div style="height: 1px; background-color: #DDDDDD"></div>
-      </div>
-      <div id="dvViewItem_ConnectedItems_Header" style="display: none">
-        <div style="height: 0.95em"></div>
-        <div style="display: inline-block">
-          <div>Connected Items:</div>
-          <div style="height: 0.3em"></div>
-          <div style="border-bottom: 2px solid #BBBBBB"></div>
-        </div>
-      </div>
-      <div style="height: 0.95em"></div>
-      <div>
-        <div id="dvViewItem_ConnectedItems_ItemsIndent" style="display: inline-block; width: 1em"></div>
-        <div id="dvViewItem_ConnectedItems_Items" style="display: inline-block"></div>
-      </div>
-      <div id="dvViewItem_ConnectedItems_LinkArea" style="display: none">
-        <div style="height: 1.8em"></div>
-        <div><a href="javascript:void add_connected_item()" style="white-space: nowrap">add connected item</a></div>
-      </div>
     </div>
 
     <div id="dvViewItem_ItemActionsArea1" style="display: none">
@@ -547,46 +184,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
             &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void add_notes()"><nowrap>add notes</nowrap></a>
           </span>
         </div>
-      </div>
-    </div>
-
-    <div id="dvViewItem_Notes_Yes" style="display: none">
-      <div style="height: 0.95em"></div>
-      <div style="height: 5px; border: 2px solid #AAAAAA">
-        <div style="height: 1px; background-color: #DDDDDD"></div>
-      </div>
-      <div style="height: 0.95em"></div>
-      <div id="dvViewItem_Notes"></div>
-      <div style="height: 0.2em"></div>
-      <div>
-        <a style="white-space: nowrap" href="javascript:void edit_notes()">edit notes</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
-      </div>
-    </div>
-
-    <div id="dvViewItem_Wibtypes" style="display: none">
-      <div style="height: 0.95em"></div>
-      <div style="height: 5px; border: 2px solid #AAAAAA">
-        <div style="height: 1px; background-color: #DDDDDD"></div>
-      </div>
-      <div style="height: 0.95em"></div>
-      <div id="dvViewItem_Wibtypes_WtifData"></div>
-    </div>
-
-    <div id="dvViewItem_WibtypeInfoFieldInfo" style="display: none">
-      <div style="height: 0.95em"></div>
-      <div style="height: 5px; border: 2px solid #AAAAAA">
-        <div style="height: 1px; background-color: #DDDDDD"></div>
-      </div>
-      <div style="height: 0.95em"></div>
-      <div class="grid2">
-        <div class="grid2Cell gc2Header">Info-Field Info:&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_info_field_info()">edit</a></div>
-        <div class="grid2Cell gc2VSpace1"></div>
-        <div class="grid2Cell gc2TextLeft">Data Type:</div>
-        <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_WibDataType"></span></div>
-        <div class="grid2Cell gc2VSpace2"></div>
-        <div class="grid2Cell gc2TextLeft">Required:</div>
-        <div class="grid2Cell gc2TextRight"><span id="spn_ViewItem_WibtypeInfoFieldInfo_Required"></span></div>
       </div>
     </div>
 
@@ -638,9 +235,9 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 
 
-<!-- TO-DO1: remove this
+
         <div id="dv11" style="color: purple">TEST-11</div>
--->
+
 
         <div id="dvViewItem_ListMembers_Items"></div>
         <div style="height: 0.3em"></div>
@@ -697,30 +294,6 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       </div>
     </div>
 
-    <div id="dvViewItem_WibtypesForListMembersArea" style="display: none">
-      <div style="height: 0.95em"></div>
-      <div style="height: 5px; border: 2px solid #AAAAAA">
-        <div style="height: 1px; background-color: #DDDDDD"></div>
-      </div>
-      <div id="dvViewItem_WibtypesForListMembers_Header" style="display: none">
-        <div style="height: 0.95em"></div>
-        <div style="display: inline-block">
-          <div>Types for List Members:</div>
-          <div style="height: 0.3em"></div>
-          <div style="border-bottom: 2px solid #BBBBBB"></div>
-        </div>
-      </div>
-      <div style="height: 0.95em"></div>
-      <div>
-        <div id="dvViewItem_WibtypesForListMembers_ItemsIndent" style="display: inline-block; width: 1em"></div>
-        <div id="dvViewItem_WibtypesForListMembers_Items" style="display: inline-block"></div>
-      </div>
-      <div id="dvViewItem_WibtypesForListMembers_LinkArea" style="display: none">
-        <div style="height: 1.8em"></div>
-        <div><a href="javascript:void view_item__add_type_for_list_members()" style="white-space: nowrap">add type for list members</a></div>
-      </div>
-    </div>
-
     <div id="dvViewItem_EndSpacerArea">
       <div style="height:1em"></div>
     </div>
@@ -731,210 +304,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 </div> <!-- END OF: id="dvMainViewOverlay" -->
 
 
-<div id="dvPopUp" style="display: none; border: 2px black solid">
-
-  <div class="grid1" id="dvPopUp_AddTimeTracking" style="display: none; padding-top: 0.3em">
-    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Add Time Tracking</b></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Item Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnAddTimeTracking_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">
-      <a style="white-space: nowrap; font-size: 90%" href="javascript:void add_time_tracking__set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
-    </div>
-    <div class="grid1Cell gc1Input">
-      <input id="ipAddTimeTracking_Year" class="ipYear" maxlength="4" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipAddTimeTracking_Month" class="ipMonthDay" maxlength="2" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipAddTimeTracking_Day" class="ipMonthDay" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Time:</div>
-    <div class="grid1Cell gc1Input">
-      <input id="ipAddTimeTracking_Hour" class="ipTime" maxlength="2" />
-      : <input id="ipAddTimeTracking_Minute" class="ipTime" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input"><input id="ipAddTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
-    <div class="grid1Cell gc1VSpaceX" style="height: 1.5em"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void add_time_tracking__add_this()">add this</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void add_time_tracking__cancel()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_ChangeDoneStatus" style="display: none">
-    <div class="grid1Cell gc1Header"><b>Change Done Status</b></div>
-    <div class="grid1Cell gc1VSpace1"></div>
-    <div class="grid1Cell gc1Text">List Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_mainListName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Item Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Current Status:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnChangeDoneStatus_currentStatus" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace3"></div>
-    <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Undone1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Undone2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus_Undone" href="javascript:void do_change_done_status('undone')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Done1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Done2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus_Done" href="javascript:void do_change_done_status('done')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Okay1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Okay2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus_Okay" href="javascript:void do_change_done_status('okay')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Info1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Info2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus_Info" href="javascript:void do_change_done_status('info')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4" id="dvChangeDoneStatus_Notice1"></div>
-    <div class="grid1Cell gc1Footer" id="dvChangeDoneStatus_Notice2" style="font-weight: bold">
-      <a style="white-space: nowrap" id="aChangeDoneStatus_Notice" href="javascript:void do_change_done_status('notice')"></a>
-    </div>
-    <div class="grid1Cell gc1VSpace4"></div>
-    <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void cancel_change_done_status()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_EditTimeTracking" style="display: none; padding-top: 0.3em">
-    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Edit Time Tracking</b></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Item Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnEditTimeTracking_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">
-      <a style="white-space: nowrap; font-size: 90%" href="javascript:void edit_time_tracking__set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
-    </div>
-    <div class="grid1Cell gc1Input">
-      <input id="ipEditTimeTracking_Year" class="ipYear" maxlength="4" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_Month" class="ipMonthDay" maxlength="2" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_Day" class="ipMonthDay" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Time:</div>
-    <div class="grid1Cell gc1Input">
-      <input id="ipEditTimeTracking_Hour" class="ipTime" maxlength="2" />
-      : <input id="ipEditTimeTracking_Minute" class="ipTime" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input"><input id="ipEditTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void edit_time_tracking__make_this_edit()">make this edit</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_time_tracking__cancel()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_MakeNewItem" style="display: none; padding-top: 0.3em">
-    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Make New Item</b></div>
-    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
-    <div class="grid1Cell gc1QuickLinks">
-      <a style="white-space: nowrap; font-size: 95%" href="javascript:void do_make_new_item_line()">quick line</a>
-    </div>
-    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.1em"></div>
-    <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewItem_ItemName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1TextForActionCheckbox">add to top of list:</div>
-    <div class="grid1Cell gc1ActionCheckbox gc1ActionCheckboxFirst"><input id="ckMakeNewItem_TopOfList" type="checkbox" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1TextForActionCheckbox">remain on list view:</div>
-    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_StayListView" type="checkbox" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1TextForActionCheckbox">add additional items:</div>
-    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_AddMoreItems" type="checkbox" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1TextForActionCheckbox">do time tracking:</div>
-    <div class="grid1Cell gc1ActionCheckbox"><input id="ckMakeNewItem_TimeTracking" onclick="doCheckboxClickAction('ckMakeNewItem_TimeTracking')" type="checkbox" /></div>
-    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">
-      <a style="white-space: nowrap; font-size: 90%" href="javascript:void set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Y / M / D:
-    </div>
-    <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_Year" class="ipYear" maxlength="4" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Month" class="ipMonthDay" maxlength="2" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_Day" class="ipMonthDay" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">Time:</div>
-    <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_Hour" class="ipTime" maxlength="2" />
-      : <input id="ipMakeNewItem_Minute" class="ipTime" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
-    <div class="grid1Cell gc1VSpace2" style="padding-bottom: 0.8em"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void do_make_new_item()">make</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void cancel_make_new_item()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_MakeNewWibtype" style="display: none">
-    <div class="grid1Cell gc1Header red"><b>Make New Type</b></div>
-    <div class="grid1Cell gc1VSpace1"></div>
-    <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtype_WibtypeName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void do_make_new_type()">make</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_MakeNewWibtypeInfoField" style="display: none">
-    <div class="grid1Cell gc1Header red"><b>Make New Info-Field</b></div>
-    <div class="grid1Cell gc1VSpace1"></div>
-    <div class="grid1Cell gc1Text">Type Name:</div>
-    <div class="grid1Cell gc1TextRight"><span id="spnMakeNewWibtypeInfoField_WibtypeName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Info-Field Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewWibtypeInfoField_WibtypeInfoFieldName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Data Type:</div>
-    <div class="grid1Cell gc1Select"><span id="spnMakeNewWibtypeInfoField_WibDataTypeId" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1TextForCheckbox">Required:</div>
-    <div class="grid1Cell gc1Checkbox"><input id="ckMakeNewWibtypeInfoField_Required" type="checkbox" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void do_make_new_type_info_field()">make</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void cancel_make_new_type_info_field()">cancel</a>
-    </div>
-  </div>
-
-  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype" style="display: none">
-    <div class="grid1Cell gc1Header"><b>Use Existing Type?</b></div>
-    <div class="grid1Cell gc1VSpace4"></div>
-    <div class="grid1Cell gc1Footer" style="font-weight: bold">
-      <a href="javascript:void build_screen__use_existing_type('yes')">Yes -- use an existing type of thing</a>
-    </div>
-    <div class="grid1Cell gc1VSpace4"></div>
-    <div class="grid1Cell gc1Footer" style="font-weight: bold">
-      <a href="javascript:void build_screen__use_existing_type('no')">No -- create a new type of thing to use</a>
-    </div>
-    <div class="grid1Cell gc1VSpace4"></div>
-    <div class="grid1Cell gc1Line"></div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Footer">
-      <a href="javascript:void build_screen__use_existing_type('cancel')">cancel</a>
-    </div>
-  </div>
-
-</div>
-
-
-<textarea id="taDev1" style="display: none"></textarea>
+<textarea id="taDev1" style="display: "></textarea>
 
 
 <script type="text/javascript">
@@ -1059,7 +429,6 @@ const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during bac
 var wapp = {};
 wapp.focusElemId = null;
 wapp.focusElemId_pre = null;
-wapp.focusItemId = null;
 wapp.grabbing_itemId1 = null;
 wapp.grabbing_itemId2 = null;
 wapp.grabbing_itemIdArray = [];
@@ -1360,21 +729,8 @@ function dc(text) {
 
 function deactivateItemForReordering(itemId) {
   wapp.reordering_activatedItemId = null;
-
-  // we might be deactivating the reordering-item from a page that does not have the HTML elements related to reordering that specific item
-  //   i.e. this function is only being called to clear the wapp.reordering_activatedItemId, probably via toggleReordering_off()
-  //
-  // therefore, we need to check for the existence of the elements below, before acting upon them
-  var reorderingItem_elemId = getHtml_aItem(itemId);
-  var reorderingActivatedArea_forItem_elemId = getHtml_reorderingActivated_tr(itemId);
-
-  if ( html_doesElemExist(reorderingItem_elemId) ) {
-    css_removeClass(reorderingItem_elemId, CONST_cssClassName_bold);
-  }
-
-  if ( html_doesElemExist(reorderingActivatedArea_forItem_elemId) ) {
-    elem(reorderingActivatedArea_forItem_elemId).style.display = "none" ;
-  }
+  css_removeClass(getHtml_aItem(itemId), CONST_cssClassName_bold);
+  elem(getHtml_reorderingActivated_tr(itemId)).style.display = "none" ;
 }
 
 function deleteFromDatastore(itemKey) {
@@ -1413,14 +769,12 @@ function deleteItem__joinedList_and_itemName(joinedListWithItemId, itemNameToDel
 
 function displayPage(pageName) {
 
-  // set dev link
   if (wapp.isDev1) {
     elem("spnAppHeader_Dev").style.display = "";
   } else {
     elem("spnAppHeader_Dev").style.display = "none";
   }
 
-  // set different page heading for WibBuilder vs original
   if ( leftIs(pageName, "WibBuilder") ) {
 
     document.body.style.display = "grid";
@@ -1457,178 +811,31 @@ function displayPage(pageName) {
 
   }
 
-  // clear all HTML elements that were populated with items programatically
-  //  -- these could possibly cause conflicts when referring to item-ids that are referenced via the naming convention of an HTML element's id
-  elem("dvHome_Items").innerHTML = "";
-  elem("dvListNameForItem").innerHTML = "";
-  elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = "";
-  elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = "";
-  elem("dvNavigateItems_Items").innerHTML = "";
-  elem("dvViewItem_ConnectedItems_Items").innerHTML = "";
-  elem("dvViewItem_ListMembers_Items").innerHTML = "";
-  elem("dvViewItem_Wibtypes_WtifData").innerHTML = "";
-  elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = "";
-  elem("dvWibBuilder_AllApps_Items").innerHTML = "";
-  elem("dvWibBuilder_AllScreens_Items").innerHTML = "";
-  elem("dvWibBuilder_AllScripts_Items").innerHTML = "";
-  elem("dvWibBuilder_ChooseExistingWibtype_Items").innerHTML = "";
-  elem("dvWibBuilder_ShowWibtypeInstances_Items").innerHTML = "";
-  elem("dvWibtypes_Items").innerHTML = "";
+//  elem("dvPage_Home").style.display = "none";
+//  elem("dvPage_ViewItem").style.display = "none";
 
-  // hide all display-page sections -- will show the target display-page below
-  elem("dvPage_BackupExport").style.display = "none";
-  elem("dvPage_BackupImport").style.display = "none";
-  elem("dvPage_Dev").style.display = "none";
-  elem("dvPage_Home").style.display = "none";
-  elem("dvPage_MoveOrCopy").style.display = "none";
-  elem("dvPage_NavigateItems").style.display = "none";
-  elem("dvPage_ShowStorage").style.display = "none";
-  elem("dvPage_ViewItem").style.display = "none";
-  elem("dvPage_WibBuilder_AllApps").style.display = "none";
-  elem("dvPage_WibBuilder_AllScreens").style.display = "none";
-  elem("dvPage_WibBuilder_AllScripts").style.display = "none";
-  elem("dvPage_WibBuilder_BuildScreen").style.display = "none";
-  elem("dvPage_WibBuilder_ChooseExistingWibtype").style.display = "none";
-  elem("dvPage_WibBuilder_RunScreen").style.display = "none";
-  elem("dvPage_WibBuilder_ShowWibtypeInstances").style.display = "none";
-  elem("dvPage_WibBuilder_ViewApp").style.display = "none";
-  elem("dvPage_Wibtypes").style.display = "none";
-
-  // show target display-page
   if ( !isBlank(pageName) ) {
     elem("dvPage_" + pageName).style.display = "inline-grid";
   }
 
-  // run display-page-specific code
   switch (pageName) {
-
-    case "BackupExport": {
-      writeBackupExport();
-      break;
-    }
-
-    case "BackupImport": {
-      elem("taBackupTextToImport").value = "";
-      elem("taBackupTextToImport").focus();
-      break;
-    }
-
-    case "Dev": {
-      // don't currently need anything special for Dev
-      break;
-    }
 
     case "Home": {
       elem("spnAppHeader_Home").style.display = "none";
 
-      toggleGrabbing_off();
       toggleReordering_off();
 
       if (!wapp.itemObj) {
         setWappItemObj(grabItemObjByName(CONST_listName_homePage));
       }
-
       elem("dvHome_Items").innerHTML = writeHtml_items();
-
-      if (wapp.focusElemId) {
-        elem(wapp.focusElemId).focus();
-        focus_clear();
-      };
-
-      break;
-    }
-
-    case "MoveOrCopy": {
-      let isSingleItem, isSingleItemListMove;
-
-      elem("spnAppHeader_Home").style.display = "none";
-
-      if ( !isBlank(wapp.grabbing_itemId1) && isBlank(wapp.grabbing_itemId2) ) {
-        //single-item-move-or-copy
-
-        isSingleItem = true;
-
-        let grabbingItemObj1 = grabItemObj(wapp.grabbing_itemId1);
-        if (grabbingItemObj1.isList == "1") {
-          isSingleItemListMove = true;
-        }
-        
-        if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
-          elem("spnMoveOrCopy_FromList").innerHTML = "<i>Home</i>";
-        } else {
-          elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + grabItemObj(wapp.itemObj.displayedOnList_itemId).itemName + "</i>";
-        }
-
-      } else {
-
-        isSingleItem = false;
-
-        elem("spnMoveOrCopy_FromList").innerHTML = "<i>" + wapp.itemObj.itemName + "</i>";
-
-      }
-
-      if (isSingleItem) {
-        if (isSingleItemListMove) {
-          elem("MoveOrCopy_Info1").innerHTML = "moving this item:";
-        } else {
-          elem("MoveOrCopy_Info1").innerHTML = "moving or copying this item:";
-        }
-      } else {
-        elem("MoveOrCopy_Info1").innerHTML = "moving or copying these items:";
-      }
-
-      elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = writeHtml_MoveOrCopy_ItemsBeingMovedOrCopied();
-      elem("dvMoveOrCopy_ListsToMoveOrCopyItemsTo").innerHTML = writeHtml_MoveOrCopy_ListsToMoveOrCopyItemsTo();
-      break;
-    }
-
-    case "NavigateItems": {
-      elem("dvNavigateItems_ItemNameDisplay").innerHTML = "Connecting to:&nbsp;&nbsp;<b>" + wapp.itemObj.itemName + "</b>";
-
-      if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
-        elem("dvNavigateItems_JoinedListsArea").style.display = "none";
-      } else {
-        elem("dvNavigateItems_JoinedListsArea").style.display = "";
-        let displayedOnList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
-        //elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + displayedOnList_itemObj.itemId + "\")'>" + displayedOnList_itemObj.itemName + "</a> )";
-        elem("dvNavigateItems_JoinedListsDisplay").innerHTML = "&nbsp;&nbsp;&nbsp;( member of list:&nbsp;&nbsp;" + displayedOnList_itemObj.itemName + " )";
-      }
-
-      let html = "";
-
-      var listItemIds_alreadyWritten = [];
-      var homePageList_itemObj = grabItemObj(wapp.homePageList_itemId);
-      var homePageList_memberDataObjs = homePageList_itemObj.getListMemberDataObjs();
-
-      html += writeHtml_navigationTree(homePageList_memberDataObjs, listItemIds_alreadyWritten, 0);
-
-      if (html == "") html += "(none created yet)";
-
-//elem("taDev1").innerHTML = html;
-      elem("dvNavigateItems_Items").innerHTML = html;
-      break;
-    }
-
-    case "ShowStorage": {
-      elem("dvShowStorage_EditAllItemIds").style.display = "none";
-      writeStorage();
       break;
     }
 
     case "ViewItem": {
       let i, wibtypeItemObj, hasDisplayedLists = false;
-
-      if (wapp.itemObj.isWibtype == "1") {
-        elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
-      } else if (wapp.itemObj.isWibtypeInfoField == "1") {
-        elem("dvItemName").innerHTML = "<div class='" + CONST_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
-      } else {
-        elem("dvItemName").innerHTML = wapp.itemObj.itemName;
-      }
-
-      //TO-DO2: display multiple list names, if this item is a member of 2+
       
-      elem("dvListNameForItem").innerHTML = "";
+      //elem("dvListNameForItem").innerHTML = "";
 
       if (wapp.itemObj.isWibtype == "0") {
         for (i = 0; i < wapp.itemObj.joinedLists_itemIds.length; i++) {
@@ -1640,36 +847,10 @@ function displayPage(pageName) {
           } else if (curItemObjForLoop.displayCode == CONST_displayCode_normal && curItemObjForLoop.isWibtype == "0") {
             hasDisplayedLists = true;
             wapp.itemObj.displayedOnList_itemId = curItemObjForLoop.itemId;
-            elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
+            //elem("dvListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + curItemObjForLoop.itemId + "\")'>" + curItemObjForLoop.itemName + "</a>";
             break;
           }
         }
-
-        if (hasDisplayedLists) {
-          elem("dvViewItem_JoinedListsArea").style.display = "";
-        } else {
-          elem("dvViewItem_JoinedListsArea").style.display = "none";
-        }
-      }
-
-      if (wapp.itemObj.connectedItemDataObjs.length > 0) {
-        let html = "";
-
-        for (i = 0; i < wapp.itemObj.connectedItemDataObjs.length; i++) {
-          let x = grabItemObj(wapp.itemObj.connectedItemDataObjs[i].itemId2);
-          if (html !== "") html += "<div style='height: 1em'></div>"
-          html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
-        }
-
-        elem("dvViewItem_ConnectedItems_Header").style.display = "";
-        elem("dvViewItem_ConnectedItems_ItemsIndent").style.display = "inline-block";
-        elem("dvViewItem_ConnectedItems_Items").innerHTML = html;
-        elem("dvViewItem_ConnectedItems_LinkArea").style.display = "";
-      } else {
-        elem("dvViewItem_ConnectedItems_Header").style.display = "none";
-        elem("dvViewItem_ConnectedItems_ItemsIndent").style.display = "none";
-        elem("dvViewItem_ConnectedItems_Items").innerHTML = "connected items: <i>none</i>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void add_connected_item()\" style=\"white-space: nowrap\">add</a>";
-        elem("dvViewItem_ConnectedItems_LinkArea").style.display = "none";
       }
 
       if (wapp.itemObj.isWibtype == "1") {
@@ -1746,33 +927,6 @@ function displayPage(pageName) {
 
       }
 
-      if ( isBlank(wapp.itemObj.notes) ) {
-        elem("dvViewItem_Notes_Yes").style.display = "none";
-        elem("spnViewItem_Notes_No1").style.display = "";
-        elem("spnViewItem_Notes_No2").style.display = "";
-        elem("dvViewItem_Notes").innerHTML = "";
-      } else {
-        elem("dvViewItem_Notes_Yes").style.display = "";
-        elem("spnViewItem_Notes_No1").style.display = "none";
-        elem("spnViewItem_Notes_No2").style.display = "none";
-        elem("dvViewItem_Notes").innerHTML = wapp.itemObj.notes;
-      }
-
-      if (wapp.itemObj.isWibtype == "1" || wapp.itemObj.isWibtypeInfoField == "1") {
-        elem("dvViewItem_Wibtypes").style.display = "none";
-      } else {
-        elem("dvViewItem_Wibtypes").style.display = "";
-        elem("dvViewItem_Wibtypes_WtifData").innerHTML = writeHtml_WtifData(); 
-      }
-
-      if (wapp.itemObj.isWibtypeInfoField == "1") {
-        elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "";
-        elem("spn_ViewItem_WibtypeInfoFieldInfo_WibDataType").innerHTML = getWibDataTypeNameFromId(wapp.itemObj.wibDataTypeId);
-        elem("spn_ViewItem_WibtypeInfoFieldInfo_Required").innerHTML = getBooleanFieldTextDisplay(wapp.itemObj.required);
-      } else {
-        elem("dvViewItem_WibtypeInfoFieldInfo").style.display = "none";
-      }
-
       // write HTML for list-members, and associated links
       if (wapp.itemObj.isWibtype == "1") {
         elem("dvViewItem_ListMembers_Yes").style.display = "";
@@ -1811,43 +965,8 @@ function displayPage(pageName) {
         css_addClass(getHtml_aItem(wapp.reordering_activatedItemId), CONST_cssClassName_bold);
       }
 
-      // dvViewItem_WibtypesForListMembersArea
-      if (wapp.itemObj.isWibtype == "1" || wapp.itemObj.isWibtypeInfoField == "1" || wapp.itemObj.isList == "0" ) {
-
-        elem("dvViewItem_WibtypesForListMembersArea").style.display = "none";
-
-      } else {
-
-        elem("dvViewItem_WibtypesForListMembersArea").style.display = "";
-
-        if (wapp.itemObj.connectedItemDataObjs.length > 0) {
-          let html = "";
-
-          for (i = 0; i < wapp.itemObj.wibtypeForListMembersDataObjs.length; i++) {
-            let x = grabItemObj(wapp.itemObj.wibtypeForListMembersDataObjs[i].wibtypeItemId);
-            if (html !== "") html += "<div style='height: 1em'></div>"
-            //html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
-            html += " <div>" + x.itemName + "</div>\n";
-          }
-
-          elem("dvViewItem_WibtypesForListMembers_Header").style.display = "";
-          elem("dvViewItem_WibtypesForListMembers_ItemsIndent").style.display = "inline-block";
-          elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = html;
-          elem("dvViewItem_WibtypesForListMembers_LinkArea").style.display = "";
-        } else {
-          elem("dvViewItem_WibtypesForListMembers_Header").style.display = "none";
-          elem("dvViewItem_WibtypesForListMembers_ItemsIndent").style.display = "none";
-          elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = "types for list members: <i>none</i>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"javascript:void view_item__add_type_for_list_members()\" style=\"white-space: nowrap\">add</a>";
-          elem("dvViewItem_WibtypesForListMembers_LinkArea").style.display = "none";
-        }
-
-      }
 
 
-
-/*
-
-TO-DO1: remove this
 
 dc("-----dv11-----")
 dc( elem("dv11").style.color );
@@ -1859,286 +978,22 @@ dc( elem("dv12").style.color );
 elem("dv12").style.color = "yellow";
 dc( elem("dv12").style.color );
 
-*/
 
 
 
       if (wapp.focusElemId) {
-
         if (wapp.focusElemId_pre) {
           elem(wapp.focusElemId_pre).focus();
           wapp.focusElemId_pre = null;
         }
-
         elem(wapp.focusElemId).focus();
-
-        if ( isBlank(wapp.focusItemId) || isBlank(wapp.reordering_activatedItemId) ) {
-
-          // if we do not have a focus-item-id, or if we do not have an activated reordering-item-id, we can reset the focus-element & focus-item-id
-
-          focus_clear();
-
-        } else if ( isEqual(wapp.focusItemId, wapp.reordering_activatedItemId) ) {
-
-          // if the focus-item-id and the activated reordering-item-id are equal, we want to keep the focus on this item
-
-          // --> no action here
-
-        } else {
-
-          // if the focus-item-id and the activated reordering-item-id aren't equal, we will reset the focus-element & focus-item-id
-          //   (not sure why this would occur, but just in case)
-
-          focus_clear();
-
-        }
-
+        wapp.focusElemId = null;
       }
-
       break;
     }
 
-    case "WibBuilder_AllApps": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Apps";
-
-      let html = "";
-
-      let appList_itemObj = grabItemObj(wapp.wb_appListItemId);
-      let appList_listMemberDataObjs = appList_itemObj.getListMemberDataObjs();
-
-      appList_listMemberDataObjs.forEach( (appList_listMemberDataObj) => {
-        let appItemObj = grabItemObj(appList_listMemberDataObj.itemId);
-        if (html !== "") html += "<div style='grid-column: 1/3; height: 1.8em'></div>"
-
-        html += "<div>" + appItemObj.itemName + "</div>\n";
-        html += "<div style='padding-left: 0.4em'>\n";
-        html += "  <a href='javascript:void all_apps__view_app(\"" + appItemObj.itemId + "\")'>view</a>\n";
-        html += "  &nbsp;&nbsp;<a href='javascript:void all_apps__delete_app(\"" + appItemObj.itemId + "\")'>delete</a>\n";
-        html += "</div>\n";
-      } );
-
-      if (html == "") html += "(none created yet)";
-
-      elem("dvWibBuilder_AllApps_Items").innerHTML = html;
-
-      break;
-    }
-
-    case "WibBuilder_AllScreens": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Screens";
-
-      let html = "";
-
-      let screenList_itemObj = grabItemObj(wapp.wb_screenListItemId);
-      let screenList_listMemberDataObjs = screenList_itemObj.getListMemberDataObjs();
-
-      screenList_listMemberDataObjs.forEach( (screenList_listMemberDataObj) => {
-        let screenItemObj = grabItemObj(screenList_listMemberDataObj.itemId);
-        if (html !== "") html += "<div style='height: 1.8em'></div>"
-
-        let screenNameDisplay = wb_getScreenNameDisplay(screenItemObj);
-
-        html += "<div>" + screenNameDisplay + "\n";
-        html += " &nbsp;&nbsp;<a href='javascript:void all_screens__build_screen(\"" + screenItemObj.itemId + "\")'>build</a>\n";
-        html += " &nbsp;&nbsp;<a href='javascript:void all_screens__run_screen(\"" + screenItemObj.itemId + "\")'>run</a>\n";
-        html += " &nbsp;&nbsp;<a href='javascript:void all_screens__delete_screen(\"" + screenItemObj.itemId + "\")'>delete</a>\n";
-        html += " &nbsp;&nbsp;<a href='javascript:void all_screens__show_type_instances(\"" + screenItemObj.itemId + "\")'>type instances</a>\n";
-        html += "</div>\n";
-      } );
-
-      if (html == "") html += "(none created yet)";
-
-      elem("dvWibBuilder_AllScreens_Items").innerHTML = html;
-
-      break;
-    }
-
-    case "WibBuilder_AllScripts": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Scripts";
-
-      let html = "";
-
-      let scriptList_itemObj = grabItemObj(wapp.wb_scriptListItemId);
-      let scriptList_listMemberDataObjs = scriptList_itemObj.getListMemberDataObjs();
-
-      scriptList_listMemberDataObjs.forEach( (scriptList_listMemberDataObj) => {
-        let scriptItemObj = grabItemObj(scriptList_listMemberDataObj.itemId);
-
-        let app_itemId = scriptItemObj.getWtifData(wapp.wb_scriptWibtype_itemId, null, CONST_wb_scriptWibtype_wtif_WbAppItemId_itemName);
-        let app_itemObj = grabItemObj(app_itemId);
-
-        if (html !== "") html += "<div style='grid-column: 1/4; height: 1.8em'></div>"
-
-        html += "<div>APP: " + app_itemObj.itemName + "</div>\n";
-        html += "<div>SCRIPT: " + scriptItemObj.itemName + "</div>\n";
-        html += "<div style='padding-left: 0.4em'><a href='javascript:void all_scripts__delete_script(\"" + scriptItemObj.itemId + "\")'>delete</a></div>\n";
-      } );
-
-      if (html == "") html += "(none created yet)";
-
-      elem("dvWibBuilder_AllScripts_Items").innerHTML = html;
-
-      break;
-    }
-
-    case "WibBuilder_BuildScreen": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Build Screen";
-
-      let screenTypeCodes_array = wb_getScreenTypeCodesAarray();
-
-      if (wapp.wb_curScreen_itemObj) {
-
-        let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj)
-        let screenTypeCode = wapp.wb_curScreen_itemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, CONST_wbs_screenWtifs_screenTypeCode_itemName)
-        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, screenTypeCode, "width: 7.2em", "build_screen__changeScreenType()", null, false);
-
-        elem("aWibBuilder_BuildScreen_TypeName").innerHTML = wibtypeItemObj_associatedWithScreen.itemName;
-        elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
-
-        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
-
-      } else {
-
-        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, CONST_wb_screenTypeCode_createWibtype, "width: 7.2em", "build_screen__changeScreenType()", null, false);
-
-        elem("aWibBuilder_BuildScreen_TypeName").innerHTML = "(click here)";
-        elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
-        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;________";
-        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = "_______ Name:";
-
-      }
-
-      break;
-    }
-
-    case "WibBuilder_ChooseExistingWibtype": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Choose Existing Type";
-
-      let uniqueWibTypeItemIds = [];
-
-      let i, html = "";
-      let allScreens_itemObj = grabItemObj(wapp.wb_screenListItemId);
-      let allScreens_itemIdList = allScreens_itemObj.getListMemberItemIds();
-
-      for (i = 0; i < allScreens_itemIdList.length; i++) {
-        let screenInLoop_itemObj = grabItemObj(allScreens_itemIdList[i]);
-
-        let screenInLoop_wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(screenInLoop_itemObj);
-
-        if ( !doesValArrayHaveElem(uniqueWibTypeItemIds, screenInLoop_wibtypeItemObj_associatedWithScreen.itemId) ) {
-          uniqueWibTypeItemIds.push(screenInLoop_wibtypeItemObj_associatedWithScreen.itemId);
-        }
-      }
-
-      for (i = 0; i < uniqueWibTypeItemIds.length; i++) {
-        let wibTypeItemObj_inLoop = grabItemObj(uniqueWibTypeItemIds[i]);
-
-        if (html !== "") html += "<div style='height: 1.8em'></div>"
-
-        html += "<div><a href='javascript:void choose_existing_type__click_type(\"" + wibTypeItemObj_inLoop.itemId + "\")'>" + wibTypeItemObj_inLoop.itemName + "</a></div>\n";
-      }
-
-      if (html == "") html += "(no types available)";
-
-      elem("dvWibBuilder_ChooseExistingWibtype_Items").innerHTML = html;
-
-      break;
-
-    }
-
-    case "WibBuilder_DisplayScreen": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "[SCREEN TITLE WILL GO HERE]";
-/*
-      elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-      elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
-      elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
-      elem("ipWibBuilder_RunScreen_ItemNameValue").focus();
-*/
-      break;
-    }
-
-    case "WibBuilder_RunScreen": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Run Screen";
-
-      let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
-
-      if (wibtypeItemObj_associatedWithScreen) {
-
-        elem("dvWibBuilder_RunScreen_OldSection").style.display = "";
-        elem("dvWibBuilder_RunScreen_NewSection").style.display = "none";
-
-        elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-        elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
-        elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
-        elem("ipWibBuilder_RunScreen_ItemNameValue").focus();
-
-      } else {
-
-        elem("dvWibBuilder_RunScreen_OldSection").style.display = "none";
-        elem("dvWibBuilder_RunScreen_NewSection").style.display = "";
-
-
-
-
-
-        //TO-DO1:
-        //  (1) move to new e.g. "WibBuilder_DisplayScreen"
-        //  (2) draw screen HTML
-        elem("dvWibBuilder_RunScreen_NewGrid").style.gridTemplateColumns = "";
-
-      }
-
-      break;
-    }
-
-    case "WibBuilder_ShowWibtypeInstances": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Show Instances";
-
-      let html = "";
-      let wibtypeInstance_itemObjs = getInstanceItemObjsForWibtype(wapp.wb_curWibtype_itemObj.itemId);
-
-      wibtypeInstance_itemObjs.forEach( (wibtypeInstance_itemObj) => {
-        if (html !== "") html += "<div style='height: 1.8em'></div>"
-
-        html += "<div>" + wibtypeInstance_itemObj.itemName;
-        html += "&nbsp;&nbsp;<a href='javascript:void show_instances__edit(" + wibtypeInstance_itemObj.itemId + ")'>edit</a>\n";
-        html += "&nbsp;&nbsp;<a href='javascript:void show_instances__delete(" + wibtypeInstance_itemObj.itemId + ")'>delete</a>\n";
-        html += "</div>\n";
-      } );
-
-      if (html == "") html += "(none created yet)";
-
-      elem("dvWibBuilder_ShowWibtypeInstances_Items").innerHTML = html;
-
-      elem("aWibBuilder_ShowWibtypeInstances_RunScreenAgain").focus();
-
-      break;
-    }
-
-    case "WibBuilder_ViewApp": {
-      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View App";
-
-      elem("dvWibBuilder_ViewApp_ItemName").innerHTML = wapp.wb_curApp_itemObj.itemName;
-
-/*
-      elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-      elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
-      elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
-      elem("ipWibBuilder_RunScreen_ItemNameValue").focus();
-*/
-      break;
-    }
-
-    case "Wibtypes": {
-      setWappItemObj(grabItemObj(wapp.wibtypes_itemId));
-      elem("dvWibtypes_Items").innerHTML = writeHtml_items();
-      break;
-    }
-
-    default: {
-      // no action currently
-    }
+    default:
+      // no action -- but keeping this as part of resetting the UI when moving from one pop-up to another pop-up
   }
 }
 
@@ -2230,21 +1085,6 @@ function doesValArrayHaveElem(theArray, valToMatch) {
 
 function elem(elemId) {
   return document.getElementById(elemId);
-}
-
-function focus_clear() {
-  wapp.focusItemId = null;
-  wapp.focusElemId = null;
-}
-
-function focus_set_fromItemId(itemId) {
-  wapp.focusItemId = itemId;
-  wapp.focusElemId = getHtml_aItem(itemId);
-}
-
-function focus_set_fromElemId(elemId) {
-  wapp.focusItemId = null;
-  wapp.focusElemId = elemId;
 }
 
 function getAllItemsArray() {
@@ -3065,16 +1905,6 @@ function hidePopUp(popUpCode) {
 
 function html_displayAllElementsOfClass(className) {
   html_toggleDisplayAllElementsOfClass(className, true);
-}
-
-function html_doesElemExist(elemId) {
-  var possibleElem = elem(elemId);
-
-  if ( isBlank(possibleElem) ) {
-    return false;
-  } else {
-    return true;
-  }
 }
 
 function html_hideAllElementsOfClass(className) {
@@ -5025,8 +3855,6 @@ function toggleGrabbing_off() {
   wapp.grabbing_itemId2 = null;
   wapp.grabbing_itemIdArray = [];
   wapp.grabbingOn = false;
-
-  focus_clear();
 }
 
 function toggleGrabbing_on() {
@@ -5037,8 +3865,6 @@ function toggleGrabbing_on() {
 
   css_addClass("aGrabItems1", CONST_cssClassName_red);
   css_addClass("aGrabItems2", CONST_cssClassName_red);
-
-  focus_clear();
 }
 
 function toggleNavList(itemId) {
@@ -5067,8 +3893,6 @@ function toggleReordering_off() {
 
   wapp.reorderingOn = false;
   wapp.reordering_mode = null;
-
-  focus_clear();
 }
 
 function toggleReordering_on() {
@@ -5077,8 +3901,6 @@ function toggleReordering_on() {
 
   css_addClass("aReorder1", CONST_cssClassName_red);
   css_addClass("aReorder2", CONST_cssClassName_red);
-
-  focus_clear();
 }
 
 function toggleReorderingMode_normal(itemId) {
@@ -5787,11 +4609,10 @@ function writeHtml_items(mainItemObj) {
   var listMemberDataObjs, html = "", i;
 
 
-/*
-TO-DO1: remove this
+
 html = "<div id='dv12' style='color: pink'>TEST-12</div>";
 return html;
-*/
+
 
 
   if ( isBlank(mainItemObj) ) mainItemObj = wapp.itemObj;
@@ -5878,17 +4699,16 @@ return html;
       html += " </td></tr>\n";
       html += " <tr style='height: 1.7em'><td colspan=2></td></tr>";
       html += " <tr><td>&nbsp;&nbsp;&nbsp;</td><td>";
-      html += "  <a class='" + CONST_cssClassName_red + "' href='javascript:void toggle_reorder()'>finished reordering</a>\n";
+      html += "  <a href='javascript:void toggle_reorder()'>finished reordering</a>\n";
       html += " </td></tr>\n";
       html += " <tr style='height: 0.8em'><td colspan=2></td></tr>";
       html += " </table>\n";
       html += " <div id='" + getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(curItemId) + "' style='padding-bottom: 0.5em; display: none'><i>now click the other item</i></div>\n";
       html += "</td></tr>\n";
 
-//TO-DO1: do we need to work on this, to enable correct focus on page?
 //if (i == 1) dc("wapp.focusElemId=" + wapp.focusElemId);
       if ( isBlank(wapp.focusElemId) ) {
-        focus_set_fromItemId(curItemId);
+        wapp.focusElemId = getHtml_aItem(curItemId);
       }
     }
 
@@ -5904,7 +4724,7 @@ return html;
     html += "</table>\n";
   }
 
-//elem("taDev1").value = html;
+elem("taDev1").value = html;
   return html;
 }
 
@@ -6508,25 +5328,22 @@ function click_item(itemIdThatWasClicked) {
     if ( isBlank(wapp.reordering_activatedItemId) ) {
 
       activateItemForReordering(itemIdThatWasClicked);
-      focus_set_fromItemId(itemIdThatWasClicked);
 
     } else if ( isEqual(itemIdThatWasClicked, wapp.reordering_activatedItemId) ) {
 
       deactivateItemForReordering(wapp.reordering_activatedItemId);
-      focus_set_fromItemId(itemIdThatWasClicked);
 
     } else if (wapp.reordering_mode == CONST_reordering_mode_normal) {
 
       deactivateItemForReordering(wapp.reordering_activatedItemId);
       activateItemForReordering(itemIdThatWasClicked);
-      focus_set_fromItemId(itemIdThatWasClicked);
 
     } else if (wapp.reordering_mode == CONST_reordering_mode_moveAboveOtherItem) {
 
       toggleReorderingMode_normal(wapp.reordering_activatedItemId)
 
       if ( reorderActivatedItemAboveOtherItem(itemIdThatWasClicked) ) {
-        focus_set_fromItemId(wapp.reordering_activatedItemId);
+        wapp.focusElemId = getHtml_aItem(wapp.reordering_activatedItemId);
         goToItemView(null, true);
       }
 
@@ -6547,14 +5364,12 @@ function click_item(itemIdThatWasClicked) {
     } else {
 
       wapp.grabbing_itemId2 = itemIdThatWasClicked;
-      focus_clear();
       displayPage("MoveOrCopy");
 
     }
 
   } else {
 
-    focus_clear();
     goToItemView(itemIdThatWasClicked, false);
 
   }
@@ -6616,11 +5431,10 @@ function do_change_done_status(newDoneStatusDisplay) {
 
   hidePopUp("ChangeDoneStatus");
 
-  focus_set_fromItemId(wapp.itemObj.itemId);
-
   if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
     goToItemView(null, false);
   } else {
+    wapp.focusElemId = getHtml_aItem(wapp.itemObj.itemId);
     goToItemView(wapp.itemObj.displayedOnList_itemId, false);
   }
 }
@@ -6854,8 +5668,9 @@ function go_to_item(itemId) {
 }
 
 function go_to_list(itemId) {
-  toggleGrabbing_off();
-  toggleReordering_off();
+  if (wapp.itemObj.itemId) {
+    wapp.focusElemId = getHtml_aItem(wapp.itemObj.itemId);
+  }
 
   goToItemView(itemId, false);
 }
@@ -6940,7 +5755,6 @@ function mark_all() {
 
 function move_item_down(itemIdToMove, amount) {
   if ( walkSortPosition(wapp.itemObj, itemIdToMove, Math.abs(amount), false, false, null) ) {
-    wapp.focusElemId_pre = "aViewItem_MakeNewItem2";
     goToItemView(null, true);
   }
 }
@@ -6948,6 +5762,7 @@ function move_item_down(itemIdToMove, amount) {
 function move_item_to_end(itemIdToMove) {
   if ( walkSortPosition(wapp.itemObj, itemIdToMove, null, false, true, null) ) {
     wapp.focusElemId_pre = "aViewItem_MakeNewItem2";
+    wapp.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
@@ -6959,13 +5774,13 @@ function move_item_above_other_item(itemIdToMove) {
 function move_item_to_top(itemIdToMove) {
   if ( walkSortPosition(wapp.itemObj, itemIdToMove, null, true, false, null) ) {
     wapp.focusElemId_pre = "aViewItem_MakeNewItem1";
+    wapp.focusElemId = getHtml_aItem(itemIdToMove);
     goToItemView(null, true);
   }
 }
 
 function move_item_up(itemIdToMove, amount) {
   if ( walkSortPosition(wapp.itemObj, itemIdToMove, Math.abs(amount) * -1, false, false, null) ) {
-    //wapp.focusElemId_pre = "aViewItem_MakeNewItem1";
     goToItemView(null, true);
   }
 }
@@ -7461,10 +6276,12 @@ function loadAppData_andReturnNextDisplayPage() {
   if (wapp.qs_obj.wibBuilder) {
 
 
-//TO-DO1.5: go to first wb-app, etc
+//TO-DO1: go to first wb-app, etc
 
-    return "WibBuilder_AllApps";
+    return "WibBuilder_AllApps"
   } else {
+//setWappItemObj(grabItemObj(wapp.homePageList_itemId))
+//return "ViewItem";
     return "Home";
   }
 }
