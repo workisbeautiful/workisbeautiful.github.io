@@ -828,24 +828,22 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
   </div>
 
   <div class="grid1" id="dvPopUp_EditTimeTracking" style="display: none; padding-top: 0.3em">
-    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>Edit Time Tracking</b></div>
-    <div class="grid1Cell gc1VSpace2"></div>
     <div class="grid1Cell gc1Text">Item Name:</div>
     <div class="grid1Cell gc1TextRight"><span id="spnEditTimeTracking_itemName" class="popUpText popUpMaxTextWidth"></span></div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
     <div class="grid1Cell gc1Text">Start Y / M / D:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipEditTimeTracking_StartYear" class="ipYear" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_StartMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_StartDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
     <div class="grid1Cell gc1Text">Start Time:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipEditTimeTracking_StartHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       : <input id="ipEditTimeTracking_StartMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
     <div class="grid1Cell gc1VSpaceX" id="dvEditTimeTracking_EndDate_Link" style="display: none; text-align: center">
       <a style="white-space: nowrap; font-size: 90%" href="javascript:void edit_time_tracking__display_end_date()">display end date</a>
     </div>
@@ -855,19 +853,23 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_EndMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipEditTimeTracking_EndDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
+    <div class="grid1Cell gc1VSpaceX" style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
+    <div class="grid1Cell gc1Text">Mins Tracked:</div>
+    <div class="grid1Cell gc1Input"><input id="ipEditTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" /></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
     <div class="grid1Cell gc1Text">End Time:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipEditTimeTracking_EndHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       : <input id="ipEditTimeTracking_EndMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_time_tracking__make_this_edit()">make edit</a>
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
-    <div class="grid1Cell gc1Text">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input"><input id="ipEditTimeTracking_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 3.0em"></div>
     <div class="grid1Cell gc1Footer">
-      <a style="white-space: nowrap" href="javascript:void edit_time_tracking__make_this_edit()">make this edit</a>
-      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void edit_time_tracking__cancel()">cancel</a>
+      <a style="white-space: nowrap" href="javascript:void edit_time_tracking__cancel()">cancel</a>
     </div>
   </div>
 
@@ -961,26 +963,26 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
-    <div class="grid1Cell gc1Text">End Time:</div>
-    <div class="grid1Cell gc1Input">
-      <input id="ipMakeNewItemTT_EndHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
-      : <input id="ipMakeNewItemTT_EndMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
-    </div>
     <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1VSpaceX" style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
     <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
-    <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
-    <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_ItemName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
     <div class="grid1Cell gc1Text">Mins Tracked:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipMakeNewItemTT_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__make()">make</a>
-      </div>
-    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 2.0em"></div>
+    </div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
+    <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_ItemName" class="ipText popUpMaxTextWidth" /></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 1.0em"></div>
+    <div class="grid1Cell gc1Text">End Time:</div>
+    <div class="grid1Cell gc1Input">
+      <input id="ipMakeNewItemTT_EndHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      : <input id="ipMakeNewItemTT_EndMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__make()">make</a>
+    </div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 3.0em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void make_new_item_tt__cancel()">cancel</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__switch_to_normal()">switch to normal</a>
@@ -1052,7 +1054,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.94"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.95"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -6805,8 +6807,15 @@ function edit_time_tracking__make_this_edit() {
 
   wapp.wdto.saveToDatastore();
 
+
   hidePopUp("EditTimeTracking");
-  goToItemView(null, true);
+
+  if ( isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+    goToItemView(null, false);
+  } else {
+    focus_set_fromElemId("aViewItem_MakeNewItem1")
+    goToItemView(wapp.itemObj.displayedOnList_itemId, false);
+  }
 }
 
 function export_backup_text() {
@@ -7011,7 +7020,8 @@ function make_new_item_tt__make() {
 
     wapp.wdto.saveToDatastore(newItemObj);
 
-    focus_set_fromItemId(newItemObj.itemId);
+    focus_set_fromElemId("aViewItem_MakeNewItem1")
+    //focus_set_fromItemId(newItemObj.itemId);
 
     hidePopUp("MakeNewItemTT");
     goToItemView(null, false);
