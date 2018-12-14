@@ -145,6 +145,29 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div style="height:1em"></div>
   </div>
 
+  <div id="dvPage_ChooseWibtype" style="display: none">
+    <div style="font-weight: bold">Choose Type</div>
+    <div style="height: 0.8em"></div>
+    <div>
+      <a href="javascript:void choose_type__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+    <div style="height: 1em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 1.4em"></div>
+      <div id="dvChooseWibtype_Items"></div>
+    <div style="height: 1.4em"></div>
+    <div style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div style="height: 1em"></div>
+    <div>
+      <a href="javascript:void choose_type__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+    <div style="height: 1em"></div>
+  </div>
+
   <div id="dvPage_Dev" style="display: none">
     <div style="height:0.8em"></div>
     <div><a href="javascript:void export_backup_text()">export backup text</a></div>
@@ -702,7 +725,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
         <div id="dvViewItem_WibtypesForListMembers_Items" style="display: inline-block"></div>
       </div>
       <div id="dvViewItem_WibtypesForListMembers_LinkArea" style="display: none">
-        <div style="height: 1.8em"></div>
+        <div style="height: 0.8em"></div>
         <div><a href="javascript:void view_item__add_type_for_list_members()" style="white-space: nowrap">add type for list members</a></div>
       </div>
     </div>
@@ -905,30 +928,65 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
     <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
     <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
     <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" /></div>
-
-
-
-<!--
-    <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_EndYear" class="ipYear" maxlength="4" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_EndMonth" class="ipMonthDay" maxlength="2" />
-      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItem_EndDay" class="ipMonthDay" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">Time:</div>
-    <div class="grid1Cell gc1Input gc1Group1">
-      <input id="ipMakeNewItem_EndHour" class="ipTime" maxlength="2" />
-      : <input id="ipMakeNewItem_EndMinute" class="ipTime" maxlength="2" />
-    </div>
-    <div class="grid1Cell gc1VSpace2 gc1Group1"></div>
-    <div class="grid1Cell gc1Text gc1Group1">Mins Tracked:</div>
-    <div class="grid1Cell gc1Input gc1Group1"><input id="ipMakeNewItem_MinutesTracked" class="ipNumeric" maxlength="4" /></div>
--->
-
     <div class="grid1Cell gc1VSpace2" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void make_new_item__make()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item__cancel()">cancel</a>
+    </div>
+  </div>
+
+  <div class="grid1" id="dvPopUp_MakeNewItemTT" style="display: none; padding-top: 0.3em">
+    <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>New Time Tracking</b></div>
+    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
+    <div class="grid1Cell gc1QuickLinks">
+      <a style="white-space: nowrap; font-size: 95%" href="javascript:void make_new_item_tt__switch_to_normal()">switch to normal</a>
+    </div>
+    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.1em"></div>
+    <div class="grid1Cell gc1Text">
+      <span style="display: none"><a style="white-space: nowrap; font-size: 90%" href="javascript:void set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Start Y / M / D:</span>
+      <span>Start Y / M / D:</span>
+    </div>
+    <div class="grid1Cell gc1Input">
+      <input id="ipMakeNewItemTT_StartYear" class="ipYear" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_StartMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_StartDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+    </div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text">Start Time:</div>
+    <div class="grid1Cell gc1Input">
+      <input id="ipMakeNewItemTT_StartHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      : <input id="ipMakeNewItemTT_StartMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+    </div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" id="dvMakeNewItemTT_EndDate_Link" style="display: none; text-align: center">
+      <a style="white-space: nowrap; font-size: 90%" href="javascript:void make_new_item_tt__display_end_date()">display end date</a>
+    </div>
+    <div class="grid1Cell gc1Text" id="dvMakeNewItemTT_EndDate_Data_1" style="display: none">End Y / M / D:</div>
+    <div class="grid1Cell gc1Input" id="dvMakeNewItemTT_EndDate_Data_2" style="display: none">
+      <input id="ipMakeNewItemTT_EndYear" class="ipYear" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+    </div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text">End Time:</div>
+    <div class="grid1Cell gc1Input">
+      <input id="ipMakeNewItemTT_EndHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+      : <input id="ipMakeNewItemTT_EndMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
+    </div>
+    <div class="grid1Cell gc1VSpaceX" style="height: 0.95em"></div>
+    <div class="grid1Cell gc1VSpaceX" style="height: 5px; border: 2px solid #AAAAAA">
+      <div style="height: 1px; background-color: #DDDDDD"></div>
+    </div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_ItemName" class="ipText popUpMaxTextWidth" /></div>
+    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1Text">Mins Tracked:</div>
+    <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" /></div>
+    <div class="grid1Cell gc1VSpace2" style="padding-bottom: 0.8em"></div>
+    <div class="grid1Cell gc1Footer">
+      <a style="white-space: nowrap" href="javascript:void make_new_item_tt__make()">make</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__cancel()">cancel</a>
     </div>
   </div>
 
@@ -997,7 +1055,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.90"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.91"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
@@ -1132,6 +1190,7 @@ wapp.grabbing_itemIdArray = [];
 wapp.grabbingOn = false;
 wapp.homePageList_itemId = null;
 wapp.isDev1 = false;
+wapp.itemObj = null;
 wapp.makeNewItem_TopOfList = "1";
 wapp.makeNewItem_StayListView = "1";
 wapp.makeNewItem_AddMoreItems = "0";
@@ -1316,8 +1375,8 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
     //  (instead of this.theData or this.wtifItemId)
     //  would not throw an error even with "use strict"
     //  (because the former variables are used/available in the parent function)
-    let theData_toSave = this.theData;
     let wtifItemId_toSave = this.wtifItemId;
+    let theData_toSave = this.theData;
 
     //NOTE: "itemIdAssignedToTheWibtype" is the item whose wtif-data is being stored
     var saveKeyText_wtifData = getSaveKeyText_wtifData(itemIdAssignedToTheWibtype, wtifItemId_toSave);
@@ -1532,6 +1591,7 @@ function displayPage(pageName) {
 
   // clear all HTML elements that were populated with items programatically
   //  -- these could possibly cause conflicts when referring to item-ids that are referenced via the naming convention of an HTML element's id
+  elem("dvChooseWibtype_Items").innerHTML = "";
   elem("dvHome_Items").innerHTML = "";
   elem("dvListNameForItem").innerHTML = "";
   elem("dvMoveOrCopy_ItemsBeingMovedOrCopied").innerHTML = "";
@@ -1551,6 +1611,7 @@ function displayPage(pageName) {
   // hide all display-page sections -- will show the target display-page below
   elem("dvPage_BackupExport").style.display = "none";
   elem("dvPage_BackupImport").style.display = "none";
+  elem("dvPage_ChooseWibtype").style.display = "none";
   elem("dvPage_Dev").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_MoveOrCopy").style.display = "none";
@@ -1583,6 +1644,34 @@ function displayPage(pageName) {
     case "BackupImport": {
       elem("taBackupTextToImport").value = "";
       elem("taBackupTextToImport").focus();
+      break;
+    }
+
+    case "ChooseWibtype": {
+      let html = "";
+
+      let wibtypesList_itemObj = grabItemObj(wapp.wibtypes_itemId);
+      let wibtypeItemIds = wibtypesList_itemObj.getListMemberItemIds();
+
+      for (let i = 0; i < wibtypeItemIds.length; i++) {
+
+        let alreadyHasThisWibtype = wapp.itemObj.hasWibtypeForListMembers( wibtypeItemIds[i] );
+
+        if ( ! alreadyHasThisWibtype ) {
+
+          let wibtypeItemObj = grabItemObj( wibtypeItemIds[i] );
+          
+          if (html !== "") html += "<div style='grid-column: 1/3; height: 1.8em'></div>"
+
+          html += "<div><a href='javascript:void choose_wibtype__this_one(\"" + wibtypeItemObj.itemId + "\")'>" + wibtypeItemObj.itemName + "</a></div>\n";
+
+        }
+
+      }
+
+      if (html == "") html += "(no types have been created yet)";
+
+      elem("dvChooseWibtype_Items").innerHTML = html;
       break;
     }
 
@@ -1893,7 +1982,7 @@ function displayPage(pageName) {
 
         elem("dvViewItem_WibtypesForListMembersArea").style.display = "";
 
-        if (wapp.itemObj.connectedItemDataObjs.length > 0) {
+        if (wapp.itemObj.wibtypeForListMembersDataObjs.length > 0) {
           let html = "";
 
           for (i = 0; i < wapp.itemObj.wibtypeForListMembersDataObjs.length; i++) {
@@ -3071,13 +3160,34 @@ function importBackupText(textToImport) {
   return_home();
 }
 
-function isBlank(val) {
+function isBlank(val, dev1) {
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-1") }
+
   if(val === undefined) return true;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-2") }
+
   if(val == null) return true;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-3") }
+
   if(val == "0")return false;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-4") }
+
   if(parseInt(val) == 0)return false;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-5") }
+
   if(val == "") return true;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-6") }
+
   if(!val)return true;
+
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "isBlank-7") }
+  //if ( dev1 === undefined ) {} else { dc_(dev1, "val == 'null'", val == "null") }
+
   return false;
 }
 
@@ -3496,17 +3606,17 @@ function itemObjFactory() {
     this.saveListMembersToDatastore(listMemberDataObjs);
   };
 
-  itemObj.addWibtypeForListMembers = function(wibtypeItemId) {
+  itemObj.addWibtypeForListMembers = function(wibtypeItemId_toAdd) {
     // add this wibtype to the array of wibtypes-for-list-members for this item (if not already present)
-    if ( ! doesObjArrayHaveElem(this.wibtypeForListMembersDataObjs, CONST_propName_wibtypeItemId, wibtypeItemId) ) {
-      let x = createWibtypeForListMembersDataObj(wibtypeItemId);
+    if ( ! this.hasWibtypeForListMembers(wibtypeItemId_toAdd) ) {
+      let x = createWibtypeForListMembersDataObj(wibtypeItemId_toAdd);
       this.wibtypeForListMembersDataObjs.push(x);
     }
 
     // assign the wibtype to all existing list-members
     var listMemberItemObjs = this.getListMemberItemObjs();
     listMemberItemObjs.forEach( (listMemberItemObj) => {
-      listMemberItemObj.assignToWibtype(wibtypeItemId);
+      listMemberItemObj.assignToWibtype(wibtypeItemId_toAdd);
     } );
 
     //save this item's wibtypes-for-list-members to the datastore
@@ -3828,6 +3938,10 @@ function itemObjFactory() {
     return doesValArrayHaveElem(listMemberItemIds, listMemberItemId_toCheckFor);
   };
 
+  itemObj.hasWibtypeForListMembers = function(wibtypeItemId_toCheckFor) {
+    return doesObjArrayHaveElem(this.wibtypeForListMembersDataObjs, CONST_propName_wibtypeItemId, wibtypeItemId_toCheckFor);
+  };
+
   itemObj.hasWtifValue = function(wibtypeItemId_toMatch, wtifItemId_toMatch, wtifItemName_toMatch, wtifData_toMatch) {
     var wtifData_grabbed = this.getWtifData(wibtypeItemId_toMatch, wtifItemId_toMatch, wtifItemName_toMatch);
 
@@ -4076,10 +4190,14 @@ function itemObjFactory() {
     var wtifDataObj = this.getWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName);
 
     if ( wtifDataObj == null ) {
+
       wtifDataObj = createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData);
       this.wtifDataObjs.push(wtifDataObj);
+
     } else {
+
       wtifDataObj.theData = theData;
+
     }
 
 
@@ -4355,6 +4473,10 @@ function resetElemVal(elemId) {
 }
 
 function saveToDatastore(itemKey, itemValue) {
+  if ( isBlank(itemValue) ) {
+    itemValue = "";
+  }
+
   localStorage.setItem(itemKey, itemValue);
 }
 
@@ -4574,6 +4696,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
   elem("dvPopUp_ChangeDoneStatus").style.display = "none";
   elem("dvPopUp_EditTimeTracking").style.display = "none";
   elem("dvPopUp_MakeNewItem").style.display = "none";
+  elem("dvPopUp_MakeNewItemTT").style.display = "none";
   elem("dvPopUp_MakeNewWibtype").style.display = "none";
   elem("dvPopUp_MakeNewWibtypeInfoField").style.display = "none";
   elem("dvPopUp_WibBuilder_UseExistingWibtype").style.display = "none";
@@ -4588,6 +4711,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
       elem("spnAddTimeTracking_itemName").innerHTML = wapp.itemObj.itemName;
 
       wappObj_set( "wdto", wdt_getWappDatetimeObj(wapp.itemObj, false) );
+      wapp.wdto.setIncompleteEntryAllowed();
 
       wappObj_set( "wdtUiDataObj", wdt_uiDataObjFactory(popUpCode) );
       wapp.wdtUiDataObj.initUi__timeTrackingToggleExists_no();
@@ -4650,6 +4774,7 @@ function showPopUp(popUpCode, popUpFocusElem) {
       elem("spnEditTimeTracking_itemName").innerHTML = wapp.itemObj.itemName;
 
       wappObj_set( "wdto", wdt_getWappDatetimeObj(wapp.itemObj, true) );
+      wapp.wdto.setIncompleteEntryAllowed();
 
       wappObj_set( "wdtUiDataObj", wdt_uiDataObjFactory(popUpCode) );
       wapp.wdtUiDataObj.initUi__timeTrackingToggleExists_no();
@@ -4671,6 +4796,18 @@ function showPopUp(popUpCode, popUpFocusElem) {
       wapp.wdtUiDataObj.initUi__timeTrackingToggleExists_yes();
 
       doCheckboxClickAction("ckMakeNewItem_TimeTracking");
+
+      break;
+    }
+
+    case "MakeNewItemTT": {
+      resetElemVal("ipMakeNewItemTT_ItemName");
+
+      wappObj_set( "wdto", wdt_getWappDatetimeObj(null, false) );
+      wapp.wdto.setIncompleteEntryAllowed();
+
+      wappObj_set( "wdtUiDataObj", wdt_uiDataObjFactory(popUpCode) );
+      wapp.wdtUiDataObj.initUi__timeTrackingToggleExists_no();
 
       break;
     }
@@ -5958,7 +6095,7 @@ function writeHtml_WtifData() {
       html += "<div class='grid2Cell gc2VSpace2'></div>\n";
     }
     html += "<div class='grid2Cell gc2Header2'>" + wibtypeItemObj.itemName
-    if ( isEqual(CONST_timeTracking_itemName, wibtypeItemObj.itemName) ) {
+    if ( isEqual(wibtypeItemId, wapp.timeTracking_wibtypeItemId) ) {
       html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void edit_time_tracking()'>edit</a>";
       html += "&nbsp;&nbsp;&nbsp;<a href='javascript:void remove_time_tracking()'>remove</a>";
     }
@@ -5976,6 +6113,7 @@ function writeHtml_WtifData() {
 
       if ( wtifDataObj !== null ) {
         dataDisplay = wtifDataObj.theData;
+
         if ( isBlank(dataDisplay) ) {
           dataDisplay = "(blank)";
         }
@@ -6104,10 +6242,6 @@ function add_time_tracking__display_end_date() {
   elem("dvAddTimeTracking_EndDate_Data_2").style.display = "";
   elem("ipAddTimeTracking_EndYear").focus();
   elem("ipAddTimeTracking_EndYear").select();
-}
-
-function view_item__add_type_for_list_members() {
-alert("--- incomplete function ---");
 }
 
 function all_apps__create_new_app() {
@@ -6392,6 +6526,15 @@ function choose_existing_type__cancel() {
 
 function choose_existing_type__click_type(wibTypeItemId) {
   wb_createOrChangeScreenType(wibTypeItemId, null)
+}
+
+function choose_type__cancel() {
+  goToItemView(null, false);
+}
+
+function choose_wibtype__this_one(wibtypeItemId_toAdd) {
+  wapp.itemObj.addWibtypeForListMembers(wibtypeItemId_toAdd);
+  goToItemView(null, false);
 }
 
 function clear_storage() {
@@ -6719,7 +6862,13 @@ function make_into_a_list() {
 }
 
 function make_new_item() {
-  showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
+  var hasTtWibtype = wapp.itemObj.hasWibtypeForListMembers(wapp.timeTracking_wibtypeItemId);
+
+  if ( hasTtWibtype ) {
+    showPopUp("MakeNewItemTT", "ipMakeNewItemTT_ItemName");
+  } else {
+    showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
+  }
 }
 
 function make_new_item__cancel() {
@@ -6796,8 +6945,8 @@ function make_new_item__make(makeCode) {
 
     if (timeTracking == "1") {
       wapp.timeTracking_defaultYear = wapp.wdto.get_startYyyy();
-      wapp.timeTracking_defaultMonth = wapp.wdto.get_startM;
-      wapp.timeTracking_defaultDay = wapp.wdto.get_startD;
+      wapp.timeTracking_defaultMonth = wapp.wdto.get_startM();
+      wapp.timeTracking_defaultDay = wapp.wdto.get_startD();
 
       wapp.wdto.saveToDatastore(newItemObj);
     }
@@ -6815,6 +6964,67 @@ function make_new_item__make(makeCode) {
 
 function make_new_item__make_line() {
   make_new_item__make("line");
+}
+
+function make_new_item_tt__cancel() {
+  hidePopUp("MakeNewItemTT");
+  goToItemView();
+}
+
+function make_new_item_tt__display_end_date() {
+  elem("dvMakeNewItemTT_EndDate_Link").style.display = "none";
+  elem("dvMakeNewItemTT_EndDate_Data_1").style.display = "";
+  elem("dvMakeNewItemTT_EndDate_Data_2").style.display = "";
+  elem("ipMakeNewItemTT_EndYear").focus();
+  elem("ipMakeNewItemTT_EndYear").select();
+}
+
+function make_new_item_tt__make() {
+  var itemName, ttUiDataObj = {}, newItemObj;
+
+  itemName = getElemVal("ipMakeNewItemTT_ItemName");
+
+  // process itemName string here, as it will be used in a comparison below
+  itemName = getProcessedStringForSave(itemName);
+
+  if ( !itemNameIsAllowed(itemName) ) {
+    elem("ipMakeNewItemTT_ItemName").focus();
+    return;
+  }
+
+  if ( isBlank(itemName) ) {
+    alert("Item Name is required");
+    elem("ipMakeNewItemTT_ItemName").focus();
+    return;
+  }
+
+  if ( ! wapp.wdto.isUiValid() ) {
+    return;
+  }
+
+  newItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "0", false, itemName, null, null, "0", wapp.itemObj.itemId);
+
+  if ( newItemObj ) {
+
+    walkSortPosition(wapp.itemObj, newItemObj.itemId, null, true, false, null);
+
+    wapp.timeTracking_defaultYear = wapp.wdto.get_startYyyy();
+    wapp.timeTracking_defaultMonth = wapp.wdto.get_startM();
+    wapp.timeTracking_defaultDay = wapp.wdto.get_startD();
+
+    wapp.wdto.saveToDatastore(newItemObj);
+
+    focus_set_fromItemId(newItemObj.itemId);
+
+    hidePopUp("MakeNewItemTT");
+    goToItemView(null, false);
+
+  }
+}
+
+function make_new_item_tt__switch_to_normal() {
+  hidePopUp("MakeNewItemTT");
+  showPopUp("MakeNewItem", "ipMakeNewItem_ItemName");
 }
 
 function make_new_list() {
@@ -7149,6 +7359,10 @@ function view_item__add_time_tracking() {
   showPopUp("AddTimeTracking", "ipAddTimeTracking_StartHour");
 }
 
+function view_item__add_type_for_list_members() {
+  displayPage("ChooseWibtype")
+}
+
 
 ///// FUNCTIONS TO LOAD & UPGRADE APP-LEVEL DATA FROM STORAGE
 
@@ -7186,29 +7400,6 @@ function loadAppData_andReturnNextDisplayPage() {
       timeTracking_wibtypeItemObj = makeNewItem(CONST_doneStatusCode_okay, null, null, "0", "1", true, CONST_timeTracking_itemName, null, CONST_displayCode_hidden1, "1", wibtypesItemObj.itemId);
     }
     wapp.timeTracking_wibtypeItemId = timeTracking_wibtypeItemObj.itemId;
-
-
-
-    // 2018-12-10: for now, manually update wtifs:
-    //
-    //      CONST_timeTracking_wtifYMD_itemName   becomes  CONST_timeTracking_wtifEndYMD_itemName
-    //
-    //      CONST_timeTracking_wtifTime_itemName  becomes  CONST_timeTracking_wtifEndTime_itemName
-    //
-    // but once all existing datastores have been updated, we can delete this section (then EndYMD and EndTime will then be created with the code below, on new datastores, instead of being grabbed)
-
-        const CONST_timeTracking_wtifYMD_itemName = "Y / M / D";
-        const CONST_timeTracking_wtifTime_itemName = "Time";
-
-        let oldYmdItemObj = grabItemObjByName(CONST_timeTracking_wtifYMD_itemName);
-        if (oldYmdItemObj) oldYmdItemObj.changeItemInfo(CONST_timeTracking_wtifEndYMD_itemName, null, null, null, null);
-
-        let oldTimeItemObj = grabItemObjByName(CONST_timeTracking_wtifTime_itemName);
-        if (oldTimeItemObj) oldTimeItemObj.changeItemInfo(CONST_timeTracking_wtifEndTime_itemName, null, null, null, null);
-
-    ///////////////
-    ///////////////
-
 
     let ttWtif_endYMD_itemObj = searchForItemObj_OLD(null, null, null, null, null, null, CONST_timeTracking_wtifEndYMD_itemName, timeTracking_wibtypeItemObj.itemId, true);
     if ( isBlank(ttWtif_endYMD_itemObj) ) {
@@ -7394,7 +7585,7 @@ function loadAppData_andReturnNextDisplayPage() {
     }
   }
 
-  /* asd */ {
+  /* (blank section to copy for new stuff) */ {
     
   }
 
@@ -8009,6 +8200,14 @@ var wdt_timeObjFactory = function() {
     }
   };
 
+  var _isClear = function() {
+    if ( isBlank(_h) && isBlank(_n) ) {
+      return true;
+    } else {
+      return true;
+    }
+  };
+
   var _processRawTimeparts = function() {
     _timeIsValid = false;
 
@@ -8093,6 +8292,10 @@ var wdt_timeObjFactory = function() {
 
     hasBlankTimePart: function() {
       return _hasBlankTimePart();
+    },
+
+    isClear: function() {
+      return _isClear();
     },
 
     isTimeObj: function() {
@@ -8387,6 +8590,8 @@ var wdt_wappDatetimeObjFactory = function() {
   var _wdtWibtypeItemObj = grabItemObj(wapp.timeTracking_wibtypeItemId);
   var _itemObj = null;
 
+  var _incompleteEntryAllowed = false;
+
   var _doStartAndEndYmdsMatch = function() {
   };
 
@@ -8547,11 +8752,25 @@ var wdt_wappDatetimeObjFactory = function() {
   };
 
   var _getDisplay1 = function() {
-    if ( ! _isEndDatetimeValid() || ! _isDurationValid() ) {
-      return "";
-    }
+    var str = "(error)";
 
-    var str = "TT:&nbsp;&nbsp;" + _getEndDatetimeAsString(true) + "&nbsp;&nbsp;&nbsp;" + _get_durationInMinutes_display2() + " mins";
+    if ( ! _isEndDatetimeValid() || ! _isDurationValid() ) {
+
+      if ( _isStartDatetimeValid() ) {
+
+        str = "TT:&nbsp;&nbsp;( incomplete; starts " + _getStartDatetimeAsString(true) + " )";
+
+      } else {
+
+        str = "";
+
+      }
+
+    } else {
+
+      str = "TT:&nbsp;&nbsp;" + _getEndDatetimeAsString(true) + "&nbsp;&nbsp;&nbsp;" + _get_durationInMinutes_display2() + " mins";
+
+    }
 
     return str;
   };
@@ -8562,6 +8781,14 @@ var wdt_wappDatetimeObjFactory = function() {
     }
 
     return _getDatetimeAsString(_get_endYyyy(), _get_endMm(), _get_endDd(), _get_endHh(), _get_endNn(), extraSpace);
+  };
+
+  var _getEndTimeObj = function() {
+    return _ready_endTimeObj;
+  };
+
+  var _getEndYmdObj = function() {
+    return _ready_endYmdObj;
   };
 
   var _getMomentObj_fromDatetimeObjs = function(ymdObj, timeObj) {
@@ -8589,6 +8816,14 @@ var wdt_wappDatetimeObjFactory = function() {
     }
 
     return _getDatetimeAsString(_get_startYyyy(), _get_startMm(), _get_startDd(), _get_startHh(), _get_startNn(), extraSpace);
+  };
+
+  var _getStartTimeObj = function() {
+    return _ready_startTimeObj;
+  };
+
+  var _getStartYmdObj = function() {
+    return _ready_startYmdObj;
   };
 
   var _getTimeAsString = function(hh, nn) {
@@ -8826,17 +9061,17 @@ var wdt_wappDatetimeObjFactory = function() {
         haveValidStartTime = _ready_startTimeObj.isValidTime();
     }
 
-    if ( _attempted_endYmdObj.isValidYmd() ) {
+    if ( _attempted_endYmdObj.isValidYmd() || ( _incompleteEntryAllowed && _attempted_endYmdObj.isClear() ) ) {
         _ready_endYmdObj.receiveYmd_fromYmdObj(_attempted_endYmdObj, true);
         haveValidEndYmd = _ready_endYmdObj.isValidYmd();
     }
 
-    if ( _attempted_endTimeObj.isValidTime() ) {
+    if ( _attempted_endTimeObj.isValidTime() || ( _incompleteEntryAllowed && _attempted_endTimeObj.isClear() ) ) {
         _ready_endTimeObj.receiveTime_fromTimeObj(_attempted_endTimeObj);
         haveValidEndTime = _ready_endTimeObj.isValidTime();
     }
 
-    if ( _isDurationValid(_attempted_durationInMinutes) ) {
+    if ( _isDurationValid(_attempted_durationInMinutes) || ( _incompleteEntryAllowed && isBlank(_attempted_durationInMinutes) ) ) {
         _setDuration(_attempted_durationInMinutes);
         haveValidDuration = _isDurationValid();
     }
@@ -8851,17 +9086,17 @@ var wdt_wappDatetimeObjFactory = function() {
       return false;
     }
 
-    if ( ! haveValidEndYmd ) {
+    if ( ! haveValidEndYmd && ! _incompleteEntryAllowed ) {
       wapp.wdtUiDataObj.sendError_Ui("Invalid end year", null, CONST_wdt_ui_endYear)
       return false;
     }
 
-    if ( ! haveValidEndTime ) {
+    if ( ! haveValidEndTime && ! _incompleteEntryAllowed ) {
       wapp.wdtUiDataObj.sendError_Ui("Invalid end time", null, CONST_wdt_ui_endHour)
       return false;
     }
 
-    if ( ! haveValidDuration ) {
+    if ( ! haveValidDuration && ! _incompleteEntryAllowed ) {
       wapp.wdtUiDataObj.sendError_Ui("Invalid minutes tracked", null, CONST_wdt_ui_minutesTracked)
       return false;
     }
@@ -9083,6 +9318,14 @@ var wdt_wappDatetimeObjFactory = function() {
     _setDatetimeObjs_fromMoment(momentObj_endDatetime, endYmdObj, endTimeObj);
   };
 
+  var _setIncompleteEntryAllowed = function(optional_setToTrueOrFalse) {
+    if ( isBlank(optional_setToTrueOrFalse) ) {
+      _incompleteEntryAllowed = true;
+    } else {
+      _incompleteEntryAllowed = optional_setToTrueOrFalse;
+    }
+  };
+
   var _setItemObj = function(itemObj) {
     _itemObj = itemObj;
   };
@@ -9235,12 +9478,28 @@ var wdt_wappDatetimeObjFactory = function() {
       return _getEndDatetimeAsString(extraSpace);
     },
 
+    getEndTimeObj: function() {
+      return _getEndTimeObj();
+    },
+
+    getEndYmdObj: function() {
+      return _getEndYmdObj();
+    },
+
     getItemObj: function() {
       return _itemObj;
     },
 
     getStartDatetimeAsString: function(extraSpace) {
       return _getStartDatetimeAsString(extraSpace);
+    },
+
+    getStartTimeObj: function() {
+      return _getStartTimeObj();
+    },
+
+    getStartYmdObj: function() {
+      return _getStartYmdObj();
     },
 
     isEndDatetimeValid: function() {
@@ -9533,21 +9792,52 @@ var wdt_wappDatetimeObjFactory = function() {
       _resetPrivateVars();
       _setReadyVarsToBlank();
 
-      if ( isBlank(wapp.timeTracking_defaultYear) || isBlank(wapp.timeTracking_defaultMonth) || isBlank(wapp.timeTracking_defaultDay) ) {
+      let list_hasValidTT = false;
+      let wdto_toUse = null;
+      let list_memberDataObjs = wapp.itemObj.getListMemberDataObjs();
 
-        _setYmdObjToToday(_ready_startYmdObj);
-        _setYmdObjToToday(_ready_endYmdObj);
+      // check the first 10 list-members (should be the top 10 items on the list) to attempt to find a valid Time-Tracking item
+      for (let i = 0; i < 10 && i < list_memberDataObjs.length; i++) {
 
-        wapp.timeTracking_defaultYear = _ready_startYmdObj.get_yyyy();
-        wapp.timeTracking_defaultMonth = _ready_startYmdObj.get_m();
-        wapp.timeTracking_defaultDay = _ready_startYmdObj.get_d();
+        let itemObj_iLoop = grabItemObj( list_memberDataObjs[i].itemId );
+        let wdto_iLoop = wdt_getWappDatetimeObj(itemObj_iLoop, true);
+
+        if ( wdto_iLoop.isStartDatetimeValid() && wdto_iLoop.isEndDatetimeValid() ) {
+          list_hasValidTT = true;
+          wdto_toUse = wdto_iLoop;
+          break;
+        }
+  
+      }
+
+      if ( list_hasValidTT ) {
+
+        // Option A: if there are existing & valid Time-Tracking items for the current list-item, set the start date-time (and end date) equal to the end date-time of the latest existing
+
+          _ready_startYmdObj.receiveYmd_fromYmdObj( wdto_toUse.getEndYmdObj() );
+          _ready_startTimeObj.receiveTime_fromTimeObj( wdto_toUse.getEndTimeObj() );
+
+          _ready_endYmdObj.receiveYmd_fromYmdObj( wdto_toUse.getEndYmdObj() );
 
       } else {
 
-        _ready_startYmdObj.receiveYmd_fromParams(wapp.timeTracking_defaultYear, wapp.timeTracking_defaultMonth, wapp.timeTracking_defaultDay);
-        _ready_endYmdObj.receiveYmd_fromParams(wapp.timeTracking_defaultYear, wapp.timeTracking_defaultMonth, wapp.timeTracking_defaultDay);
+        // Option B: otherwise, use any default Time-Tracking date
+
+        if ( isBlank(wapp.timeTracking_defaultYear) || isBlank(wapp.timeTracking_defaultMonth) || isBlank(wapp.timeTracking_defaultDay) ) {
+          _setYmdObjToToday(_ready_startYmdObj);
+          _setYmdObjToToday(_ready_endYmdObj);
+
+          wapp.timeTracking_defaultYear = _ready_startYmdObj.get_yyyy();
+          wapp.timeTracking_defaultMonth = _ready_startYmdObj.get_m();
+          wapp.timeTracking_defaultDay = _ready_startYmdObj.get_d();
+        } else {
+          _ready_startYmdObj.receiveYmd_fromParams(wapp.timeTracking_defaultYear, wapp.timeTracking_defaultMonth, wapp.timeTracking_defaultDay);
+          _ready_endYmdObj.receiveYmd_fromParams(wapp.timeTracking_defaultYear, wapp.timeTracking_defaultMonth, wapp.timeTracking_defaultDay);
+        }
 
       }
+
+
     },
 
     setDatetime_fromItemObj: function(itemObj_funcParam) {
@@ -9579,6 +9869,10 @@ var wdt_wappDatetimeObjFactory = function() {
       _setAttempted(start_ymdObj, start_timeObj, minutesTracked, end_ymdObj, end_timeObj);
 
       _processAttempted_fromDatastore();
+    },
+
+    setIncompleteEntryAllowed: function(optional_setToTrueOrFalse) {
+      _setIncompleteEntryAllowed(optional_setToTrueOrFalse);
     },
 
     setEndDatetime_usingStartDatetimeAndDuration: function(startYmdObj, startTimeObj, durationInMinutes, endYmdObj, endTimeObj) {
@@ -9740,6 +10034,14 @@ var wdt_ymdObjFactory = function() {
     }
   };
 
+  var _isClear = function() {
+    if ( isBlank(_yyyy) && isBlank(_m) && isBlank(_d) ) {
+      return true;
+    } else {
+      return true;
+    }
+  };
+
   var _processRawDateparts = function(skipValidCheck) {
     _dateIsValid = false;
 
@@ -9860,6 +10162,10 @@ var wdt_ymdObjFactory = function() {
 
     hasBlankYmdPart: function() {
       return _hasBlankYmdPart();
+    },
+
+    isClear: function() {
+      return _isClear();
     },
 
     isValidYmd: function() {
@@ -10307,26 +10613,6 @@ function handleError_OLD ( squex ) {
 		}
 		
 		throw ( squex ) ;
-	} catch ( e ) {
-		throw ( handleAndReturnError ( e ) ) ;
-	}
-}
-
-function isBlank ( val ) {
-	try {
-		if ( val === 0 || val === "0" ) return false ;
-		if ( ! val ) return true ;
-		return false ;
-	} catch ( e ) {
-		throw ( handleAndReturnError ( e ) ) ;
-	}
-}
-
-function isNumeric ( val ) {
-	try {
-		if ( isBlank(val) ) return false ;
-
-		return val == val * 1 ;
 	} catch ( e ) {
 		throw ( handleAndReturnError ( e ) ) ;
 	}
