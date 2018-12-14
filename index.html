@@ -937,11 +937,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
   <div class="grid1" id="dvPopUp_MakeNewItemTT" style="display: none; padding-top: 0.3em">
     <div class="grid1Cell gc1Header" style="padding-bottom: 0.3em"><b>New Time Tracking</b></div>
-    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.3em"></div>
-    <div class="grid1Cell gc1QuickLinks">
-      <a style="white-space: nowrap; font-size: 95%" href="javascript:void make_new_item_tt__switch_to_normal()">switch to normal</a>
-    </div>
-    <div class="grid1Cell gc1VSpace3" style="padding-bottom: 0.1em"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.4em"></div>
     <div class="grid1Cell gc1Text">
       <span style="display: none"><a style="white-space: nowrap; font-size: 90%" href="javascript:void set_ymd_to_today()">today</a>&nbsp;&nbsp;&nbsp;&nbsp;Start Y / M / D:</span>
       <span>Start Y / M / D:</span>
@@ -951,13 +947,13 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_StartMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_StartDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Text">Start Time:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipMakeNewItemTT_StartHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       : <input id="ipMakeNewItemTT_StartMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1VSpaceX" id="dvMakeNewItemTT_EndDate_Link" style="display: none; text-align: center">
       <a style="white-space: nowrap; font-size: 90%" href="javascript:void make_new_item_tt__display_end_date()">display end date</a>
     </div>
@@ -967,26 +963,27 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndMonth" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       &nbsp;/&nbsp;&nbsp;<input id="ipMakeNewItemTT_EndDay" class="ipMonthDay" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Text">End Time:</div>
     <div class="grid1Cell gc1Input">
       <input id="ipMakeNewItemTT_EndHour" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
       : <input id="ipMakeNewItemTT_EndMinute" class="ipTime" maxlength="2" onclick="js_handleClick(this)" onchange="js_handleChange(this)" />
     </div>
-    <div class="grid1Cell gc1VSpaceX" style="height: 0.95em"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.4em"></div>
     <div class="grid1Cell gc1VSpaceX" style="height: 5px; border: 2px solid #AAAAAA">
       <div style="height: 1px; background-color: #DDDDDD"></div>
     </div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.4em"></div>
     <div class="grid1Cell gc1Text" style="padding-left: 2em">Item Name:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_ItemName" class="ipText popUpMaxTextWidth" /></div>
-    <div class="grid1Cell gc1VSpace2"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Text">Mins Tracked:</div>
     <div class="grid1Cell gc1Input"><input id="ipMakeNewItemTT_MinutesTracked" class="ipNumeric" maxlength="4" onclick="js_handleClick(this)" onchange="js_handleChange(this)" /></div>
-    <div class="grid1Cell gc1VSpace2" style="padding-bottom: 0.8em"></div>
+    <div class="grid1Cell gc1VSpaceX" style="padding-bottom: 0.8em"></div>
     <div class="grid1Cell gc1Footer">
       <a style="white-space: nowrap" href="javascript:void make_new_item_tt__make()">make</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__cancel()">cancel</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void make_new_item_tt__switch_to_normal()">switch to normal</a>
     </div>
   </div>
 
@@ -1055,7 +1052,7 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 ///// CONSTANTS
 
-const CONST_wibappVersion = "0.91"; // leave this at top for easy editing
+const CONST_wibappVersion = "0.92"; // leave this at top for easy editing
 
 const CONST_cssClassName_backgroundBlack = "backgroundBlack";
 const CONST_cssClassName_backgroundBlue = "backgroundBlue";
