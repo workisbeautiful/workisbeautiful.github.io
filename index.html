@@ -68,8 +68,10 @@ table {}
 .grid4 {display: inline-grid; grid-template-columns: auto auto}
 .g4C {/* border: 1px solid red */}
 .g4Group1 {}
+.g4Group2 {}
 .g4Text {padding-right: 0.6em; padding-top: 3px; text-align: right}
-.g4TextRight {font-style: italic; padding-top: 3px; text-align: left}
+.g4TextR {font-style: italic; padding-top: 3px; text-align: left}
+.g1Sel {}
 .g4VSpace {grid-column: 1/3}
 
 .bold {font-weight: bold}
@@ -112,18 +114,18 @@ input.ipTime {width: 2em; padding-top: 2px; text-align: center}
 
 <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
 <div class="g4C g4Text g4Group1">Wibject Name:</div>
-<div class="g4C g4Group1"><input id="ipWibBuilder_CreateWibvar_WibjectItemName" class="ipText" style="width: 15em" value="" /></div>
+<div class="g4C g4Group1"><input id="ipWB_CreateWibvar_WibjectItemName" class="ipText" style="width: 15em" value="" /></div>
 
 --------------------
 
 from: displayPage js function:
 
-elem("dvWibBuilder_CreateWibvar_For").innerHTML = createForHtml;
+elem("dvWB_CreateWibvar_For").innerHTML = createForHtml;
 
 let wibvartypeCodes_array = wb_generate_wibvartypesSelectArray();
-let wibvartypeCodes_selHtml = getHtml_selectElem("selWibBuilder_CreateWibvar_WibvartypeCode", true, wibvartypeCodes_array, null, "width: 15em", "wb_ui_CreateWibvar_changeWibvartypeCode()", null, false);
+let wibvartypeCodes_selHtml = getHtml_selectElem("selWB_CreateWibvar_WibvartypeCode", true, wibvartypeCodes_array, null, "width: 15em", "wb_ui_CreateWibvar_changeWibvartypeCode()", null, false);
 
-elem("spnWibBuilder_CreateWibvar_WibvartypeCode").innerHTML = wibvartypeCodes_selHtml;
+elem("spnWB_CreateWibvar_WibvartypeCode").innerHTML = wibvartypeCodes_selHtml;
 
 wb_ui_CreateWibvar_changeWibvartypeCode();
 
@@ -133,11 +135,11 @@ wb_ui_CreateWibvar_changeWibvartypeCode();
 from: create_variable__create js function:
 
 if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
-  var wibjectItemName = getElemVal("ipWibBuilder_CreateWibvar_WibjectItemName");
+  var wibjectItemName = getElemVal("ipWB_CreateWibvar_WibjectItemName");
 
   if ( isBlank(wibjectItemName) ) {
     alert("Wibject Name is required");
-    focusNow_toElemId("ipWibBuilder_CreateWibvar_WibjectItemName");
+    focusNow_toElemId("ipWB_CreateWibvar_WibjectItemName");
     return;
   }
 }
@@ -145,11 +147,11 @@ if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
 --------------------
 
 function wb_ui_CreateWibvar_changeWibvartypeCode() {
-  var wibvartypeCode = getElemVal("selWibBuilder_CreateWibvar_WibvartypeCode"):
+  var wibvartypeCode = getElemVal("selWB_CreateWibvar_WibvartypeCode"):
 
   if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
     html_displayAllElementsOfClass("g4Group1");
-    focusNow_toElemId("ipWibBuilder_CreateWibvar_WibjectItemName");
+    focusNow_toElemId("ipWB_CreateWibvar_WibjectItemName");
   } else {
     html_hideAllElementsOfClass("g4Group1");
   }
@@ -570,13 +572,13 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
   </div> <!-- END OF: id="dvPage_ViewItem" -->
 
-  <div id="dvPage_WibBuilder_AddScriptRow" style="display: none">
+  <div id="dvPage_WB_AddScriptRow" style="display: none">
     <div>
-      App: <a href="javascript:void add_script_row__go_to_app()" style="white-space: nowrap"><span id="spnWibBuilder_AddScriptRow_AppName">(app name goes here)</span></a>
+      App: <a href="javascript:void add_script_row__go_to_app()" style="white-space: nowrap"><span id="spnWB_AddScriptRow_AppName">(app name goes here)</span></a>
     </div>
     <div style="height: 1.0em"></div>
     <div>
-      Script: <a href="javascript:void add_script_row__go_to_script()" style="white-space: nowrap"><span id="spnWibBuilder_AddScriptRow_ScriptName">(script name goes here)</span></a>
+      Script: <a href="javascript:void add_script_row__go_to_script()" style="white-space: nowrap"><span id="spnWB_AddScriptRow_ScriptName">(script name goes here)</span></a>
     </div>
     <div style="height: 1.0em"></div>
     <div class="grid1">
@@ -599,9 +601,9 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_AllApps" style="display: none">
+  <div id="dvPage_WB_AllApps" style="display: none">
     <div>
-      <a href="javascript:void all_apps__create_new_app()" style="white-space: nowrap">create new app</a>
+      <a id="aWB_AllApps_CreateApp1" href="javascript:void all_apps__create_new_app()" style="white-space: nowrap">create new app</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_scripts()" style="white-space: nowrap">all scripts</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_apps__go_to_all_screens()" style="white-space: nowrap">all screens</a>
     </div>
@@ -609,7 +611,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_AllApps_Items" style="display: inline-grid; grid-template-columns: auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
+      <div id="dvWB_AllApps_Items" style="display: inline-grid; grid-template-columns: auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.1em; background-color: black"></div>
@@ -621,7 +623,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_AllScreens" style="display: none">
+  <div id="dvPage_WB_AllScreens" style="display: none">
     <div>
       <a href="javascript:void all_screens__build_new_screen()" style="white-space: nowrap">build new screen</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_screens__go_to_all_apps()" style="white-space: nowrap">all apps</a>
@@ -630,7 +632,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div style="height: 1.2em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_AllScreens_Items"></div>
+    <div id="dvWB_AllScreens_Items"></div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 1.2em"></div>
@@ -641,7 +643,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_AllScripts" style="display: none">
+  <div id="dvPage_WB_AllScripts" style="display: none">
     <div>
       <a href="javascript:void all_scripts__create_new_script()" style="white-space: nowrap">create new script</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void all_scripts__go_to_all_apps()" style="white-space: nowrap">all apps</a>
@@ -651,7 +653,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_AllScripts_Items" style="display: inline-grid; grid-template-columns: auto auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
+      <div id="dvWB_AllScripts_Items" style="display: inline-grid; grid-template-columns: auto auto auto; grid-column-gap: 0.8em; grid-row-gap: 1.8em"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.1em; background-color: black"></div>
@@ -663,7 +665,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_BuildScreen" style="display: none">
+  <div id="dvPage_WB_BuildScreen" style="display: none">
     <div style="display: grid; width: 19.5em; margin-left: 0.3em; padding: 0.7em; padding-bottom: 1em; border: 0.2em solid lightgrey; border-bottom: 0; font-size: 90%; font-style: italic">
       <div style="font-weight: bold">Info About This Screen:</div>
       <div style="height: 0.7em"></div>
@@ -671,24 +673,24 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
       <div style="height: 0.7em"></div>
       <div style="display: grid; grid-template-columns: auto auto">
         <div style="text-size: 85%; padding-right: 0.5em; padding-top: 0.2em; text-align: right">type of screen:</div>
-        <div style="text-size: 85%; font-style: normal"><span id="spnWibBuilder_BuildScreen__ScreenTypeCode"></span></div>
+        <div style="text-size: 85%; font-style: normal"><span id="spnWB_BuildScreen__ScreenTypeCode"></span></div>
         <div style="grid-column: 1/3; height: 0.8em"></div>
         <div style="text-size: 85%; padding-right: 0.5em; text-align: right">type of thing:</div>
-        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Link">
-          <a id="aWibBuilder_BuildScreen_TypeName" style="text-size: 85%; font-style: normal" href="javascript:void build_screen__set_type_of_thing()">(click here)</a>
+        <div id="dvWB_BuildScreen_NameOfTypeTheScreenWillCreate_Link">
+          <a id="aWB_BuildScreen_TypeName" style="text-size: 85%; font-style: normal" href="javascript:void build_screen__set_type_of_thing()">(click here)</a>
         </div>
 
 <!-- OLD
-        <div id="dvWibBuilder_BuildScreen_NameOfTypeTheScreenWillCreate_Text" style="display: none; text-size: 85%; font-style: normal"></div>
+        <div id="dvWB_BuildScreen_NameOfTypeTheScreenWillCreate_Text" style="display: none; text-size: 85%; font-style: normal"></div>
 -->
 
       </div>
     </div>
     <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.5em">
-      <div id="dvWibBuilder_BuildScreen_HeaderText" style="border: 0.2em solid lightgrey; padding: 0.5em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div id="dvWB_BuildScreen_HeaderText" style="border: 0.2em solid lightgrey; padding: 0.5em; font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
       <div style="height: 0.5em"></div>
       <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-        <div id="dvWibBuilder_BuildScreen_ItemNameText" style="border: 0.2em solid lightgrey; width: ; padding: 0.5em; padding-top: 0.7em; text-align: right">_______ Name:</div>
+        <div id="dvWB_BuildScreen_ItemNameText" style="border: 0.2em solid lightgrey; width: ; padding: 0.5em; padding-top: 0.7em; text-align: right">_______ Name:</div>
         <div style="border: 0.2em solid lightgrey; width: ; padding: 0.5em">
           <input style="width: 100%" />
         </div>
@@ -702,14 +704,14 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div><a href="javascript:void build_screen__go_to_all_screens()">list of all screens</a></div>
   </div>
 
-  <div id="dvPage_WibBuilder_ChooseExistingWibtype" style="display: none">
+  <div id="dvPage_WB_ChooseExistingWibtype" style="display: none">
     <div style="">
       <a href="javascript:void choose_existing_type__cancel()">cancel</a>
     </div>
     <div style="height: 1.2em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_ChooseExistingWibtype_Items"></div>
+    <div id="dvWB_ChooseExistingWibtype_Items"></div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 1.2em"></div>
@@ -718,17 +720,23 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_CreateWibvar" style="display: none">
-    <div id="dvWibBuilder_CreateWibvar_For">(variable created for)</div>
+  <div id="dvPage_WB_CreateWibvar" style="display: none">
+    <div id="dvWB_CreateWibvar_For">(variable created for)</div>
     <div style="height: 1.2em"></div>
     <div style="height: 0.11em; background-color: black"></div>
     <div style="height: 1.2em"></div>
     <div class="grid4">
       <div class="g4C g4Text">Variable Name:</div>
-      <div class="g4C"><input id="ipWibBuilder_CreateWibvar_WibvarItemName" class="ipText" style="width: 15em" value="" /></div>
+      <div class="g4C"><input id="ipWB_CreateWibvar_WibvarItemName" class="ipText" style="width: 15em" value="" /></div>
       <div class="g4C g4VSpace" style="height: 1.5em"></div>
       <div class="g4C g4Text">Variable Type:</div>
-      <div class="g4C"><span id="spnWibBuilder_CreateWibvar_WibvartypeCode"></span></div>
+      <div class="g4C g1Sel"><span id="spnWB_CreateWibvar_WibvartypeCode"></span></div>
+      <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group1">Parameter:</div>
+      <div class="g4C g1Sel g4Group1"><span id="spnWB_CreateWibvar_Param"></span></div>
+      <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group2">Scope:</div>
+      <div class="g4C g1Sel g4Group2"><span id="spnWB_CreateWibvar_Scope"></span></div>
     </div>
     <div style="height: 1.2em"></div>
     <div style="height: 0.11em; background-color: black"></div>
@@ -739,14 +747,14 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_DisplayScreen" style="display: none">
+  <div id="dvPage_WB_DisplayScreen" style="display: none">
     <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
-      <div id="dvWibBuilder_DisplayScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+      <div id="dvWB_DisplayScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
       <div style="height: 1em"></div>
       <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-        <div id="dvWibBuilder_DisplayScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
+        <div id="dvWB_DisplayScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
         <div style="width: ">
-          <input class="ipText" id="ipWibBuilder_DisplayScreen_ItemNameValue" style="width: 100%" />
+          <input class="ipText" id="ipWB_DisplayScreen_ItemNameValue" style="width: 100%" />
         </div>
       </div>
       <div style="height: 1em"></div>
@@ -758,16 +766,71 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div><a href="javascript:void display_screen__go_to_all_screens()">list of all screens</a></div>
   </div>
 
-  <div id="dvPage_WibBuilder_RunScreen" style="display: none">
+  <div id="dvPage_WB_EditWibject" style="display: none">
+    <div id="dvWB_EditWibject_ItemInfo">(variable info goes here)</div>
+    <div style="height: 0.5em"></div>
+    <div id="dvWB_EditWibject_ParentInfo">(parent info goes here)</div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div class="grid4">
+      <div class="g4C g4Text">Wibject Name:</div>
+      <div class="g4C"><input id="ipWB_EditWibject_WibvarItemName" class="ipText" style="width: 15em" value="" /></div>
+      <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group1">Parameter:</div>
+      <div class="g4C g1Sel g4Group1"><span id="spnWB_EditWibject_Param"></span></div>
+      <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group2">Scope:</div>
+      <div class="g4C g1Sel g4Group2"><span id="spnWB_EditWibject_Scope"></span></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a href="javascript:void edit_wibject__make_edit()" style="white-space: nowrap">make edit</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void edit_wibject__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+  </div>
 
-    <div id="dvWibBuilder_RunScreen_OldSection" style="display: none">
+  <div id="dvPage_WB_EditWibvar" style="display: none">
+    <div id="dvWB_EditWibvar_ItemInfo">(variable info goes here)</div>
+    <div style="height: 0.5em"></div>
+    <div id="dvWB_EditWibvar_ParentInfo">(parent info goes here)</div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div class="grid4">
+      <div class="g4C g4Text">Variable Name:</div>
+      <div class="g4C"><input id="ipWB_EditWibvar_WibvarItemName" class="ipText" style="width: 15em" value="" /></div>
+      <div class="g4C g4VSpace" style="height: 1.5em"></div>
+      <div class="g4C g4Text">Variable Type:</div>
+      <div class="g4C"><span id="spnWB_EditWibvar_WibvartypeCode"></span></div>
+      <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group1">Parameter:</div>
+      <div class="g4C g1Sel g4Group1"><span id="spnWB_EditWibvar_Param"></span></div>
+      <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group2">Scope:</div>
+      <div class="g4C g1Sel g4Group2"><span id="spnWB_EditWibvar_Scope"></span></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a href="javascript:void edit_variable__make_edit()" style="white-space: nowrap">make edit</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void edit_variable__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+  </div>
+
+  <div id="dvPage_WB_RunScreen" style="display: none">
+
+    <div id="dvWB_RunScreen_OldSection" style="display: none">
       <div style="display: grid; width: 19em; border: 0.2em solid grey; padding: 0.8em">
-        <div id="dvWibBuilder_RunScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
+        <div id="dvWB_RunScreen_HeaderText" style="font-weight: bold; text-align: center">Create&nbsp;&nbsp;________</div>
         <div style="height: 1em"></div>
         <div style="display: grid; grid-template-columns: auto auto; grid-gap: 0.4em">
-          <div id="dvWibBuilder_RunScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
+          <div id="dvWB_RunScreen_ItemNameText" style="width: ; padding-top: 0.15em; text-align: right">_______ Name:</div>
           <div style="width: ">
-            <input class="ipText" id="ipWibBuilder_RunScreen_ItemNameValue" style="width: 100%" />
+            <input class="ipText" id="ipWB_RunScreen_ItemNameValue" style="width: 100%" />
           </div>
         </div>
         <div style="height: 1em"></div>
@@ -779,8 +842,8 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
       <div><a href="javascript:void run_screen__go_to_all_screens()">list of all screens</a></div>
     </div>
 
-    <div id="dvWibBuilder_RunScreen_NewSection" style="display: none">
-      <div id="dvWibBuilder_RunScreen_NewGrid" style="display: inline-grid">
+    <div id="dvWB_RunScreen_NewSection" style="display: none">
+      <div id="dvWB_RunScreen_NewGrid" style="display: inline-grid">
         (new grid HTML goes here)
       </div>
       <div style="height: 1.8em"></div>
@@ -789,15 +852,15 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
   </div>
 
-  <div id="dvPage_WibBuilder_ShowWibtypeInstances" style="display: none">
+  <div id="dvPage_WB_ShowWibtypeInstances" style="display: none">
     <div>
-      <a id="aWibBuilder_ShowWibtypeInstances_RunScreenAgain" href="javascript:void show_instances__run_screen_again()" style="white-space: nowrap">run screen again</a>
+      <a id="aWB_ShowWibtypeInstances_RunScreenAgain" href="javascript:void show_instances__run_screen_again()" style="white-space: nowrap">run screen again</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void show_instances__go_to_all_screens()" style="white-space: nowrap">go to all screens</a>
     </div>
     <div style="height: 1.2em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 0.7em"></div>
-    <div id="dvWibBuilder_ShowWibtypeInstances_Items"></div>
+    <div id="dvWB_ShowWibtypeInstances_Items"></div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.1em; background-color: black"></div>
     <div style="height: 1.2em"></div>
@@ -807,8 +870,8 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div id="dvPage_WibBuilder_ViewApp" style="display: none">
-    <div id="dvWibBuilder_ViewApp_ItemName">(app name goes here)</div>
+  <div id="dvPage_WB_ViewApp" style="display: none">
+    <div id="dvWB_ViewApp_ItemName">(app name goes here)</div>
     <div style="height: 1.0em"></div>
     <div>
       <a href="javascript:void view_app__run_app()" style="white-space: nowrap">run this app</a>
@@ -818,13 +881,13 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div>APP VARIABLES:</div>
     <div style="height: 0.8em"></div>
     <div>
-      <a href="javascript:void view_app__create_new_variable()" style="white-space: nowrap">new variable for this app</a>
+      <a id="aWB_ViewApp_CreateWibvar" href="javascript:void view_app__create_new_variable()" style="white-space: nowrap">new variable for this app</a>
     </div>
     <div style="height: 1.0em"></div>
     <div style="height: 0.11em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_ViewApp_Wibvars" style="display: inline-grid; grid-template-columns: auto;"></div>
+      <div id="dvWB_ViewApp_Wibvars" style="display: inline-grid; grid-template-columns: auto;"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.11em; background-color: black"></div>
@@ -838,7 +901,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div style="height: 0.11em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_ViewApp_Scripts" style="display: inline-grid; grid-template-columns: auto auto"></div>
+      <div id="dvWB_ViewApp_Scripts" style="display: inline-grid; grid-template-columns: auto auto"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.11em; background-color: black"></div>
@@ -846,34 +909,101 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div>SCREENS:</div>
     <div style="height: 0.8em"></div>
     <div>
-      <a href="javascreen:void view_app__create_new_screen()" style="white-space: nowrap">new screen for this app</a>
+      <a href="javascript:void view_app__create_new_screen()" style="white-space: nowrap">new screen for this app</a>
     </div>
     <div style="height: 1.0em"></div>
     <div style="height: 0.11em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_ViewApp_Screens" style="display: inline-grid; grid-template-columns: auto auto"></div>
+      <div id="dvWB_ViewApp_Screens" style="display: inline-grid; grid-template-columns: auto auto"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.11em; background-color: black"></div>
   </div>
 
-  <div id="dvPage_WibBuilder_ViewScript" style="display: none">
-    <div id="dvWibBuilder_ViewScript_ItemName">(script name goes here)</div>
+  <div id="dvPage_WB_ViewScript" style="display: none">
+    <div id="dvWB_ViewScript_ItemInfo">(script info goes here)</div>
+<!--
     <div style="height: 0.5em"></div>
     <div>
-      App: <a href="javascript:void view_script__go_to_app()" style="white-space: nowrap"><span id="spnWibBuilder_ViewScript_AppName">(app name goes here)</span></a>
+      App: <a href="javascript:void view_script__go_to_app()" style="white-space: nowrap"><span id="spnWB_ViewScript_AppName">(app name goes here)</span></a>
     </div>
+-->
     <div style="height: 1.0em"></div>
     <div>Script Rows:&nbsp;&nbsp;&nbsp;<a href="javascript:void view_script__create_new_script_row()" style="white-space: nowrap">add</a></div>
     <div style="height: 0.3em"></div>
     <div style="height: 0.11em; background-color: black"></div>
     <div style="height: 0.7em"></div>
     <div>
-      <div id="dvWibBuilder_ViewScript_ScriptRows" style="display: inline-grid; grid-template-columns: auto auto"></div>
+      <div id="dvWB_ViewScript_ScriptRows" style="display: inline-grid; grid-template-columns: auto auto"></div>
     </div>
     <div style="height: 0.7em"></div>
     <div style="height: 0.11em; background-color: black"></div>
+  </div>
+
+  <div id="dvPage_WB_ViewWibject" style="display: none">
+    <div id="dvWB_ViewWibject_ItemInfo">(wibject info goes here)</div>
+    <div style="height: 0.5em"></div>
+    <div id="dvWB_ViewWibject_ParentInfo">(parent info goes here)</div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <div class="grid4">
+        <div class="g4C g4Text">Wibject Name:</div>
+        <div class="g4C g4TextR"><span id="spnWB_ViewWibject_WibvarItemName"></span></div>
+        <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+        <div class="g4C g4Text g4Group1">Parameter:</div>
+        <div class="g4C g1Text g4Group1"><span id="spnWB_ViewWibject_Param"></span></div>
+        <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+        <div class="g4C g4Text g4Group2">Scope:</div>
+        <div class="g4C g1Text g4Group2"><span id="spnWB_ViewWibject_Scope"></span></div>
+      </div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 0.7em"></div>
+    <div>
+      <a id="aWB_ViewWibject_Edit" href="javascript:void view_wibject__edit()" style="white-space: nowrap">edit</a>
+    </div>
+    <div style="height: 1.8em"></div>
+    <div>Wibject Elements:&nbsp;&nbsp;&nbsp;<a href="javascript:void view_wibject__create_new_element()" style="white-space: nowrap">add</a></div>
+    <div style="height: 0.8em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 0.7em"></div>
+    <div>
+      <div id="dvWB_ViewWibject_WibjectElements" style="display: inline-grid; grid-template-columns: auto"></div>
+    </div>
+    <div style="height: 0.7em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+  </div>
+
+  <div id="dvPage_WB_ViewWibvar" style="display: none">
+    <div id="dvWB_ViewWibvar_ItemInfo">(variable info goes here)</div>
+    <div style="height: 0.5em"></div>
+    <div id="dvWB_ViewWibvar_ParentInfo">(parent info goes here)</div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div class="grid4">
+      <div class="g4C g4Text">Variable Name:</div>
+      <div class="g4C g4TextR"><span id="spnWB_ViewWibvar_WibvarItemName"></span></div>
+      <div class="g4C g4VSpace" style="height: 1.5em"></div>
+      <div class="g4C g4Text">Variable Type:</div>
+      <div class="g4C g4TextR"><span id="spnWB_ViewWibvar_Wibvartype"></span></div>
+      <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group1">Parameter:</div>
+      <div class="g4C g1Text g4Group1"><span id="spnWB_ViewWibvar_Param"></span></div>
+      <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group2">Scope:</div>
+      <div class="g4C g1Text g4Group2"><span id="spnWB_ViewWibvar_Scope"></span></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a id="aWB_ViewWibvar_Edit" href="javascript:void view_variable__edit()" style="white-space: nowrap">edit</a>
+    </div>
   </div>
 
   <div id="dvPage_Wibtypes" style="display: none">
@@ -1186,7 +1316,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
-  <div class="grid1" id="dvPopUp_WibBuilder_UseExistingWibtype" style="display: none">
+  <div class="grid1" id="dvPopUp_WB_UseExistingWibtype" style="display: none">
     <div class="grid1Cell gc1Header"><b>Use Existing Type?</b></div>
     <div class="grid1Cell gc1VSpace4"></div>
     <div class="grid1Cell gc1Footer" style="font-weight: bold">
@@ -1218,7 +1348,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
 ///// CONSTANTS
 
-const C_wibappVersion = "0.97"; // leave this at top for easy editing
+const C_wibappVersion = "0.98"; // leave this at top for easy editing
 
 const C_cssClassName_backgroundBlack = "backgroundBlack";
 const C_cssClassName_backgroundBlue = "backgroundBlue";
@@ -1283,9 +1413,6 @@ const C_propName_wtifItemId = "wtifItemId";
 const C_reordering_mode_normal = "normal";
 const C_reordering_mode_moveAboveOtherItem = "moveAboveOtherItem";
 
-const C_scopeCode_private = "1";
-const C_scopeCode_public = "2";
-
 const C_storedDataVersion = "stored_data_version";
 
 const C_stringOfAllItemIds = "string_of_all_item_ids";
@@ -1312,6 +1439,9 @@ const C_wb_listOfWibtypeInstanceHolderLists_itemName = "wb-list-of-wibtype-insta
 const C_wb_paramCode_no = "0";
 const C_wb_paramCode_yesRequired = "1";
 const C_wb_paramCode_yesOptional = "2";
+
+const C_wb_scopeCode_private = "1";
+const C_wb_scopeCode_public = "2";
 
 const C_wb_screenBoxWibtype_itemName = "wib-builder-screen-box";
 const C_wb_screenBoxWibtype_wtif_BoxesAcross_itemName = "BoxesAcross";
@@ -1456,9 +1586,14 @@ wapp.wb_appListItemId = null;
 wapp.wb_appWibtype_itemId = null;
 wapp.wb_appWibvarWibtype_itemId = null;
 wapp.wb_curApp_itemObj = null;
+wapp.wb_curAppWibvar_itemObj = null;
+wapp.wb_curParentChain = [];
 wapp.wb_curScreen_itemObj = null;
+wapp.wb_curScreenWibvar_itemObj = null;
 wapp.wb_curScript_itemObj = null;
+wapp.wb_curScriptWibvar_itemObj = null;
 wapp.wb_curWibject_itemObj = null;
+wapp.wb_curWibjectElem_itemObj = null;
 wapp.wb_curWibtype_itemObj = null;
 wapp.wb_listOfWibtypeInstanceHolderLists_itemId = null;
 wapp.wb_screenBoxWibtype_itemId = null;
@@ -1571,11 +1706,23 @@ function createItemInfoString(itemName, doneStatusCode, displayCode, isList, not
   return itemInfoString;
 }
 
-function createListMemberDataObj(itemId, sortPosition) {
+function createListMemberDataObj(itemId, sortPosition, propName1, propValue1, propName2, propValue2, propName3, propValue3) {
   var listMemberDataObj = {};
 
   listMemberDataObj.itemId = itemId;
   listMemberDataObj.sortPosition = sortPosition;
+
+  if ( ! isBlank(propName1) ) {
+    listMemberDataObj[propName1] = propValue1;
+  }
+
+  if ( ! isBlank(propName2) ) {
+    listMemberDataObj[propName2] = propValue2;
+  }
+
+  if ( ! isBlank(propName3) ) {
+    listMemberDataObj[propName3] = propValue3;
+  }
 
   return listMemberDataObj;
 }
@@ -1741,6 +1888,10 @@ function dc_() {
   // --> allows searching for "dc(" to determine whether there are any stray console.log calls that will occur when running the code
 }
 
+function dc2(varName) {
+  dc( varName, eval(varName) );
+}
+
 function deactivateItemForReordering(itemId) {
   wapp.reordering_activatedItemId = null;
 
@@ -1804,8 +1955,8 @@ function displayPage(pageName) {
     elem("spnAppHeader_Dev").style.display = "none";
   }
 
-  // set different page heading for WibBuilder vs original
-  if ( leftIs(pageName, "WibBuilder") ) {
+  // set different page heading for wib-builder vs original
+  if ( leftIs(pageName, "WB_") ) {
 
     document.body.style.display = "grid";
     document.body.style.margin = "0.8em";
@@ -1853,15 +2004,16 @@ function displayPage(pageName) {
   elem("dvViewItem_ListMembers_Items").innerHTML = "";
   elem("dvViewItem_Wibtypes_WtifData").innerHTML = "";
   elem("dvViewItem_WibtypesForListMembers_Items").innerHTML = "";
-  elem("dvWibBuilder_AllApps_Items").innerHTML = "";
-  elem("dvWibBuilder_AllScreens_Items").innerHTML = "";
-  elem("dvWibBuilder_AllScripts_Items").innerHTML = "";
-  elem("dvWibBuilder_ChooseExistingWibtype_Items").innerHTML = "";
-  elem("dvWibBuilder_ShowWibtypeInstances_Items").innerHTML = "";
-  elem("dvWibBuilder_ViewApp_Screens").innerHTML = "";
-  elem("dvWibBuilder_ViewApp_Scripts").innerHTML = "";
-  elem("dvWibBuilder_ViewApp_Wibvars").innerHTML = "";
-  elem("dvWibBuilder_ViewScript_ScriptRows").innerHTML = "";
+  elem("dvWB_AllApps_Items").innerHTML = "";
+  elem("dvWB_AllScreens_Items").innerHTML = "";
+  elem("dvWB_AllScripts_Items").innerHTML = "";
+  elem("dvWB_ChooseExistingWibtype_Items").innerHTML = "";
+  elem("dvWB_ShowWibtypeInstances_Items").innerHTML = "";
+  elem("dvWB_ViewApp_Screens").innerHTML = "";
+  elem("dvWB_ViewApp_Scripts").innerHTML = "";
+  elem("dvWB_ViewApp_Wibvars").innerHTML = "";
+  elem("dvWB_ViewScript_ScriptRows").innerHTML = "";
+  elem("dvWB_ViewWibject_WibjectElements").innerHTML = "";
   elem("dvWibtypes_Items").innerHTML = "";
 
   // hide all display-page sections -- will show the target display-page below
@@ -1874,16 +2026,20 @@ function displayPage(pageName) {
   elem("dvPage_NavigateItems").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
-  elem("dvPage_WibBuilder_AllApps").style.display = "none";
-  elem("dvPage_WibBuilder_AllScreens").style.display = "none";
-  elem("dvPage_WibBuilder_AllScripts").style.display = "none";
-  elem("dvPage_WibBuilder_BuildScreen").style.display = "none";
-  elem("dvPage_WibBuilder_ChooseExistingWibtype").style.display = "none";
-  elem("dvPage_WibBuilder_CreateWibvar").style.display = "none";
-  elem("dvPage_WibBuilder_RunScreen").style.display = "none";
-  elem("dvPage_WibBuilder_ShowWibtypeInstances").style.display = "none";
-  elem("dvPage_WibBuilder_ViewApp").style.display = "none";
-  elem("dvPage_WibBuilder_ViewScript").style.display = "none";
+  elem("dvPage_WB_AllApps").style.display = "none";
+  elem("dvPage_WB_AllScreens").style.display = "none";
+  elem("dvPage_WB_AllScripts").style.display = "none";
+  elem("dvPage_WB_BuildScreen").style.display = "none";
+  elem("dvPage_WB_ChooseExistingWibtype").style.display = "none";
+  elem("dvPage_WB_CreateWibvar").style.display = "none";
+  elem("dvPage_WB_EditWibject").style.display = "none";
+  elem("dvPage_WB_EditWibvar").style.display = "none";
+  elem("dvPage_WB_RunScreen").style.display = "none";
+  elem("dvPage_WB_ShowWibtypeInstances").style.display = "none";
+  elem("dvPage_WB_ViewApp").style.display = "none";
+  elem("dvPage_WB_ViewScript").style.display = "none";
+  elem("dvPage_WB_ViewWibject").style.display = "none";
+  elem("dvPage_WB_ViewWibvar").style.display = "none";
   elem("dvPage_Wibtypes").style.display = "none";
 
   // show target display-page
@@ -2261,7 +2417,10 @@ function displayPage(pageName) {
       break;
     }
 
-    case "WibBuilder_AllApps": {
+    case "WB_AllApps": {
+      wb_curObjs_clear();
+      wb_parentChain_clear();
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Apps";
 
       let html = "";
@@ -2271,23 +2430,35 @@ function displayPage(pageName) {
 
       appList_listMemberDataObjs.forEach( (appList_listMemberDataObj) => {
         let appItemObj = grabItemObj(appList_listMemberDataObj.itemId);
-        if (html !== "") html += "<div style='grid-column: 1/3; height: 1.8em'></div>"
+        if (html !== "") html += "<div style='grid-column: 1/3; height: 1.8em'></div>";
+
+        let aId = "", aIdHtml = "";
+        if ( focusAfterDisplayPage_isBlank() ) {
+          aId = "aWB_AllApps_" + appItemObj.itemId;
+          aIdHtml = " id='" + aId + "'"
+          focusAfterDisplayPage_setFromElemId(aId);
+        }
 
         html += "<div>" + appItemObj.itemName + "</div>\n";
         html += "<div style='padding-left: 0.4em'>\n";
-        html += "  <a href='javascript:void all_apps__view_app(\"" + appItemObj.itemId + "\")'>view</a>\n";
+        html += "  <a" + aIdHtml + " href='javascript:void all_apps__view_app(\"" + appItemObj.itemId + "\")'>view</a>\n";
         html += "  &nbsp;&nbsp;<a href='javascript:void all_apps__delete_app(\"" + appItemObj.itemId + "\")'>delete</a>\n";
         html += "</div>\n";
       } );
 
       if (html == "") html += "(none created yet)";
 
-      elem("dvWibBuilder_AllApps_Items").innerHTML = html;
+      elem("dvWB_AllApps_Items").innerHTML = html;
+
+      focusAfterDisplayPage_setIfBlank_fromElemId("aWB_AllApps_CreateApp1");
 
       break;
     }
 
-    case "WibBuilder_AllScreens": {
+    case "WB_AllScreens": {
+      wb_curObjs_clear();
+      wb_parentChain_clear();
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Screens";
 
       let html = "";
@@ -2297,7 +2468,7 @@ function displayPage(pageName) {
 
       screenList_listMemberDataObjs.forEach( (screenList_listMemberDataObj) => {
         let screenItemObj = grabItemObj(screenList_listMemberDataObj.itemId);
-        if (html !== "") html += "<div style='height: 1.8em'></div>"
+        if (html !== "") html += "<div style='height: 1.8em'></div>";
 
         let screenNameDisplay = wb_getScreenNameDisplay(screenItemObj);
 
@@ -2311,12 +2482,15 @@ function displayPage(pageName) {
 
       if (html == "") html += "(none created yet)";
 
-      elem("dvWibBuilder_AllScreens_Items").innerHTML = html;
+      elem("dvWB_AllScreens_Items").innerHTML = html;
 
       break;
     }
 
-    case "WibBuilder_AllScripts": {
+    case "WB_AllScripts": {
+      wb_curObjs_clear();
+      wb_parentChain_clear();
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - All Scripts";
 
       let html = "";
@@ -2330,7 +2504,7 @@ function displayPage(pageName) {
         let app_itemId = scriptItemObj.getWtifData(wapp.wb_scriptWibtype_itemId, null, C_wb_scriptWibtype_wtif_WbAppItemId_itemName);
         let app_itemObj = grabItemObj(app_itemId);
 
-        if (html !== "") html += "<div style='grid-column: 1/4; height: 1.8em'></div>"
+        if (html !== "") html += "<div style='grid-column: 1/4; height: 1.8em'></div>";
 
         html += "<div>APP: " + app_itemObj.itemName + "</div>\n";
         html += "<div>SCRIPT: " + scriptItemObj.itemName + "</div>\n";
@@ -2339,12 +2513,14 @@ function displayPage(pageName) {
 
       if (html == "") html += "(none created yet)";
 
-      elem("dvWibBuilder_AllScripts_Items").innerHTML = html;
+      elem("dvWB_AllScripts_Items").innerHTML = html;
 
       break;
     }
 
-    case "WibBuilder_BuildScreen": {
+    case "WB_BuildScreen": {
+      dc("need to handle wb_curObjs_clear() and wb_parentChain_clear() if we keep this");
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Build Screen";
 
       let screenTypeCodes_array = wb_getScreenTypeCodesArray();
@@ -2353,29 +2529,31 @@ function displayPage(pageName) {
 
         let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj)
         let screenTypeCode = wapp.wb_curScreen_itemObj.getWtifData(wapp.wb_screenWibtype_itemId, null, C_wbs_screenWtifs_screenTypeCode_itemName)
-        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, screenTypeCode, "width: 7.2em", "build_screen__changeScreenType()", null, false);
+        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWB_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, screenTypeCode, "width: 7.2em", "build_screen__changeScreenType()", null, false);
 
-        elem("aWibBuilder_BuildScreen_TypeName").innerHTML = wibtypeItemObj_associatedWithScreen.itemName;
-        elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
+        elem("aWB_BuildScreen_TypeName").innerHTML = wibtypeItemObj_associatedWithScreen.itemName;
+        elem("spnWB_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
 
-        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
+        elem("dvWB_BuildScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
+        elem("dvWB_BuildScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
 
       } else {
 
-        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWibBuilder_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, C_wb_screenTypeCode_createWibtype, "width: 7.2em", "build_screen__changeScreenType()", null, false);
+        let screenTypeCodes_SelectHtml = getHtml_selectElem("selWB_BuildScreen_ScreenTypeCode", false, screenTypeCodes_array, C_wb_screenTypeCode_createWibtype, "width: 7.2em", "build_screen__changeScreenType()", null, false);
 
-        elem("aWibBuilder_BuildScreen_TypeName").innerHTML = "(click here)";
-        elem("spnWibBuilder_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
-        elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;________";
-        elem("dvWibBuilder_BuildScreen_ItemNameText").innerHTML = "_______ Name:";
+        elem("aWB_BuildScreen_TypeName").innerHTML = "(click here)";
+        elem("spnWB_BuildScreen__ScreenTypeCode").innerHTML = screenTypeCodes_SelectHtml;
+        elem("dvWB_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;________";
+        elem("dvWB_BuildScreen_ItemNameText").innerHTML = "_______ Name:";
 
       }
 
       break;
     }
 
-    case "WibBuilder_ChooseExistingWibtype": {
+    case "WB_ChooseExistingWibtype": {
+      dc("need to handle wb_curObjs_clear() and wb_parentChain_clear() if we keep this");
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Choose Existing Type";
 
       let uniqueWibTypeItemIds = [];
@@ -2404,84 +2582,270 @@ function displayPage(pageName) {
 
       if (html == "") html += "(no types available)";
 
-      elem("dvWibBuilder_ChooseExistingWibtype_Items").innerHTML = html;
+      elem("dvWB_ChooseExistingWibtype_Items").innerHTML = html;
 
       break;
 
     }
 
-    case "WibBuilder_CreateWibvar": {
+    case "WB_CreateWibvar": {
+      var latestPco = wb_parentChain_getLatest();
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Create Variable";
 
-      let createForHtml = "";
+      let createForHtml = "For " + latestPco.getDisplay();
+      createForHtml += wb_parentChain_getPreParentDisplay();
+      elem("dvWB_CreateWibvar_For").innerHTML = createForHtml;
 
-      if (wapp.wb_curScript_itemObj) {
-        createForHtml = "For script: " + wapp.wb_curScript_itemObj.itemName;
-        if ( ! isBlank(wapp.wb_curApp_itemObj) ) {
-          createForHtml += " (app: " + wapp.wb_curApp_itemObj.itemName + ")";
-        }
-      } else if (wapp.wb_curScreen_itemObj) {
-        createForHtml = "For screen: " + wapp.wb_curScreen_itemObj.itemName;
-        if ( ! isBlank(wapp.wb_curApp_itemObj) ) {
-          createForHtml += " (app: " + wapp.wb_curApp_itemObj.itemName + ")";
-        }
-      } else if (wapp.wb_curApp_itemObj) {
-        createForHtml = "For app: " + wapp.wb_curApp_itemObj.itemName;
-      }
-
-      elem("dvWibBuilder_CreateWibvar_For").innerHTML = createForHtml;
-
-      setElemVal("ipWibBuilder_CreateWibvar_WibvarItemName", "");
+      setElemVal("ipWB_CreateWibvar_WibvarItemName", "");
 
       let wibvartypeCodes_array = wb_generate_wibvartypesSelectArray();
-      let wibvartypeCodes_selHtml = getHtml_selectElem("selWibBuilder_CreateWibvar_WibvartypeCode", true, wibvartypeCodes_array, null, "width: 15em", null, null, false);
-      elem("spnWibBuilder_CreateWibvar_WibvartypeCode").innerHTML = wibvartypeCodes_selHtml;
+      let wibvartypeCodes_selHtml = getHtml_selectElem("selWB_CreateWibvar_WibvartypeCode", true, wibvartypeCodes_array, null, "width: 15em", null, null, false);
+      elem("spnWB_CreateWibvar_WibvartypeCode").innerHTML = wibvartypeCodes_selHtml;
 
-      focusAfterDisplayPage_setFromElemId("ipWibBuilder_CreateWibvar_WibvarItemName");
+      if (latestPco.isScript) {
+        let paramCodes_array = wb_generate_paramsSelectArray();
+        let paramCodes_selHtml = getHtml_selectElem("selWB_CreateWibvar_ParamCode", false, paramCodes_array, null, "width: 15em", null, null, false);
+        elem("spnWB_EditWibvar_Param").innerHTML = paramCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group1")
+      } else {
+        html_hideAllElementsOfClass("g4Group1")
+      }
+
+      if (latestPco.isWibject) {
+        let scopeCodes_array = wb_generate_scopesSelectArray();
+        let scopeCodes_selHtml = getHtml_selectElem("selWB_CreateWibvar_ScopeCode", false, scopeCodes_array, null, "width: 15em", null, null, false);
+        elem("spnWB_EditWibvar_Scope").innerHTML = scopeCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group2")
+      } else {
+        html_hideAllElementsOfClass("g4Group2")
+      }
+
+      focusAfterDisplayPage_setFromElemId("ipWB_CreateWibvar_WibvarItemName");
 
       break;
     }
 
-    case "WibBuilder_DisplayScreen": {
+    case "WB_DisplayScreen": {
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "[SCREEN TITLE WILL GO HERE]";
       break;
     }
 
-    case "WibBuilder_RunScreen": {
+    case "WB_EditWibject": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Edit Wibject";
+
+      var latestPco = wb_parentChain_getLatest();
+      let varItemName, parentInfoHtml = "", paramCode, scopeCode;
+
+      if (latestPco.isApp) {
+
+        elem("dvWB_EditWibject_ItemInfo").innerHTML = "WIBJECT: " + wapp.wb_curAppWibvar_itemObj.itemName;
+
+        parentInfoHtml += "Parent App: <a id='aWB_EditWibject_BackToParent' href='javascript:void edit_wibject__go_to_parent_app()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+        varItemName = wapp.wb_curAppWibvar_itemObj.itemName;
+ 
+      } else if (latestPco.isScreen) {
+
+        //TO-DO1:
+        showSoftError("displayPage", "case 'WB_EditWibject', need to handle latestPco.isScreen");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Screen: <a id='aWB_EditWibject_BackToParent' href='javascript:void edit_wibject__go_to_parent_screen()' style='white-space: nowrap'>" + wapp.wb_curScreen_itemObj.itemName + "</a>";
+
+      } else if (latestPco.isScript) {
+
+        //TO-DO1:
+        showSoftError("displayPage", "case 'WB_EditWibject', need to handle latestPco.isScript");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Script: <a id='aWB_EditWibject_BackToParent' href='javascript:void edit_wibject__go_to_parent_script()' style='white-space: nowrap'>" + wapp.wb_curScript_itemObj.itemName + "</a>";
+
+      } else if (latestPco.isWibject) {
+
+//TO-DO1: this is confusing -- wibject vs. wibjectelem, which can hold a wibvar, which could itself be a wibject, etc etc
+
+
+        //disableSelWibvartype = true;
+
+        showSoftError("displayPage", "case 'WB_EditWibject', need to handle latestPco.isWibject");
+        displayPage("WB_ViewAllApps");
+
+
+          parentInfoHtml += "Parent Wibject: <a id='aWB_EditWibject_BackToParent' href='javascript:void edit_wibject__go_to_parent_wibject()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+//TO-DO1: need to handle ScopeCode if parent is wibject
+
+      } else {
+
+        showSoftError("displayPage", "case 'WB_EditWibject', latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+        displayPage("WB_ViewAllApps");
+
+      }
+
+      elem("dvWB_EditWibject_ParentInfo").innerHTML = parentInfoHtml;
+
+      setElemVal("ipWB_EditWibject_WibvarItemName", varItemName);
+
+      if (paramCode) {
+        let paramCodes_array = wb_generate_paramsSelectArray();
+        let paramCodes_selHtml = getHtml_selectElem("selWB_EditWibject_ParamCode", false, paramCodes_array, paramCode, "width: 15em", null, null, false);
+        elem("spnWB_EditWibject_Param").innerHTML = paramCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group1")
+      } else {
+        html_hideAllElementsOfClass("g4Group1")
+      }
+
+      if (scopeCode) {
+        let scopeCodes_array = wb_generate_scopesSelectArray();
+        let scopeCodes_selHtml = getHtml_selectElem("selWB_EditWibject_ScopeCode", false, scopeCodes_array, scopeCode, "width: 15em", null, null, false);
+        elem("spnWB_EditWibject_Scope").innerHTML = scopeCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group2")
+      } else {
+        html_hideAllElementsOfClass("g4Group2")
+      }
+
+      focusAfterDisplayPage_setFromElemId("ipWB_EditWibject_WibvarItemName");
+
+      break;
+    }
+
+    case "WB_EditWibvar": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View Variable";
+
+      var latestPco = wb_parentChain_getLatest();
+      let varItemName, parentInfoHtml = "", wibvartypeCode, disableSelWibvartype = false, paramCode, scopeCode;
+
+      if (latestPco.isApp) {
+
+        elem("dvWB_EditWibvar_ItemInfo").innerHTML = "VARIABLE: " + wapp.wb_curAppWibvar_itemObj.itemName;
+
+        parentInfoHtml += "Parent App: <a id='aWB_EditWibvar_BackToParent' href='javascript:void edit_variable__go_to_parent_app()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+        varItemName = wapp.wb_curAppWibvar_itemObj.itemName;
+
+        wibvartypeCode = wapp.wb_curAppWibvar_itemObj.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibvartypeCode_itemName);
+ 
+      } else if (latestPco.isScreen) {
+
+        //TO-DO1:
+        showSoftError("displayPage", "case 'WB_EditWibvar', need to handle latestPco.isScreen");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Screen: <a id='aWB_EditWibvar_BackToParent' href='javascript:void edit_variable__go_to_parent_screen()' style='white-space: nowrap'>" + wapp.wb_curScreen_itemObj.itemName + "</a>";
+
+        wibvartypeCode = wapp.wb_curScreen_itemObj.getWtifData(wapp.wb_screenWibvarWibtype_itemId, null, C_wb_screenWibvarWibtype_wtif_WibvartypeCode_itemName);
+
+      } else if (latestPco.isScript) {
+
+        //TO-DO1:
+        showSoftError("displayPage", "case 'WB_EditWibvar', need to handle latestPco.isScript");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Script: <a id='aWB_EditWibvar_BackToParent' href='javascript:void edit_variable__go_to_parent_script()' style='white-space: nowrap'>" + wapp.wb_curScript_itemObj.itemName + "</a>";
+
+        wibvartypeCode = wapp.wb_curScript_itemObj.getWtifData(wapp.wb_scriptWibvarWibtype_itemId, null, C_wb_scriptWibvarWibtype_wtif_WibvartypeCode_itemName);
+
+      } else if (latestPco.isWibject) {
+
+//TO-DO1: this is confusing -- wibject vs. wibjectelem, which can hold a wibvar, which could itself be a wibject, etc etc
+
+
+        //disableSelWibvartype = true;
+
+        showSoftError("displayPage", "case 'WB_EditWibvar', need to handle latestPco.isWibject");
+        displayPage("WB_ViewAllApps");
+
+
+          parentInfoHtml += "Parent Wibject: <a id='aWB_EditWibvar_BackToParent' href='javascript:void edit_variable__go_to_parent_wibject()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+          wibvartypeCode = wapp.wb_curWibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_WibvartypeCode_itemName);
+
+//TO-DO1: need to handle ScopeCode if parent is wibject
+
+      } else {
+
+        showSoftError("displayPage", "case 'WB_EditWibvar', latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+        displayPage("WB_ViewAllApps");
+
+      }
+
+      elem("dvWB_EditWibvar_ParentInfo").innerHTML = parentInfoHtml;
+
+      setElemVal("ipWB_EditWibvar_WibvarItemName", varItemName);
+
+      let wibvartypeCodes_array = wb_generate_wibvartypesSelectArray(true);
+      let wibvartypeCodes_selHtml = getHtml_selectElem("selWB_EditWibvar_WibvartypeCode", false, wibvartypeCodes_array, wibvartypeCode, "width: 15em", null, null, disableSelWibvartype);
+      elem("spnWB_EditWibvar_WibvartypeCode").innerHTML = wibvartypeCodes_selHtml;
+
+      if (paramCode) {
+        let paramCodes_array = wb_generate_paramsSelectArray();
+        let paramCodes_selHtml = getHtml_selectElem("selWB_EditWibvar_ParamCode", false, paramCodes_array, paramCode, "width: 15em", null, null, false);
+        elem("spnWB_EditWibvar_Param").innerHTML = paramCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group1")
+      } else {
+        html_hideAllElementsOfClass("g4Group1")
+      }
+
+      if (scopeCode) {
+        let scopeCodes_array = wb_generate_scopesSelectArray();
+        let scopeCodes_selHtml = getHtml_selectElem("selWB_EditWibvar_ScopeCode", false, scopeCodes_array, scopeCode, "width: 15em", null, null, false);
+        elem("spnWB_EditWibvar_Scope").innerHTML = scopeCodes_selHtml;
+        html_displayAllElementsOfClass("g4Group2")
+      } else {
+        html_hideAllElementsOfClass("g4Group2")
+      }
+
+      focusAfterDisplayPage_setFromElemId("ipWB_EditWibvar_WibvarItemName");
+
+      break;
+    }
+
+    case "WB_RunScreen": {
+      dc("need to handle wb_curObjs_clear() and wb_parentChain_clear() if we keep this");
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Run Screen";
 
       let wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
 
       if (wibtypeItemObj_associatedWithScreen) {
 
-        elem("dvWibBuilder_RunScreen_OldSection").style.display = "";
-        elem("dvWibBuilder_RunScreen_NewSection").style.display = "none";
+        elem("dvWB_RunScreen_OldSection").style.display = "";
+        elem("dvWB_RunScreen_NewSection").style.display = "none";
 
-        elem("dvWibBuilder_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
-        elem("dvWibBuilder_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
-        elem("ipWibBuilder_RunScreen_ItemNameValue").value = "";
-        focusAfterDisplayPage_setFromElemId("ipWibBuilder_RunScreen_ItemNameValue");
+        elem("dvWB_RunScreen_HeaderText").innerHTML = wb_getScreenNameDisplay(wapp.wb_curScreen_itemObj, wibtypeItemObj_associatedWithScreen);
+        elem("dvWB_RunScreen_ItemNameText").innerHTML = wibtypeItemObj_associatedWithScreen.itemName + " Name:";
+        elem("ipWB_RunScreen_ItemNameValue").value = "";
+        focusAfterDisplayPage_setFromElemId("ipWB_RunScreen_ItemNameValue");
 
       } else {
 
-        elem("dvWibBuilder_RunScreen_OldSection").style.display = "none";
-        elem("dvWibBuilder_RunScreen_NewSection").style.display = "";
+        elem("dvWB_RunScreen_OldSection").style.display = "none";
+        elem("dvWB_RunScreen_NewSection").style.display = "";
 
 
 
 
 
         //TO-DO1.5:
-        //  (1) move to new e.g. "WibBuilder_DisplayScreen"
+        //  (1) move to new e.g. "WB_DisplayScreen"
         //  (2) draw screen HTML
-        elem("dvWibBuilder_RunScreen_NewGrid").style.gridTemplateColumns = "";
+        elem("dvWB_RunScreen_NewGrid").style.gridTemplateColumns = "";
 
       }
 
       break;
     }
 
-    case "WibBuilder_ShowWibtypeInstances": {
+    case "WB_ShowWibtypeInstances": {
+      dc("need to handle wb_curObjs_clear() and wb_parentChain_clear() if we keep this");
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - Show Instances";
 
       let html = "";
@@ -2498,50 +2862,75 @@ function displayPage(pageName) {
 
       if (html == "") html += "(none created yet)";
 
-      elem("dvWibBuilder_ShowWibtypeInstances_Items").innerHTML = html;
+      elem("dvWB_ShowWibtypeInstances_Items").innerHTML = html;
 
-      focusAfterDisplayPage_setFromElemId("aWibBuilder_ShowWibtypeInstances_RunScreenAgain");
+      focusAfterDisplayPage_setFromElemId("aWB_ShowWibtypeInstances_RunScreenAgain");
 
       break;
     }
 
-    case "WibBuilder_ViewApp": {
+    case "WB_ViewApp": {
+      var i;
+
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View App";
-      elem("dvWibBuilder_ViewApp_ItemName").innerHTML = "APP: " + wapp.wb_curApp_itemObj.itemName;
+      elem("dvWB_ViewApp_ItemName").innerHTML = "APP: " + wapp.wb_curApp_itemObj.itemName;
 
       // app-wibvars
       let appWibvars_listItemId = wapp.wb_curApp_itemObj.getWtifData(wapp.wb_appWibtype_itemId, null, C_wb_appWibtype_wtif_AppWibvarListItemId_itemName);
       let appWibvars_itemObj = grabItemObj(appWibvars_listItemId);
-      let appWibvars_itemIdsArray = appWibvars_itemObj.getListMemberItemIds();
+
+      let appWibvars_listMemberDataObjs = appWibvars_itemObj.getListMemberDataObjs(true); //the 'true' parameter sorts the array by .itemName
+
       let appWibvars_html = "";
 
-      appWibvars_itemIdsArray.forEach( (appWibvar_itemId) => {
-        let appWibvar_itemObj = grabItemObj(appWibvar_itemId);
+      for (var i = 0; i < appWibvars_listMemberDataObjs.length; i++) {
+        let appWibvar_listMemberDataObj = appWibvars_listMemberDataObjs[i];
+        let appWibvar_itemObj = grabItemObj(appWibvar_listMemberDataObj.itemId);
 
         let wibvartypeCode = appWibvar_itemObj.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibvartypeCode_itemName);
         let wibvartypeDisplay = wb_getWibvartypeDisplay(wibvartypeCode);
 
+        let isWibject = false, wibjectItemId = "null";
+
         if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
-          let wibjectItemId = appWibvar_itemObj.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibjectItemId_itemName);
+          isWibject = true;
+          wibjectItemId = appWibvar_itemObj.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibjectItemId_itemName);
           let wibjectItemObj = grabItemObj(wibjectItemId);
           if ( ! wibjectItemObj.hasListMembers() ) {
             wibvartypeDisplay += " <span class='red' style='white-space: nowrap'>(blank, needs elements)</span>";
           }
         }
 
-        if (appWibvars_html !== "") appWibvars_html += "<div style='grid-column: 1/3; height: 0.8em'></div>"
+        if (appWibvars_html !== "") appWibvars_html += "<div style='height: 0.8em'></div>";
+
+        let aId = "", aIdHtml = "";
+        //if ( focusAfterDisplayPage_isBlank() ) {
+        //  aId = "aWB_ViewApp_" + appWibvar_itemId;
+        //  aIdHtml = " id='" + aId + "'"
+        //  focusAfterDisplayPage_setFromElemId(aId);
+        //}
 
         appWibvars_html += "<div>" + appWibvar_itemObj.itemName + "&nbsp;&nbsp;&nbsp;&mdash;&nbsp;&nbsp;&nbsp;" + wibvartypeDisplay + "</div>\n";
         appWibvars_html += "<div style='height: 0.2em'></div>"
         appWibvars_html += "<div style='padding-left: 0.8em'>\n";
-        appWibvars_html += "  <a href='javawibvar:void view_app__view_variable(\"" + appWibvar_itemObj.itemId + "\")'>view variable</a>\n";
-        appWibvars_html += "  <a style='padding-left: 0.6em' href='javawibvar:void view_app__delete_variable(\"" + appWibvar_itemObj.itemId + "\")'>delete variable</a>\n";
+
+        if (isWibject) {
+          appWibvars_html += "  <a" + aIdHtml + " href='javascript:void view_app__view_wibject(" + appWibvar_itemObj.itemId + ", " + wibjectItemId + ")'>view wibject</a>\n";
+          appWibvars_html += "  <a style='padding-left: 0.6em' href='javascript:void view_app__delete_wibject(" + appWibvar_itemObj.itemId + ", " + wibjectItemId + ")'>delete wibject</a>\n";
+        } else {
+          appWibvars_html += "  <a" + aIdHtml + " href='javascript:void view_app__view_variable(" + appWibvar_itemObj.itemId + ")'>view variable</a>\n";
+          appWibvars_html += "  <a style='padding-left: 0.6em' href='javascript:void view_app__delete_variable(" + appWibvar_itemObj.itemId + ")'>delete variable</a>\n";
+        }
+
         appWibvars_html += "</div>\n";
-      } );
+      }
 
       if (appWibvars_html == "") appWibvars_html += "(none created yet)";
 
-      elem("dvWibBuilder_ViewApp_Wibvars").innerHTML = appWibvars_html;
+      elem("dvWB_ViewApp_Wibvars").innerHTML = appWibvars_html;
+
+      //focusAfterDisplayPage_setIfBlank_fromElemId("aWB_ViewApp_CreateWibvar");
+      focusAfterDisplayPage_setFromElemId("aWB_ViewApp_CreateWibvar");
 
       // app-scripts
       let appScripts_igo = new ItemGrabbingObj();
@@ -2553,7 +2942,7 @@ function displayPage(pageName) {
       appScripts_array.forEach( (scriptItemId) => {
         let scriptItemObj = grabItemObj(scriptItemId.itemId);
 
-        if (appScripts_html !== "") appScripts_html += "<div style='grid-column: 1/3; height: 1.4em'></div>"
+        if (appScripts_html !== "") appScripts_html += "<div style='grid-column: 1/3; height: 1.4em'></div>";
 
         appScripts_html += "<div style='grid-column: 1/3'>" + scriptItemObj.itemName + "</div>\n";
         appScripts_html += "<div style='grid-column: 1/3; height: 0.2em'></div>"
@@ -2565,7 +2954,7 @@ function displayPage(pageName) {
 
       if (appScripts_html == "") appScripts_html += "(none created yet)";
 
-      elem("dvWibBuilder_ViewApp_Scripts").innerHTML = appScripts_html;
+      elem("dvWB_ViewApp_Scripts").innerHTML = appScripts_html;
 
       // app screens
       let appScreens_igo = new ItemGrabbingObj();
@@ -2577,27 +2966,30 @@ function displayPage(pageName) {
       appScreens_array.forEach( (screenItemId) => {
         let screenItemObj = grabItemObj(screenItemId.itemId);
 
-        if (appScreens_html !== "") appScreens_html += "<div style='grid-column: 1/3; height: 1.4em'></div>"
+        if (appScreens_html !== "") appScreens_html += "<div style='grid-column: 1/3; height: 1.4em'></div>";
 
         appScreens_html += "<div style='grid-column: 1/3'>" + screenItemObj.itemName + "</div>\n";
         appScreens_html += "<div style='grid-column: 1/3; height: 0.2em'></div>"
         appScreens_html += "<div style='padding-left: 0.8em'>\n";
-        appScreens_html += "  <a href='javascreen:void view_app__view_screen(\"" + screenItemObj.itemId + "\")'>view screen</a>\n";
-        appScreens_html += "  <a style='padding-left: 0.6em' href='javascreen:void view_app__delete_screen(\"" + screenItemObj.itemId + "\")'>delete screen</a>\n";
+        appScreens_html += "  <a href='javascript:void view_app__view_screen(\"" + screenItemObj.itemId + "\")'>view screen</a>\n";
+        appScreens_html += "  <a style='padding-left: 0.6em' href='javascript:void view_app__delete_screen(\"" + screenItemObj.itemId + "\")'>delete screen</a>\n";
         appScreens_html += "</div>\n";
       } );
 
       if (appScreens_html == "") appScreens_html += "(none created yet)";
 
-      elem("dvWibBuilder_ViewApp_Screens").innerHTML = appScreens_html;
+      elem("dvWB_ViewApp_Screens").innerHTML = appScreens_html;
 
       break;
     }
 
-    case "WibBuilder_ViewScript": {
+    case "WB_ViewScript": {
       elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View Script";
-      elem("dvWibBuilder_ViewScript_ItemName").innerHTML = "SCRIPT: " + wapp.wb_curScript_itemObj.itemName;
-      elem("spnWibBuilder_ViewScript_AppName").innerHTML = wapp.wb_curApp_itemObj.itemName;
+      elem("dvWB_ViewScript_ItemInfo").innerHTML = "SCRIPT: " + wapp.wb_curScript_itemObj.itemName;
+
+      //TO-DO1: need to include various parent info (see CreateWibvar, ViewWibject, etc)
+      //App: <a href="javascript:void view_script__go_to_app()" style="white-space: nowrap"><span id="spnWB_ViewScript_AppName">(app name goes here)</span></a>
+      //elem("spnWB_ViewScript_AppName").innerHTML = wapp.wb_curApp_itemObj.itemName;
 
       // script-rows
       let scriptRows_array = wapp.wb_curScript_itemObj.getListMemberItemIds();
@@ -2612,7 +3004,7 @@ function displayPage(pageName) {
 
         let aId = "", aIdHtml = "";
         if ( focusAfterDisplayPage_isBlank() ) {
-          aId = "aWibBuilder_ViewScript_" + scriptRowItemId;
+          aId = "aWB_ViewScript_" + scriptRowItemId;
           aIdHtml = " id='" + aId + "'"
           focusAfterDisplayPage_setFromElemId(aId);
         }
@@ -2631,7 +3023,235 @@ function displayPage(pageName) {
 
       if (scriptRows_html == "") scriptRows_html += "(none created yet)";
 
-      elem("dvWibBuilder_ViewScript_ScriptRows").innerHTML = scriptRows_html;
+      elem("dvWB_ViewScript_ScriptRows").innerHTML = scriptRows_html;
+
+      break;
+    }
+
+    case "WB_ViewWibject": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View Wibject";
+
+      var latestPco = wb_parentChain_getLatest();
+      let varItemName, parentInfoHtml = "", paramCode, scopeCode;
+
+      if (latestPco.isApp) {
+
+        elem("dvWB_ViewWibject_ItemInfo").innerHTML = "WIBJECT: " + wapp.wb_curAppWibvar_itemObj.itemName;
+
+        parentInfoHtml += "Parent App: <a id='aWB_ViewWibject_BackToParent' href='javascript:void view_wibject__go_to_parent_app()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+        varItemName = wapp.wb_curAppWibvar_itemObj.itemName;
+
+      } else if (latestPco.isApp) {
+      
+        //TO-DO1: handle parent being script or etc, ParamCode, ScopeCode, and so on
+
+      } else {
+
+        showSoftError("displayPage", "case 'WB_ViewWibject', ... need to handle other than latestPco.isApp");
+        displayPage("WB_ViewAllApps");
+
+      }
+
+      elem("dvWB_ViewWibject_ParentInfo").innerHTML = parentInfoHtml;
+
+      elem("spnWB_ViewWibject_WibvarItemName").innerHTML = varItemName;
+
+      if (paramCode) {
+        let paramCodeDisplay = wb_getParamDisplay(paramCode);
+        elem("spnWB_ViewWibject_Param").innerHTML = paramCodeDisplay;
+        html_displayAllElementsOfClass("g4Group1")
+      } else {
+        html_hideAllElementsOfClass("g4Group1")
+      }
+
+      if (scopeCode) {
+        let scopeCodeDisplay = wb_getScopeDisplay(scopeCode);
+        elem("spnWB_ViewWibject_Scope").innerHTML = scopeCodeDisplay;
+        html_displayAllElementsOfClass("g4Group2")
+      } else {
+        html_hideAllElementsOfClass("g4Group2")
+      }
+
+      let wibjectElems_itemIdsArray = wapp.wb_curWibject_itemObj.getListMemberItemIds();
+      let wibjectElems_html = "";
+
+      wibjectElems_itemIdsArray.forEach( (wibjectElem_itemId) => {
+        let wibjectElem_itemObj = grabItemObj(wibjectElem_itemId);
+        let wibjectElemDisplay = "";
+
+        let wibvartypeCode = wibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_WibvartypeCode_itemName);
+
+        if ( ! isBlank(wibvartypeCode) ) {
+
+          // ... this wibject-elem is a wibvar
+
+          wibjectElemDisplay += wibjectElem_itemObj.itemName + ", ";
+          
+          wibjectElemDisplay += wb_getWibvartypeDisplay(wibvartypeCode);
+
+          if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
+            let childWibjectItemId = wibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_WibjectItemId_itemName);
+            let childWibjectItemObj = grabItemObj(childWibjectItemId);
+            if ( ! childWibjectItemObj.hasListMembers() ) {
+              wibjectElemDisplay += " <span class='red' style='white-space: nowrap'>(blank, needs elements)</span>";
+            }
+          }
+
+        } else {
+
+          let scriptItemId = wibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_ScriptItemId_itemName);
+
+          if ( ! isBlank(scriptItemId) ) {
+
+            // ... this wibject-elem is a script (i.e. a method)
+
+            childScriptItemObj = grabItemObj(scriptItemId);
+
+            wibjectElemDisplay += childScriptItemObj.itemName + ", script";
+          
+            if ( ! childScriptItemObj.hasListMembers() ) {
+              wibjectElemDisplay += " <span class='red' style='white-space: nowrap'>(blank, needs script rows)</span>";
+            }
+
+          } else {
+
+            throw( "ERROR: unexpcted Wibject Element with no wibvar or wibject child info, function 'displayPage', case 'WB_ViewWibject', wapp.wb_curWibjectElem_itemObj.itemId = " + wapp.wb_curWibjectElem_itemObj.itemId )
+
+          }
+
+        }
+
+        let scopeCode = wibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_ScopeCode_itemName);
+        wibjectElemDisplay += ", (" + wb_getScopeDisplay(scopeCode) + ")";
+
+        if (wibjectElems_html !== "") wibjectElems_html += "<div style='height: 0.8em'></div>";
+
+        wibjectElems_html += "<div>" + wibjectElemDisplay + "</div>\n";
+        wibjectElems_html += "<div style='height: 0.2em'></div>"
+        wibjectElems_html += "<div style='padding-left: 0.8em'>\n";
+        wibjectElems_html += "  <a href='javascript:void view_wibject__view_element(\"" + wibjectElem_itemId + "\")'>view element</a>\n";
+        wibjectElems_html += "  <a style='padding-left: 0.6em' href='javascript:void view_wibject__delete_element(\"" + wibjectElem_itemId + "\")'>delete element</a>\n";
+        wibjectElems_html += "</div>\n";
+      } );
+
+      if (wibjectElems_html == "") wibjectElems_html += "(none created yet)";
+
+      elem("dvWB_ViewWibject_WibjectElements").innerHTML = wibjectElems_html;
+
+      focusAfterDisplayPage_setFromElemId("aWB_ViewWibject_BackToParent");
+
+      break;
+    }
+
+    case "WB_ViewWibvar": {
+      elem("spnAppHeader_OptionalPageTitle").innerHTML = "Builder - View Variable";
+
+      var latestPco = wb_parentChain_getLatest();
+      let varItemName, parentInfoHtml = "", wibvartypeCode, paramCode, scopeCode;
+
+      if (latestPco.isApp) {
+
+        elem("dvWB_ViewWibvar_ItemInfo").innerHTML = "VARIABLE: " + wapp.wb_curAppWibvar_itemObj.itemName;
+
+        parentInfoHtml += "Parent App: <a id='aWB_ViewWibvar_BackToParent' href='javascript:void view_variable__go_to_parent_app()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+        varItemName = wapp.wb_curAppWibvar_itemObj.itemName;
+
+        wibvartypeCode = wapp.wb_curAppWibvar_itemObj.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibvartypeCode_itemName);
+ 
+      } else if (latestPco.isScreen) {
+
+
+
+        //TO-DO1:
+
+
+
+        showSoftError("displayPage", "case 'WB_ViewWibvar', need to handle latestPco.isScreen");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Screen: <a id='aWB_ViewWibvar_BackToParent' href='javascript:void view_variable__go_to_parent_screen()' style='white-space: nowrap'>" + wapp.wb_curScreen_itemObj.itemName + "</a>";
+
+        wibvartypeCode = wapp.wb_curScreen_itemObj.getWtifData(wapp.wb_screenWibvarWibtype_itemId, null, C_wb_screenWibvarWibtype_wtif_WibvartypeCode_itemName);
+
+      } else if (latestPco.isScript) {
+
+
+
+        //TO-DO1:
+
+
+
+        showSoftError("displayPage", "case 'WB_ViewWibvar', need to handle latestPco.isScript");
+        displayPage("WB_ViewAllApps");
+
+
+
+        parentInfoHtml += "Parent Script: <a id='aWB_ViewWibvar_BackToParent' href='javascript:void view_variable__go_to_parent_script()' style='white-space: nowrap'>" + wapp.wb_curScript_itemObj.itemName + "</a>";
+
+        wibvartypeCode = wapp.wb_curScript_itemObj.getWtifData(wapp.wb_scriptWibvarWibtype_itemId, null, C_wb_scriptWibvarWibtype_wtif_WibvartypeCode_itemName);
+
+      } else if (latestPco.isWibject) {
+
+
+
+//TO-DO1: this is confusing -- wibject vs. wibjectelem, which can hold a wibvar, which could itself be a wibject, etc etc
+//
+//
+//
+// ----> IMPORTANT NOTE: this case "WB_ViewWibvar" assumes that wapp.curWibj..._itemObj has been set to null (to distinguish it from ViewWibj... when user clicks js functions and etc)
+
+
+
+        showSoftError("displayPage", "case 'WB_ViewWibvar', need to handle latestPco.isWibject");
+        displayPage("WB_ViewAllApps");
+
+
+
+          parentInfoHtml += "Parent Wibject: <a id='aWB_ViewWibvar_BackToParent' href='javascript:void view_variable__go_to_parent_wibject()' style='white-space: nowrap'>" + latestPco.itemObj.itemName + "</a>";
+
+          wibvartypeCode = wapp.wb_curWibjectElem_itemObj.getWtifData(wapp.wb_wibjectElemWibtype_itemId, null, C_wb_wibjectElemWibtype_wtif_WibvartypeCode_itemName);
+
+
+
+//TO-DO1: need to handle ScopeCode if parent is wibject
+
+
+
+      } else {
+
+        showSoftError("displayPage", "case 'WB_ViewWibvar', latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+        displayPage("WB_ViewAllApps");
+
+      }
+
+      elem("dvWB_ViewWibvar_ParentInfo").innerHTML = parentInfoHtml;
+
+      elem("spnWB_ViewWibvar_WibvarItemName").innerHTML = varItemName;
+
+      let wibvartypeDisplay = wb_getWibvartypeDisplay(wibvartypeCode);
+      elem("spnWB_ViewWibvar_Wibvartype").innerHTML = wibvartypeDisplay;
+
+      if (paramCode) {
+        let paramCodeDisplay = wb_getParamDisplay(paramCode);
+        elem("spnWB_ViewWibvar_Param").innerHTML = paramCodeDisplay;
+        html_displayAllElementsOfClass("g4Group1")
+      } else {
+        html_hideAllElementsOfClass("g4Group1")
+      }
+
+      if (scopeCode) {
+        let scopeCodeDisplay = wb_getScopeDisplay(scopeCode);
+        elem("spnWB_ViewWibvar_Scope").innerHTML = scopeCodeDisplay;
+        html_displayAllElementsOfClass("g4Group2")
+      } else {
+        html_hideAllElementsOfClass("g4Group2")
+      }
+
+      focusAfterDisplayPage_setFromElemId("aWB_ViewWibvar_BackToParent");
 
       break;
     }
@@ -2791,11 +3411,23 @@ function focusAfterDisplayPage_setFromElemId(elemId) {
   wapp.focusElemId = elemId;
 }
 
+function focusAfterDisplayPage_setIfBlank_fromElemId(elemId) {
+  if ( focusAfterDisplayPage_isBlank() ) {
+    focusAfterDisplayPage_setFromElemId(elemId);
+  }
+}
+
+function focusAfterDisplayPage_setIfBlank_fromItemId(itemId) {
+  if ( focusAfterDisplayPage_isBlank() ) {
+    focusAfterDisplayPage_setFromItemId(itemId);
+  }
+}
+
 function focusNow_toElem(theElem) {
   theElem.focus();
 
   try {
-    elem(theElem).select();
+    theElem.select();
   } catch(x) {}
 }
 
@@ -2813,6 +3445,17 @@ function getAllItemsArray() {
   var allItemIds_string = getFromDatastore(C_stringOfAllItemIds);
   var allItemIds_array = getIdArray(allItemIds_string);
   return allItemIds_array;
+}
+
+function getArrayLastElem(theArray) {
+  var lastElem = null;
+
+  if ( theArray.length > 0 ) {
+    let lastIndex = theArray.length - 1;
+    lastElem = theArray[lastIndex];
+  }
+
+  return lastElem;
 }
 
 function getBooleanFieldTextDisplay(booleanFieldZeroOrOne) {
@@ -4259,7 +4902,7 @@ function itemObjFactory() {
     makeNewItem(this.doneStatusCode, null, null, "0", "0", false, this.itemName, null, this.displayCode, this.isList, listToCopyTo_itemId)
   };
 
-  itemObj.getListMemberDataObjs = function() {
+  itemObj.getListMemberDataObjs = function(sortByItemName) {
     var saveKeyText_listMembers_ofItem, listMembers_string, listMembers_array, i, curListMemberDataObj, listMemberDataObjs = [];
 
     saveKeyText_listMembers_ofItem = getSaveKeyText_listMembers_ofItem(this.itemId);
@@ -4267,12 +4910,22 @@ function itemObjFactory() {
     listMembers_array = getIdArray(listMembers_string);
 
     for (i = 0; i < listMembers_array.length; i = i + 2) {
-      curListMemberDataObj = createListMemberDataObj(listMembers_array[i], listMembers_array[i + 1]);
+      if (sortByItemName) {
+        let itemObj_iLoop = grabItemObj( listMembers_array[i] );
+        curListMemberDataObj = createListMemberDataObj( listMembers_array[i], listMembers_array[i + 1], C_propName_itemName, itemObj_iLoop.itemName );
+      } else {
+        curListMemberDataObj = createListMemberDataObj( listMembers_array[i], listMembers_array[i + 1] );
+      }
+
       listMemberDataObjs.push(curListMemberDataObj);
     }
 
-    //for now, we will sort the array by sortPosition every time; in the future, this could be provided as a separate function
-    listMemberDataObjs.sort( sortingObjects_numeric(C_propName_sortPosition) );
+    if (sortByItemName) {
+      listMemberDataObjs.sort( sorting_objs(C_propName_itemName) );
+    } else {
+      listMemberDataObjs.sort( sorting_objs(C_propName_sortPosition) );
+      //listMemberDataObjs.sort( sortingObjects_numeric(C_propName_sortPosition) );
+    }
 
     return listMemberDataObjs;
   };
@@ -5519,7 +6172,7 @@ function showPopUp(popUpCode, popUpFocusElemId) {
   elem("dvPopUp_MakeNewItemTT").style.display = "none";
   elem("dvPopUp_MakeNewWibtype").style.display = "none";
   elem("dvPopUp_MakeNewWibtypeInfoField").style.display = "none";
-  elem("dvPopUp_WibBuilder_UseExistingWibtype").style.display = "none";
+  elem("dvPopUp_WB_UseExistingWibtype").style.display = "none";
 
   elem("dvMainViewOverlay").style.display = "none";
   elem("dvPopUp").style.display = "inline-flex";
@@ -5651,7 +6304,7 @@ function showPopUp(popUpCode, popUpFocusElemId) {
       break;
     }
 
-    case "WibBuilder_UseExistingWibtype": {
+    case "WB_UseExistingWibtype": {
       // no action needed
       break;
     }
@@ -6206,11 +6859,35 @@ function wb_app_create(appItemName) {
   wb_scriptRow_create(firstScriptForApp_itemObj.itemId, "1", C_wb_script_actionCode_displayScreen, homeScreenForApp_itemObj.itemId)
 
   // set the the first/loading script for the app item
-  app_itemObj.setWtifData(wapp.wb_appWibtype_itemId, null, C_wb_appWibtype_wtif_FirstScriptItemId_itemName, firstScriptForApp_itemObj.itemId, false);
+  app_itemObj.setWtifData(wapp.wb_appWibtype_itemId, null, C_wb_appWibtype_wtif_FirstScriptItemId_itemName, firstScriptForApp_itemObj.itemId, true);
 
   // all done -- return the app item-object to the calling function
   return app_itemObj;
 }
+
+function wb_app_appWibvar_change(appWibvarItemObj, newWibvarItemName, newWibvartypeCode, wibjectItemObj) {
+  var wibjectItemObj;
+
+  if ( ! isEqual(newWibvarItemName, appWibvarItemObj.itemName) ) {
+
+    let changeAppWibvarSuccess = appWibvarItemObj.changeItemInfo(newWibvarItemName, null, null, null, null);
+
+    if ( changeAppWibvarSuccess && ! isBlank(wibjectItemObj) ) {
+      if ( ! isEqual(newWibvarItemName, wibjectItemObj.itemName) ) {
+        wibjectItemObj.changeItemInfo(newWibvarItemName, null, null, null, null)
+      }
+    }
+
+  }
+
+  if ( ! isBlank(newWibvartypeCode) ) {
+    appWibvarItemObj.setWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibvartypeCode_itemName, newWibvartypeCode, true);
+  }
+
+  return true;
+}
+
+
 
 function wb_app_appWibvar_create(appItemObj, wibvarItemName, wibvartypeCode) {
   var wibjectItemObj;
@@ -6226,10 +6903,8 @@ function wb_app_appWibvar_create(appItemObj, wibvarItemName, wibvartypeCode) {
 
   // wibject item (if wibvartype is one)
   if ( isEqual(C_wb_wibvartypeCode_wibject, wibvartypeCode) ) {
-    let wibjectItemName = wb_generate_wibjectName_fromApp(appItemObj.itemId, wibvarItemName);
-
     let mnioWibject = new MakeNewItemObj();
-    mnioWibject.set_itemName(wibjectItemName);
+    mnioWibject.set_itemName(wibvarItemName);
     mnioWibject.set_isList_boolean(true);
     mnioWibject.set_doneStatusCode(C_doneStatusCode_okay);
     wibjectItemObj = mnioWibject.run();
@@ -6237,7 +6912,7 @@ function wb_app_appWibvar_create(appItemObj, wibvarItemName, wibvartypeCode) {
     wibjectItemObj.assignToWibtype(wapp.wb_wibjectWibtype_itemId);
   }
 
-  // set wibjectItemId depending on whether we created one or not
+  // set wibjectItemId appropriately, depending on whether we created a wibject or not
   var wibjectItemId = null;
   if (wibjectItemObj) {
     wibjectItemId = wibjectItemObj.itemId;
@@ -6245,15 +6920,33 @@ function wb_app_appWibvar_create(appItemObj, wibvarItemName, wibvartypeCode) {
 
   // for the app-wibvar, set wtifs (WibvartypeCode and WibjectItemId)
   appWibvarItemObj.setWibtypeAndWtifs(wapp.wb_appWibvarWibtype_itemId, C_wb_appWibvarWibtype_wtif_WibvartypeCode_itemName, wibvartypeCode, C_wb_appWibvarWibtype_wtif_WibjectItemId_itemName, wibjectItemId);
+
+  return true;
 }
 
-function wb_app_appWibvar_delete(appItemObj, wibvarItemID_toDelete) {
+function wb_app_appWibvar_delete(appItemObj, appWibvar_itemObj_toDelete, associatedWibjectItemObj) {
+  var appWibvars_listItemId = appItemObj.getWtifData(wapp.wb_appWibtype_itemId, null, C_wb_appWibtype_wtif_AppWibvarListItemId_itemName);
+  var appWibvars_listItemObj = grabItemObj(appWibvars_listItemId);
+  appWibvars_listItemObj.removeListMember(appWibvar_itemObj_toDelete.itemId);
 
+  var appWibvar_associatedWibjectItemId = null;
 
-//TO-DO1:
-alert("--- incomplete ---")
-return
+  if ( isBlank(associatedWibjectItemObj) ) {
+    var appWibvar_associatedWibjectItemId = appWibvar_itemObj_toDelete.getWtifData(wapp.wb_appWibvarWibtype_itemId, null, C_wb_appWibvarWibtype_wtif_WibjectItemId_itemName);
+    if ( ! isBlank(appWibvar_associatedWibjectItemId) ) {
+      associatedWibjectItemObj = grabItemObj(appWibvar_associatedWibjectItemId);
+    }
+  }
 
+  if ( ! isBlank(associatedWibjectItemObj) ) {
+    let deletionSuccessForWibject = associatedWibjectItemObj.doDeletion();
+    if ( ! deletionSuccessForWibject ) {
+      return false;
+    }
+  }
+
+  var deletionSuccessForAppWibvar = appWibvar_itemObj_toDelete.doDeletion();
+  return deletionSuccessForAppWibvar;
 }
 
 function wb_app_delete(appItemObj) {
@@ -6298,8 +6991,19 @@ function wb_app_run(appItemObj) {
   wb_script_run(firstScriptItemObj);
 }
 
+function wb_curObjs_clear() {
+  wapp.wb_curApp_itemObj = null;
+  wapp.wb_curAppWibvar_itemObj = null;
+  wapp.wb_curScreen_itemObj = null;
+  wapp.wb_curScreenWibvar_itemObj = null;
+  wapp.wb_curScript_itemObj = null;
+  wapp.wb_curScriptWibvar_itemObj = null;
+  wapp.wb_curWibject_itemObj = null;
+  wapp.wb_curWibjectElem_itemObj = null;
+}
+
 function wb_createOrChangeScreenType(existingWibtypeItemId, newWibtypeName) {
-  var screenTypeCode = getElemVal("selWibBuilder_BuildScreen_ScreenTypeCode");
+  var screenTypeCode = getElemVal("selWB_BuildScreen_ScreenTypeCode");
 
   var wibtypeItemObj_associatedWithScreen = null;
 
@@ -6328,7 +7032,7 @@ function wb_createOrChangeScreenType(existingWibtypeItemId, newWibtypeName) {
 
   }
 
-  displayPage("WibBuilder_BuildScreen");
+  displayPage("WB_BuildScreen");
 }
 
 function wb_deleteScreen(screenItemId) {
@@ -6404,19 +7108,36 @@ function wb_generate_appWibvarList_itemName(wbAppItemId) {
   return itemName;
 }
 
-function wb_generate_wibjectName_fromApp(appItemId, wibvarItemName) {
-  var parentText = "AppItemId_" + appItemId;
-  var fullText = wb_generate_wibjectName_fromParentText(parentText, wibvarItemName);
-  return fullText;
+function wb_generate_paramsSelectArray() {
+  var anObj;
+  var theArray = [];
+
+  anObj = getSelectArrayElem(C_wb_paramCode_no, "no");
+  theArray.push(anObj);
+
+  anObj = getSelectArrayElem(C_wb_paramCode_yesRequired, "yes, required");
+  theArray.push(anObj);
+
+  anObj = getSelectArrayElem(C_wb_paramCode_yesOptional, "yes, optional");
+  theArray.push(anObj);
+
+  return theArray;
 }
 
-function wb_generate_wibjectName_fromParentText(parentText, wibvarItemName) {
-  var fullText = "Wibject " + wibvarItemName + " for " + parentText;
-  return fullText;
+function wb_generate_scopesSelectArray() {
+  var anObj;
+  var theArray = [];
+
+  anObj = getSelectArrayElem(C_wb_scopeCode_private, "private");
+  theArray.push(anObj);
+
+  anObj = getSelectArrayElem(C_wb_scopeCode_public, "public");
+  theArray.push(anObj);
+
+  return theArray;
 }
 
-
-function wb_generate_wibvartypesSelectArray() {
+function wb_generate_wibvartypesSelectArray(suppressWibjectOption) {
   var anObj;
   var theArray = [];
 
@@ -6435,8 +7156,11 @@ function wb_generate_wibvartypesSelectArray() {
   anObj = getSelectArrayElem(C_wb_wibvartypeCode_string, "string");
   theArray.push(anObj);
 
-  anObj = getSelectArrayElem(C_wb_wibvartypeCode_wibject, "wibject");
-  theArray.push(anObj);
+  if (suppressWibjectOption) {
+  } else {
+    anObj = getSelectArrayElem(C_wb_wibvartypeCode_wibject, "wibject");
+    theArray.push(anObj);
+  }
 
   return theArray;
 }
@@ -6460,6 +7184,34 @@ function wb_generateWibtypeInstanceHolderList_itemName(wibtypeItemId_heldByThisW
   var wibtypeInstanceHolderList_itemName = "wb__WibtypeInstanceHolder__wibTypeItemId_" + wibtypeItemId_heldByThisWibtypeInstanceHolderList;
 
   return wibtypeInstanceHolderList_itemName;
+}
+
+function wb_getParamDisplay(paramCode) {
+  var paramCode_parseInt = parseInt(paramCode);
+
+  switch (paramCode_parseInt) {
+    case parseInt(C_wb_paramCode_no):
+      return "no";
+    case parseInt(C_wb_paramCode_yesRequired):
+      return "yes, required";
+    case parseInt(C_wb_paramCode_yesOptional):
+      return "yes, optional";
+    default:
+      return "--";
+  }
+}
+
+function wb_getScopeDisplay(scopeCode) {
+  var scopeCode_parseInt = parseInt(scopeCode);
+
+  switch (scopeCode_parseInt) {
+    case parseInt(C_wb_scopeCode_private):
+      return "private";
+    case parseInt(C_wb_scopeCode_public):
+      return "public";
+    default:
+      return "--";
+  }
 }
 
 function wb_getScreenNameDisplay(screenItemObj, wibtypeItemObj) {
@@ -6668,7 +7420,7 @@ alert("--- NEED TO HANDLE script-wibvars ---"); throw("--- NEED TO HANDLE script
 
   scriptRowItemIds.forEach( (scriptRowItemId) => {
     let scriptRowItemObj = grabItemObj(scriptRowItemId);
-    if ( !wb_scriptRow_delete(scriptRowItemObj) ) {
+    if ( ! wb_scriptRow_delete(scriptRowItemObj) ) {
       return false;
     }
   } );
@@ -6681,7 +7433,7 @@ function wb_script_doAction(actionCode, actionData) {
   switch (actionCode) {
     case C_wb_script_actionCode_displayScreen:
       wapp.wb_curScreen_itemObj = grabItemObj(actionData);
-      displayPage("WibBuilder_RunScreen");
+      displayPage("WB_RunScreen");
       break;
 
     default:
@@ -6706,6 +7458,7 @@ function wb_script_getActionDisplay(actionCode) {
 
 function wb_script_getNextRowNum(scriptItemId) {
 //TO-DO1.5:
+console.log(".....  need to finish wb_script_getNextRowNum()")
 return "1";
 }
 
@@ -6770,6 +7523,153 @@ function wb_scriptRow_generateItemName(actionCode, actionData) {
   }
 
   return itemName
+}
+
+function wb_parentChain_addParent(newParent_itemObj, newParent_itemId, newParent_wibtypeItemId) {
+  var pco = wb_parentChain_generateObj(newParent_itemObj, newParent_itemId, newParent_wibtypeItemId);
+  wapp.wb_curParentChain.push(pco);
+}
+
+function wb_parentChain_addParent_byItemId(newParent_itemId, newParent_wibtypeItemId) {
+  wb_parentChain_addParent(null, newParent_itemId, newParent_wibtypeItemId);
+}
+
+function wb_parentChain_addParent_byItemObj(newParent_itemObj, newParent_wibtypeItemId) {
+  wb_parentChain_addParent(newParent_itemObj, null, newParent_wibtypeItemId);
+}
+
+function wb_parentChain_clear() {
+  wapp.wb_curParentChain = [];
+}
+
+function wb_parentChain_generateObj(parent_itemObj, parent_itemId, parent_wibtypeItemId) {
+  var pco = [];
+
+  if (parent_itemObj) {
+    if ( ! isBlank(parent_itemObj.itemId) ) {
+      pco.itemObj = parent_itemObj;
+    }
+  }
+
+  if ( isBlank(pco.itemObj) ) {
+    pco.itemObj = grabItemObj(parent_itemId);
+  }
+
+  pco.wibtypeItemId = parent_wibtypeItemId;
+
+  pco.appItemObj = null;
+  pco.appWibvarItemObj = null;
+  pco.screenItemObj = null;
+  pco.screenWibvarItemObj = null;
+  pco.scriptItemObj = null;
+  pco.scriptWibvarItemObj = null;
+  pco.wibjectElemItemObj = null;
+  pco.wibjectItemObj = null;
+
+  if ( isEqual(wapp.wb_appWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isApp = true;
+    pco.appItemObj = pco.itemObj;
+  } else {
+    pco.isApp = false;
+  }
+
+  if ( isEqual(wapp.wb_appWibvarWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isAppWibvar = true;
+    pco.appWibvarItemObj = pco.itemObj;
+  } else {
+    pco.isAppWibvar = false;
+  }
+
+  if ( isEqual(wapp.wb_screenWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isScreen = true;
+    pco.screenItemObj = pco.itemObj;
+  } else {
+    pco.isScreen = false;
+  }
+
+  if ( isEqual(wapp.wb_screenWibvarWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isScreenWibvar = true;
+    pco.screenWibvarItemObj = pco.itemObj;
+  } else {
+    pco.isScreenWibvar = false;
+  }
+
+  if ( isEqual(wapp.wb_scriptWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isScript = true;
+    pco.scriptItemObj = pco.itemObj;
+  } else {
+    pco.isScript = false;
+  }
+
+  if ( isEqual(wapp.wb_scriptWibvarWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isScriptWibvar = true;
+    pco.scriptWibvarItemObj = pco.itemObj;
+  } else {
+    pco.isScriptWibvar = false;
+  }
+
+  if ( isEqual(wapp.wb_wibjectElemWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isWibjectElem = true;
+    pco.wibjectElemItemObj = pco.itemObj;
+  } else {
+    pco.isWibjectElem = false;
+  }
+
+  if ( isEqual(wapp.wb_wibjectWibtype_itemId, parent_wibtypeItemId) ) {
+    pco.isWibject = true;
+    pco.wibjectItemObj = pco.itemObj;
+  } else {
+    pco.isWibject = false;
+  }
+
+  if ( ! pco.isApp && ! pco.isAppWibvar && ! pco.isScreen && ! pco.isScreenWibvar && ! pco.isScript && ! pco.isScriptWibvar && ! pco.isWibjectElem && ! pco.isWibject ) {
+    throw ("ERROR: wb_parentChain_generateObj() received invalid parent_wibtypeItemId=" + parent_wibtypeItemId);
+  }
+
+  pco.getDisplay = function() {
+    var str = "";
+
+    if (this.isApp) {
+      str += " app: ";
+    } else if (this.isScreen) {
+      str += " screen: ";
+    } else if (this.isScript) {
+      str += " script: ";
+    } else if (this.isWibject) {
+      str += " wibject: ";
+    }
+
+    str += this.itemObj.itemName;
+
+    return str;
+  };
+
+
+  return pco;
+}
+
+function wb_parentChain_getLatest() {
+  var latestParent = getArrayLastElem(wapp.wb_curParentChain);
+  return latestParent;
+}
+
+function wb_parentChain_getPreParentDisplay() {
+  var str = "";
+
+  for (var i = wapp.wb_curParentChain.length - 2; i >= 0; i = i - 1) {
+    if ( str.length > 0 ) {
+      str += "&nbsp;&nbsp;<-&nbsp;&nbsp;";
+    }
+
+    let curPco = wapp.wb_curParentChain[i];
+    str += curPco.getDisplay();
+  }
+
+  if ( str.length > 0 ) {
+    str = " ( " + str + " )";
+  }
+
+  return str;
 }
 
 function wdt_getWappDatetimeObj(itemObj, do_setDateTime_fromItemObj) {
@@ -9246,9 +10146,7 @@ function writeHtml_items(mainItemObj) {
       html += " <div id='" + getHtml_reorderingModeIs_moveAboveOtherItem_dvInstructions(curItemId) + "' style='padding-bottom: 0.5em; display: none'><i>now click the other item</i></div>\n";
       html += "</td></tr>\n";
 
-      if ( focusAfterDisplayPage_isBlank() ) {
-        focusAfterDisplayPage_setFromItemId(curItemId);
-      }
+      focusAfterDisplayPage_setIfBlank_fromItemId(curItemId);
     }
 
     if (listMemberDataObjs.length == 0) {
@@ -9659,8 +10557,12 @@ function all_apps__create_new_app() {
   var appItemObj = wb_app_create(appItemName);
 
   if (appItemObj) {
+    wb_curObjs_clear();
+    wb_parentChain_clear();
+
     wapp.wb_curApp_itemObj = appItemObj;
-    displayPage("WibBuilder_ViewApp");
+    wb_parentChain_addParent_byItemObj(appItemObj, wapp.wb_appWibtype_itemId);
+    displayPage("WB_ViewApp");
   }
 }
 
@@ -9672,25 +10574,26 @@ function all_apps__delete_app(appItemId) {
   }
   
   wb_app_delete(appItemObj);
-  displayPage("WibBuilder_AllApps");
+  displayPage("WB_AllApps");
 }
 
 function all_apps__go_to_all_scripts() {
-  displayPage("WibBuilder_AllScripts");
+  displayPage("WB_AllScripts");
 }
 
 function all_apps__go_to_all_screens() {
-  displayPage("WibBuilder_AllScreens");
+  displayPage("WB_AllScreens");
 }
 
 function all_apps__view_app(appItemId) {
   wapp.wb_curApp_itemObj = grabItemObj(appItemId);
-  displayPage("WibBuilder_ViewApp");
+  wb_parentChain_addParent_byItemObj(wapp.wb_curApp_itemObj, wapp.wb_appWibtype_itemId);
+  displayPage("WB_ViewApp");
 }
 
 function all_screens__build_new_screen() {
   wapp.wb_curScreen_itemObj = null;
-  displayPage("WibBuilder_BuildScreen");
+  displayPage("WB_BuildScreen");
 }
 
 function all_screens__build_screen(screenItemId) {
@@ -9703,7 +10606,7 @@ function all_screens__build_screen(screenItemId) {
     return;
   }
 
-  displayPage("WibBuilder_BuildScreen");
+  displayPage("WB_BuildScreen");
 }
 
 function all_screens__delete_screen(screenItemId) {
@@ -9723,19 +10626,19 @@ function all_screens__delete_screen(screenItemId) {
   }
 
  if (deletionSuccess) {
-    displayPage("WibBuilder_AllScreens");
+    displayPage("WB_AllScreens");
   } else {
     // for now, will refresh the all-screens page, even if there was an error during the screen-deletion process
-    displayPage("WibBuilder_AllScreens");
+    displayPage("WB_AllScreens");
   }
 }
 
 function all_screens__go_to_all_apps() {
-  displayPage("WibBuilder_AllApps");
+  displayPage("WB_AllApps");
 }
 
 function all_screens__go_to_all_scripts() {
-  displayPage("WibBuilder_AllScripts");
+  displayPage("WB_AllScripts");
 }
 
 function all_screens__run_screen(screenItemId) {
@@ -9748,7 +10651,7 @@ function all_screens__run_screen(screenItemId) {
     return;
   }
 
-  displayPage("WibBuilder_RunScreen");
+  displayPage("WB_RunScreen");
 }
 
 function all_screens__show_type_instances(screenItemId) {
@@ -9760,7 +10663,7 @@ function all_screens__show_type_instances(screenItemId) {
     return;
   }
 
-  displayPage("WibBuilder_ShowWibtypeInstances");
+  displayPage("WB_ShowWibtypeInstances");
 }
 
 function all_scripts__create_new_script() {
@@ -9775,16 +10678,17 @@ function all_scripts__delete_script(scriptItemId) {
   }
   
   var scriptItemObj = grabItemObj(scriptItemId);
+
   wb_script_delete(scriptItemObj);
-  displayPage("WibBuilder_AllScripts");
+  displayPage("WB_AllScripts");
 }
 
 function all_scripts__go_to_all_apps() {
-  displayPage("WibBuilder_AllApps");
+  displayPage("WB_AllApps");
 }
 
 function all_scripts__go_to_all_screens() {
-  displayPage("WibBuilder_AllScreens");
+  displayPage("WB_AllScreens");
 }
 
 function back_to_type(wibtypeItemId) {
@@ -9798,7 +10702,7 @@ function begin_import() {
 }
 
 function build_screen__changeScreenType() {
-  var newScreenTypeCode = getElemVal("selWibBuilder_BuildScreen_ScreenTypeCode");
+  var newScreenTypeCode = getElemVal("selWB_BuildScreen_ScreenTypeCode");
   var wibtypeName = "________";
 
   if (wapp.wb_curScreen_itemObj) {
@@ -9808,15 +10712,15 @@ function build_screen__changeScreenType() {
   }
 
   if ( isEqual(newScreenTypeCode, C_wb_screenTypeCode_createWibtype) ) {
-    elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;" + wibtypeName;
+    elem("dvWB_BuildScreen_HeaderText").innerHTML = "Create&nbsp;&nbsp;" + wibtypeName;
   } else if ( isEqual(newScreenTypeCode, C_wb_screenTypeCode_editWibtype) ) {
-    elem("dvWibBuilder_BuildScreen_HeaderText").innerHTML = "Edit&nbsp;&nbsp;" + wibtypeName;
+    elem("dvWB_BuildScreen_HeaderText").innerHTML = "Edit&nbsp;&nbsp;" + wibtypeName;
   }
 }
 
 function build_screen__go_to_all_screens() {
   wapp.wb_curScreen_itemObj = null;
-  displayPage("WibBuilder_AllScreens");
+  displayPage("WB_AllScreens");
 }
 
 function build_screen__run_this_screen() {
@@ -9825,7 +10729,7 @@ function build_screen__run_this_screen() {
     return;
   }
 
-  displayPage("WibBuilder_RunScreen");
+  displayPage("WB_RunScreen");
 }
 
 function build_screen__set_type_of_thing() {
@@ -9834,26 +10738,26 @@ function build_screen__set_type_of_thing() {
     return;
   }
 
-  showPopUp("WibBuilder_UseExistingWibtype", null);
+  showPopUp("WB_UseExistingWibtype", null);
 }
 
 function build_screen__use_existing_type(choice) {
   switch (choice) {
     case "yes":
-      hidePopUp("WibBuilder_UseExistingWibtype");
-      displayPage("WibBuilder_ChooseExistingWibtype");
+      hidePopUp("WB_UseExistingWibtype");
+      displayPage("WB_ChooseExistingWibtype");
       break;
 
     case "no":
       if ( wb_promptNewWibtypeName() ) {
-        hidePopUp("WibBuilder_UseExistingWibtype");
-        displayPage("WibBuilder_BuildScreen");
+        hidePopUp("WB_UseExistingWibtype");
+        displayPage("WB_BuildScreen");
       }
       break;
 
     case "cancel":
-      hidePopUp("WibBuilder_UseExistingWibtype");
-      displayPage("WibBuilder_BuildScreen");
+      hidePopUp("WB_UseExistingWibtype");
+      displayPage("WB_BuildScreen");
       break;
   }
 }
@@ -9926,7 +10830,7 @@ function change_storage_key_name(curKeyName) {
 }
 
 function choose_existing_type__cancel() {
-  displayPage("WibBuilder_BuildScreen");
+  displayPage("WB_BuildScreen");
 }
 
 function choose_existing_type__click_type(wibTypeItemId) {
@@ -10026,67 +10930,98 @@ function copy_to_this_list(selectedList_itemId) {
 }
 
 function create_variable__cancel() {
-  if (wapp.wb_curScript_itemObj) {
-    displayPage("WibBuilder_ViewScreen")
-  } else if (wapp.wb_curScreen_itemObj) {
-    displayPage("WibBuilder_ViewScript")
-  } else if (wapp.wb_curApp_itemObj) {
-    displayPage("WibBuilder_ViewApp")
+  var latestPco = wb_parentChain_getLatest();
+
+  if (latestPco.isApp) {
+
+    displayPage("WB_ViewApp");
+
+  } else if (latestPco.isScreen) {
+
+    displayPage("WB_ViewScript");
+
+  } else if (latestPco.isScript) {
+
+    displayPage("WB_ViewScreen");
+
+  } else if (latestPco.isWibject) {
+
+    displayPage("WB_ViewWibject");
+
   } else {
-    displayPage("WibBuilder_ViewAllApps")
+
+    showSoftError("create_variable__create", "latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+    displayPage("WB_ViewAllApps");
+
   }
 }
 
 function create_variable__create() {
-  var wibvarItemName = getElemVal("ipWibBuilder_CreateWibvar_WibvarItemName");
+  var latestPco = wb_parentChain_getLatest();
+
+  var wibvarItemName = getElemVal("ipWB_CreateWibvar_WibvarItemName");
 
   if ( isBlank(wibvarItemName) ) {
     alert("Variable Name is required");
-    focusNow_toElemId("ipWibBuilder_CreateWibvar_WibvarItemName");
+    focusNow_toElemId("ipWB_CreateWibvar_WibvarItemName");
     return;
   }
 
-  var wibvartypeCode = getElemVal("selWibBuilder_CreateWibvar_WibvartypeCode");
+  var wibvartypeCode = getElemVal("selWB_CreateWibvar_WibvartypeCode");
 
   if ( isBlank(wibvartypeCode) ) {
     alert("Variable Type is required");
-    focusNow_toElemId("selWibBuilder_CreateWibvar_WibvartypeCode");
+    focusNow_toElemId("selWB_CreateWibvar_WibvartypeCode");
     return;
   }
 
-  if (wapp.wb_curScript_itemObj) {
-    var paramCode = getElemVal("selWibBuilder_CreateWibvar_ParamCode");
+  if (latestPco.isScript) {
+    var paramCode = getElemVal("selWB_CreateWibvar_ParamCode");
 
     if ( isBlank(paramCode) ) {
-      alert("Parameter Type is required");
-      focusNow_toElemId("selWibBuilder_CreateWibvar_ParamCode");
+      alert("Parameter is required");
+      focusNow_toElemId("selWB_CreateWibvar_ParamCode");
       return;
     }
   }
 
-  if (wapp.wb_curWibject_itemObj) {
+  if (latestPco.isWibject) {
+    var scopeCode = getElemVal("selWB_CreateWibvar_ScopeCode");
 
-    wb_app_createWibjectWibvar(wapp.wb_curWibject_itemObj, wibvarItemName, wibvartypeCode);
-    displayPage("WibBuilder_ViewWibject")
+    if ( isBlank(scopeCode) ) {
+      alert("Scope is required");
+      focusNow_toElemId("selWB_CreateWibvar_ScopeCode");
+      return;
+    }
+  }
 
-  } else if (wapp.wb_curScript_itemObj) {
+  if (latestPco.isApp) {
 
-    wb_app_createScriptWibvar(wapp.wb_curScript_itemObj, wibvarItemName, wibvartypeCode, paramCode);
-    displayPage("WibBuilder_ViewScreen")
+    wb_app_appWibvar_create(latestPco.appItemObj, wibvarItemName, wibvartypeCode);
+    displayPage("WB_ViewApp");
 
-  } else if (wapp.wb_curScreen_itemObj) {
+  } else if (latestPco.isScreen) {
 
-    wb_app_createScreenWibvar(wapp.wb_curScreen_itemObj, wibvarItemName, wibvartypeCode);
-    displayPage("WibBuilder_ViewScript")
+    //TO-DO1:
+    wb_app_createScreenWibvar(latestPco.screenItemObj, wibvarItemName, wibvartypeCode);
+    displayPage("WB_ViewScript");
 
-  } else if (wapp.wb_curApp_itemObj) {
+  } else if (latestPco.isScript) {
 
-    wb_app_appWibvar_create(wapp.wb_curApp_itemObj, wibvarItemName, wibvartypeCode);
-    displayPage("WibBuilder_ViewApp")
+    //TO-DO1:
+    wb_app_createScriptWibvar(latestPco.scriptItemObj, wibvarItemName, wibvartypeCode, paramCode);
+    displayPage("WB_ViewScreen");
+
+  } else if (latestPco.isWibject) {
+
+    //TO-DO1:
+    wb_app_createWibjectWibvar(latestPco.wibjectItemObj, wibvarItemName, wibvartypeCode, scopeCode);
+    displayPage("WB_ViewWibject");
 
   } else {
 
-    displayPage("WibBuilder_ViewAllApps")
+    showSoftError("create_variable__create", "latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+    displayPage("WB_ViewAllApps");
 
   }
 }
@@ -10272,6 +11207,187 @@ function edit_time_tracking__make_this_edit() {
     focusAfterDisplayPage_setFromElemId("aViewItem_MakeNewItem1")
     goToItemView(wapp.itemObj.displayedOnList_itemId, false);
   }
+}
+
+function edit_variable__cancel() {
+  var latestPco = wb_parentChain_getLatest();
+
+  if (latestPco.isApp) {
+
+    wapp.wb_curApp_itemObj = latestPco.appItemObj;
+    displayPage("WB_ViewApp");
+
+  } else if (latestPco.isScreen) {
+
+    wapp.wb_curScreen_itemObj = latestPco.screenItemObj;
+    displayPage("WB_ViewScreen");
+
+  } else if (latestPco.isScript) {
+
+    wapp.wb_curScript_itemObj = latestPco.scriptItemObj;
+    displayPage("WB_ViewScript");
+
+  } else if (latestPco.isWibject) {
+
+    wapp.wb_curWibject_itemObj = latestPco.wibjectItemObj;
+    displayPage("WB_ViewWibject");
+
+  } else {
+
+    showSoftError("edit_variable__cancel", "latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+    displayPage("WB_ViewAllApps");
+
+  }
+}
+
+function edit_variable__make_edit() {
+  var latestPco = wb_parentChain_getLatest();
+
+  var wibvarItemName = getElemVal("ipWB_EditWibvar_WibvarItemName");
+
+  if ( isBlank(wibvarItemName) ) {
+    alert("Variable Name is required");
+    focusNow_toElemId("ipWB_EditWibvar_WibvarItemName");
+    return;
+  }
+
+  var wibvartypeCode = getElemVal("selWB_EditWibvar_WibvartypeCode");
+
+  if ( isBlank(wibvartypeCode) ) {
+    alert("Variable Type is required");
+    focusNow_toElemId("selWB_EditWibvar_WibvartypeCode");
+    return;
+  }
+
+  if (latestPco.isScript) {
+    var paramCode = getElemVal("selWB_EditWibvar_ParamCode");
+
+    if ( isBlank(paramCode) ) {
+      alert("Parameter is required");
+      focusNow_toElemId("selWB_EditWibvar_ParamCode");
+      return;
+    }
+  }
+
+  if (latestPco.isWibject) {
+    var scopeCode = getElemVal("selWB_EditWibvar_ScopeCode");
+
+    if ( isBlank(scopeCode) ) {
+      alert("Scope is required");
+      focusNow_toElemId("selWB_EditWibvar_ScopeCode");
+      return;
+    }
+  }
+
+  if (latestPco.isApp) {
+
+    wb_app_appWibvar_change(wapp.wb_curAppWibvar_itemObj, wibvarItemName, wibvartypeCode, null);
+    displayPage("WB_ViewApp");
+
+  } else if (latestPco.isScreen) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewScript");
+
+  } else if (latestPco.isScript) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewScreen");
+
+  } else if (latestPco.isWibject) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewWibject");
+
+  } else {
+
+    showSoftError("edit_variable__make_edit", "latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+    displayPage("WB_ViewAllApps");
+
+  }
+  
+}
+
+function edit_wibject__cancel() {
+  displayPage("WB_ViewWibject");
+}
+
+function edit_wibject__make_edit() {
+  var latestPco = wb_parentChain_getLatest();
+
+  var wibvarItemName = getElemVal("ipWB_EditWibject_WibvarItemName");
+
+  if ( isBlank(wibvarItemName) ) {
+    alert("Variable Name is required");
+    focusNow_toElemId("ipWB_EditWibject_WibvarItemName");
+    return;
+  }
+
+  if (latestPco.isScript) {
+    var paramCode = getElemVal("selWB_EditWibject_ParamCode");
+
+    if ( isBlank(paramCode) ) {
+      alert("Parameter is required");
+      focusNow_toElemId("selWB_EditWibject_ParamCode");
+      return;
+    }
+  }
+
+  if (latestPco.isWibject) {
+    var scopeCode = getElemVal("selWB_EditWibject_ScopeCode");
+
+    if ( isBlank(scopeCode) ) {
+      alert("Scope is required");
+      focusNow_toElemId("selWB_EditWibject_ScopeCode");
+      return;
+    }
+  }
+
+  if (latestPco.isApp) {
+
+    wb_app_appWibvar_change(wapp.wb_curAppWibvar_itemObj, wibvarItemName, null, wapp.wb_curWibject_itemObj);
+    displayPage("WB_ViewWibject");
+
+  } else if (latestPco.isScreen) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewScript");
+
+  } else if (latestPco.isScript) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewScreen");
+
+  } else if (latestPco.isWibject) {
+
+    //TO-DO1:
+
+
+
+    //displayPage("WB_ViewWibject");
+
+  } else {
+
+    showSoftError("edit_wibject__make_edit", "latestPco did not have an relevant true property (isApp, isScreen, isScript, isWibject)");
+    displayPage("WB_ViewAllApps");
+
+  }
+  
 }
 
 function export_backup_text() {
@@ -10611,27 +11727,28 @@ function return_home_from_storage() {
 }
 
 function run_screen__back_to_app() {
+//TO-DO1: parentChain
   wapp.wb_curApp_itemObj = wapp.runningApp_itemObj;
   wapp.runningApp_itemObj = null;
-  displayPage("WibBuilder_ViewApp");
+  displayPage("WB_ViewApp");
 }
 
 function run_screen__build_this_screen() {
-  displayPage("WibBuilder_BuildScreen");
+  displayPage("WB_BuildScreen");
 }
 
 function run_screen__go_to_all_screens() {
   wapp.wb_curScreen_itemObj = null;
-  displayPage("WibBuilder_AllScreens");
+  displayPage("WB_AllScreens");
 }
 
 function run_screen__save_new_item() {
   var wibtypeItemObj_associatedWithScreen = wb_getWibtypeItemObj_associatedWithScreen(wapp.wb_curScreen_itemObj);
 
-  var typeInstance_itemName = elem("ipWibBuilder_RunScreen_ItemNameValue").value;
+  var typeInstance_itemName = elem("ipWB_RunScreen_ItemNameValue").value;
   if ( isBlank(typeInstance_itemName) ) {
     alert(wibtypeItemObj_associatedWithScreen.itemName + " Name is required");
-    focusNow_toElemId("ipWibBuilder_RunScreen_ItemNameValue");
+    focusNow_toElemId("ipWB_RunScreen_ItemNameValue");
     return;
   }
 
@@ -10653,7 +11770,7 @@ function run_screen__save_new_item() {
 //TO-DO1.5:
 //go to the list of items of this type, related to the builder screen, with the newly-created item highlighted?
 wapp.wb_curWibtype_itemObj = wibtypeItemObj_associatedWithScreen;
-displayPage("WibBuilder_ShowWibtypeInstances");
+displayPage("WB_ShowWibtypeInstances");
 }
 
 function set_ymd_to_today() {
@@ -10675,10 +11792,10 @@ function show_instances__delete(itemId) {
   }
 
   if ( itemObj.doDeletion(null) ) {
-    displayPage("WibBuilder_ShowWibtypeInstances");
+    displayPage("WB_ShowWibtypeInstances");
   } else {
     // for now, will refresh the all-screens page, even if there was an error during the screen-deletion process
-    displayPage("WibBuilder_ShowWibtypeInstances");
+    displayPage("WB_ShowWibtypeInstances");
   }
 }
 
@@ -10687,11 +11804,11 @@ da("edit function incomplete...");
 }
 
 function show_instances__go_to_all_screens() {
-  displayPage("WibBuilder_AllScreens");
+  displayPage("WB_AllScreens");
 }
 
 function show_instances__run_screen_again() {
-  displayPage("WibBuilder_RunScreen");
+  displayPage("WB_RunScreen");
 }
 
 function show_types() {
@@ -10793,6 +11910,7 @@ function toggle_reorder() {
 }
 
 function view_app__create_new_screen() {
+alert("--- INCOMPLETE ---")
 }
 
 function view_app__create_new_script() {
@@ -10805,26 +11923,54 @@ function view_app__create_new_script() {
 
   if (scriptItemObj) {
     wapp.wb_curScript_itemObj = scriptItemObj;
-    displayPage("WibBuilder_ViewScript");
+    displayPage("WB_ViewScript");
   }
 }
 
 function view_app__create_new_variable() {
-  displayPage("WibBuilder_CreateWibvar");
+  displayPage("WB_CreateWibvar");
 }
 
 function view_app__delete_screen(screenItemId) {
+alert("--- INCOMPLETE ---")
 }
 
 function view_app__delete_script(scriptItemId) {
+alert("--- INCOMPLETE ---")
 }
 
-function view_script__go_to_app() {
-  displayPage("WibBuilder_ViewApp");
+function view_app__delete_variable(appWibvarItemId) {
+  var appWibvarItemObj = grabItemObj(appWibvarItemId);
+  
+  if ( ! confirm("Delete this variable?\n\nVariable Name: " + appWibvarItemObj.itemName + "\n\nApp Name: " + wapp.wb_curApp_itemObj.itemName) ) {
+    return;
+  }
+
+  if ( wb_app_appWibvar_delete(wapp.wb_curApp_itemObj, appWibvarItemObj) ) {
+    displayPage("WB_ViewApp");
+  }
+}
+
+function view_app__delete_wibject(appWibvarItemId, wibjectItemId) {
+  var wibjectItemObj = grabItemObj(wibjectItemId);
+  if ( wibjectItemObj.hasListMembers() ) {
+    alert("Delete Not Allowed\n\nApp wibject-type variables cannot currently be deleted when they have child elements");
+    return;
+  }
+
+  var appWibvarItemObj = grabItemObj(appWibvarItemId);
+
+  if ( ! confirm("Delete this wibject?\n\nWibject Name: " + appWibvarItemObj.itemName + "\n\nApp Name: " + wapp.wb_curApp_itemObj.itemName) ) {
+    return;
+  }
+
+  if ( wb_app_appWibvar_delete(wapp.wb_curApp_itemObj, appWibvarItemObj, wibjectItemObj) ) {
+    displayPage("WB_ViewApp");
+  }
 }
 
 function view_app__go_to_all_apps() {
-  displayPage("WibBuilder_AllApps");
+  displayPage("WB_AllApps");
 }
 
 function view_app__run_app() {
@@ -10836,7 +11982,24 @@ function view_app__view_screen(screenItemId) {
 
 function view_app__view_script(scriptItemId) {
   wapp.wb_curScript_itemObj = grabItemObj(scriptItemId);
-  displayPage("WibBuilder_ViewScript");
+  displayPage("WB_ViewScript");
+}
+
+function view_app__view_variable(appWibvarItemId) {
+  wapp.wb_curAppWibvar_itemObj = grabItemObj(appWibvarItemId);
+  wapp.wb_curWibject_itemObj = null;
+  displayPage("WB_ViewWibvar");
+}
+
+function view_app__view_wibject(appWibvarItemId, wibjectItemId) {
+  wapp.wb_curAppWibvar_itemObj = grabItemObj(appWibvarItemId);
+  wapp.wb_curWibject_itemObj = grabItemObj(wibjectItemId);
+  displayPage("WB_ViewWibject");
+}
+
+function view_script__go_to_app() {
+//TO-DO1: parentChain
+  displayPage("WB_ViewApp");
 }
 
 function view_item__add_time_tracking() {
@@ -10845,6 +12008,62 @@ function view_item__add_time_tracking() {
 
 function view_item__add_type_for_list_members() {
   displayPage("ChooseWibtype")
+}
+
+function view_variable__edit() {
+  displayPage("WB_EditWibvar");
+}
+
+function view_variable__go_to_parent_app() {
+//TO-DO1: parentChain
+  displayPage("WB_ViewApp");
+}
+
+function view_variable__go_to_parent_screen() {
+  displayPage("WB_ViewScreen");
+}
+
+function view_variable__go_to_parent_script() {
+  displayPage("WB_ViewScript");
+}
+
+function view_variable__go_to_parent_wibject() {
+  displayPage("WB_ViewWibject");
+}
+
+function view_wibject__create_new_element() {
+alert("--- INCOMPLETE ---")
+}
+
+function view_wibject__edit() {
+  displayPage("WB_EditWibject");
+}
+
+function view_wibject__go_to_parent_app() {
+//TO-DO1: parentChain
+  displayPage("WB_ViewApp");
+}
+
+function view_wibject__go_to_parent_screen() {
+  displayPage("WB_ViewScreen");
+}
+
+function view_wibject__go_to_parent_script() {
+  displayPage("WB_ViewScript");
+}
+
+function view_wibject__go_to_parent_wibject() {
+  displayPage("WB_ViewWibject");
+}
+
+function view_wibject__view_element(wibjectElemId) {
+  wapp.wb_curWibjectElem_itemObj = grabItemObj(wibjectElemId);
+alert("--- INCOMPLETE ---")
+}
+
+function view_wibject__delete_element(wibjectElemId) {
+  wapp.wb_curWibjectElem_itemObj = grabItemObj(wibjectElemId);
+alert("--- INCOMPLETE ---")
 }
 
 
@@ -11234,7 +12453,7 @@ function loadAppData_andReturnNextDisplayPage() {
 
 //TO-DO1.5: go to first wb-app, etc
 
-    return "WibBuilder_AllApps";
+    return "WB_AllApps";
   } else {
     return "Home";
   }
