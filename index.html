@@ -720,6 +720,44 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
   </div>
 
+
+
+
+
+
+
+
+
+
+
+
+  <div id="dvPage_WB_CreateWibjectElem" style="display: none">
+    <div id="dvWB_CreateWibjectElem_For">(variable created for)</div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div class="grid4">
+      <div class="g4C g4Text">Element Name:</div>
+      <div class="g4C"><input id="ipWB_CreateWibjectElem_WibvarItemName" class="ipText" style="width: 15em" value="" /></div>
+      <div class="g4C g4VSpace" style="height: 1.5em"></div>
+      <div class="g4C g4Text">Variable Type:</div>
+      <div class="g4C g1Sel"><span id="spnWB_CreateWibjectElem_WibvartypeCode"></span></div>
+      <div class="g4C g4VSpace g4Group1" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group1">Parameter:</div>
+      <div class="g4C g1Sel g4Group1"><span id="spnWB_CreateWibjectElem_Param"></span></div>
+      <div class="g4C g4VSpace g4Group2" style="height: 1.5em"></div>
+      <div class="g4C g4Text g4Group2">Scope:</div>
+      <div class="g4C g1Sel g4Group2"><span id="spnWB_CreateWibjectElem_Scope"></span></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div style="height: 0.11em; background-color: black"></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a href="javascript:void create_variable__create()" style="white-space: nowrap">create</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void create_variable__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+  </div>
+
   <div id="dvPage_WB_CreateWibvar" style="display: none">
     <div id="dvWB_CreateWibvar_For">(variable created for)</div>
     <div style="height: 1.2em"></div>
@@ -1348,7 +1386,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
 ///// CONSTANTS
 
-const C_wibappVersion = "0.98"; // leave this at top for easy editing
+const C_wibappVersion = "0.99"; // leave this at top for easy editing
 
 const C_cssClassName_backgroundBlack = "backgroundBlack";
 const C_cssClassName_backgroundBlue = "backgroundBlue";
@@ -4737,7 +4775,7 @@ function itemObjFactory() {
   };
 
   itemObj.doDeletion = function(setWappItemToFirstJoinedList, overrideWtifDeletionCheck) {
-    var firstListItemId = null, saveKeyText_listMembers_ofItem, i, curAllItemIds_string, curAllItemIds_array, newAllItemIds_string = "";
+    var saveKeyText_connectedItems_ofItem, firstListItemId = null, saveKeyText_listMembers_ofItem, i, curAllItemIds_string, curAllItemIds_array, newAllItemIds_string = "";
 
     // check if this is a list with list-members
     if (this.isList == "1") {
@@ -4784,6 +4822,14 @@ function itemObjFactory() {
         }
       }
     }
+
+    // delete item-connections
+    for (i = 0; i < this.connectedItemDataObjs.length; i++) {
+      let itemId2 = this.connectedItemDataObjs[i].itemId2;
+      this.removeConnection(itemId2);
+    }
+    saveKeyText_connectedItems_ofItem = getSaveKeyText_connectedItems_ofItem(this.itemId);
+    deleteFromDatastore(saveKeyText_connectedItems_ofItem);
 
     // delete assigned-wibtypes and wtif-data for this item
     this.assignedWibtypes_itemIds.forEach( (assignedWibtypes_itemId) => {
@@ -5146,6 +5192,25 @@ function itemObjFactory() {
     }
   };
 
+  itemObj.removeConnection = function(itemId2, oneWayOnly) {
+    var newArray = getObjArrayWithoutElem(this.connectedItemDataObjs, "itemId2", itemId2);
+
+    if ( newArray.length !== this.connectedItemDataObjs.length ) {
+      this.connectedItemDataObjs = newArray;
+      this.saveConnectedItemsToDatastore();
+    }
+
+    var itemObj2 = grabItemObj(itemId2);
+
+    if (oneWayOnly) {
+      // no action
+    } else {
+      itemObj2.removeConnection(this.itemId, true);
+    }
+
+    return true;
+  };
+  
   itemObj.removeListMember = function(listMemberItemId_toRemove) {
     var oldListMemberDataObjs, newListMemberDataObjs;
 
@@ -12128,6 +12193,37 @@ function loadAppData_andReturnNextDisplayPage() {
   }
 
   /* Wib-Builder Wibjects, Screens, Scripts, Apps, & Wibvars */ {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TO-DO1.0 -- change WibjectElems to WibjectVars and WibjectScripts?
+// (also could change Scripts to AppScripts; ... more?)
+
+
+
+
+
+
+
+
+
 
     /* Wib-Builder Wibjects */ {
 
