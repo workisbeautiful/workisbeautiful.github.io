@@ -1386,7 +1386,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
 ///// CONSTANTS
 
-const C_wibappVersion = "0.99"; // leave this at top for easy editing
+const C_wibappVersion = "0.100"; // leave this at top for easy editing
 
 const C_cssClassName_backgroundBlack = "backgroundBlack";
 const C_cssClassName_backgroundBlue = "backgroundBlue";
@@ -1580,8 +1580,8 @@ const C_wibDataType_text_id = 1;
 const C_wibDataType_timeOfDay_name = "time of day";
 const C_wibDataType_timeOfDay_id = 3;
 
-const sD = "`"; // sD = storageDivider
-const sD2 = "≡"; // sD2 = storageDivider2, used for text formatting during backup
+const C_sd = "`"; // C_sd -> storageDivider
+const C_sd2 = "\u2261"; // C_sd2 -> "≡" (Unicode code point U+2261) -> storageDivider2, used for text formatting during backup
 
 
 ///// APP-LEVEL VARIABLES
@@ -1698,7 +1698,7 @@ function createConnectedItemDataObj(itemId2) {
 }
 
 function createItemInfoString(itemName, doneStatusCode, displayCode, isList, notes, isWibtype, isWibtypeInfoField) {
-  var itemInfoString = itemName + sD;
+  var itemInfoString = itemName + C_sd;
 
   if ( isBlank(doneStatusCode) ) {
     itemInfoString += C_doneStatusCode_undone;
@@ -1706,35 +1706,35 @@ function createItemInfoString(itemName, doneStatusCode, displayCode, isList, not
     itemInfoString += doneStatusCode;
   }
 
-  itemInfoString = itemInfoString + sD;
+  itemInfoString = itemInfoString + C_sd;
   if ( isBlank(displayCode) ) {
     itemInfoString += C_displayCode_normal;
   } else {
     itemInfoString += displayCode
   }
 
-  itemInfoString = itemInfoString + sD;
+  itemInfoString = itemInfoString + C_sd;
   if ( isBlank(isList) ) {
     itemInfoString += "0";
   } else {
     itemInfoString += isList
   }
 
-  itemInfoString = itemInfoString + sD;
+  itemInfoString = itemInfoString + C_sd;
   if ( isBlank(notes) ) {
     itemInfoString += "";
   } else {
     itemInfoString += notes
   }
 
-  itemInfoString = itemInfoString + sD;
+  itemInfoString = itemInfoString + C_sd;
   if (isWibtype == "1") {
     itemInfoString += "1";
   } else {
     itemInfoString += "0";
   }
 
-  itemInfoString = itemInfoString + sD;
+  itemInfoString = itemInfoString + C_sd;
   if (isWibtypeInfoField == "1") {
     itemInfoString += "1";
   } else {
@@ -1825,7 +1825,7 @@ function createWtifDataObj(wibtypeItemId, wtifItemId, wtifItemName, theData) {
 }
 
 function createWibtypeInfoFieldInfoString(wibDataTypeId, required) {
-  var itemInfoString = wibDataTypeId + sD + required;
+  var itemInfoString = wibDataTypeId + C_sd + required;
   return itemInfoString;
 }
 
@@ -2267,7 +2267,8 @@ function displayPage(pageName) {
         for (i = 0; i < wapp.itemObj.connectedItemDataObjs.length; i++) {
           let x = grabItemObj(wapp.itemObj.connectedItemDataObjs[i].itemId2);
           if (html !== "") html += "<div style='height: 1em'></div>"
-          html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a></div>\n";
+          html += " <div><a href='javascript:void go_to_item(" + x.itemId + ")'>" + x.itemName + "</a>";
+          html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( <a href='javascript:void remove_connection(" + x.itemId + ")'>X</a> )</div>\n";
         }
 
         elem("dvViewItem_ConnectedItems_Header").style.display = "";
@@ -3663,12 +3664,12 @@ function getHtml_selectElem(selectElemId, includeBlank, theArray, defValue, theS
 function getIdArray(string_ids){
   var array_ids;
   if (isBlank(string_ids)) return [];
-  array_ids = string_ids.split(sD);
+  array_ids = string_ids.split(C_sd);
   return array_ids;
 }
 
 function getIdString(array_ids){
-  var string_ids = array_ids.join(sD);
+  var string_ids = array_ids.join(C_sd);
   return string_ids;
 }
 
@@ -3789,7 +3790,7 @@ var getItemInfoTransfer = function() {
       //  because the itemInfoString we are returning must be built in the same order
       for (let i = 0; i < _itemInfoNames.length; i++) {
         if (itemInfoString.length > 0) {
-          itemInfoString = itemInfoString + sD;
+          itemInfoString = itemInfoString + C_sd;
         }
         itemInfoString = itemInfoString + _itemInfoValues[i];
       }
@@ -3822,7 +3823,7 @@ var getItemInfoTransfer = function() {
     },
     
     receiveString: function(itemInfoString) {
-      _itemInfoValues = itemInfoString.split(sD);
+      _itemInfoValues = itemInfoString.split(C_sd);
     },
 
     setObject: function(itemInfoObject) {
@@ -4088,7 +4089,7 @@ function grabItemObj(itemId, suppressErrorMsgIfNotFound) {
   itemObj = itemObjFactory();
 
   // set the item-object's properties from the retrieved item-data
-  itemDataArray = itemInfoString.split(sD);
+  itemDataArray = itemInfoString.split(C_sd);
   itemObj.itemId = itemId;
   itemObj.itemName = itemDataArray[0];
   itemObj.doneStatusCode = itemDataArray[1];
@@ -4143,7 +4144,7 @@ function grabItemObj(itemId, suppressErrorMsgIfNotFound) {
   if (itemObj.isWibtypeInfoField == "1") {
     let saveKeyText_wibtypeInfoFieldInfo_ofItem = getSaveKeyText_wibtypeInfoFieldInfo_ofItem(itemObj.itemId);
     let wibtypeInfoFieldInfo_string = getFromDatastore(saveKeyText_wibtypeInfoFieldInfo_ofItem);
-    let wibtypeInfoFieldInfo_array = wibtypeInfoFieldInfo_string.split(sD);
+    let wibtypeInfoFieldInfo_array = wibtypeInfoFieldInfo_string.split(C_sd);
     let wibDataTypeId = wibtypeInfoFieldInfo_array[0];
     let required = wibtypeInfoFieldInfo_array[1];
     itemObj.setWibtypeInfoFieldInfo(wibDataTypeId, required, false);
@@ -4153,7 +4154,7 @@ function grabItemObj(itemId, suppressErrorMsgIfNotFound) {
   var saveKeyText_connectedItems_ofItem = getSaveKeyText_connectedItems_ofItem(itemObj.itemId)  
   var connectedItems_string = getFromDatastore(saveKeyText_connectedItems_ofItem);
   var connectedItems_array = [];
-  if ( !isBlank(connectedItems_string) ) connectedItems_array = connectedItems_string.split(sD);
+  if ( !isBlank(connectedItems_string) ) connectedItems_array = connectedItems_string.split(C_sd);
   for (i = 0; i < connectedItems_array.length; i++) {
     let itemId2 = connectedItems_array[i];
     let x = createConnectedItemDataObj(itemId2);
@@ -4164,7 +4165,7 @@ function grabItemObj(itemId, suppressErrorMsgIfNotFound) {
   var saveKeyText_wibtypesForListMembers_ofItem = getSaveKeyText_wibtypesForListMembers_ofItem(itemObj.itemId)  
   var wibtypesForListMembers_string = getFromDatastore(saveKeyText_wibtypesForListMembers_ofItem);
   var wibtypesForListMembers_array = [];
-  if ( !isBlank(wibtypesForListMembers_string) ) wibtypesForListMembers_array = wibtypesForListMembers_string.split(sD);
+  if ( !isBlank(wibtypesForListMembers_string) ) wibtypesForListMembers_array = wibtypesForListMembers_string.split(C_sd);
   for (i = 0; i < wibtypesForListMembers_array.length; i++) {
     let wibtypeItemId = wibtypesForListMembers_array[i];
     let x = createWibtypeForListMembersDataObj(wibtypeItemId);
@@ -4239,7 +4240,7 @@ function importBackupText(textToImport) {
   var i, keyValuePairs, keyName, keyValue;
 
   //split storage-keys from text-to-import string
-  keyValuePairs = textToImport.split(sD2);
+  keyValuePairs = textToImport.split(C_sd2);
 
   //if we don't have an even number of items, there is a mismatch of key/value pairs
   if (keyValuePairs.length % 2 > 0) {
@@ -4865,7 +4866,7 @@ function itemObjFactory() {
     curAllItemIds_array = getIdArray(curAllItemIds_string);
     for (i = 0; i < curAllItemIds_array.length; i++) {
       if ( !isEqual(curAllItemIds_array[i], this.itemId) ) {
-        if ( !isBlank(newAllItemIds_string) ) newAllItemIds_string += sD;
+        if ( !isBlank(newAllItemIds_string) ) newAllItemIds_string += C_sd;
         newAllItemIds_string += curAllItemIds_array[i];
       }
     }
@@ -5253,7 +5254,7 @@ function itemObjFactory() {
     var connectedItems_string = "";
 
     this.connectedItemDataObjs.forEach( (x) => {
-      if (connectedItems_string !== "") connectedItems_string += sD;
+      if (connectedItems_string !== "") connectedItems_string += C_sd;
       connectedItems_string += x.itemId2;
     } );
 
@@ -5277,8 +5278,8 @@ function itemObjFactory() {
 
     for (i = 0; i < listMemberDataObjs.length; i++) {
       let curListMemberDataObj = listMemberDataObjs[i];
-      if ( !isBlank(listMemberDataObjs_string) ) listMemberDataObjs_string += sD;
-      listMemberDataObjs_string += curListMemberDataObj.itemId + sD + curListMemberDataObj.sortPosition;
+      if ( !isBlank(listMemberDataObjs_string) ) listMemberDataObjs_string += C_sd;
+      listMemberDataObjs_string += curListMemberDataObj.itemId + C_sd + curListMemberDataObj.sortPosition;
     }
 
     saveToDatastore(saveKeyText_itemListMembers_ofItem, listMemberDataObjs_string);
@@ -5306,7 +5307,7 @@ function itemObjFactory() {
     var theString = "";
 
     this.wibtypeForListMembersDataObjs.forEach( (x) => {
-      if (theString !== "") theString += sD;
+      if (theString !== "") theString += C_sd;
       theString += x.wibtypeItemId;
     } );
 
@@ -5777,7 +5778,7 @@ function makeNewItem(doneStatusCode, wibDataTypeId, required, isWibtypeInfoField
   if ( isBlank(allItemIds_string) ) {
     allItemIds_string = "";
   } else {
-    allItemIds_string = allItemIds_string + sD;
+    allItemIds_string = allItemIds_string + C_sd;
   }
   allItemIds_string = allItemIds_string + newItemObj.itemId;
   saveToDatastore(C_stringOfAllItemIds, allItemIds_string);
@@ -9871,9 +9872,9 @@ function writeBackupExport() {
     keyName = localStorage.key(i);
     keyValue = localStorage.getItem(keyName);
 
-    if (i > 0) txt += sD2;
+    if (i > 0) txt += C_sd2;
 
-    txt += keyName + sD2 + keyValue;
+    txt += keyName + C_sd2 + keyValue;
   }
 
   elem("taExportedBackupText").value = txt;
@@ -11767,6 +11768,11 @@ function rename_item() {
   if ( wapp.itemObj.changeItemInfo(editedItemName, null, null, null, null) ) {
     goToItemView(null, true);
   }
+}
+
+function remove_connection(itemId2) {
+  wapp.wb_curApp_itemObj.removeConnection(itemId2);
+  displayPage("WB_ViewItem");
 }
 
 function remove_time_tracking() {
