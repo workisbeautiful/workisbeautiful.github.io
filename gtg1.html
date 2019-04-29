@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {box-sizing: border-box}
+
+a {color: blue; outline: 0}
+a:link {text-decoration: none}
+a:visited {text-decoration: none}
+a:hover {text-decoration: underline}
+a:focus {text-decoration: underline}
+a:active {text-decoration: none}
+
+body {font-size: 110%; font-family: Helvetica}
+</style>
+
+<title>gtg1</title>
+</head>
+<body>
+
+<div id="dvDisplay" style="padding-left: 1em; padding-top: 1em"></div>
+
+<script type="text/javascript">
+
+"use strict";
+
+
+// CONSTANTS
+
+const C_att_locName = "locName";
+const C_att_name = "name";
+
+const C_entityCodename_you = "you";
+
+const C_displayVar_you = "YOU";
+const C_displayVar_curLoc = "CUR_LOC";
+
+const C_playerAction_ = "";
+
+const C_saveType_entity = "entity";
+
+const C_spacerHeight = "0.5em"
+
+const C_userAction_changeYourName = "change your name";
+const C_userAction_goToInfo = "go to info";
+const C_userAction_goToPage = "go to page"
+const C_userAction_moveToLocation = "move to location"
+
+
+// APP-LEVEL VARIABLES
+
+const APP = {};
+APP.curPage = null;
+APP.loadedEntObjs = [];
+APP.pages = [];
+APP.you = {};
+
+
+// PAGES
+
+const C_page_info = getAndMakePage("info");
+setPageToNonLocation(C_page_info);
+addPageTextRow(C_page_info, "Your name is: _YOU_");
+addPageAction(C_page_info, C_userAction_changeYourName, "change your name");
+addPageAction(C_page_info, C_userAction_goToPage, "return to _CUR_LOC_", "_CUR_LOC_");
+
+const C_page_cozyRoom = getAndMakePage("cozy room");
+addPageTextRow(C_page_cozyRoom, "Hello, _YOU_");
+addPageTextRow(C_page_cozyRoom, "You are in a cozy room", 2);
+
+
+// FUNCTIONS
+
+function addPageAction(page, actionName, actionLinkText, actionVar1) {
+  var action = {};
+
+  action.name = actionName;
+  action.linkText = actionLinkText;
+
+  if (actionVar1 == "" || ! isBlank(actionVar1) ) {
+    action.var1 = actionVar1;
+  } else {
+    action.var1 = "";
+  }
+
+  page.actions.push(action);
+}
+
+function addPageTextRow(page, textOfRow, spacesDown) {
+  var textRow = {};
+
+  textRow.textOfRow = textOfRow;
+  textRow.spacesDown = spacesDown;
+
+  page.textRows.push(textRow);
+}
+
+function deleteFromBrowserSave(saveType, saveName, saveAttribute) {
+  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
+  localStorage.removeItem(bsk);
+}
+
+function displayPage(page) {
+  var displayText = getPageDisplayHtml(page);
+  var dv = elem("dvDisplay");
+  dv.innerHTML = displayText;
+}
+
+function displayPage_fromName(pageName) {
+  var page = getPageFromName(pageName);
+  displayPage(page);
+}
+
+function elem(elemId) {
+  return document.getElementById(elemId);
+}
+
+function getAndMakePage(name) {
+  var page = {};
+
+  page.name = name;
+  page.isLocation = true;
+  page.textRows = [];
+  page.actions = [];
+
+  APP.pages.push(page);
+
+  return page;
+}
+
+function getBrowserSaveKey(saveType, saveName, saveAttribute) {
+//console.log(saveType, saveName, saveAttribute)
+  var bsk, saveName_processed, saveAttribute_processed;
+  
+  switch(saveType) {
+    case C_saveType_entity:
+      bsk = "e:";
+      break;
+    default:
+      bsk = "?:";
+      break;
+  }
+
+  saveName_processed = getProcessedSaveText(saveName);
+  saveAttribute_processed = getProcessedSaveText(saveAttribute);
+
+  bsk += saveName_processed + ":" + saveAttribute_processed;
+//console.log(bsk)
+  return bsk;
+}
+
+function getFromBrowserSave(saveType, saveName, saveAttribute) {
+  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
+  var val = localStorage.getItem(bsk);
+  return val;
+}
+
+function getHtmlLink(linkText, linkActionName, linkActionVar1) {
+  var x = "<a href='javascript: do_user_action ( \"" + linkActionName + "\"";
+
+  if ( ! isBlank(linkActionVar1) ) {
+    x += " , \"" + linkActionVar1 + "\"";
+  }
+
+  x += " )'>" + linkText + "</a>";
+
+  return x;
+}
+
+function getHtmlWithAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
+  var newHtml = "", i, parsedText;
+
+  if ( ! isNumeric(spacesDown) ) {
+    spacesDown = 1;
+  } else {
+    if ( spacesDown < 0 || spacesDown > 100 ) {
+      spacesDown = 1;
+    }
+  }
+
+  if ( isBlank(curHtml) && spacesDown <= 1 ) {
+    // no action -- no need to add a space for the first row of text on the screen (unless the calling function requested 2+ spaces)
+  } else {
+    for (i = 1; i <= spacesDown; i++ ) {
+      newHtml += "<div style='height: " + C_spacerHeight + "'></div>\n";
+    }
+  }
+
+  if (skipParsing) {
+    parsedText = rowOfText;
+  } else {
+    parsedText = getParsedDisplayText(rowOfText);
+  }
+
+  newHtml += "<div>" + parsedText + "</div>\n";
+
+  return newHtml;
+}
+
+function getPageDisplayHtml(page) {
+  var isLocation = true;
+  var html = "";
+  var i, infoLinkHtml;
+
+  for (var i = 0; i < page.textRows.length; i++) {
+    let curTextRow = page.textRows[i];
+    html += getHtmlWithAddedTextRow(html, curTextRow.textOfRow, curTextRow.spacesDown);
+  }
+
+  html += "<div style='height: " + C_spacerHeight + "'></div>\n";
+  html += "<div style='height: " + C_spacerHeight + "'></div>\n";
+
+  for (var i = 0; i < page.actions.length; i++) {
+    let action = page.actions[i];
+    let actionLinkHtml = getHtmlLink(action.linkText, action.name, action.var1);
+    html += getHtmlWithAddedTextRow(html, actionLinkHtml);
+  }
+
+  if ( page.isLocation ) {
+    infoLinkHtml = getHtmlLink("info", C_userAction_goToInfo);
+    html += getHtmlWithAddedTextRow(html, infoLinkHtml, 3, true);
+  }
+
+  return html;
+}
+
+function getPageFromName(pageName) {
+  for (var i = 0; i < APP.pages.length; i++) {
+    let curPageInLoop = APP.pages[i];
+    if ( isEqual(curPageInLoop.name, pageName) ) {
+      return curPageInLoop;
+    }
+  }
+}
+
+function getParsedDisplayText(originalText) {
+  var i, newText = "";
+  var words = originalText.split(" ");
+
+  for (i = 0; i < words.length; i++) {
+    let curWord = words[i];
+    let curTmp1, curTmp2, curTmp3, possibleDisplayVar;
+    let textToAddLeft = "";
+    let textToAddRight = "";
+
+    //alert("word " + (i + 1) + " => " + curWord); 
+    if ( leftIs(curWord, "_") || leftIs(curWord, "\"_") ) {
+
+      if ( leftIs(curWord, "\"_") ) {
+        textToAddLeft = "\""
+        curTmp1 = withoutLeft(curWord, "\"_");
+      } else {
+        curTmp1 = withoutLeft(curWord, "_");
+      }
+
+      //alert("... has a left underscore ..."); 
+
+      if ( rightIs(curWord, "_") ) {
+
+        //alert("... and a right underscore ..."); 
+        possibleDisplayVar = withoutRight(curTmp1, "_" );
+
+      } else if ( rightIs(curWord, ",") ) {
+
+        //alert("... and a right comma ..."); 
+        curTmp2 = withoutRight(curTmp1, ",");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = ","
+        }
+
+      } else if ( rightIs(curWord, ".") ) {
+
+        //alert("... and a right period ..."); 
+        curTmp2 = withoutRight(curTmp1, ".");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = "."
+        }
+
+      } else if ( rightIs(curWord, "?") ) {
+
+        //alert("... and a right question mark ..."); 
+        curTmp2 = withoutRight(curTmp1, "?");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = "?"
+        }
+
+      } else if ( rightIs(curWord, "!") ) {
+
+        //alert("... and a right exclamation point ..."); 
+        curTmp2 = withoutRight(curTmp1, "!");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = "!"
+        }
+
+      } else if ( rightIs(curWord, ";") ) {
+
+        //alert("... and a right semicolon ..."); 
+        curTmp2 = withoutRight(curTmp1, ";");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = ";"
+        }
+
+      } else if ( rightIs(curWord, ":") ) {
+
+        //alert("... and a right colon ..."); 
+        curTmp2 = withoutRight(curTmp1, ":");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = ":"
+        }
+
+      } else if ( rightIs(curWord, "\"") ) {
+
+        //alert("... and a right colon ..."); 
+        curTmp2 = withoutRight(curTmp1, "\"");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = "\""
+        }
+
+      } else if ( rightIs(curWord, "</a>") ) {
+
+        //alert("... and a right colon ..."); 
+        curTmp2 = withoutRight(curTmp1, "</a>");
+        if ( rightIs(curTmp2, "_") ) {
+          //alert("... after an underscore ..."); 
+          possibleDisplayVar = withoutRight(curTmp2, "_" );
+          textToAddRight = "</a>"
+        }
+
+      }
+     
+      if (possibleDisplayVar) {
+        curWord = getParsedDisplayText_doPossDisVar(curWord, possibleDisplayVar, textToAddLeft, textToAddRight)
+      }
+
+    }
+
+    if ( newText.length > 0 ) {
+      newText += " ";
+    }
+
+    newText += curWord;
+  }
+
+  return newText;
+}
+
+function getParsedDisplayText_doPossDisVar(curWord, possibleDisplayVar, textToAddLeft, textToAddRight) {
+  //alert("... resulting in a possible displayVar of '" + possibleDisplayVar + "' ..."); 
+  switch (possibleDisplayVar) {
+    case C_displayVar_you:
+      curWord = textToAddLeft + APP.you.name + textToAddRight;
+      //alert("... and we found displayVar '" + possibleDisplayVar + "' so we changed to the underlying value!");
+      break;
+    case C_displayVar_curLoc:
+      curWord = textToAddLeft + APP.you.locName + textToAddRight;
+      //alert("... and we found displayVar '" + possibleDisplayVar + "' so we changed to the underlying value!");
+      break;
+    default:
+      //alert("... but displayVar '" + possibleDisplayVar + "' does not exist as an option, so we are sticking with the original word " + curWord);
+  }
+
+  return curWord;
+}
+
+function getProcessedSaveText(text) {
+  var x = getStringWithCharsReplaced(text, ":", " ");
+  return x;
+}
+
+function getStringWithCharsReplaced(oldString, oldChars, newChars) {
+  if ( oldString == null || oldChars == null ) {
+    return "";
+  }
+
+  if ( newChars == null ) {
+    newChars = "";
+  }
+
+  var newString = oldString;
+
+  for (var i = 1; i <= 100000; i++) {  //use a counter to prevent being stuck in a loop if something goes wrong
+    if ( !newString.includes(oldChars) ) {
+      return newString;
+    }
+
+    newString = newString.replace(oldChars, newChars);
+  }
+
+  return newString;
+}
+
+function getTextFromUser(promptText, defaultVal) {
+  if ( isBlank(defaultVal) ) {
+    defaultVal = "";
+  }
+
+  var response = prompt(promptText, defaultVal);
+
+  return response;
+}
+
+function isBlank(val) {
+  if(val === undefined) return true;
+
+  if(val == null) return true;
+
+  if(val == "0")return false;
+
+  if(parseInt(val) == 0)return false;
+
+  if(val == "") return true;
+
+  if(!val)return true;
+
+  return false;
+}
+
+function isEqual(val1, val2) {
+  if ( isBlank(val1) && isBlank(val2) ) return true;
+  if ( val1 == val2 ) return true;
+  if ( Number(val1) == Number(val2) ) return true;
+  return false;
+}
+
+function isNumeric(val) {
+  if ( isBlank(val) ) return false;
+  return val == val * 1;
+}
+
+function left(str, numChars) {
+  if (typeof str !== "string") return null;
+  if ( ! isNumeric(numChars) ) return null;
+  if (numChars < 0) return null;
+  if ( isEqual(numChars, 0) ) return "";
+  if (numChars > str.length) return str;
+  var theLeft = str.substr(0, numChars);
+  return theLeft;
+}
+
+function leftIs(haystack, needle) {
+  if (typeof haystack !== "string") return false;
+  if (typeof needle !== "string") return false;
+
+  var lenNeedle = needle.length;
+
+  if ( isEqual(lenNeedle, 0) ) {
+    if ( isEqual(haystack.length, 0) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var haystackLeft = left(haystack, lenNeedle);
+
+  return isEqual(haystackLeft, needle);
+}
+
+function loadStartingEntites() {
+  APP.you.codeName = C_entityCodename_you;
+
+  APP.you.name = getFromBrowserSave(C_saveType_entity, C_entityCodename_you, C_att_name);
+  if ( isBlank(APP.you.name) ) {
+    APP.you.name = "Person With Unknown Name";
+    saveToBrowser(C_saveType_entity, C_entityCodename_you, C_att_name, APP.you.name)
+  }
+
+  APP.you.locName = getFromBrowserSave(C_saveType_entity, C_entityCodename_you, C_att_locName);
+
+  if ( isBlank(APP.you.locName) ) {
+    moveEntityToLocation(APP.you, C_page_cozyRoom);
+  }
+
+  setCurPage(APP.you.locName);
+}
+
+function moveEntityToLocation(entObj, locPageObj) {
+  entObj.locName = locPageObj.name;
+  saveToBrowser(C_saveType_entity, entObj.codeName, C_att_locName, locPageObj.name)
+}
+
+function runGame() {
+  loadStartingEntites();
+  displayPage(APP.curPage);
+}
+
+function right(str, numChars) {
+  if (typeof str !== "string") return null;
+  if ( ! isNumeric(numChars) ) return null;
+  if (numChars < 0) return null;
+  if ( isEqual(numChars, 0) ) return "";
+  if (numChars > str.length) return str;
+  var theRight = str.substr(str.length - numChars);
+  return theRight;
+}
+
+function rightIs(haystack, needle) {
+  if (typeof haystack !== "string") return false;
+  if (typeof needle !== "string") return false;
+
+  var lenNeedle = needle.length;
+
+  if ( isEqual(lenNeedle, 0) ) {
+    if ( isEqual(haystack.length, 0) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var haystackRight = right(haystack, lenNeedle);
+
+  return isEqual(haystackRight, needle);
+}
+
+function runUserAction(linkActionName, linkActionVar1) {
+  switch (linkActionName) {
+
+    case C_userAction_changeYourName:
+      {
+        let newName = getTextFromUser("New Name:", "");
+        if ( ! isBlank(newName) || isEqual(APP.you.name, newName) ) {
+          APP.you.name = newName;
+          saveToBrowser(C_saveType_entity, C_entityCodename_you, C_att_name, APP.you.name)
+          displayPage(C_page_info);
+        }
+      }
+      break;
+    case C_userAction_goToInfo:
+      displayPage(C_page_info);
+      break;
+
+    case C_userAction_goToPage:
+      displayPage_fromName(linkActionVar1);
+      break;
+
+    case C_userAction_moveToLoc:
+      moveEntityToLocation(APP.you, linkActionVar1);
+      setCurPage(linkActionVar1);
+      break;
+
+    default:
+      alert("ERROR: user action '" + linkActionName + "' was not found");
+  }
+}
+
+function saveToBrowser(saveType, saveName, saveAttribute, saveValue) {
+  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
+  localStorage.setItem(bsk, saveValue);
+}
+
+function setCurPage(pageName) {
+  APP.curPage = getPageFromName(pageName)
+}
+
+function setPageToNonLocation(page) {
+  page.isLocation = false;
+}
+
+function withoutLeft(haystack, needle) {
+  if (typeof haystack !== "string") return "";
+  if (typeof needle !== "string") return haystack;
+
+  var lenNeedle = needle.length;
+
+  if (lenNeedle == 0) {
+    return haystack;
+  }
+
+  var haystackLeft = left(haystack, lenNeedle);
+
+  if ( isEqual(haystackLeft, needle) ) {
+    return haystack.substr(lenNeedle);
+  } else {
+    return haystack;
+  }
+}
+
+function withoutRight(haystack , needle) {
+  if (typeof haystack !== "string") return "";
+  if (typeof needle !== "string") return haystack;
+
+  var lenNeedle = needle.length;
+
+  if (lenNeedle == 0) {
+    return haystack;
+  }
+
+  var haystackRight = right(haystack, lenNeedle);
+
+  if ( isEqual(haystackRight, needle) ) {
+    return haystack.substr(0, haystack.length - lenNeedle);
+  } else {
+    return haystack;
+  }
+}
+
+
+// USER-VIEWABLE FUNCTIONS
+
+function do_user_action(linkActionName, linkActionVar1) {
+  runUserAction(linkActionName, linkActionVar1);
+  return undefined;
+}
+
+runGame();
+
+</script>
+
+</body>
+</html>

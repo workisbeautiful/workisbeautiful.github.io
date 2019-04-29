@@ -178,6 +178,23 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     <div style="height:1.0em"></div>
   </div>
 
+  <div id="dvPage_AddEditNotes" style="display: none">
+    <div id="dvAddEditNotes_ItemName" style="font-weight: bold; font-size: 115%"></div>
+    <div id="dvAddEditNotes_JoinedListsArea" style="display: none">
+      <div style="height: 0.3em"></div>
+      <div id="dvAddEditNotes_ListNameForItem"></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div>Notes:</div>
+    <div style="height: 0.4em"></div>
+    <div><textarea id="taAddEditNotes_Notes" class="ipText" style="width: 80vw; height: 40vh" value=""></textarea></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a href="javascript:void notes__save()" style="white-space: nowrap">save notes</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void notes__cancel()" style="white-space: nowrap">cancel</a>
+    </div>
+  </div>
+
   <div id="dvPage_BackupExport" style="display: none">
     <div style="display: inline-block">
       <table cellspacing=0 cellpadding=0>
@@ -416,7 +433,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
       </div>
       <div style="height: 0.95em"></div>
       <div id="dvViewItem_Notes"></div>
-      <div style="height: 0.2em"></div>
+      <div style="height: 0.6em"></div>
       <div>
         <a style="white-space: nowrap" href="javascript:void edit_notes()">edit notes</a>
         &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void delete_notes()">delete notes</a>
@@ -481,6 +498,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
         <div>
           <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
           &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems1' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void view_item__text_view()">text view</a>
         </div>
       </div>
       <div style="height: 1em"></div>
@@ -509,6 +527,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
         <div>
           <a style="white-space: nowrap" href="javascript:void mark_all()">mark all</a>
           &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id='aGrabItems2' style="white-space: nowrap" href="javascript:void grab_items()">grab</a>
+          &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a style="white-space: nowrap" href="javascript:void view_item__text_view()">text view</a>
         </div>
       </div>
     </div>
@@ -571,6 +590,22 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
     </div>
 
   </div> <!-- END OF: id="dvPage_ViewItem" -->
+
+  <div id="dvPage_ViewListInTextarea" style="display: none">
+    <div id="dvViewListInTextarea_ItemName" style="font-weight: bold; font-size: 115%"></div>
+    <div id="dvViewListInTextarea_JoinedListsArea" style="display: none">
+      <div style="height: 0.3em"></div>
+      <div id="dvViewListInTextarea_ListNameForItem"></div>
+    </div>
+    <div style="height: 1.2em"></div>
+    <div>Items:</div>
+    <div style="height: 0.4em"></div>
+    <div><textarea id="taViewListInTextarea_Items" class="ipText" style="width: 80vw; height: 40vh" value="" readonly></textarea></div>
+    <div style="height: 1.2em"></div>
+    <div>
+      <a href="javascript:void view_list_in_textarea__done()" style="white-space: nowrap">done</a>
+    </div>
+  </div>
 
   <div id="dvPage_WB_AddScriptRow" style="display: none">
     <div>
@@ -719,17 +754,6 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
       <a href="javascript:void choose_existing_type__cancel()">cancel</a>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
 
   <div id="dvPage_WB_CreateWibjectElem" style="display: none">
     <div id="dvWB_CreateWibjectElem_For">(variable created for)</div>
@@ -1386,7 +1410,7 @@ function wb_ui_CreateWibvar_changeWibvartypeCode() {
 
 ///// CONSTANTS
 
-const C_wibappVersion = "0.100"; // leave this at top for easy editing
+const C_wibappVersion = "0.101"; // leave this at top for easy editing
 
 const C_cssClassName_backgroundBlack = "backgroundBlack";
 const C_cssClassName_backgroundBlue = "backgroundBlue";
@@ -1606,6 +1630,7 @@ wapp.makeNewItem_StayListView = "1";
 wapp.makeNewItem_AddMoreItems = "0";
 wapp.makeNewItem_TimeTracking = "0";
 wapp.moreOptionsOn = false;
+wapp.navTree_expandedItemIds = [];
 wapp.qs_obj = null;
 wapp.qs_urlParams = null;
 wapp.reorderingOn = false;
@@ -1664,6 +1689,14 @@ function activateItemForReordering(itemId) {
   elem(reorderingTr_elemId).style.display = "" ;
 
   toggleReorderingMode_normal(itemId);
+}
+
+function addToValArrayIfNotAlreadyAdded(theArray, val) {
+  if ( doesValArrayHaveElem(theArray, val) ) {
+    return;
+  }
+
+  theArray.push(val);
 }
 
 function aO(argumentValue) {
@@ -2059,11 +2092,13 @@ function displayPage(pageName) {
   elem("dvPage_BackupImport").style.display = "none";
   elem("dvPage_ChooseWibtype").style.display = "none";
   elem("dvPage_Dev").style.display = "none";
+  elem("dvPage_AddEditNotes").style.display = "none";
   elem("dvPage_Home").style.display = "none";
   elem("dvPage_MoveOrCopy").style.display = "none";
   elem("dvPage_NavigateItems").style.display = "none";
   elem("dvPage_ShowStorage").style.display = "none";
   elem("dvPage_ViewItem").style.display = "none";
+  elem("dvPage_ViewListInTextarea").style.display = "none";
   elem("dvPage_WB_AllApps").style.display = "none";
   elem("dvPage_WB_AllScreens").style.display = "none";
   elem("dvPage_WB_AllScripts").style.display = "none";
@@ -2087,6 +2122,39 @@ function displayPage(pageName) {
 
   // run display-page-specific code
   switch (pageName) {
+
+    case "AddEditNotes": {
+      // item-name info
+      if (wapp.itemObj.isWibtype == "1") {
+        elem("dvAddEditNotes_ItemName").innerHTML = "<div class='" + C_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
+      } else if (wapp.itemObj.isWibtypeInfoField == "1") {
+        elem("dvAddEditNotes_ItemName").innerHTML = "<div class='" + C_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
+      } else {
+        elem("dvAddEditNotes_ItemName").innerHTML = wapp.itemObj.itemName;
+      }
+
+      // displayed-on-list X
+      elem("dvListNameForItem").innerHTML = "";
+      if (wapp.itemObj.isWibtype == "0") {
+        if ( ! isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+          let displayedOnList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+          elem("dvAddEditNotes_ListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + wapp.itemObj.displayedOnList_itemId + "\")'>" + displayedOnList_itemObj.itemName + "</a>";
+          elem("dvAddEditNotes_JoinedListsArea").style.display = "";
+        } else {
+          elem("dvAddEditNotes_JoinedListsArea").style.display = "none";
+        }
+      }
+
+      elem("taAddEditNotes_Notes").value = "";
+      if ( ! isBlank(wapp.itemObj.notes) ) {
+        let processedNotesForTextarea = getProcessedStringForTextView( wapp.itemObj.notes );
+        elem("taAddEditNotes_Notes").value = processedNotesForTextarea;
+      }
+
+      focusAfterDisplayPage_setFromElemId("taAddEditNotes_Notes");
+
+      break;
+    }
 
     case "BackupExport": {
       writeBackupExport();
@@ -2227,6 +2295,7 @@ function displayPage(pageName) {
     case "ViewItem": {
       let i, wibtypeItemObj, hasDisplayedLists = false;
 
+      // item-name info
       if (wapp.itemObj.isWibtype == "1") {
         elem("dvItemName").innerHTML = "<div class='" + C_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
       } else if (wapp.itemObj.isWibtypeInfoField == "1") {
@@ -2235,11 +2304,13 @@ function displayPage(pageName) {
         elem("dvItemName").innerHTML = wapp.itemObj.itemName;
       }
 
-      //TO-DO2: display multiple list names, if this item is a member of 2+
-      
-      elem("dvListNameForItem").innerHTML = "";
 
+      // displayed-on-list X
+      elem("dvListNameForItem").innerHTML = "";
       if (wapp.itemObj.isWibtype == "0") {
+
+        //TO-DO2: display multiple list names, if this item is a member of 2+
+
         for (i = 0; i < wapp.itemObj.joinedLists_itemIds.length; i++) {
           let curItemObjForLoop = grabItemObj(wapp.itemObj.joinedLists_itemIds[0])
 
@@ -2261,8 +2332,11 @@ function displayPage(pageName) {
         }
       }
 
+      // connected-items
       if (wapp.itemObj.connectedItemDataObjs.length > 0) {
         let html = "";
+
+        //TO-DO2: add code here to sort connected-items by parent-list (alphabetically) and then place-on-parent-list ?
 
         for (i = 0; i < wapp.itemObj.connectedItemDataObjs.length; i++) {
           let x = grabItemObj(wapp.itemObj.connectedItemDataObjs[i].itemId2);
@@ -2455,6 +2529,39 @@ function displayPage(pageName) {
 
       break;
     }
+
+
+
+
+    case "ViewListInTextarea": {
+      // item-name info
+      if (wapp.itemObj.isWibtype == "1") {
+        elem("dvViewListInTextarea_ItemName").innerHTML = "<div class='" + C_cssClassName_red +"'><i>[this is a type]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
+      } else if (wapp.itemObj.isWibtypeInfoField == "1") {
+        elem("dvViewListInTextarea_ItemName").innerHTML = "<div class='" + C_cssClassName_red +"'><i>[this is a type info-field]</i></div><div style='height: 8px'></div>" + wapp.itemObj.itemName;
+      } else {
+        elem("dvViewListInTextarea_ItemName").innerHTML = wapp.itemObj.itemName;
+      }
+
+      // displayed-on-list X
+      elem("dvListNameForItem").innerHTML = "";
+      if (wapp.itemObj.isWibtype == "0") {
+        if ( ! isBlank(wapp.itemObj.displayedOnList_itemId) ) {
+          let displayedOnList_itemObj = grabItemObj(wapp.itemObj.displayedOnList_itemId);
+          elem("dvViewListInTextarea_ListNameForItem").innerHTML = "&nbsp;&nbsp;&nbsp;member of list:&nbsp;&nbsp;<a href='javascript:void go_to_list(\"" + wapp.itemObj.displayedOnList_itemId + "\")'>" + displayedOnList_itemObj.itemName + "</a>";
+          elem("dvViewListInTextarea_JoinedListsArea").style.display = "";
+        } else {
+          elem("dvViewListInTextarea_JoinedListsArea").style.display = "none";
+        }
+      }
+
+      elem("taViewListInTextarea_Items").value = writeString_itemsPlain(wapp.itemObj);
+
+      focusAfterDisplayPage_setFromElemId("taViewListInTextarea_Items");
+
+      break;
+    }
+
 
     case "WB_AllApps": {
       wb_curObjs_clear();
@@ -3302,7 +3409,7 @@ function displayPage(pageName) {
     }
 
     default: {
-      console.log("There is no app-page called '" + pageName + "'")
+      // no action
     }
   }
 
@@ -3877,6 +3984,13 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
 
 function getProcessedStringForSave(oldString) {
   var newString = getStringWithCharsReplaced(oldString, "  ", "&nbsp;&nbsp;");
+  newString = getStringWithCharsReplaced(newString, "\n", "<br />");
+  return newString;
+}
+
+function getProcessedStringForTextView(oldString) {
+  var newString = getStringWithCharsReplaced(oldString, "&nbsp;&nbsp;", "  ");
+  newString = getStringWithCharsReplaced(newString, "<br />", "\n");
   return newString;
 }
 
@@ -4770,7 +4884,12 @@ function itemObjFactory() {
     if ( !isBlank(doneStatusCode) ) this.doneStatusCode = doneStatusCode;
     if ( !isBlank(displayCode) ) this.displayCode = displayCode;
     if ( !isBlank(isList) ) this.isList = isList;
-    if ( notes !== null ) this.notes = notes;
+
+    // NOTE: the "notes" field cannot be set to blank via this function -- for clarity, one must use the function .setNotesToBlank()
+    if ( ! isBlank(notes) ) {
+      this.notes = notes;
+    }
+
     this.saveItemInfoToDatastore();
     return true;
   };
@@ -5312,6 +5431,12 @@ function itemObjFactory() {
     } );
 
     saveToDatastore(saveKeyText, theString);
+  };
+
+  itemObj.setNotesToBlank = function() {
+    this.notes = null;
+    this.saveItemInfoToDatastore();
+    return true;
   };
 
   itemObj.setWtifData = function(wibtypeItemId, wtifItemId, wtifItemName, theData, saveToDatastore) {
@@ -5940,6 +6065,24 @@ function moveOrCopyGrabbedItems(selectedList_itemId, aO_action) {
   } else {
     //display the item-object for the list where the grabbed-items where moved or copied to
     goToItemView(selectedList_itemId, false);
+  }
+}
+
+function navTree_togglePlusMinus(itemId) {
+  var elemId_plusMinusTop = "dvNavListMembers_PlusTop_" + itemId;
+  var elemId_plusMinusBottom = "dvNavListMembers_PlusBottom_" + itemId;
+  var elem_list = elem("dvNavListMembers_" + itemId);
+
+  if (elem_list.style.display == "none") {
+    addToValArrayIfNotAlreadyAdded( wapp.navTree_expandedItemIds, itemId );
+    elem_list.style.display = "";
+    css_removeClass(elemId_plusMinusTop, C_cssClassName_backgroundBlue);
+    css_removeClass(elemId_plusMinusBottom, C_cssClassName_backgroundBlue);
+  } else {
+    wapp.navTree_expandedItemIds = getValArrayWithoutElem( wapp.navTree_expandedItemIds, itemId );
+    elem_list.style.display = "none";
+    css_addClass(elemId_plusMinusTop, C_cssClassName_backgroundBlue);
+    css_addClass(elemId_plusMinusBottom, C_cssClassName_backgroundBlue);
   }
 }
 
@@ -6686,22 +6829,6 @@ function toggleGrabbing_on() {
   focusAfterDisplayPage_clear();
 }
 
-function toggleNavList(itemId) {
-  var elemId_plusMinusTop = "dvNavListMembers_PlusTop_" + itemId;
-  var elemId_plusMinusBottom = "dvNavListMembers_PlusBottom_" + itemId;
-  var elem_list = elem("dvNavListMembers_" + itemId);
-
-  if (elem_list.style.display == "none") {
-    elem_list.style.display = "";
-    css_removeClass(elemId_plusMinusTop, C_cssClassName_backgroundBlue);
-    css_removeClass(elemId_plusMinusBottom, C_cssClassName_backgroundBlue);
-  } else {
-    elem_list.style.display = "none";
-    css_addClass(elemId_plusMinusTop, C_cssClassName_backgroundBlue);
-    css_addClass(elemId_plusMinusBottom, C_cssClassName_backgroundBlue);
-  }
-}
-
 function toggleReordering_off(maintainFocus) {
   css_removeClass("aReorder1", C_cssClassName_red);
   css_removeClass("aReorder2", C_cssClassName_red);
@@ -6952,8 +7079,6 @@ function wb_app_appWibvar_change(appWibvarItemObj, newWibvarItemName, newWibvart
 
   return true;
 }
-
-
 
 function wb_app_appWibvar_create(appItemObj, wibvarItemName, wibvartypeCode) {
   var wibjectItemObj;
@@ -10146,7 +10271,7 @@ function writeHtml_items(mainItemObj) {
       //call the function that grabs the current item's item-info from storage and returns it as a js-object
       curItemObj = grabItemObj(curItemId);
 
-      //add asterisk to item-name if it has notes or list-members
+      //add asterisk to item-name if it has notes, list-members, or connected-items
       {
         addAsterisk = false;
 
@@ -10155,6 +10280,10 @@ function writeHtml_items(mainItemObj) {
         } else {
           if ( curItemObj.hasListMembers() ) {
             addAsterisk = true;
+          } else {
+            if ( curItemObj.connectedItemDataObjs.length > 0 ) {
+              addAsterisk = true;
+            }
           }
         }
 
@@ -10262,7 +10391,8 @@ function writeHtml_navigationTree(curList_memberDataObjs, listItemIds_alreadyWri
         html += writeHtml_plusMinusSign(curItemObj.itemId) + "&nbsp;&nbsp;";
       }
 
-      html += "<div style='padding-top: 0.15em'>LIST: " + curItemObj.itemName + "</div></div>\n";
+      //html += "<div style='padding-top: 0.15em'>[LIST]&nbsp;&nbsp;" + curItemObj.itemName + "</div></div>\n";
+      html += "<div style='padding-top: 0.15em'>" + curItemObj.itemName + "</div></div>\n";
 
     } else {
       html += horzSpaces + "<div style='display: inline-block'>" + curItemObj.itemName + "</div>\n";
@@ -10292,7 +10422,12 @@ function writeHtml_navigationTree(curList_memberDataObjs, listItemIds_alreadyWri
       let innerListOfMemberDataObjs = curItemObj.getListMemberDataObjs();
       let newNumOfIndents = parseInt(numOfIndents) + 1;
 
-      html += horzSpaces + "<div id='dvNavListMembers_" + curItemObj.itemId + "' style='display: none'>\n";
+      let displayNoneText = "none";
+      if ( doesValArrayHaveElem( wapp.navTree_expandedItemIds, curItemObj.itemId ) ) {
+        displayNoneText = "";
+      }
+
+      html += horzSpaces + "<div id='dvNavListMembers_" + curItemObj.itemId + "' style='display: " + displayNoneText + "'>\n";
 
       html += writeHtml_navigationTree(innerListOfMemberDataObjs, listItemIds_alreadyWritten, newNumOfIndents);
 
@@ -10311,8 +10446,8 @@ function writeHtml_navigationTree(curList_memberDataObjs, listItemIds_alreadyWri
   return html;
 }
 
-function writeHtml_plusMinusSign(itemId, writeMinus, baseSizeInEm) {
-  var html = "";
+function writeHtml_plusMinusSign(itemId, baseSizeInEm) {
+  var plusTopAndBottomClass, html = "";
 
   if ( !isNumeric(baseSizeInEm) ) {
     baseSizeInEm = 0.9;
@@ -10325,23 +10460,32 @@ function writeHtml_plusMinusSign(itemId, writeMinus, baseSizeInEm) {
 
   var overallSizeInEm = baseSizeInEm + 2 * borderInEm + 2 * paddingInEm;
 
-  html += "<div class='borderBlue' onmouseover='setElemCursor_pointer(this)' onmouseout='setElemCursor_none(this)' onclick='toggleNavList(" + itemId + ")'";
+  if ( doesValArrayHaveElem( wapp.navTree_expandedItemIds, itemId ) ) {
+    plusTopAndBottomClass = "";
+  } else {
+    plusTopAndBottomClass = "backgroundBlue";
+  }
+
+  html += "<div class='borderBlue' onmouseover='setElemCursor_pointer(this)' onmouseout='setElemCursor_none(this)' onclick='navTree_togglePlusMinus(" + itemId + ")'";
   html += " style='display: grid; grid-template-columns: auto 15% auto; grid-template-rows: auto 14% auto; width: " + overallSizeInEm + "em; height: " + overallSizeInEm + "em; border-width: " + borderInEm + "em; padding: " + paddingInEm + "em'>";
 
-  if (writeMinus) {
-    html += "<div style='grid-column: 1/4'></div>";
-  } else {
-    html += "<div></div><div id='dvNavListMembers_PlusTop_" + itemId + "' class='backgroundBlue'></div><div></div>";
-  }
+  //if (writeMinus) {
+  //  html += "<div style='grid-column: 1/4'></div>";
+  //} else {
+  //  html += "<div></div><div id='dvNavListMembers_PlusTop_" + itemId + "' class='backgroundBlue'></div><div></div>";
+  //}
 
+  html += "<div></div><div id='dvNavListMembers_PlusTop_" + itemId + "' class='" + plusTopAndBottomClass + "'></div><div></div>";
+  
   html += "<div class='backgroundBlue' style='grid-column: 1/4'></div>";
 
+  //if (writeMinus) {
+  //  html += "<div style='grid-column: 1/4'></div>";
+  //} else {
+  //  html += "<div></div><div id='dvNavListMembers_PlusBottom_" + itemId + "' class='backgroundBlue'></div><div></div>";
+  //}
 
-  if (writeMinus) {
-    html += "<div style='grid-column: 1/4'></div>";
-  } else {
-    html += "<div></div><div id='dvNavListMembers_PlusBottom_" + itemId + "' class='backgroundBlue'></div><div></div>";
-  }
+  html += "<div></div><div id='dvNavListMembers_PlusBottom_" + itemId + "' class='" + plusTopAndBottomClass + "'></div><div></div>";
 
   html += "</div>";
 
@@ -10472,6 +10616,25 @@ function writeStorage() {
   elem("dvStorage").innerHTML = html;
 }
 
+function writeString_itemsPlain(mainItemObj) {
+  var listMemberDataObjs, str = "", i;
+
+  if ( isBlank(mainItemObj) ) mainItemObj = wapp.itemObj;
+
+  if (mainItemObj.isList) {
+    listMemberDataObjs = mainItemObj.getListMemberDataObjs();
+
+    for (i = 0; i < listMemberDataObjs.length; i++){
+      let curItemObj = grabItemObj( listMemberDataObjs[i].itemId );
+      let itemName = getProcessedStringForTextView( curItemObj.itemName );
+
+      str += itemName + "\n";
+    }
+  }
+
+  return str;
+}
+
 
 
 
@@ -10579,11 +10742,7 @@ function add_connected_item() {
 }
 
 function add_notes() {
-  var newNotes = prompt("Notes:", "");
-  if ( isBlank(newNotes) ) return;
-
-  wapp.itemObj.changeItemInfo(null, null, null, null, newNotes);
-  goToItemView(null, true);
+  displayPage("AddEditNotes");
 }
 
 function add_time_tracking__add_this() {
@@ -10602,7 +10761,7 @@ function add_time_tracking__add_this() {
 
 function add_time_tracking__cancel() {
   hidePopUp("AddTimeTracking");
-  displayPage("ViewItem");
+  goToItemView();
 }
 
 function add_time_tracking__display_end_date() {
@@ -11106,7 +11265,7 @@ function delete_item() {
 
 function delete_notes() {
   if ( confirm("Delete all Notes for this item?\n\nItem Name: " + wapp.itemObj.itemName + "\n\nNotes: " + wapp.itemObj.notes) ) {
-    wapp.itemObj.changeItemInfo(null, null, null, null, "");
+    wapp.itemObj.setNotesToBlank();
     goToItemView(null, true);
   }
 }
@@ -11188,14 +11347,7 @@ function do_make_new_type_info_field() {
 }
 
 function edit_notes() {
-  var editedNotes = prompt("Notes:", wapp.itemObj.notes);
-  if ( isBlank(editedNotes)) {
-    alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
-    return;
-  }
-
-  wapp.itemObj.changeItemInfo(null, null, null, null, editedNotes);
-  goToItemView(null, true);
+  displayPage("AddEditNotes");
 }
 
 function edit_storage_row(keyName) {
@@ -11214,11 +11366,13 @@ function edit_storage_row(keyName) {
     }
   }
 
-  var editedKeyValue = prompt("Change key value to:", curKeyValue);
+  var editedKeyValue = prompt( "Change key value to:", getProcessedStringForTextView(curKeyValue) );
 
   if ( editedKeyValue == null ) {
     return;
   }
+
+  editedKeyValue = getProcessedStringForSave(editedKeyValue);
 
   saveToDatastore(keyName, editedKeyValue);
   storage__show();
@@ -11246,7 +11400,7 @@ function edit_time_tracking() {
 
 function edit_time_tracking__cancel() {
   hidePopUp("EditTimeTracking");
-  displayPage("ViewItem");
+  goToItemView();
 }
 
 function edit_time_tracking__display_end_date() {
@@ -11761,8 +11915,25 @@ function navigate__connect_to_item(itemId2) {
   }
 }
 
+function notes__cancel() {
+  goToItemView();
+}
+
+function notes__save() {
+  var prevNotes = wapp.itemObj.notes;
+  var newNotes = getElemVal("taAddEditNotes_Notes");
+
+  if ( isBlank(newNotes) && ! isBlank(prevNotes) ) {
+    alert("Edit canceled because a blank Notes entry was received\n\n(click 'delete notes' if you want to remove all notes for this item)");
+    goToItemView();
+  }
+
+  wapp.itemObj.changeItemInfo(null, null, null, null, newNotes);
+  goToItemView();
+}
+
 function rename_item() {
-  var editedItemName = prompt("Change item name to:", wapp.itemObj.itemName);
+  var editedItemName = prompt( "Change item name to:", getProcessedStringForTextView(wapp.itemObj.itemName) );
   if ( isBlank(editedItemName) ) return;
 
   if ( wapp.itemObj.changeItemInfo(editedItemName, null, null, null, null) ) {
@@ -11771,8 +11942,14 @@ function rename_item() {
 }
 
 function remove_connection(itemId2) {
-  wapp.wb_curApp_itemObj.removeConnection(itemId2);
-  displayPage("WB_ViewItem");
+  var itemObj2 = grabItemObj(itemId2);
+
+  if ( ! confirm("Remove this connection?\n\nCurrent Item: " + wapp.itemObj.itemName + "\n\nConnected Item: " + itemObj2.itemName) ) {
+    return;
+  }
+
+  wapp.itemObj.removeConnection(itemId2);
+  goToItemView();
 }
 
 function remove_time_tracking() {
@@ -12068,9 +12245,8 @@ function view_app__view_wibject(appWibvarItemId, wibjectItemId) {
   displayPage("WB_ViewWibject");
 }
 
-function view_script__go_to_app() {
-//TO-DO1: parentChain
-  displayPage("WB_ViewApp");
+function view_list_in_textarea__done() {
+  goToItemView();
 }
 
 function view_item__add_time_tracking() {
@@ -12079,6 +12255,15 @@ function view_item__add_time_tracking() {
 
 function view_item__add_type_for_list_members() {
   displayPage("ChooseWibtype")
+}
+
+function view_item__text_view() {
+  displayPage("ViewListInTextarea");
+}
+
+function view_script__go_to_app() {
+//TO-DO1: parentChain
+  displayPage("WB_ViewApp");
 }
 
 function view_variable__edit() {
