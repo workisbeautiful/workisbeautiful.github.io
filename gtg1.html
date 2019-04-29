@@ -34,46 +34,78 @@ body {font-size: 110%; font-family: Helvetica}
 const C_att_locName = "locName";
 const C_att_name = "name";
 
-const C_entityCodename_you = "you";
+const C_entCodename_you = "you";
+
+const C_displayVarStub_locAtt = "LOC_ATT";
 
 const C_displayVar_you = "YOU";
 const C_displayVar_curLoc = "CUR_LOC";
 
-const C_playerAction_ = "";
+const C_locCodename_cozyRoom = "cozy room";
 
 const C_saveType_entity = "entity";
+const C_saveType_location = "location";
 
 const C_spacerHeight = "0.5em"
 
 const C_userAction_changeYourName = "change your name";
+const C_userAction_closeDoor = "close door";
 const C_userAction_goToInfo = "go to info";
 const C_userAction_goToPage = "go to page"
-const C_userAction_moveToLocation = "move to location"
+const C_userAction_moveToLoc = "move to location"
+const C_userAction_openDoor = "open door";
 
 
 // APP-LEVEL VARIABLES
 
 const APP = {};
-APP.curPage = null;
+APP.curPageObj = null;
 APP.loadedEntObjs = [];
-APP.pages = [];
-APP.you = {};
+APP.pageObjs = [];
+APP.youObj = {};
 
 
 // PAGES
 
 const C_page_info = getAndMakePage("info");
 setPageToNonLocation(C_page_info);
-addPageTextRow(C_page_info, "Your name is: _YOU_");
-addPageAction(C_page_info, C_userAction_changeYourName, "change your name");
-addPageAction(C_page_info, C_userAction_goToPage, "return to _CUR_LOC_", "_CUR_LOC_");
+C_page_info.setRowsAndActions = function() {
+  this.textRows = [];
+  this.actions = [];
+  addPageTextRow(C_page_info, "Your name is: _YOU_");
+  addPageAction(C_page_info, C_userAction_changeYourName, "change your name");
+  addPageAction(C_page_info, C_userAction_goToPage, "return to _CUR_LOC_", "_CUR_LOC_");
+};
 
-const C_page_cozyRoom = getAndMakePage("cozy room");
-addPageTextRow(C_page_cozyRoom, "Hello, _YOU_");
-addPageTextRow(C_page_cozyRoom, "You are in a cozy room", 2);
+const C_page_cozyRoom = getAndMakePage(C_locCodename_cozyRoom);
+addLocationAtt(C_page_cozyRoom, C_locCodename_cozyRoom, "door", "closed");
+C_page_cozyRoom.setRowsAndActions = function() {
+  this.textRows = [];
+  this.actions = [];
+  addPageTextRow(this, "Hello, _YOU_");
+  addPageTextRow(this, "You are in a cozy room", 2);
+  addPageTextRow(this, "The door is " + getLocDisplayVarCode("door"), 2);
+  if (this.door == "open") {
+    addPageTextRow(this, "Through the door, you can see some stuff I guess lol not sure what to put here yettttttt, maybe it's interesting or a little scary or weird?? so many possibilities.....");
+    addPageAction(this, C_userAction_closeDoor, "close the door");
+  } else {
+    addPageAction(this, C_userAction_openDoor, "open the door");
+  }
+};
 
 
 // FUNCTIONS
+
+function addLocationAtt(pageObj, locCodename, attName, defaultVal) {
+  var locAttVal = getLocationAttFromBrowserSave(locCodename, attName);
+
+  if ( isBlank(locAttVal) ) {
+    locAttVal = defaultVal;
+    setLocationAttInBrowserSave(locCodename, attName, locAttVal);
+  }
+
+  pageObj[attName] = locAttVal;
+}
 
 function addPageAction(page, actionName, actionLinkText, actionVar1) {
   var action = {};
@@ -99,20 +131,25 @@ function addPageTextRow(page, textOfRow, spacesDown) {
   page.textRows.push(textRow);
 }
 
+function changeLocAtt(pageObj, attName, newVal) {
+  setLocationAttInBrowserSave(pageObj.name, attName, newVal);
+  pageObj[attName] = newVal;
+}
+
 function deleteFromBrowserSave(saveType, saveName, saveAttribute) {
   var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
   localStorage.removeItem(bsk);
 }
 
-function displayPage(page) {
-  var displayText = getPageDisplayHtml(page);
+function displayPage(pageObj) {
+  var displayText = getPageDisplayHtml(pageObj);
   var dv = elem("dvDisplay");
   dv.innerHTML = displayText;
 }
 
 function displayPage_fromName(pageName) {
-  var page = getPageFromName(pageName);
-  displayPage(page);
+  var pageObj = getPageObjFromName(pageName);
+  displayPage(pageObj);
 }
 
 function elem(elemId) {
@@ -127,7 +164,7 @@ function getAndMakePage(name) {
   page.textRows = [];
   page.actions = [];
 
-  APP.pages.push(page);
+  APP.pageObjs.push(page);
 
   return page;
 }
@@ -139,6 +176,9 @@ function getBrowserSaveKey(saveType, saveName, saveAttribute) {
   switch(saveType) {
     case C_saveType_entity:
       bsk = "e:";
+      break;
+    case C_saveType_location:
+      bsk = "L:";
       break;
     default:
       bsk = "?:";
@@ -201,10 +241,27 @@ function getHtmlWithAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
   return newHtml;
 }
 
+function getLocationAttFromBrowserSave(locCodename, attName) {
+  var val = getFromBrowserSave(C_saveType_location, locCodename, attName);
+  return val;
+}
+
+function getLocDisplayVar(attName) {
+  var displayVar = C_displayVarStub_locAtt + "__" + attName;
+  return displayVar;
+}
+
+function getLocDisplayVarCode(attName) {
+  var displayVarCode = "_" + getLocDisplayVar(attName) + "_"
+  return displayVarCode;
+}
+
 function getPageDisplayHtml(page) {
   var isLocation = true;
   var html = "";
   var i, infoLinkHtml;
+
+  page.setRowsAndActions();
 
   for (var i = 0; i < page.textRows.length; i++) {
     let curTextRow = page.textRows[i];
@@ -228,11 +285,11 @@ function getPageDisplayHtml(page) {
   return html;
 }
 
-function getPageFromName(pageName) {
-  for (var i = 0; i < APP.pages.length; i++) {
-    let curPageInLoop = APP.pages[i];
-    if ( isEqual(curPageInLoop.name, pageName) ) {
-      return curPageInLoop;
+function getPageObjFromName(pageName) {
+  for (var i = 0; i < APP.pageObjs.length; i++) {
+    let curPageObjInLoop = APP.pageObjs[i];
+    if ( isEqual(curPageObjInLoop.name, pageName) ) {
+      return curPageObjInLoop;
     }
   }
 }
@@ -365,15 +422,25 @@ function getParsedDisplayText(originalText) {
 function getParsedDisplayText_doPossDisVar(curWord, possibleDisplayVar, textToAddLeft, textToAddRight) {
   //alert("... resulting in a possible displayVar of '" + possibleDisplayVar + "' ..."); 
   switch (possibleDisplayVar) {
+
     case C_displayVar_you:
-      curWord = textToAddLeft + APP.you.name + textToAddRight;
+      curWord = textToAddLeft + APP.youObj.name + textToAddRight;
       //alert("... and we found displayVar '" + possibleDisplayVar + "' so we changed to the underlying value!");
       break;
+
     case C_displayVar_curLoc:
-      curWord = textToAddLeft + APP.you.locName + textToAddRight;
+      curWord = textToAddLeft + APP.youObj.locName + textToAddRight;
       //alert("... and we found displayVar '" + possibleDisplayVar + "' so we changed to the underlying value!");
       break;
+
     default:
+
+      //alert("... checking possibleDisplayVar '" + possibleDisplayVar + "' for leftIs '" + C_displayVarStub_locAtt + "'");
+      if ( leftIs(possibleDisplayVar, C_displayVarStub_locAtt) ) {
+        let attName = withoutLeft(possibleDisplayVar, C_displayVarStub_locAtt + "__");
+        curWord = textToAddLeft + APP.curPageObj[attName] + textToAddRight;
+      }
+
       //alert("... but displayVar '" + possibleDisplayVar + "' does not exist as an option, so we are sticking with the original word " + curWord);
   }
 
@@ -474,32 +541,32 @@ function leftIs(haystack, needle) {
   return isEqual(haystackLeft, needle);
 }
 
-function loadStartingEntites() {
-  APP.you.codeName = C_entityCodename_you;
+function loadEntites() {
+  APP.youObj.codename = C_entCodename_you;
 
-  APP.you.name = getFromBrowserSave(C_saveType_entity, C_entityCodename_you, C_att_name);
-  if ( isBlank(APP.you.name) ) {
-    APP.you.name = "Person With Unknown Name";
-    saveToBrowser(C_saveType_entity, C_entityCodename_you, C_att_name, APP.you.name)
+  APP.youObj.name = getFromBrowserSave(C_saveType_entity, C_entCodename_you, C_att_name);
+  if ( isBlank(APP.youObj.name) ) {
+    APP.youObj.name = "Person With Unknown Name";
+    saveToBrowser(C_saveType_entity, C_entCodename_you, C_att_name, APP.youObj.name)
   }
 
-  APP.you.locName = getFromBrowserSave(C_saveType_entity, C_entityCodename_you, C_att_locName);
+  APP.youObj.locName = getFromBrowserSave(C_saveType_entity, C_entCodename_you, C_att_locName);
 
-  if ( isBlank(APP.you.locName) ) {
-    moveEntityToLocation(APP.you, C_page_cozyRoom);
+  if ( isBlank(APP.youObj.locName) ) {
+    moveEntityToLocation(APP.youObj, C_page_cozyRoom);
   }
 
-  setCurPage(APP.you.locName);
+  setCurPageObj_fromPageName(APP.youObj.locName);
 }
 
 function moveEntityToLocation(entObj, locPageObj) {
   entObj.locName = locPageObj.name;
-  saveToBrowser(C_saveType_entity, entObj.codeName, C_att_locName, locPageObj.name)
+  saveToBrowser(C_saveType_entity, entObj.codename, C_att_locName, locPageObj.name)
 }
 
 function runGame() {
-  loadStartingEntites();
-  displayPage(APP.curPage);
+  loadEntites();
+  displayPage(APP.curPageObj);
 }
 
 function right(str, numChars) {
@@ -537,13 +604,19 @@ function runUserAction(linkActionName, linkActionVar1) {
     case C_userAction_changeYourName:
       {
         let newName = getTextFromUser("New Name:", "");
-        if ( ! isBlank(newName) || isEqual(APP.you.name, newName) ) {
-          APP.you.name = newName;
-          saveToBrowser(C_saveType_entity, C_entityCodename_you, C_att_name, APP.you.name)
+        if ( ! isBlank(newName) || isEqual(APP.youObj.name, newName) ) {
+          APP.youObj.name = newName;
+          saveToBrowser(C_saveType_entity, C_entCodename_you, C_att_name, APP.youObj.name)
           displayPage(C_page_info);
         }
       }
       break;
+
+    case C_userAction_closeDoor:
+      changeLocAtt(APP.curPageObj, "door", "closed");
+      displayPage(APP.curPageObj);
+      break;
+
     case C_userAction_goToInfo:
       displayPage(C_page_info);
       break;
@@ -553,8 +626,13 @@ function runUserAction(linkActionName, linkActionVar1) {
       break;
 
     case C_userAction_moveToLoc:
-      moveEntityToLocation(APP.you, linkActionVar1);
-      setCurPage(linkActionVar1);
+      moveEntityToLocation(APP.youObj, linkActionVar1);
+      setCurPageObj_fromPageName(linkActionVar1);
+      break;
+
+    case C_userAction_openDoor:
+      changeLocAtt(APP.curPageObj, "door", "open");
+      displayPage(APP.curPageObj);
       break;
 
     default:
@@ -567,8 +645,12 @@ function saveToBrowser(saveType, saveName, saveAttribute, saveValue) {
   localStorage.setItem(bsk, saveValue);
 }
 
-function setCurPage(pageName) {
-  APP.curPage = getPageFromName(pageName)
+function setCurPageObj_fromPageName(pageName) {
+  APP.curPageObj = getPageObjFromName(pageName)
+}
+
+function setLocationAttInBrowserSave(locCodename, attName, locAttVal) {
+  saveToBrowser(C_saveType_location, locCodename, attName, locAttVal);
 }
 
 function setPageToNonLocation(page) {
