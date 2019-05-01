@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
 
@@ -12333,6 +12335,7 @@ const C_wb_screen_contentTypeCode_text = "100";
 
 function loadAppData_andReturnNextDisplayPage() {
   wapp.wappDataLoadedSuccessfully = false;
+  var wibtypesItemObj;
 
   /* home-page-list item */ {
     let homePageListItemObj = grabItemObjByName(C_listName_homePage);
@@ -12342,8 +12345,9 @@ function loadAppData_andReturnNextDisplayPage() {
     wapp.homePageList_itemId = homePageListItemObj.itemId;
   }
 
-  /* wibtypes item */ {
-    let wibtypesItemObj = grabItemObjByName(C_listName_wibtypes);
+  /* wibtypes item */
+  wibtypesItemObj = grabItemObjByName(C_listName_wibtypes);
+  {
     if ( isBlank(wibtypesItemObj) ) {
       wibtypesItemObj = makeNewItem(C_doneStatusCode_okay, null, null, "0", "0", true, C_listName_wibtypes, null, C_displayCode_hidden1, "1", null);
     }

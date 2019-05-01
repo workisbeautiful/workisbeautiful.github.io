@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 <meta content="utf-8" http-equiv="encoding">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,13 +18,81 @@ a:focus {text-decoration: underline}
 a:active {text-decoration: none}
 
 body {font-size: 110%; font-family: Helvetica}
+input {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9}
 </style>
 
 <title>gtg1</title>
 </head>
+
 <body>
 
-<div id="dvDisplay" style="padding-left: 1em; padding-top: 1em"></div>
+<div id="dvBrowserSaveOuter" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
+  <div style="display: inline-block">
+    <div><a href="javascript: browser_save__return_to_game()">return to game</a></div>
+    <div style="height:0.8em"></div>
+    <hr></hr>
+  </div>
+  <div style="height:0.6em"></div>
+  <div id="dvBrowserSaveInner"></div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript: browser_save__return_to_game()">return to game</a></div>
+  </div>
+  <div style="height:100em"></div>
+  <div><a href="javascript:void browser_save__delete_all_saved_data()">delete all browser saved data</a></div>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvEditor_uaAdd_outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
+  <div><b>Add User Action</b></b></div>
+  <div style="height:0.6em"></div>
+  <div class=""><input id="ipEditor_uaAdd_uaText" class="" value="" /></div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div>
+      <a style="white-space: nowrap" href="javascript:void dev_editor__add_user_action__do_add()">add</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript:void dev_editor__add_user_action__cancel_add()">cancel</a>
+    </div>
+  </div>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvEditor_uaDelete_outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
+  <div>
+    (delete user-action stuff goes here)
+  </div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript: dev_editor__delete_user_action__cancel_delete()">cancel</a></div>
+  </div>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvEditor_uaEdit_outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
+  <div>
+    (edit user-action stuff goes here)
+  </div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div><a href="javascript: dev_editor__edit_user_action__cancel_edit()">cancel</a></div>
+  </div>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvGameOuter" style="display: none; padding-left: 1em; padding-top: 1em">
+  <div id="dvGameInner_Page"></div>
+  <div style="height:1.5em"></div>
+  <div id="dvGameInner_Dev"></div>
+</div>
+
 
 <script type="text/javascript">
 
@@ -30,9 +100,22 @@ body {font-size: 110%; font-family: Helvetica}
 
 
 // CONSTANTS
+const C_altFilterOpt_exists = "exists";
 
+const C_appSetting_defaultGameCodename = "defaultGameCodename";
+const C_appSetting_dev = "dev";
+const C_appSetting_dev_hideEditor = "dev_hideEditor";
+const C_appSetting_narrow = "narrow";
+
+const C_att_gameCodename = "gameCodename";
+const C_att_isUser = "isUser";
+const C_att_locCodename = "locCodename";
 const C_att_locName = "locName";
 const C_att_name = "name";
+const C_att_pageCodename = "pageCodename";
+const C_att_startingPageCodename = "startingPageCodename"
+const C_att_textOfRow = "textOfRow";
+const C_att_uaText = "uaText";
 
 const C_entCodename_you = "you";
 
@@ -42,11 +125,28 @@ const C_displayVar_you = "YOU";
 const C_displayVar_curLoc = "CUR_LOC";
 
 const C_locCodename_cozyRoom = "cozy room";
+const C_locCodename_scaryRoom = "scary room";
 
-const C_saveType_entity = "entity";
-const C_saveType_location = "location";
+const C_misc_codename = "codename";
+const C_misc_userCodename = "user";
+
+const C_saveTypeName_appSetting = "appSetting";
+const C_saveTypeName_entity = "entity";
+const C_saveTypeName_game = "game";
+const C_saveTypeName_location = "location";
+const C_saveTypeName_page = "page";
+const C_saveTypeName_unknown = "unknown";
 
 const C_spacerHeight = "0.5em"
+
+const C_typecode_appSetting = "appSetting";
+const C_typecode_ent = "E";
+const C_typecode_game = "G";
+const C_typecode_loc = "L";
+const C_typecode_page = "P";
+const C_typecode_tr = "tr";
+const C_typecode_ua = "ua";
+const C_typecode_unknown = "?";
 
 const C_userAction_changeYourName = "change your name";
 const C_userAction_closeDoor = "close door";
@@ -59,14 +159,16 @@ const C_userAction_openDoor = "open door";
 // APP-LEVEL VARIABLES
 
 const APP = {};
+APP.allGameBrSvObjs = [];
+APP.curGameObj = null;
 APP.curPageObj = null;
-APP.loadedEntObjs = [];
-APP.pageObjs = [];
-APP.youObj = {};
+APP.dev = "0";
+APP.dev_hideEditor = "0";
 
 
 // PAGES
 
+/*
 const C_page_info = getAndMakePage("info");
 setPageToNonLocation(C_page_info);
 C_page_info.setRowsAndActions = function() {
@@ -87,24 +189,34 @@ C_page_cozyRoom.setRowsAndActions = function() {
   addPageTextRow(this, "The door is " + getLocDisplayVarCode("door"), 2);
   if (this.door == "open") {
     addPageTextRow(this, "Through the door, you can see some stuff I guess lol not sure what to put here yettttttt, maybe it's interesting or a little scary or weird?? so many possibilities.....");
+    addPageAction(this, C_userAction_moveToLoc, "go through the door", C_locCodename_scaryRoom);
     addPageAction(this, C_userAction_closeDoor, "close the door");
   } else {
     addPageAction(this, C_userAction_openDoor, "open the door");
   }
 };
 
+const C_page_scaryRoom = getAndMakePage(C_locCodename_scaryRoom);
+C_page_scaryRoom.setRowsAndActions = function() {
+  this.textRows = [];
+  this.actions = [];
+  addPageTextRow(this, "You are in a scary room, oooooooooo", 2);
+  addPageAction(this, C_userAction_moveToLoc, "run back to the cozy room", C_locCodename_cozyRoom);
+};
+*/
 
-// FUNCTIONS
 
-function addLocationAtt(pageObj, locCodename, attName, defaultVal) {
-  var locAttVal = getLocationAttFromBrowserSave(locCodename, attName);
+// INTERNAL FUNCTIONS
+
+function addLocationAtt(pageObj, locCodename, att, defaultVal) {
+  var locAttVal = getLocationAttFromBrowserSave(locCodename, att);
 
   if ( isBlank(locAttVal) ) {
     locAttVal = defaultVal;
-    setLocationAttInBrowserSave(locCodename, attName, locAttVal);
+    setLocationAttInBrowserSave(locCodename, att, locAttVal);
   }
 
-  pageObj[attName] = locAttVal;
+  pageObj[att] = locAttVal;
 }
 
 function addPageAction(page, actionName, actionLinkText, actionVar1) {
@@ -131,88 +243,615 @@ function addPageTextRow(page, textOfRow, spacesDown) {
   page.textRows.push(textRow);
 }
 
-function changeLocAtt(pageObj, attName, newVal) {
-  setLocationAttInBrowserSave(pageObj.name, attName, newVal);
-  pageObj[attName] = newVal;
+function changeLocAtt(pageObj, att, newVal) {
+  setLocationAttInBrowserSave(pageObj.name, att, newVal);
+  pageObj[att] = newVal;
 }
 
-function deleteFromBrowserSave(saveType, saveName, saveAttribute) {
-  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
+// the daX and dcX functions are using "x = function(y) {}" syntax, so that we can e.g. do the frequent search for "dc ("  [without the space]  without finding the called function
+const da = function(text) {
+  alert(text);
+};
+
+const dc = function(text1, text2, text3, text4, text5, text6, text7, text8, text9, text10) {
+  var str = "";
+
+  if ( text1 === undefined ) {
+  } else {
+    str += text1;
+  }
+
+  if ( text2 === undefined ) {
+  } else {
+    str += " ----- " + text2;
+  }
+
+  if ( text3 === undefined ) {
+  } else {
+    str += " ----- " + text3;
+  }
+
+  if ( text4 === undefined ) {
+  } else {
+    str += " ----- " + text4;
+  }
+
+  if ( text5 === undefined ) {
+  } else {
+    str += " ----- " + text5;
+  }
+
+  if ( text6 === undefined ) {
+  } else {
+    str += " ----- " + text6;
+  }
+
+  if ( text7 === undefined ) {
+  } else {
+    str += " ----- " + text7;
+  }
+
+  if ( text8 === undefined ) {
+  } else {
+    str += " ----- " + text8;
+  }
+
+  if ( text9 === undefined ) {
+  } else {
+    str += " ----- " + text9;
+  }
+
+  if ( text10 === undefined ) {
+  } else {
+    str += " ----- " + text10;
+  }
+
+  console.log(str);
+}
+
+const dc_ = function() {
+  // this blank function exists to give the developer an option to change dc ("some text here") to dc_ ("some text here")  [keep space between "dc" and "(" to avoid this comment popping up with Ctrl-F]
+  // , as a way to remove the console.log action that occurs via calling dc ()
+  // , but without having to comment out the line via //dc ("some text here")
+  //
+  // --> allows searching for "dc ("  [without the space]  to determine whether there are any stray console.log calls that will occur when running the code
+};
+
+const dc2 = function(varName) {
+  dc ( varName, eval(varName) );
+};
+
+function deleteFromBrowserSave_multiple(typecodeToDelete, codenameToDelete) {
+  for (var i = 0; i < localStorage.length; i++) {
+    let keyName = localStorage.key(i);
+    let bskParts = keyName.split(":");
+
+    let curTypecode = bskParts[0];
+    let curCodename = bskParts[1];
+
+    if ( isEqual(curTypecode, typecodeToDelete) && isEqual(curCodename, codenameToDelete) ) {
+      localStorage.removeItem(keyName);
+    }
+  }
+}
+
+function deleteFromBrowserSave_singleRow(typecode, codename, att) {
+  var bsk = getBrowserSaveKey(typecode, codename, att);
   localStorage.removeItem(bsk);
 }
 
-function displayPage(pageObj) {
-  var displayText = getPageDisplayHtml(pageObj);
-  var dv = elem("dvDisplay");
-  dv.innerHTML = displayText;
+function displayBrowserSave() {
+  hideAllDisplays();
+  writeBrowserSavedData();
+  elem("dvBrowserSaveOuter").style.display = "";
 }
 
-function displayPage_fromName(pageName) {
-  var pageObj = getPageObjFromName(pageName);
-  displayPage(pageObj);
+function displayEditor_uaAdd() {
+  hideAllDisplays();
+  elem("ipEditor_uaAdd_uaText").value = "";
+  elem("dvEditor_uaAdd_outer").style.display = "";
+  elem("ipEditor_uaAdd_uaText").focus();
+}
+
+function displayEditor_uaDelete() {
+  hideAllDisplays();
+  elem("dvEditor_uaDelete_outer").style.display = "";
+}
+
+function displayEditor_uaEdit() {
+  hideAllDisplays();
+  elem("dvEditor_uaEdit_outer").style.display = "";
+}
+
+function displayPage(pageObj) {
+  var displayText = "";
+
+  hideAllDisplays();
+
+  if (pageObj) {
+    displayText = getHtml_pageDisplay(pageObj);
+  } else {
+    displayText = "ERROR: could not load game page";
+  }
+
+  elem("dvGameInner_Page").innerHTML = displayText;
+  elem("dvGameOuter").style.display = "";
 }
 
 function elem(elemId) {
   return document.getElementById(elemId);
 }
 
-function getAndMakePage(name) {
-  var page = {};
+function getAndMakeNewEnt(codename, name, isUser, gameCodename, locCodename) {
+  var entObj = getEntObj(codename, name, isUser, gameCodename, locCodename);
 
-  page.name = name;
-  page.isLocation = true;
-  page.textRows = [];
-  page.actions = [];
+  entObj.saveToBrowser();
 
-  APP.pageObjs.push(page);
-
-  return page;
+  return entObj;
 }
 
-function getBrowserSaveKey(saveType, saveName, saveAttribute) {
-//console.log(saveType, saveName, saveAttribute)
-  var bsk, saveName_processed, saveAttribute_processed;
-  
-  switch(saveType) {
-    case C_saveType_entity:
-      bsk = "e:";
-      break;
-    case C_saveType_location:
-      bsk = "L:";
-      break;
-    default:
-      bsk = "?:";
-      break;
+function getAndMakeNewGame(codename, name) {
+  var gameObj = getGameObj(codename, name, null);
+
+  gameObj.saveToBrowser();
+
+  return gameObj;
+}
+
+function getAndMakeNewLoc(codename, name, gameCodename) {
+  var locObj = getLocObj(codename, name, gameCodename);
+
+  locObj.saveToBrowser();
+
+  return locObj;
+}
+
+function getAndMakeNewPage(codename, name, gameCodename, locCodename, isNewLoc) {
+  var pageObj, firstTrObj;
+
+  if (isNewLoc) {
+    getAndMakeNewLoc(codename, name, gameCodename);
+    if ( isBlank(locCodename) ) {
+      locCodename = codename;
+    }
   }
 
-  saveName_processed = getProcessedSaveText(saveName);
-  saveAttribute_processed = getProcessedSaveText(saveAttribute);
+  pageObj = getPageObj(codename, name, gameCodename, locCodename);
 
-  bsk += saveName_processed + ":" + saveAttribute_processed;
-//console.log(bsk)
+  pageObj.saveToBrowser();
+
+  firstTrObj = getAndMakeNewTr(pageObj, "first text-row for this page");
+
+  return pageObj;
+}
+
+function getAndMakeNewTr(pageObj, textOfRow) {
+  var trObj, trCodename;
+
+  trCodename = getNextSortedCodename(C_typecode_tr, pageObj.gameCodename, pageObj.codename, C_att_textOfRow);
+
+  trObj = getTrObj(trCodename, pageObj.gameCodename, pageObj.codename, textOfRow);
+
+  pageObj.trObjs.push(trObj);
+
+  trObj.saveToBrowser();
+
+  return trObj;
+}
+
+function getAndMakeNewUa(pageObj, uaText) {
+  var uaObj, uaCodename;
+
+  uaCodename = getNextSortedCodename(C_typecode_ua, pageObj.gameCodename, pageObj.codename, C_att_uaText);
+
+  uaObj = getUaObj(uaCodename, pageObj.gameCodename, pageObj.codename, uaText);
+
+  pageObj.uaObjs.push(uaObj);
+
+  uaObj.saveToBrowser();
+
+  return uaObj;
+}
+
+function getAppSetting(settingName) {
+  var val = getFromBrowserSave_single(C_typecode_appSetting, settingName, null);
+  return val;
+}
+
+function getAppSettingAsOneZero(appSetting) {
+  if (appSetting == "1") {
+    return "1";
+  }
+
+  if (appSetting === 1) {
+    return "1";
+  }
+
+  if (appSetting == "0") {
+    return "0";
+  }
+
+  if (appSetting === 0) {
+    return "0";
+  }
+
+  if ( isTrue(appSetting) ) {
+    return "1";
+  }
+
+  return "0";
+}
+
+function getBrowserSaveKey(typecode, codename, att) {
+  var bsk, codename_processed, att_processed;
+  
+  bsk = typecode + ":";
+
+  codename_processed = getProcessedSaveText(codename);
+
+  bsk += codename_processed
+
+  if ( ! isEqual(typecode, C_typecode_appSetting) ) {
+    att_processed = getProcessedSaveText(att);
+    bsk += ":" + att_processed;
+  }
+
   return bsk;
 }
 
-function getFromBrowserSave(saveType, saveName, saveAttribute) {
-  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
+// don't need anymore?
+function getBrowserSaveType_fromSaveTypeCode(typecode) {
+  switch(typecode) {
+    case C_typecode_appSetting:
+      return C_saveTypeName_appSetting;
+    case C_typecode_ent:
+      return C_saveTypeName_entity;
+    case C_typecode_game:
+      return C_saveTypeName_game;
+    case C_typecode_loc:
+      return C_saveTypeName_location;
+    case C_typecode_page:
+      return C_saveTypeName_page;
+    default:
+      return C_saveTypeName_unknown;
+  }
+}
+
+// don't need anymore?
+function getBrowserSaveTypeCode_fromSaveTypeName(saveTypeName) {
+  switch(saveTypeName) {
+    case C_saveTypeName_appSetting:
+      return C_typecode_appSetting;
+    case C_saveTypeName_entity:
+      return C_typecode_ent;
+    case C_saveTypeName_game:
+      return C_typecode_game;
+    case C_saveTypeName_location:
+      return C_typecode_loc;
+    case C_saveTypeName_page:
+      return C_typecode_page;
+    default:
+      return C_typecode_unknown;
+  }
+}
+
+function getBrowserSaveObj(keyName, keyValue) {
+  var brSvObj = {};
+  var bskParts = keyName.split(":");
+
+  brSvObj.typecode = bskParts[0];
+  brSvObj.codename = bskParts[1];
+  
+  if (bskParts.length > 2) {
+    brSvObj.att = bskParts[2];
+  } else {
+    brSvObj.att = null;
+  }
+
+  brSvObj.val = keyValue;
+
+  return brSvObj;
+}
+
+function getBrSvObjsFromBrowserSave(typecode, typecode_altFilterOpt, codename, codename_altFilterOpt, att, att_altFilterOpt, val, val_altFilterOpt, codenameLeft) {
+  var brSvObjAy = [];
+  var typecodeCheckPassed, codenameCheckPassed, attCheckPassed, valCheckPassed, codenameLeftCheckPassed;
+
+  for (var i = 0; i < localStorage.length; i++) {
+    typecodeCheckPassed = false, codenameCheckPassed = false, attCheckPassed = false, valCheckPassed = false, codenameLeftCheckPassed = false;
+
+    let keyName = localStorage.key(i);
+    let keyValue = localStorage.getItem(keyName);
+
+    //TO-DO: need to handle C_altFilterOpt_exists and etc.
+
+if (codenameLeft == "game1,location1,") dc(keyName, localStorage.getItem(keyName))
+    let brSvObj = getBrowserSaveObj(keyName, keyValue);
+
+    if ( isBlank(typecode) && isBlank(typecode_altFilterOpt) ) {
+      typecodeCheckPassed = true;
+    } else {
+      if ( isEqual(brSvObj.typecode, typecode) ) {
+if (codenameLeft == "game1,location1,") dc("typecode check found & passed", typecode)
+        typecodeCheckPassed = true;
+      } else {
+if (codenameLeft == "game1,location1,") dc("typecode check found & failed", typecode)
+      }
+    }
+
+    if (typecodeCheckPassed) {
+      if ( isBlank(codename) && isBlank(codename_altFilterOpt) ) {
+        codenameCheckPassed = true;
+      } else {
+        if ( isEqual(brSvObj.codename, codename) ) {
+if (codenameLeft == "game1,location1,") dc("codename check found & passed", codename)
+          codenameCheckPassed = true;
+        } else {
+if (codenameLeft == "game1,location1,") dc("codename check found & failed", codename)
+        }
+      }
+    }
+
+    if (typecodeCheckPassed && codenameCheckPassed) {
+      if ( isBlank(att) && isBlank(att_altFilterOpt) ) {
+        attCheckPassed = true;
+      } else {
+        if ( isEqual(brSvObj.att, att) ) {
+if (codenameLeft == "game1,location1,") dc("att check found & passed", att)
+          attCheckPassed = true;
+        } else {
+if (codenameLeft == "game1,location1,") dc("att check found & failed", att)
+        }
+      }
+    }
+
+    if (typecodeCheckPassed && codenameCheckPassed && attCheckPassed) {
+      if ( isBlank(val) && isBlank(val_altFilterOpt) ) {
+        valCheckPassed = true;
+      } else {
+        if ( isEqual(brSvObj.val, val) ) {
+if (codenameLeft == "game1,location1,") dc("val check found & passed", val)
+          valCheckPassed = true;
+        } else {
+if (codenameLeft == "game1,location1,") dc("val check found & failed", val)
+        }
+      }
+    }
+
+    if (typecodeCheckPassed && codenameCheckPassed && attCheckPassed && valCheckPassed) {
+      if ( isBlank(codenameLeft) ) {
+        codenameLeftCheckPassed = true;
+      } else {
+        if ( leftIs(brSvObj.codename, codenameLeft) ) {
+if (codenameLeft == "game1,location1,") dc("codenameLeft check found & passed", "cnLeft=>", codenameLeft, ", cn=", brSvObj.codename)
+          codenameLeftCheckPassed = true;
+        } else {
+if (codenameLeft == "game1,location1,") dc("typecode check found & ", typecode)
+        }
+      }
+    }
+
+    if (typecodeCheckPassed && codenameCheckPassed && attCheckPassed && valCheckPassed && codenameLeftCheckPassed) {
+      brSvObjAy.push(brSvObj);
+
+
+      if (codenameLeft == "game1,location1,") dc("..... YES passed checks")
+    } else {
+      if (codenameLeft == "game1,location1,") dc("..... NOT passed checks")
+
+
+    }
+  }
+
+  return brSvObjAy;
+}
+
+function getCodenameLeft(parent1Codename, parent2Codename) {
+  var codenameLeft = parent1Codename + ",";
+  if ( ! isBlank(parent2Codename) ) {
+    codenameLeft += parent2Codename + ",";
+  }
+  return codenameLeft;
+}
+
+function getElemFromObjArray(theArray, propName, propValToMatch) {
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem[propName], propValToMatch) ) {
+      returnValue = true;
+    }
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return null;
+  } else {
+    return revisedArray[0];
+  }
+}
+
+function getElemFromValArray(theArray, valToMatch) {
+  var revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = false;
+    if ( isEqual(arrayElem, valToMatch) ) {
+      returnValue = true;
+    }
+    return returnValue;
+  });
+
+  if (revisedArray.length == 0) {
+    return "";
+  } else {
+    return revisedArray[0];
+  }
+}
+
+function getEntObj(codename, name, isUser, gameCodename, locCodename) {
+  var entObj = {};
+
+  entObj.codename = codename;
+  
+  if ( isTrue(isUser) ) {
+    entObj.name = C_misc_userCodename;
+    entObj.isUser = "1";
+  } else {
+    entObj.isUser = "0";
+    if ( isEqual(name, C_misc_userCodename) ) {
+      name += String(getRandomPositiveWholeNumber());
+    }
+    entObj.name = name;
+  }
+
+  entObj.gameCodename = gameCodename;
+  entObj.locCodename = locCodename;
+
+  entObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_ent, this.codename, C_att_name, this.name);
+    saveToBrowser(C_typecode_ent, this.codename, C_att_isUser, this.isUser);
+    saveToBrowser(C_typecode_ent, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_ent, this.codename, C_att_locCodename, this.locCodename);
+  };
+  
+  return entObj;
+}
+
+function getFromBrowserSave_single(typecode, codename, att) {
+  var bsk = getBrowserSaveKey(typecode, codename, att);
   var val = localStorage.getItem(bsk);
   return val;
 }
 
-function getHtmlLink(linkText, linkActionName, linkActionVar1) {
-  var x = "<a href='javascript: do_user_action ( \"" + linkActionName + "\"";
-
-  if ( ! isBlank(linkActionVar1) ) {
-    x += " , \"" + linkActionVar1 + "\"";
-  }
-
-  x += " )'>" + linkText + "</a>";
-
-  return x;
+function getGameObjFromBrowserSave(codename) {
+  var name = getFromBrowserSave_single(C_typecode_game, codename, C_att_name);
+  var gameObj = getGameObj(codename, name, null);
+  return gameObj;
 }
 
-function getHtmlWithAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
-  var newHtml = "", i, parsedText;
+function getGameObj(codename, name, startingPageCodename) {
+  var gameObj = {};
+
+  gameObj.codename = codename;
+  gameObj.name = name;
+  gameObj.startingPageCodename = startingPageCodename;
+
+  gameObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_game, this.codename, C_att_name, this.name);
+    saveToBrowser(C_typecode_game, this.codename, C_att_startingPageCodename, this.startingPageCodename);
+  };
+  
+  return gameObj;
+}
+
+function getHtml_a(linkText, jsFunc, jsArg1, jsArg2) {
+  var html = "<a href='javascript: " + jsFunc + " (" ;
+
+  if ( ! isBlank(jsArg1) ) {
+    html += " \"" + jsArg1 + "\"";
+  }
+
+  if ( ! isBlank(jsArg2) ) {
+    html += " , \"" + jsArg2 + "\"";
+  }
+
+  html += " )'>" + linkText + "</a>";
+
+  return html;
+}
+
+function getHtml_pageDisplay(pageObj) {
+  var html = "";
+  var i, infoLinkHtml;
+
+
+  // TEXT-ROWS
+
+  for (i = 0; i < pageObj.trObjs.length; i++) {
+    let curTrObj = pageObj.trObjs[i];
+    let textOfRow = curTrObj.textOfRow;
+
+    if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__edit_text_row", curTrObj.codename);
+      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_text_row", curTrObj.codename);
+    }
+
+    html += getHtmlForAddedTextRow(html, textOfRow, 1);
+  }
+
+  if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+    html += getHtmlDownSpacer();
+    html += "<div>" + getHtml_a("> add new text-row", "dev_editor__add_text_row") + "</div>\n";
+  }
+
+  html += getHtmlDownSpacer(2);
+
+
+  // USER-ACTIONS
+
+  if (pageObj.uaObjs.length == 0) {
+
+    html += getHtmlForAddedTextRow(html, "(no user-actions are available yet for this page)", 1);
+
+  } else {
+
+    for (i = 0; i < pageObj.uaObjs.length; i++) {
+      let curUaObj = pageObj.uaObjs[i];
+      let uaText = getHtml_a(curUaObj.uaText, "do_user_action", curUaObj.codename);
+
+      if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__goto__edit_user_action", curUaObj.codename);
+        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
+      }
+
+      html += getHtmlForAddedTextRow(html, uaText, 1);
+
+      //let actionLinkHtml = getHtml_userAction(action.linkText, action.name, action.var1);
+      //html += getHtmlForAddedTextRow(html, actionLinkHtml);
+    }
+
+  }
+
+  if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+    html += getHtmlDownSpacer();
+    html += "<div>" + getHtml_a("> add new user-action", "dev_editor__goto__add_user_action") + "</div>\n";
+  }
+
+
+  // INFO
+
+  if ( ! isBlank(pageObj.locCodename) ) {
+    infoLinkHtml = getHtml_userAction("info", C_userAction_goToInfo);
+    html += getHtmlForAddedTextRow(html, infoLinkHtml, 3, true);
+  }
+
+
+  return html;
+}
+
+function getHtml_userAction(linkText, linkActionName, linkActionVar1) {
+  var html = getHtml_a(linkText, "do_user_action", linkActionName, linkActionVar1);
+  return html;
+}
+
+function getHtmlDownSpacer(spacesDown) {
+  var i, html = "";
+
+  if ( ! isNumeric(spacesDown) ) {
+    spacesDown = 1;
+  } else {
+    if ( spacesDown < 0 || spacesDown > 100 ) {
+      spacesDown = 1;
+    }
+  }
+
+  for (i = 1; i <= spacesDown; i++ ) {
+    html += "<div style='height: " + C_spacerHeight + "'></div>\n";
+  }
+
+  return html;
+}
+
+function getHtmlForAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
+  var newHtml = "", parsedText;
 
   if ( ! isNumeric(spacesDown) ) {
     spacesDown = 1;
@@ -225,9 +864,7 @@ function getHtmlWithAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
   if ( isBlank(curHtml) && spacesDown <= 1 ) {
     // no action -- no need to add a space for the first row of text on the screen (unless the calling function requested 2+ spaces)
   } else {
-    for (i = 1; i <= spacesDown; i++ ) {
-      newHtml += "<div style='height: " + C_spacerHeight + "'></div>\n";
-    }
+    newHtml += getHtmlDownSpacer(spacesDown);
   }
 
   if (skipParsing) {
@@ -241,57 +878,202 @@ function getHtmlWithAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
   return newHtml;
 }
 
-function getLocationAttFromBrowserSave(locCodename, attName) {
-  var val = getFromBrowserSave(C_saveType_location, locCodename, attName);
+function getLocationAttFromBrowserSave(locCodename, att) {
+  var val = getFromBrowserSave_single(C_saveTypeName_location, locCodename, att);
   return val;
 }
 
-function getLocDisplayVar(attName) {
-  var displayVar = C_displayVarStub_locAtt + "__" + attName;
+function getLocDisplayVar(att) {
+  var displayVar = C_displayVarStub_locAtt + "__" + att;
   return displayVar;
 }
 
-function getLocDisplayVarCode(attName) {
-  var displayVarCode = "_" + getLocDisplayVar(attName) + "_"
+function getLocDisplayVarCode(att) {
+  var displayVarCode = "_" + getLocDisplayVar(att) + "_"
   return displayVarCode;
 }
 
-function getPageDisplayHtml(page) {
-  var isLocation = true;
-  var html = "";
-  var i, infoLinkHtml;
+function getLocObj(codename, name, gameCodename) {
+  var locObj = {};
 
-  page.setRowsAndActions();
+  locObj.codename = codename;
+  locObj.name = name;
+  locObj.gameCodename = gameCodename;
 
-  for (var i = 0; i < page.textRows.length; i++) {
-    let curTextRow = page.textRows[i];
-    html += getHtmlWithAddedTextRow(html, curTextRow.textOfRow, curTextRow.spacesDown);
-  }
-
-  html += "<div style='height: " + C_spacerHeight + "'></div>\n";
-  html += "<div style='height: " + C_spacerHeight + "'></div>\n";
-
-  for (var i = 0; i < page.actions.length; i++) {
-    let action = page.actions[i];
-    let actionLinkHtml = getHtmlLink(action.linkText, action.name, action.var1);
-    html += getHtmlWithAddedTextRow(html, actionLinkHtml);
-  }
-
-  if ( page.isLocation ) {
-    infoLinkHtml = getHtmlLink("info", C_userAction_goToInfo);
-    html += getHtmlWithAddedTextRow(html, infoLinkHtml, 3, true);
-  }
-
-  return html;
+  locObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_loc, this.codename, C_att_name, this.name);
+    saveToBrowser(C_typecode_loc, this.codename, C_att_gameCodename, this.gameCodename);
+  };
+  
+  return locObj;
 }
 
-function getPageObjFromName(pageName) {
-  for (var i = 0; i < APP.pageObjs.length; i++) {
-    let curPageObjInLoop = APP.pageObjs[i];
-    if ( isEqual(curPageObjInLoop.name, pageName) ) {
-      return curPageObjInLoop;
-    }
+function getNextSortedCodename(typecode, parent1Codename, parent2Codename, att) {
+  var codenameLeftToFind, ay, aySorted, lastAyItemCodename, lastCurSortval, nextSortval, nextSortedCodename;
+
+  codenameLeftToFind = getCodenameLeft(parent1Codename, parent2Codename);
+//da(att)
+  ay = getBrSvObjsFromBrowserSave(typecode, null, null, null, att, null, null, null, codenameLeftToFind);
+
+  aySorted = sortSortedCodenameAy(ay);
+
+  if (ay.length == 0) {
+    nextSortval = 1;
+  } else {
+    lastAyItemCodename = ay[ay.length - 1].codename;
+    lastCurSortval = withoutLeft(lastAyItemCodename, codenameLeftToFind);
+    nextSortval = Number(lastCurSortval) + 1;
   }
+
+  nextSortedCodename = parent1Codename + "," + parent2Codename + "," + nextSortval;
+
+  return nextSortedCodename;
+}
+
+function getObjArrayAsString(theArray, propName, propName2) {
+  var i, str = "";
+  for (i = 0; i < theArray.length; i++ ){
+    str += "array item #" + (parseInt(i) + 1) + " ----- ";
+    str += propName1 + ": " + theArray[i][propName1];
+    if ( !isBlank(propName2) ) str += ", " + propName2 + ": " + theArray[i][propName2];
+    str += "\n";
+  }
+  return str;
+}
+
+function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
+  var revisedArray;
+
+  revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = true;
+    if ( isEqual(arrayElem[propName], propValToExclude) ) {
+      returnValue = false;
+    }
+    return returnValue;
+  });
+
+  return revisedArray;
+
+  /* test code for this function:
+  var x1 = {prop1: "a"};
+  var x2 = {prop1: "b"};
+  var x3 = {prop1: "b"};
+  var x4 = {prop1: "a"};
+
+  var ay = [x1, x2, x3, x4];
+
+  var ay2 = getObjArrayWithoutElem(ay, "prop1", "b")
+
+  dc_(getObjArrayAsString(ay2, "prop1"))
+  */
+}
+
+function getPageObj(codename, name, gameCodename, locCodename) {
+  var pageObj = {};
+
+  pageObj.codename = codename;
+  pageObj.name = name;
+  pageObj.gameCodename = gameCodename;
+  pageObj.locCodename = locCodename;
+
+  pageObj.trObjs = [];
+  pageObj.uaObjs = [];
+
+  pageObj.deleteTr = function(trCodenameToDelete) {
+    var newAy;
+
+    deleteFromBrowserSave_multiple(C_typecode_tr, trCodenameToDelete);
+
+    newAy = getObjArrayWithoutElem(this.trObjs, C_misc_codename, trCodenameToDelete);
+    this.trObjs = newAy;
+  };
+
+  pageObj.deleteUa = function(uaCodenameToDelete) {
+    var newAy;
+
+    deleteFromBrowserSave_multiple(C_typecode_ua, uaCodenameToDelete);
+
+    newAy = getObjArrayWithoutElem(this.uaObjs, C_misc_codename, uaCodenameToDelete);
+    this.uaObjs = newAy;
+  };
+
+  pageObj.getTrObj = function(trCodename) {
+    for (var i = 0; i < this.trObjs.length; i++) {
+      let curTrObj = this.trObjs[i];
+      if ( isEqual(trCodename, curTrObj.codename) ) {
+        return curTrObj;
+      }
+    }
+    return null;
+  };
+
+  pageObj.getUaObj = function(uaCodename) {
+    for (var i = 0; i < this.uaObjs.length; i++) {
+      let curUaObj = this.uaObjs[i];
+      if ( isEqual(uaCodename, curUaObj.codename) ) {
+        return curUaObj;
+      }
+    }
+    return null;
+  };
+
+  pageObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_page, this.codename, C_att_name, this.name);
+    saveToBrowser(C_typecode_page, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_page, this.codename, C_att_locCodename, this.locCodename);
+  };
+
+  pageObj.loadTrObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this.trObjs = [];
+
+    codenameLeft = getCodenameLeft(this.gameCodename, this.codename);
+
+    brSvObjs = getBrSvObjsFromBrowserSave(C_typecode_tr, null, null, null, C_att_textOfRow, null, null, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newTrObj = getTrObj(curBrSvObj.codename, this.gameCodename, this.codename, curBrSvObj.val);
+      this.trObjs.push(newTrObj);
+    }
+
+    this.trObjs = sortSortedCodenameAy(this.trObjs);
+  };
+
+  pageObj.loadUaObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this.uaObjs = [];
+
+    codenameLeft = getCodenameLeft(this.gameCodename, this.codename);
+
+    brSvObjs = getBrSvObjsFromBrowserSave(C_typecode_ua, null, null, null, C_att_uaText, null, null, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newUaObj = getUaObj(curBrSvObj.codename, this.gameCodename, this.codename, curBrSvObj.val);
+      this.uaObjs.push(newUaObj);
+    }
+
+    this.uaObjs = sortSortedCodenameAy(this.uaObjs);
+  };
+  
+  return pageObj;
+}
+
+function getPageObjFromBrowserSave(gameCodename, pageCodename) {
+  var name, locCodename, pageObj;
+
+  name = getFromBrowserSave_single(C_typecode_page, pageCodename, C_att_name);
+  locCodename = getFromBrowserSave_single(C_typecode_page, pageCodename, C_att_locCodename);
+
+  pageObj = getPageObj(pageCodename, name, gameCodename, locCodename);
+
+  pageObj.loadTrObjsFromBrowserSave();
+  pageObj.loadUaObjsFromBrowserSave();
+
+  return pageObj;
 }
 
 function getParsedDisplayText(originalText) {
@@ -437,8 +1219,8 @@ function getParsedDisplayText_doPossDisVar(curWord, possibleDisplayVar, textToAd
 
       //alert("... checking possibleDisplayVar '" + possibleDisplayVar + "' for leftIs '" + C_displayVarStub_locAtt + "'");
       if ( leftIs(possibleDisplayVar, C_displayVarStub_locAtt) ) {
-        let attName = withoutLeft(possibleDisplayVar, C_displayVarStub_locAtt + "__");
-        curWord = textToAddLeft + APP.curPageObj[attName] + textToAddRight;
+        let att = withoutLeft(possibleDisplayVar, C_displayVarStub_locAtt + "__");
+        curWord = textToAddLeft + APP.curPageObj[att] + textToAddRight;
       }
 
       //alert("... but displayVar '" + possibleDisplayVar + "' does not exist as an option, so we are sticking with the original word " + curWord);
@@ -450,6 +1232,26 @@ function getParsedDisplayText_doPossDisVar(curWord, possibleDisplayVar, textToAd
 function getProcessedSaveText(text) {
   var x = getStringWithCharsReplaced(text, ":", " ");
   return x;
+}
+
+function getProcessedStringForSave(oldString) {
+  var newString = getStringWithCharsReplaced(oldString, "  ", "&nbsp;&nbsp;");
+  newString = getStringWithCharsReplaced(newString, "\n", "<br />");
+  return newString;
+}
+
+function getProcessedStringForTextView(oldString) {
+  var newString = getStringWithCharsReplaced(oldString, "&nbsp;&nbsp;", "  ");
+  newString = getStringWithCharsReplaced(newString, "<br />", "\n");
+  return newString;
+}
+
+function getRandomPositiveWholeNumber() {
+  var a = Math.random();
+  var b = String(a);
+  var c = b.split(".");
+  var d = c[1];
+  return d;
 }
 
 function getStringWithCharsReplaced(oldString, oldChars, newChars) {
@@ -484,6 +1286,72 @@ function getTextFromUser(promptText, defaultVal) {
   return response;
 }
 
+function getTrObj(codename, gameCodename, pageCodename, textOfRow) {
+  var trObj = {};
+
+  trObj.codename = codename;
+  trObj.gameCodename = gameCodename;
+  trObj.pageCodename = pageCodename;
+  trObj.textOfRow = textOfRow;
+
+  trObj.changeTextOfRow = function(newTextOfRow) {
+    this.textOfRow = newTextOfRow;
+    saveToBrowser(C_typecode_tr, this.codename, C_att_textOfRow, this.textOfRow);
+  };
+
+  trObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_tr, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_tr, this.codename, C_att_pageCodename, this.pageCodename);
+    saveToBrowser(C_typecode_tr, this.codename, C_att_textOfRow, this.textOfRow);
+  };
+  
+  return trObj;
+}
+
+function getUaObj(codename, gameCodename, pageCodename, uaText) {
+  var uaObj = {};
+
+  uaObj.codename = codename;
+  uaObj.gameCodename = gameCodename;
+  uaObj.pageCodename = pageCodename;
+  uaObj.uaText = uaText;
+
+  uaObj.change__uaText = function(newUaText) {
+    this.uaText = newUaText;
+    saveToBrowser(C_typecode_ua, this.codename, C_att_uaText, this.uaText);
+  };
+
+  uaObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_ua, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_pageCodename, this.pageCodename);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_uaText, this.uaText);
+  };
+  
+  return uaObj;
+}
+
+function getValArrayWithoutElem(theArray, valToExclude) {
+  var revisedArray;
+
+  revisedArray = theArray.filter( (arrayElem) => {
+    var returnValue = true;
+    if ( isEqual(arrayElem, valToExclude) ) {
+      returnValue = false;
+    }
+    return returnValue;
+  });
+
+  return revisedArray;
+}
+
+function hideAllDisplays() {
+  elem("dvBrowserSaveOuter").style.display = "none";
+  elem("dvEditor_uaAdd_outer").style.display = "none";
+  elem("dvEditor_uaDelete_outer").style.display = "none";
+  elem("dvEditor_uaEdit_outer").style.display = "none";
+  elem("dvGameOuter").style.display = "none";
+}
+
 function isBlank(val) {
   if(val === undefined) return true;
 
@@ -510,6 +1378,26 @@ function isEqual(val1, val2) {
 function isNumeric(val) {
   if ( isBlank(val) ) return false;
   return val == val * 1;
+}
+
+function isTrue(arg) {
+  if ( isBlank(arg) ) {
+    return false;
+  }
+
+  if ( arg === true ) {
+    return true;
+  }
+
+  if ( arg == "1" || arg == 1 ) {
+    return true;
+  }
+
+  if ( String(arg).toLowerCase() == "true" ) {
+    return true;
+  }
+
+  return false;
 }
 
 function left(str, numChars) {
@@ -541,16 +1429,20 @@ function leftIs(haystack, needle) {
   return isEqual(haystackLeft, needle);
 }
 
+function loadAllGameCodenames() {
+  APP.allGameBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_game, null, null, null, C_att_name, null, null, null, null);
+}
+
 function loadEntites() {
   APP.youObj.codename = C_entCodename_you;
 
-  APP.youObj.name = getFromBrowserSave(C_saveType_entity, C_entCodename_you, C_att_name);
+  APP.youObj.name = getFromBrowserSave_single(C_typecode_ent, C_entCodename_you, C_att_name);
   if ( isBlank(APP.youObj.name) ) {
     APP.youObj.name = "Person With Unknown Name";
-    saveToBrowser(C_saveType_entity, C_entCodename_you, C_att_name, APP.youObj.name)
+    saveToBrowser(C_typecode_ent, C_entCodename_you, C_att_name, APP.youObj.name)
   }
 
-  APP.youObj.locName = getFromBrowserSave(C_saveType_entity, C_entCodename_you, C_att_locName);
+  APP.youObj.locName = getFromBrowserSave_single(C_typecode_ent, C_entCodename_you, C_att_locName);
 
   if ( isBlank(APP.youObj.locName) ) {
     moveEntityToLocation(APP.youObj, C_page_cozyRoom);
@@ -561,12 +1453,7 @@ function loadEntites() {
 
 function moveEntityToLocation(entObj, locPageObj) {
   entObj.locName = locPageObj.name;
-  saveToBrowser(C_saveType_entity, entObj.codename, C_att_locName, locPageObj.name)
-}
-
-function runGame() {
-  loadEntites();
-  displayPage(APP.curPageObj);
+  saveToBrowser(C_typecode_ent, entObj.codename, C_att_locName, locPageObj.name)
 }
 
 function right(str, numChars) {
@@ -598,6 +1485,80 @@ function rightIs(haystack, needle) {
   return isEqual(haystackRight, needle);
 }
 
+function runCurGame() {
+  runCurGame_init();
+
+  //loadEntites();
+
+  displayPage(APP.curPageObj);
+
+  if (APP.dev == "1") {
+    runCurGame_addDevOptions();
+  }
+
+  elem("dvGameOuter").style.display = "";
+}
+
+function runCurGame_addDevOptions() {
+  var curGameName, html = "";
+
+  if (APP.curGameObj) {
+    curGameName = APP.curGameObj.name;
+  } else {
+    curGameName = "(no game loaded)";
+  }
+
+  html += "<div><hr></hr></div>\n";
+  html += getHtmlDownSpacer(2);
+  html += "<div style='color: red'>Dev Options:"
+
+  if ( isTrue(APP.dev_hideEditor) ) {
+    html += "&nbsp;&nbsp;<a href='javascript: dev_editor__show_editor ( )'>> show dev editor</a>";
+  }
+
+  html += "</div>\n";
+
+  if ( ! isTrue(APP.dev_hideEditor) ) {
+    html += getHtmlDownSpacer(2);
+
+    html += "<div>current game: " + curGameName;
+    if (APP.curGameObj) {
+      html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_game ( )'>> rename</a>";
+    }
+    html += "&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: dev_editor__view_all_games ( )'>> view all games</a></div>\n";
+    html += getHtmlDownSpacer(2);
+    html += "<div><a href='javascript: dev_editor__create_page ( )'>> create new page</a></div>\n";
+    html += getHtmlDownSpacer();
+    html += "<a href='javascript: browser_save__view ( )'>> view browser saved data</a></div>\n";
+    html += getHtmlDownSpacer();
+    html += "<a href='javascript: dev_editor__hide_editor ( )'>> hide dev editor</a></div>\n";
+  }
+
+  elem("dvGameInner_Dev").innerHTML = html;
+}
+
+function runCurGame_init() {
+  APP.curGame_allPageBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_page, null, null, null, C_att_gameCodename, null, APP.curGameObj.codename, null, null);
+
+  if ( isBlank(APP.curGameObj.startingPageCodename) ) {
+
+    if (APP.curGame_allPageBrSvObjs.length == 0) {
+      APP.curPageObj = getAndMakeNewPage("location1", "Location 1", APP.curGameObj.codename, null, true);
+    } else {
+      let pageCodename = APP.curGame_allPageBrSvObjs[0].codename;
+      APP.curPageObj = getPageObjFromBrowserSave(APP.curGameObj.codename, pageCodename);
+    }
+
+    APP.curGameObj.startingPageCodename = APP.curPageObj.codename;
+    APP.curGameObj.saveToBrowser();
+
+  } else {
+
+    APP.curPageObj = getPageObjFromBrowserSave(APP.curGameObj.codename, APP.curGameObj.startingPageCodename);
+
+  }
+}
+
 function runUserAction(linkActionName, linkActionVar1) {
   switch (linkActionName) {
 
@@ -606,7 +1567,7 @@ function runUserAction(linkActionName, linkActionVar1) {
         let newName = getTextFromUser("New Name:", "");
         if ( ! isBlank(newName) || isEqual(APP.youObj.name, newName) ) {
           APP.youObj.name = newName;
-          saveToBrowser(C_saveType_entity, C_entCodename_you, C_att_name, APP.youObj.name)
+          saveToBrowser(C_typecode_ent, C_entCodename_you, C_att_name, APP.youObj.name)
           displayPage(C_page_info);
         }
       }
@@ -618,7 +1579,7 @@ function runUserAction(linkActionName, linkActionVar1) {
       break;
 
     case C_userAction_goToInfo:
-      displayPage(C_page_info);
+      //displayPage(C_page_info);
       break;
 
     case C_userAction_goToPage:
@@ -626,8 +1587,9 @@ function runUserAction(linkActionName, linkActionVar1) {
       break;
 
     case C_userAction_moveToLoc:
-      moveEntityToLocation(APP.youObj, linkActionVar1);
       setCurPageObj_fromPageName(linkActionVar1);
+      moveEntityToLocation(APP.youObj, APP.curPageObj);
+      displayPage(APP.curPageObj);
       break;
 
     case C_userAction_openDoor:
@@ -640,21 +1602,100 @@ function runUserAction(linkActionName, linkActionVar1) {
   }
 }
 
-function saveToBrowser(saveType, saveName, saveAttribute, saveValue) {
-  var bsk = getBrowserSaveKey(saveType, saveName, saveAttribute);
-  localStorage.setItem(bsk, saveValue);
+function saveToBrowser(typecode, codename, att, val) {
+  var bsk = getBrowserSaveKey(typecode, codename, att);
+  
+  if ( isBlank(val) ) {
+    val = "";
+  }
+
+  localStorage.setItem(bsk, val);
 }
 
-function setCurPageObj_fromPageName(pageName) {
-  APP.curPageObj = getPageObjFromName(pageName)
+function setAppSetting(settingName, val) {
+  saveToBrowser(C_typecode_appSetting, settingName, null, val);
 }
 
-function setLocationAttInBrowserSave(locCodename, attName, locAttVal) {
-  saveToBrowser(C_saveType_location, locCodename, attName, locAttVal);
+function setLocationAttInBrowserSave(locCodename, att, locAttVal) {
+  saveToBrowser(C_typecode_loc, locCodename, att, locAttVal);
 }
 
 function setPageToNonLocation(page) {
   page.isLocation = false;
+}
+
+function sortSortedCodenameAy(ay) {
+  var newAy = ay.sort( sortSortedCodenameAy_sortingFunc() );
+  return newAy;
+}
+
+const sortSortedCodenameAy_sortingFunc = () => {
+  return (ayObjA, ayObjB) => {
+    var codenameParts, codenameLeft, sortvalA, sortvalB;
+
+    codenameParts = ayObjA.codename.split(",");
+    codenameLeft = getCodenameLeft(codenameParts[0], codenameParts[1]);
+
+    sortvalA = withoutLeft(ayObjA.codename, codenameLeft);
+    sortvalB = withoutLeft(ayObjB.codename, codenameLeft);
+
+    if ( Number(sortvalA) < Number(sortvalB) ) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
+};
+
+function startApp() {
+  var defGameCodename, defGameObj;
+
+  startApp_processQueryString();
+
+  APP.dev = getAppSettingAsOneZero( getAppSetting(C_appSetting_dev) );
+
+  APP.dev_hideEditor = getAppSettingAsOneZero( getAppSetting(C_appSetting_dev_hideEditor) );
+
+  //keys_startMonitoring();
+
+  loadAllGameCodenames();
+
+  defGameCodename = getAppSetting(C_appSetting_defaultGameCodename);
+
+  if ( isBlank(defGameCodename) ) {
+    if (APP.allGameBrSvObjs.length > 0) {
+      defGameCodename = APP.allGameBrSvObjs[0].codename;
+    } else {
+      defGameObj = getAndMakeNewGame("game1", "Your First Game");
+      defGameCodename = defGameObj.codename;
+    }
+  
+    setAppSetting(C_appSetting_defaultGameCodename, defGameCodename);
+  }
+
+  if ( ! defGameObj ) {
+    defGameObj = getGameObjFromBrowserSave(defGameCodename);
+  }
+
+  APP.curGameObj = defGameObj;
+
+  elem("dvEditor_uaAdd_outer").style.display = "none";
+  elem("dvGameOuter").style.display = "none";
+  elem("dvBrowserSaveOuter").style.display = "none";
+
+  runCurGame();
+}
+
+function startApp_processQueryString() {
+  var qs_urlParams = new URLSearchParams(window.location.search);
+
+  if ( qs_urlParams.has("dev") ) {
+    setAppSetting(C_appSetting_dev, "1");
+  }
+
+  if ( qs_urlParams.has("narrow") ) {
+    setAppSetting(C_appSetting_narrow, "1");
+  }
 }
 
 function withoutLeft(haystack, needle) {
@@ -695,17 +1736,359 @@ function withoutRight(haystack , needle) {
   }
 }
 
+function writeBrowserSavedData() {
+  var i, keyName, keyValue, html = "", appSetting_narrow;
+  var ay = [];
+
+  appSetting_narrow = getAppSetting(C_appSetting_narrow);
+
+  html += "<div><a href='javascript: browser_save__add_row()'>add row</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: browser_save__refresh_view()'>refresh view</a></div>\n";
+  html += "<div style='height:0.8em'></div>\n";
+  html += "<table cellpadding=5 cellspacing=0 border=1>\n";
+
+  if (localStorage.length <= 0) {
+    html += "<tr><td>(no items in storage)</td></tr>\n";
+  } else {
+    if (appSetting_narrow == "1") {
+      html += "<tr><td></td><td>\n";
+      html += "  <table cellpadding=0 cellspacing=0>\n";
+      html += "  <tr><td><b>Key Name</b></td></tr>\n";
+      html += "  <tr><td style='height: 3px'></td></tr>\n";
+      html += "  <tr><td style='height: 1px; background-color: black'></td></tr>\n";
+      html += "  <tr><td style='height: 3px'></td></tr>\n";
+      html += "  <tr><td><b>Key Value</b></td></tr>\n";
+      html += "  </table>\n";
+      html += "</td></tr>\n";
+    } else {
+      html += "<tr><td></td><td><b>Key Name</b></td><td><b>Key Value</b></td></tr>\n";
+    }
+  }
+
+  // put localStorage into an array, for sorting
+  for (i = 0; i < localStorage.length; i++) {
+    let lsPair = {};
+    lsPair.keyName = localStorage.key(i);
+    lsPair.keyValue = localStorage.getItem(lsPair.keyName);
+    ay.push(lsPair);
+  }
+
+  ay.sort( writeBrowserSavedData_sortingFunc() );
+
+  for (i = 0; i < ay.length; i++) {
+    keyName = ay[i].keyName;
+    keyValue = ay[i].keyValue;
+
+    if (appSetting_narrow == "1") {
+      html += "<tr><td>\n";
+      html += "  <table cellpadding=0 cellspacing=0>\n";
+      html += "  <tr><td><a href='javascript: browser_save__edit_row(\"" + keyName + "\")'>edit</a></td></tr>\n";
+      html += "  <tr><td style='height: 15px'></td></tr>\n";
+      html += "  <tr><td><a href='javascript: browser_save__change_key_name(\"" + keyName + "\")'>change key</a></td></tr>\n";
+      html += "  <tr><td style='height: 15px'></td></tr>\n";
+      html += "  <tr><td><a href='javascript: browser_save__delete_row(\"" + keyName + "\")'>delete</a></td></tr>\n";
+      html += "  </table>\n";
+      html += "</td>\n";
+    } else {
+      html += "<tr><td style='white-space: nowrap'>&nbsp;<a href='javascript: browser_save__edit_row(\"" + keyName + "\")'>edit</a>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript: browser_save__change_key_name(\"" + keyName + "\")'>change key</a>\n";
+      html += "&nbsp;|&nbsp;&nbsp;<a href='javascript: browser_save__delete_row(\"" + keyName + "\")'>delete</a>&nbsp;&nbsp;</td>\n";
+    }
+
+    if (appSetting_narrow == "1") {
+      html += "<td>" + keyName + "</td></tr>\n";
+      html += "<tr><td></td><td>" + keyValue + "</td></tr>\n";
+    } else {
+      html += "<td>" + keyName + "</td><td>" + keyValue + "</td></tr>\n";
+    }
+  }
+
+  html += "</table>\n";
+  html += "<div style='height:0.8em'></div>\n";
+  html += "<div><a href='javascript: browser_save__add_row()'>add row</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: browser_save__refresh_view()'>refresh view</a></div>\n";
+
+  elem("dvBrowserSaveInner").innerHTML = html;
+}
+
+const writeBrowserSavedData_sortingFunc = () => {
+  return (lsPairA, lsPairB) => {
+    if (lsPairA.keyName.toLowerCase() < lsPairB.keyName.toLowerCase()) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
+};
+
 
 // USER-VIEWABLE FUNCTIONS
 
-function do_user_action(linkActionName, linkActionVar1) {
+function browser_save__add_row() {
+  var keyName = prompt("\nNew key name:", "");
+  var keyValue = prompt("\nNew key value:", "");
+
+  if ( isBlank(keyName) ) {
+    return undefined;
+  }
+
+  localStorage.setItem(keyName, keyValue);
+  displayBrowserSave();
+  return undefined;
+}
+
+function browser_save__change_key_name(curKeyName) {
+  var editedKeyName, keyValue, keyValueFromEditedKeyName, warningMsg, confirmationMsg;
+
+  //get new key name user requests
+  editedKeyName = prompt("\nChange key name to:", curKeyName);
+
+  //exit if user did not provide a new key name
+  if ( isBlank(editedKeyName) ) {
+    return undefined;
+  }
+
+  //grab existing key value for current key name
+  keyValue = localStorage.getItem(curKeyName);
+
+  //check to see if new requestd key name is already in use; if so, disallow
+  keyValueFromEditedKeyName = localStorage.getItem(editedKeyName);
+  if ( !isBlank(keyValueFromEditedKeyName) ) {
+    warningMsg = "*** OPERATION DISALLOWED ***\n";
+    warningMsg += "You tried to change key with keyName='" + curKeyName + "'\n";
+    warningMsg += "( keyValue='" + keyValue + "' )\n";
+    warningMsg += "... to the new-keyName '" + editedKeyName + "'\n";
+    warningMsg += "... but that new-keyName already exists, with existing-keyValue '" + keyValueFromEditedKeyName + "'";
+    alert(warningMsg);
+    return undefined;
+  }
+
+  //save new key to storage
+  localStorage.setItem(editedKeyName, keyValue);
+
+  //delete previous key name
+  localStorage.removeItem(curKeyName);
+
+  //provide info with change
+  confirmationMsg = "Change Made:\n\n";
+  confirmationMsg += " old-keyName: " + curKeyName + "\n";
+  confirmationMsg += " new-keyName " + editedKeyName + "\n";
+  confirmationMsg += " keyValue: " + keyValue;
+  alert(confirmationMsg);
+
+  //refresh storage view
+  displayBrowserSave();
+  return undefined;
+}
+
+function browser_save__delete_all_saved_data() {
+  var clearStoragePrompt;
+  
+  //disabling typing of "clear it" confirmation during heavy design and development phase
+  //clearStoragePrompt = prompt("\ntype 'clear it' to clear local storage", "");
+  //if (clearStoragePrompt == "clear it") {
+  //  localStorage.clear();
+  //  alert("storage cleared");
+  //} else {
+  //  alert("storage NOT cleared");
+  //}
+
+  if ( confirm("\nDelete all saved browser data?\n\n\n") ) {
+
+    localStorage.clear();
+
+    if ( confirm("\nStorage cleared.\n\nRestart app?\n\n\n") ) {
+      startApp();
+    }
+
+  } else {
+
+    alert("\nOperaton canceled. Storage NOT cleared.\n\n\n");
+
+  }
+
+  return undefined;
+}
+
+function browser_save__delete_row(keyName) {
+  if ( confirm("\nDelete this row?\n\n\n") ) {
+    localStorage.removeItem(keyName);
+    displayBrowserSave();
+  }
+  return undefined;
+}
+
+function browser_save__edit_row(keyName) {
+  var curKeyValue = localStorage.getItem(keyName);
+
+  var editedKeyValue = prompt( "\nChange key value to:", getProcessedStringForTextView(curKeyValue) );
+
+  if ( editedKeyValue == null ) {
+    return undefined;
+  }
+
+  editedKeyValue = getProcessedStringForSave(editedKeyValue);
+
+  localStorage.setItem(keyName, editedKeyValue);
+  displayBrowserSave();
+  return undefined;
+}
+
+function browser_save__return_to_game() {
+  elem("dvBrowserSaveOuter").style.display = "none";
+  startApp();
+  return undefined;
+}
+
+function browser_save__refresh_view() {
+  displayBrowserSave();
+  return undefined;
+}
+
+function browser_save__view() {
+  displayBrowserSave();
+  return undefined;
+}
+
+function dev_editor__add_user_action__do_add() {
+  var uaText = elem("ipEditor_uaAdd_uaText").value;
+
+  if ( ! isBlank(uaText) ) {
+    getAndMakeNewUa(APP.curPageObj, uaText);
+    
+    displayPage(APP.curPageObj);
+  }
+
+  return undefined;
+}
+
+function dev_editor__add_user_action__cancel_add() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
+function dev_editor__add_text_row() {
+  var textOfRow = prompt("\nEnter the text for the new text-row:", "");
+
+  if ( isBlank(textOfRow) ) {
+    return undefined;
+  }
+
+  getAndMakeNewTr(APP.curPageObj, textOfRow);
+
+  displayPage(APP.curPageObj);
+
+  return undefined;
+}
+
+function dev_editor__create_page() {
+  return undefined;
+}
+
+function dev_editor__delete_text_row(trCodename) {
+  var curTextOfRow, trObj;
+  
+  curTextOfRow = getFromBrowserSave_single(C_typecode_tr, trCodename, C_att_textOfRow);
+
+  if ( confirm("\nPlease confirm that you want to delete this text-row\n\n\n") ) {
+    trObj = APP.curPageObj.deleteTr(trCodename);
+    displayPage(APP.curPageObj);
+  }
+
+  return undefined;
+}
+
+function dev_editor__delete_user_action__do_delete() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
+function dev_editor__delete_user_action__cancel_delete() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
+function dev_editor__edit_user_action__do_edit() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
+function dev_editor__edit_user_action__cancel_edit() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
+function dev_editor__edit_text_row(trCodename) {
+  var curTextOfRow, newTextOfRow, trObj;
+  
+  curTextOfRow = getFromBrowserSave_single(C_typecode_tr, trCodename, C_att_textOfRow);
+
+  newTextOfRow = prompt("\nEnter new text:", curTextOfRow);
+
+  if ( isBlank(newTextOfRow) ) {
+    return undefined;
+  }
+
+  trObj = APP.curPageObj.getTrObj(trCodename);
+  trObj.textOfRow = newTextOfRow;
+  trObj.saveToBrowser();
+
+  displayPage(APP.curPageObj);
+
+  return undefined;
+}
+
+function dev_editor__goto__add_user_action() {
+  displayEditor_uaAdd();
+  return undefined;
+}
+
+function dev_editor__goto__delete_user_action(uaCodename) {
+  displayEditor_uaDelete();
+  return undefined;
+}
+
+function dev_editor__goto__edit_user_action(uaCodename) {
+  displayEditor_uaEdit();
+  return undefined;
+}
+
+function dev_editor__hide_editor() {
+  setAppSetting(C_appSetting_dev_hideEditor, "1")
+  startApp();
+  return undefined;
+}
+
+function dev_editor__rename_game() {
+  return undefined;
+}
+
+function dev_editor__show_editor() {
+  setAppSetting(C_appSetting_dev_hideEditor, "0")
+  startApp();
+  return undefined;
+}
+
+function dev_editor__view_all_games() {
+  return undefined;
+}
+
+function do_user_action(usCodename) {
+  alert("\n(incomplete)\n\nWould run the user action now\n\n\n");
+  return undefined;
+}
+
+function do_user_action_OLD(linkActionName, linkActionVar1) {
   runUserAction(linkActionName, linkActionVar1);
   return undefined;
 }
 
-runGame();
+
+// START APP (also runs the default game)
+
+startApp();
+
 
 </script>
 
 </body>
+
 </html>
