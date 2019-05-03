@@ -83,6 +83,10 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
     </div>
   </div>
   <div style="height:0.6em"></div>
+  <div>
+    Message When Examined: <input id="ipEditor_AddToLocInventory_ExamineMsg" class="" value="" />
+  </div>
+  <div style="height:0.6em"></div>
   <div style="display: inline-block">
     <hr></hr>
     <div style="height:0.8em"></div>
@@ -327,6 +331,7 @@ const C_appSetting_LS = "LS";
 
 const C_att_canGrab = "canGrab";
 const C_att_curPageCodename = "curPageCodename"
+const C_att_examineMsg = "examineMsg";
 const C_att_gameCodename = "gameCodename";
 const C_att_inventory = "inventory";
 const C_att_isUser = "isUser";
@@ -392,8 +397,9 @@ const C_typecode_tr = "tr";
 const C_typecode_ua = "ua";
 const C_typecode_unknown = "?";
 
-const C_uatype_moveToLoc = "moveToLoc";
+const C_uatype_examine = "examine";
 const C_uatype_grabItm = "grabItm";
+const C_uatype_moveToLoc = "moveToLoc";
 
 const C_userAction_changeYourName = "change your name";
 const C_userAction_goToInfo = "go to info";
@@ -561,6 +567,7 @@ function devEditor_addToLocInventory() {
 
   elem("ipEditor_AddToLocInventory_ItmName").value = "";
   elem("ipEditor_AddToLocInventory_UseReceivedMsg").value = "";
+  elem("ipEditor_AddToLocInventory_ExamineMsg").value = "";
   elem("ipEditor_AddToLocInventory_CanGrab").checked = false;
 
   usereceivetypeObjs = getUsereceivetypesObjAy();
@@ -613,25 +620,6 @@ function devEditor_pageAdd() {
   elem("ipEditor_PageAdd_Name").focus();
 }
 
-
-
-
-function getIsIsNotObjAy() {
-  var ay = [];
-
-  var obj_is = {};
-  obj_is.codename = C_misc_is;
-  obj_is.name = C_misc_is;
-  ay.push(obj_is);
-
-  var obj_isNot = {};
-  obj_isNot.codename = C_misc_isNot;
-  obj_isNot.name = C_misc_isNot;
-  ay.push(obj_isNot);
-
-  return ay;
-}
-
 function devEditor_trAdd() {
   var htmlSel_itms_checkStatus, htmlSel_itms_checkLocInv, htmlSel_itms_checkLocInv_isIsNot;
 
@@ -680,7 +668,7 @@ function devEditor_trAdd_changeItm() {
 }
 
 function devEditor_uaAdd() {
-  var uatypesObjs, htmlSel_uatypes, htmlSel_itms_canGrab, allGameLocObjs, htmlSel_locs, htmlSel_itms_statusReq;
+  var uatypesObjs, htmlSel_uatypes, allGameLocObjs, htmlSel_locs, htmlSel_itms_statusReq;
   var htmlSel_status;
 
   hideAllDisplays();
@@ -693,9 +681,6 @@ function devEditor_uaAdd() {
   htmlSel_uatypes = getHtml_sel("selEditor_UaAdd_Uatype", true, uatypesObjs, null, "width: 2in", "devEditor_uaAdd_changeUatype()", null, false, undefined, undefined, undefined);
   elem("spnEditor_UaAdd_Uatype").innerHTML = htmlSel_uatypes;
   
-  htmlSel_itms_canGrab = getHtml_sel("selEditor_UaAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(true, false, true), null, "width: 2in", null, null, false, undefined, "name2", undefined);
-  elem("spnEditor_UaAdd_ItmCodename").innerHTML = htmlSel_itms_canGrab;
-
   allGameLocObjs = APP.curGameObj.getAllLocObjs(true);
   htmlSel_locs = getHtml_sel("selEditor_UaAdd_LocCodename", true, allGameLocObjs, null, "width: 2in", undefined, undefined, undefined);
   elem("spnEditor_UaAdd_LocCodename").innerHTML = htmlSel_locs;
@@ -733,12 +718,29 @@ function devEditor_uaAdd_changeUatype() {
   elem("dvEditor_UaAdd_statusReq").style.display = "none";
 
   switch(uatype) {
+
+    case C_uatype_examine:
+      {
+        let htmlSel_itms_all = getHtml_sel("selEditor_UaAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, false, true), null, "width: 2in", null, null, false, undefined, "name2", undefined);
+        elem("spnEditor_UaAdd_ItmCodename").innerHTML = htmlSel_itms_all;
+
+        elem("dvEditor_UaAdd_Itms").style.display = "";
+        break;
+      }
+
     case C_uatype_grabItm:
-      elem("dvEditor_UaAdd_Itms").style.display = "";
-      break;
+      {
+        let htmlSel_itms_canGrab = getHtml_sel("selEditor_UaAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(true, false, true), null, "width: 2in", null, null, false, undefined, "name2", undefined);
+        elem("spnEditor_UaAdd_ItmCodename").innerHTML = htmlSel_itms_canGrab;
+
+        elem("dvEditor_UaAdd_Itms").style.display = "";
+        break;
+      }
+
     case C_uatype_moveToLoc:
       elem("dvEditor_UaAdd_Locs").style.display = "";
       break;
+
   }
 
   if ( ! isBlank(uatype) ) {
@@ -912,14 +914,14 @@ function getAndMakeNewGame(codename, name) {
   return gameObj;
 }
 
-function getAndMakeNewItm(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus) {
+function getAndMakeNewItm(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
   var itmObj;
 
   if ( isBlank(codename)) {
     codename = getCodenameFromName(name, C_typecode_itm);
   }
 
-  itmObj = getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus);
+  itmObj = getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg);
 
   itmObj.saveToBrowser();
 
@@ -1655,7 +1657,15 @@ function getHtml_pageDisplay(pageObj) {
       let uaText;
 
       switch (curUaObj.uatype) {
-        case C_uatype_moveToLoc:
+        case C_uatype_examine:
+          {
+            let locObj = APP.curPageObj.getLocObj();
+
+            let locHasItm = locObj.hasItm(curUaObj.itmCodename);
+            if ( ! locHasItm ) {
+              showUa = false;
+            }
+          }
           break;
         case C_uatype_grabItm:
           {
@@ -1666,6 +1676,8 @@ function getHtml_pageDisplay(pageObj) {
               showUa = false;
             }
           }
+          break;
+        case C_uatype_moveToLoc:
           break;
       }
 
@@ -1832,7 +1844,23 @@ function getInventoryFromItmObjs(itmObjs) {
   return inventory;
 }
 
-function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus) {
+function getIsIsNotObjAy() {
+  var ay = [];
+
+  var obj_is = {};
+  obj_is.codename = C_misc_is;
+  obj_is.name = C_misc_is;
+  ay.push(obj_is);
+
+  var obj_isNot = {};
+  obj_isNot.codename = C_misc_isNot;
+  obj_isNot.name = C_misc_isNot;
+  ay.push(obj_isNot);
+
+  return ay;
+}
+
+function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
   var itmObj = {};
 
   itmObj.codename = codename;
@@ -1877,8 +1905,8 @@ function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, user
     statusReq_itmCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_statusReq_itmCodename);
   }
 
-  if ( isBlank(statusReq_itmStatus) ) {
-    statusReq_itmStatus = getFromBrowserSave_single(C_typecode_itm, codename, C_att_statusReq_itmStatus);
+  if ( isBlank(examineMsg) ) {
+    examineMsg = getFromBrowserSave_single(C_typecode_itm, codename, C_att_examineMsg);
   }
 
   itmObj.gameCodename = gameCodename;
@@ -1892,6 +1920,7 @@ function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, user
   itmObj.useReceivedMsg = useReceivedMsg;
   itmObj.statusReq_itmCodename = statusReq_itmCodename;
   itmObj.statusReq_itmStatus = statusReq_itmStatus;
+  itmObj.examineMsg = examineMsg;
 
   itmObj.reset = function() {
     var gameObj = getGameObj(this.gameCodename);
@@ -1947,6 +1976,7 @@ function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, user
     saveToBrowser(C_typecode_itm, this.codename, C_att_useReceivedMsg, this.useReceivedMsg);
     saveToBrowser(C_typecode_itm, this.codename, C_att_statusReq_itmCodename, this.statusReq_itmCodename);
     saveToBrowser(C_typecode_itm, this.codename, C_att_statusReq_itmStatus, this.statusReq_itmStatus);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_examineMsg, this.examineMsg);
   };
   
   return itmObj;
@@ -2680,6 +2710,9 @@ function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCoden
 
 function getUatypeDisplayText(uatype) {
   switch(uatype) {
+    case C_uatype_examine:
+      return "examine";
+      break;
     case C_uatype_grabItm:
       return "grab item";
       break;
@@ -2691,8 +2724,13 @@ function getUatypeDisplayText(uatype) {
 
 function getUatypesObjAy() {
   var ay = [];
+  var uatypeObj_examine = {};
   var uatypeObj_grabItm = {};
   var uatypeObj_moveToLoc = {};
+
+  uatypeObj_examine.codename = C_uatype_examine;
+  uatypeObj_examine.name = getUatypeDisplayText(C_uatype_examine);
+  ay.push(uatypeObj_examine);
 
   uatypeObj_grabItm.codename = C_uatype_grabItm;
   uatypeObj_grabItm.name = getUatypeDisplayText(C_uatype_grabItm);
@@ -3125,6 +3163,33 @@ function runCurGame_init_userEntity() {
 function runUserAction(uatype, uaVar1) {
   switch (uatype) {
 
+    case C_uatype_examine:
+      {
+        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
+        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename);
+        let msgToShow;
+
+        if ( isBlank(itmObj.examineMsg) ) {
+          msgToShow = "There is nothing special about this object.";
+        } else {
+          msgToShow = itmObj.examineMsg;
+        }
+
+        alert("\n" + itmObj.name + "\n\n\n" + msgToShow + "\n\n\n");
+      }
+      break;
+
+    case C_uatype_grabItm:
+        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
+        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename);
+        let curLocObj = APP.curPageObj.getLocObj();
+
+        APP.userEntObj.receiveItmObj(itmObj);
+        curLocObj.removeItmObj(itmObj);
+
+        runCurGame();
+      break;
+
     case C_uatype_moveToLoc:
       {
         let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
@@ -3139,18 +3204,6 @@ function runUserAction(uatype, uaVar1) {
 
         runCurGame();
       }
-      break;
-
-
-    case C_uatype_grabItm:
-        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
-        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename, APP.curPageObj.codename);
-        let curLocObj = APP.curPageObj.getLocObj();
-
-        APP.userEntObj.receiveItmObj(itmObj);
-        curLocObj.removeItmObj(itmObj);
-
-        runCurGame();
       break;
 
 
@@ -3731,7 +3784,7 @@ function dev_editor__add_text_row__cancel_add() {
 }
 
 function dev_editor__add_to_location_inventory__do_add() {
-  var itmName, canGrab, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, itmObj;
+  var itmName, canGrab, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, itmObj, examineMsg;
 
   itmName = getElemVal("ipEditor_AddToLocInventory_ItmName");
   canGrab = getElemVal("ipEditor_AddToLocInventory_CanGrab");
@@ -3767,7 +3820,9 @@ function dev_editor__add_to_location_inventory__do_add() {
 
   useReceivedMsg = getElemVal("ipEditor_AddToLocInventory_UseReceivedMsg");
 
-  itmObj = getAndMakeNewItm(null, APP.curGameObj.codename, itmName, canGrab, APP.curPageObj.locCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus)
+  examineMsg = getElemVal("ipEditor_AddToLocInventory_ExamineMsg");
+
+  itmObj = getAndMakeNewItm(null, APP.curGameObj.codename, itmName, canGrab, APP.curPageObj.locCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg)
 
   APP.curLocObj.receiveItmObj(itmObj);
   
@@ -3797,6 +3852,14 @@ function dev_editor__add_user_action__do_add() {
   }
 
   switch(uatype) {
+
+    case C_uatype_examine:
+      itmCodename = getElemVal("selEditor_UaAdd_ItmCodename");
+      if ( isBlank(itmCodename) ) {
+        alert("\nPlease select 'Object'\n\n\n");
+        return undefined;
+      }
+      break;
 
     case C_uatype_grabItm:
       itmCodename = getElemVal("selEditor_UaAdd_ItmCodename");
