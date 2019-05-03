@@ -19,6 +19,7 @@ a:active {text-decoration: none}
 
 body {font-size: 110%; font-family: Helvetica}
 input {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 4px; padding-right: 4px; padding-top: 1px}
+input[type="checkbox"] {background-color: ; transform:scale(1.5, 1.5);}
 option {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9}
 select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; padding-left: 1px; padding-right: 1px}
 </style>
@@ -60,6 +61,16 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
     Can Be Grabbed: <input id="ipEditor_AddToLocInventory_CanGrab" type="checkbox" class="" />
   </div>
   <div style="height:0.6em"></div>
+  <div>
+    Use-Receive Type: <span id="spnEditor_AddToLocInventory_Usereceivetype"></span>
+  </div>
+  <div id="dvEditor_AddToLocInventory_ItmThatAffects">
+    <div style="height:0.6em"></div>
+    <div>
+      Other Object That Can Be Used Upon This: <span id="spnEditor_AddToLocInventory_ItmThatAffects"></span>
+    </div>
+  </div>
+  <div style="height:0.6em"></div>
   <div style="display: inline-block">
     <hr></hr>
     <div style="height:0.8em"></div>
@@ -68,7 +79,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__add_to_location_inventory__cancel_add()">cancel</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvEditor_PageAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
@@ -86,11 +97,39 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__create_new_page__cancel_add()">cancel</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
+</div>
+
+<div id="dvEditor_TrAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+  <div><b>Add Text-Row</b></div>
+  <div style="height:0.6em"></div>
+  <div>
+    Display Text: <input id="ipEditor_TrAdd_TextOfRow" class="" value="" />
+  </div>
+  <div style="height:0.6em"></div>
+  <div>
+    Show/Hide Based on Status of Item: <span id="spnEditor_TrAdd_ItmCodename"></span>
+  </div>
+  <div id="dvEditor_TrAdd_ItmStatusReq">
+    <div style="height:0.6em"></div>
+    <div>
+      Status Required to Show Text-Row: <span id="spnEditor_TrAdd_ItmStatusReq"></span>
+    </div>
+  </div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div>
+      <a style="white-space: nowrap" href="javascript: dev_editor__add_text_row__do_add()">add</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__add_text_row__cancel_add()">cancel</a>
+    </div>
+  </div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvEditor_UaAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
-  <div><b>Add User Action</b></div>
+  <div><b>Add User-Action</b></div>
   <div style="height:0.6em"></div>
   <div>
     Name of Action: <input id="ipEditor_UaAdd_UaText" class="" value="" />
@@ -119,6 +158,12 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
     </div>
     -->
   </div>
+  <div id="dvEditor_UaAdd_statusReq">
+    <div style="height:0.6em"></div>
+    <div>
+      Also Requires Object: <span id="spnEditor_UaAdd_StatusReq_ItmCodename"></span>&nbsp;&nbsp;to have Status: <span id="spnEditor_UaAdd_StatusReq_ItmStatus"></span>
+    </div>
+  </div>
   <div style="height:0.6em"></div>
   <div style="display: inline-block">
     <hr></hr>
@@ -128,11 +173,11 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__add_user_action__cancel_add()">cancel</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvEditor_UaDelete_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
-  <div><b>Confirm Deletion of User Action</b></div>
+  <div><b>Confirm Deletion of User-Action</b></div>
   <div style="height:0.6em"></div>
   <div>
     User-Action Name: <span id="spnEditor_UaDelete_UaText" class=""></span>
@@ -146,11 +191,11 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aEditor_UaDelete_cancelDelete" href="javascript: dev_editor__delete_user_action__cancel_delete()">cancel deletion</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvEditor_UaEdit_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
-  <div><b>Edit User Action</b></div>
+  <div><b>Edit User-Action</b></div>
   <div style="height:0.6em"></div>
   <div>
     New Name for Action: <input id="ipEditor_UaEdit_UaText" class="" value="" />
@@ -164,7 +209,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__edit_user_action__cancel_edit()">cancel</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvEditor_ViewAllPages_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
@@ -182,13 +227,35 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a id="aEditor_UaDelete_cancelDelete" href="javascript: dev_editor__delete_user_action__cancel_delete()">cancel deletion</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvGameOuter" style="padding-left: 1em; padding-top: 1em">
   <div id="dvGameInner_Page"></div>
   <div style="height:1.5em"></div>
   <div id="dvGameInner_Dev"></div>
+  <div style="height:2em"></div>
+</div>
+
+<div id="dvUseItm_Outer" style="padding-left: 1em; padding-top: 1em">
+  <div><b>Use Object:</b> <span id="spnUseItm_Name"></span></div>
+  <div style="height:1.2em"></div>
+  <div>... on an item in the current location:</div>
+  <div style="height:0.6em"></div>
+  <div id="dvUseItm_LocItms" class=""></div>
+  <div style="height:1.2em"></div>
+  <div>... or on an item in your inventory:</div>
+  <div style="height:0.6em"></div>
+  <div id="dvUseItm_UserEntItms" class=""></div>
+  <div style="height:0.6em"></div>
+  <div style="display: inline-block">
+    <hr></hr>
+    <div style="height:0.8em"></div>
+    <div>
+      <a style="white-space: nowrap" href="javascript: return_to_user_inventory()">cancel</a>
+    </div>
+  </div>
+  <div style="height:2em"></div>
 </div>
 
 <div id="dvUserInventory_Outer" style="padding-left: 1em; padding-top: 1em">
@@ -203,7 +270,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
       <a style="white-space: nowrap" href="javascript: return_from_user_inventory()">done</a>
     </div>
   </div>
-  <div style="height:1em"></div>
+  <div style="height:2em"></div>
 </div>
 
 </div>
@@ -228,20 +295,29 @@ const C_att_gameCodename = "gameCodename";
 const C_att_inventory = "inventory";
 const C_att_isUser = "isUser";
 const C_att_itmCodename = "itmCodename";
+const C_att_itmStatusReq = "itmStatusReq";
+const C_att_itmThatAffects = "itmThatAffects";
 const C_att_locCodename = "locCodename";
 const C_att_locName = "locName";
 const C_att_name = "name";
 const C_att_pageCodename = "pageCodename";
 const C_att_startLocCodename = "startLocCodename";
 const C_att_startPageCodename = "startPageCodename"
+const C_att_startStatus = "startStatus";
+const C_att_status = "status";
+const C_att_statusReq_itmCodename = "statusReq_itmCodename";
+const C_att_statusReq_itmStatus = "statusReq_itmStatus";
 const C_att_textOfRow = "textOfRow";
 const C_att_uaText = "uaText";
 const C_att_uatype = "uatype";
+const C_att_usereceivetype = "usereceivetype";
 
 const C_displayVarStub_locAtt = "LOC_ATT";
 
 const C_displayVar_you = "YOU";
 const C_displayVar_curLoc = "CUR_LOC";
+
+const C_usereceivetype_closedOpen = "closedOpen";
 
 const C_locCodename_cozyRoom = "cozy room";
 const C_locCodename_scaryRoom = "scary room";
@@ -259,6 +335,9 @@ const C_saveTypeName_unknown = "unknown";
 
 const C_spacerHeight = "0.5em"
 
+const C_status_closed = "closed";
+const C_status_open = "open";
+
 const C_typecode_appSetting = "appSetting";
 const C_typecode_ent = "E";
 const C_typecode_game = "G";
@@ -273,11 +352,8 @@ const C_uatype_moveToLoc = "moveToLoc";
 const C_uatype_grabItm = "grabItm";
 
 const C_userAction_changeYourName = "change your name";
-const C_userAction_closeDoor = "close door";
 const C_userAction_goToInfo = "go to info";
 const C_userAction_goToPage = "go to page"
-const C_userAction_moveToLoc = "move to location"
-const C_userAction_openDoor = "open door";
 const C_userAction_openInventory = "open your inventory";
 
 
@@ -286,6 +362,7 @@ const C_userAction_openInventory = "open your inventory";
 const APP = {};
 APP.allGameBrSvObjs = [];
 APP.curGameObj = null;
+APP.curItmObj = null;
 APP.curPageObj = null;
 APP.dev = "0";
 APP.dev_hideEditor = "0";
@@ -339,6 +416,10 @@ function changeLocAtt(pageObj, att, newVal) {
 const da = function(text) {
   alert(text);
 };
+
+const da_ = function() {
+  // (same note as function dc)
+}
 
 const dc = function(text1, text2, text3, text4, text5, text6, text7, text8, text9, text10) {
   var str = "";
@@ -427,13 +508,37 @@ function deleteFromBrowserSave_singleRow(typecode, codename, att) {
   localStorage.removeItem(bsk);
 }
 
-function displayBrowserSave() {
+function devEditor_addToLocInventory() {
+  var usereceivetypeObjs, htmlSel_usereceivetypes, curLocObj, htmlSel_itms;
+
   hideAllDisplays();
-  writeBrowserSavedData();
-  elem("dvBrowserSaveOuter").style.display = "";
+
+  elem("ipEditor_AddToLocInventory_ItmName").value = "";
+  elem("ipEditor_AddToLocInventory_CanGrab").checked = false;
+
+  usereceivetypeObjs = getUsereceivetypesObjAy();
+  htmlSel_usereceivetypes = getHtml_sel("selEditor_AddToLocInventory_Usereceivetype", true, usereceivetypeObjs, null, "width: 2in", "devEditor_addToLocInventory_changeUsereceivetype()", null, false, undefined, undefined, undefined);
+  elem("spnEditor_AddToLocInventory_Usereceivetype").innerHTML = htmlSel_usereceivetypes;
+
+  htmlSel_itms = getHtml_sel("selEditor_AddToLocInventory_ItmThatAffects", true, APP.curGameObj.getAllItmObjs(true, false), null, "width: 2in", undefined, undefined, undefined);
+  elem("spnEditor_AddToLocInventory_ItmThatAffects").innerHTML = htmlSel_itms;
+  devEditor_addToLocInventory_changeUsereceivetype();
+
+  elem("dvEditor_AddToLocInventory_Outer").style.display = "";
+  elem("ipEditor_AddToLocInventory_ItmName").focus();
 }
 
-function displayEditor_pageAdd() {
+function devEditor_addToLocInventory_changeUsereceivetype() {
+  var usereceivetype = getElemVal("selEditor_AddToLocInventory_Usereceivetype");
+
+  elem("dvEditor_AddToLocInventory_ItmThatAffects").style.display = "none";
+
+  if ( ! isBlank(usereceivetype) ) {
+    elem("dvEditor_AddToLocInventory_ItmThatAffects").style.display = "";
+  }
+}
+
+function devEditor_pageAdd() {
   hideAllDisplays();
 
   elem("ipEditor_PageAdd_Name").value = "";
@@ -442,50 +547,110 @@ function displayEditor_pageAdd() {
   elem("ipEditor_PageAdd_Name").focus();
 }
 
-function displayEditor_uaAdd() {
-  var uatypesObjs, htmlSel_uatypes, allGameItmObjs, htmlSel_itms, allGameLocObjs, htmlSel_locs;
+function devEditor_trAdd() {
+  var htmlSel_itms;
+
+  hideAllDisplays();
+
+  elem("ipEditor_TrAdd_TextOfRow").value = "";
+
+  htmlSel_itms = getHtml_sel("selEditor_TrAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true), null, "width: 2in", "devEditor_trAdd_changeItm()", undefined, undefined);
+  elem("spnEditor_TrAdd_ItmCodename").innerHTML = htmlSel_itms;
+
+  devEditor_trAdd_changeItm();
+
+  elem("dvEditor_TrAdd_Outer").style.display = "";
+  elem("ipEditor_TrAdd_TextOfRow").focus();
+}
+
+function devEditor_trAdd_changeItm() {
+  var itmCodename, itmObj, itmStatusObjs, htmlSel_itmStatusReq;
+
+  elem("dvEditor_TrAdd_ItmStatusReq").style.display = "none";
+
+  itmCodename = getElemVal("selEditor_TrAdd_ItmCodename");
+
+  if ( isBlank(itmCodename) ) {
+    return;
+  }
+
+  itmObj = getItmObj(itmCodename, APP.curGameObj.codename);
+
+  if ( isBlank(itmObj.usereceivetype) ) {
+    return;
+  }
+
+  itmStatusObjs = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
+  htmlSel_itmStatusReq = getHtml_sel("selEditor_TrAdd_ItmStatusReq", true, itmStatusObjs, null, "width: 2in", undefined, undefined, undefined);
+  elem("spnEditor_TrAdd_ItmStatusReq").innerHTML = htmlSel_itmStatusReq;
+  elem("dvEditor_TrAdd_ItmStatusReq").style.display = "";
+}
+
+function devEditor_uaAdd() {
+  var uatypesObjs, htmlSel_uatypes, htmlSel_itms_canGrab, allGameLocObjs, htmlSel_locs, htmlSel_itms_usereceivetype;
+  var htmlSel_status;
 
   hideAllDisplays();
 
   elem("ipEditor_UaAdd_UaText").value = "";
 
   uatypesObjs = getUatypesObjAy();
-  htmlSel_uatypes = getHtml_sel("selEditor_UaAdd_Uatype", true, uatypesObjs, null, "width: 2in", "displayEditor_uaAdd_changeUatype()", null, false, undefined, undefined, undefined);
+  htmlSel_uatypes = getHtml_sel("selEditor_UaAdd_Uatype", true, uatypesObjs, null, "width: 2in", "devEditor_uaAdd_changeUatype()", null, false, undefined, undefined, undefined);
   elem("spnEditor_UaAdd_Uatype").innerHTML = htmlSel_uatypes;
   
-  allGameItmObjs = APP.curGameObj.getAllItmObjs();
-  htmlSel_itms = getHtml_sel("selEditor_UaAdd_ItmCodename", true, allGameItmObjs, null, "width: 2in", undefined, undefined, undefined);
-  elem("spnEditor_UaAdd_ItmCodename").innerHTML = htmlSel_itms;
-  elem("dvEditor_UaAdd_Itms").style.display = "none";
+  htmlSel_itms_canGrab = getHtml_sel("selEditor_UaAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(true, false), null, "width: 2in", undefined, undefined, undefined);
+  elem("spnEditor_UaAdd_ItmCodename").innerHTML = htmlSel_itms_canGrab;
 
-  allGameLocObjs = APP.curGameObj.getAllLocObjs();
+  allGameLocObjs = APP.curGameObj.getAllLocObjs(true);
   htmlSel_locs = getHtml_sel("selEditor_UaAdd_LocCodename", true, allGameLocObjs, null, "width: 2in", undefined, undefined, undefined);
   elem("spnEditor_UaAdd_LocCodename").innerHTML = htmlSel_locs;
-  elem("dvEditor_UaAdd_Locs").style.display = "none";
+
+  htmlSel_itms_usereceivetype = getHtml_sel("selEditor_UaAdd_StatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true), null, "width: 2in", "devEditor_uaAdd_changeStatusReq_itmCodename()", undefined, undefined);
+  elem("spnEditor_UaAdd_StatusReq_ItmCodename").innerHTML = htmlSel_itms_usereceivetype;
+
+  devEditor_uaAdd_changeUatype();
+  devEditor_uaAdd_changeStatusReq_itmCodename();
 
   elem("dvEditor_UaAdd_Outer").style.display = "";
   elem("ipEditor_UaAdd_UaText").focus();
 }
 
-function displayEditor_uaAdd_changeUatype() {
+function devEditor_uaAdd_changeStatusReq_itmCodename() {
+  var statusReq_itmCodename, itmStatusObjAy, htmlSel_statusReq_status;
+
+  statusReq_itmCodename = getElemVal("selEditor_UaAdd_StatusReq_ItmCodename");
+
+  if ( isBlank(statusReq_itmCodename) ) {
+    elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = "---";
+  } else {
+    let itmObj = getItmObj(statusReq_itmCodename, APP.curGameObj.codename);
+    itmStatusObjAy = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
+    htmlSel_statusReq_status = getHtml_sel("selEditor_UaAdd_StatusReq_ItmStatus", true, itmStatusObjAy, null, "width: 2in", undefined, undefined, undefined);
+    elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = htmlSel_statusReq_status;
+  }
+}
+function devEditor_uaAdd_changeUatype() {
   var uatype = getElemVal("selEditor_UaAdd_Uatype");
 
   elem("dvEditor_UaAdd_Itms").style.display = "none";
   elem("dvEditor_UaAdd_Locs").style.display = "none";
+  elem("dvEditor_UaAdd_statusReq").style.display = "none";
 
   switch(uatype) {
     case C_uatype_grabItm:
       elem("dvEditor_UaAdd_Itms").style.display = "";
-      //elem("selEditor_UaAdd_ItmCodename").focus();
       break;
     case C_uatype_moveToLoc:
       elem("dvEditor_UaAdd_Locs").style.display = "";
-      //elem("selEditor_UaAdd_LocCodename").focus();
       break;
+  }
+
+  if ( ! isBlank(uatype) ) {
+    elem("dvEditor_UaAdd_statusReq").style.display = "";
   }
 }
 
-function displayEditor_uaDelete() {
+function devEditor_uaDelete() {
   var uaObj;
 
   hideAllDisplays();
@@ -498,7 +663,7 @@ function displayEditor_uaDelete() {
   elem("aEditor_UaDelete_cancelDelete").focus();
 }
 
-function displayEditor_uaEdit(uaCodename) {
+function devEditor_uaEdit(uaCodename) {
   var uaObj;
 
   hideAllDisplays();
@@ -512,11 +677,10 @@ function displayEditor_uaEdit(uaCodename) {
   elem("ipEditor_UaEdit_UaText").select();
 }
 
-function displayEditor_locInventory_add() {
+function displayBrowserSave() {
   hideAllDisplays();
-  elem("ipEditor_AddToLocInventory_ItmName").value = "";
-  elem("dvEditor_AddToLocInventory_Outer").style.display = "";
-  elem("ipEditor_AddToLocInventory_ItmName").focus();
+  writeBrowserSavedData();
+  elem("dvBrowserSaveOuter").style.display = "";
 }
 
 function displayPage(pageObj) {
@@ -535,15 +699,87 @@ function displayPage(pageObj) {
   elem("dvGameOuter").style.display = "";
 }
 
+function displayUseItm(codename) {
+  var curLocObj;
+
+  hideAllDisplays();
+
+  APP.curItmObj = getItmObj(codename, APP.curGameObj.codename);
+  
+  elem("spnUseItm_Name").innerHTML = APP.curItmObj.name;
+
+  curLocObj = APP.curPageObj.getLocObj();
+  elem("dvUseItm_LocItms").innerHTML = curLocObj.getInventoryListHtml("receive_use_from_object");
+
+  elem("dvUseItm_UserEntItms").innerHTML = APP.userEntObj.getInventoryListHtml(false, "receive_use_from_object");
+
+  elem("dvUseItm_Outer").style.display = "";
+}
+
 function displayUserInventory() {
   var htmlList;
 
   hideAllDisplays();
 
-  htmlList = APP.userEntObj.getInventoryListHtml()
+  htmlList = APP.userEntObj.getInventoryListHtml(true, null)
   elem("dvUserInventory_Inner").innerHTML = htmlList;
 
   elem("dvUserInventory_Outer").style.display = "";
+}
+
+function doesObjArrayHaveElem(theArray, propName, propValToMatch) {
+  for (var i = 0; i < theArray.length; i++) {
+
+    if ( ! doesObjHaveProp(theArray[i],propName) ) {
+      continue;
+    }
+
+    if ( isEqual(theArray[i][propName], propValToMatch) ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function doesObjHaveProp(obj, propName) {
+  if (obj == null) {
+    return false;
+  }
+
+  if ( obj[propName] === undefined ) {
+    return false;
+  } else {
+    return true;
+  }
+
+  /* test code for this function:
+
+  var x;
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("1-true"); } else { dc_("1-false"); }
+
+  x = null;
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("2-true"); } else { dc_("2-false"); }
+
+  x = 123;
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("3-true"); } else { dc_("3-false"); }
+
+  x = "abc";
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("4-true"); } else { dc_("4-false"); }
+
+  x = {};
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("5-true"); } else { dc_("5-false"); }
+
+  x.prop0 = null;
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("6-true"); } else { dc_("6-false"); }
+
+  x.prop1 = null;
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("7-true"); } else { dc_("7-false"); }
+
+  x.prop1 = "a";
+  if ( doesObjHaveProp(x, "prop1") ) { dc_("8-true"); } else { dc_("8-false"); }
+
+  */
 }
 
 function elem(elemId) {
@@ -578,39 +814,35 @@ function getAndMakeNewGame(codename, name) {
   return gameObj;
 }
 
-function getAndMakeNewItm(codename, name, gameCodename, canGrab) {
+function getAndMakeNewItm(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects) {
   var itmObj;
 
   if ( isBlank(codename)) {
     codename = getCodenameFromName(name);
   }
 
-  itmObj;
-
-  codename = getStringWithCharsReplaced(codename, ";", "");
-
-  itmObj = getItmObj(codename, name, gameCodename, canGrab);
+  itmObj = getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects);
 
   itmObj.saveToBrowser();
 
   return itmObj;
 }
 
-function getAndMakeNewLoc(codename, name, gameCodename, pageCodename) {
+function getAndMakeNewLoc(codename, gameCodename, pageCodename, name) {
   var locObj;
 
   if ( isBlank(codename)) {
     codename = getCodenameFromName(name);
   }
 
-  locObj = getLocObj(codename, name, gameCodename, pageCodename);
+  locObj = getLocObj(codename, gameCodename, pageCodename, name);
 
   locObj.saveToBrowser();
 
   return locObj;
 }
 
-function getAndMakeNewPage(codename, name, gameCodename, locCodename, isNewLoc) {
+function getAndMakeNewPage(codename, gameCodename, name, locCodename, isNewLoc) {
   var pageObj, firstTrObj;
 
   if ( isBlank(codename)) {
@@ -618,11 +850,11 @@ function getAndMakeNewPage(codename, name, gameCodename, locCodename, isNewLoc) 
   }
 
   if (isNewLoc) {
-    getAndMakeNewLoc(codename, name, gameCodename, codename);
+    getAndMakeNewLoc(codename, gameCodename, codename, name);
     locCodename = codename;
   }
 
-  pageObj = getPageObj(codename, name, gameCodename, locCodename);
+  pageObj = getPageObj(codename, gameCodename, name, locCodename);
 
   pageObj.saveToBrowser();
 
@@ -634,12 +866,12 @@ function getAndMakeNewPage(codename, name, gameCodename, locCodename, isNewLoc) 
   return pageObj;
 }
 
-function getAndMakeNewTr(pageObj, textOfRow) {
+function getAndMakeNewTr(pageObj, textOfRow, itmCodename, itmStatusReq) {
   var trObj, trCodename;
 
   trCodename = getNextSortedCodename(C_typecode_tr, pageObj.gameCodename, pageObj.codename, C_att_textOfRow);
 
-  trObj = getTrObj(trCodename, pageObj.gameCodename, pageObj.codename, textOfRow);
+  trObj = getTrObj(trCodename, pageObj.gameCodename, pageObj.codename, textOfRow, itmCodename, itmStatusReq);
 
   pageObj.trObjs.push(trObj);
 
@@ -648,12 +880,12 @@ function getAndMakeNewTr(pageObj, textOfRow) {
   return trObj;
 }
 
-function getAndMakeNewUa(pageObj, uaText, uatype, itmCodename, locCodename) {
+function getAndMakeNewUa(pageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
   var uaObj, uaCodename;
 
   uaCodename = getNextSortedCodename(C_typecode_ua, pageObj.gameCodename, pageObj.codename, C_att_uaText);
 
-  uaObj = getUaObj(uaCodename, pageObj.gameCodename, pageObj.codename, uaText, uatype, itmCodename, locCodename);
+  uaObj = getUaObj(uaCodename, pageObj.gameCodename, pageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
 
   pageObj.uaObjs.push(uaObj);
 
@@ -774,17 +1006,18 @@ function getBrSvObjsFromBrowserSave(typecode, typecode_altFilterOpt, codename, c
 
     //TO-DO: need to handle C_altFilterOpt_exists and etc.
 
-if (codenameLeft == "game1,location1,") dc_(keyName, localStorage.getItem(keyName))
     let brSvObj = getBrowserSaveObj(keyName, keyValue);
+if (brSvObj.codename == "user,game1") dc_(">>>> val="+val+", brSvObj.codename="+brSvObj.codename)
+if (brSvObj.codename == "user,game1") dc_("-- " + keyName, localStorage.getItem(keyName))
 
     if ( isBlank(typecode) && isBlank(typecode_altFilterOpt) ) {
       typecodeCheckPassed = true;
     } else {
       if ( isEqual(brSvObj.typecode, typecode) ) {
-if (codenameLeft == "game1,location1,") dc_("typecode check found & passed", typecode)
+if (brSvObj.codename == "user,game1") dc_("typecode check found & passed", typecode)
         typecodeCheckPassed = true;
       } else {
-if (codenameLeft == "game1,location1,") dc_("typecode check found & failed", typecode)
+if (brSvObj.codename == "user,game1") dc_("typecode check found & failed", typecode)
       }
     }
 
@@ -793,10 +1026,10 @@ if (codenameLeft == "game1,location1,") dc_("typecode check found & failed", typ
         codenameCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.codename, codename) ) {
-if (codenameLeft == "game1,location1,") dc_("codename check found & passed", codename)
+if (brSvObj.codename == "user,game1") dc_("codename check found & passed", codename)
           codenameCheckPassed = true;
         } else {
-if (codenameLeft == "game1,location1,") dc_("codename check found & failed", codename)
+if (brSvObj.codename == "user,game1") dc_("codename check found & failed", codename)
         }
       }
     }
@@ -806,10 +1039,10 @@ if (codenameLeft == "game1,location1,") dc_("codename check found & failed", cod
         attCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.att, att) ) {
-if (codenameLeft == "game1,location1,") dc_("att check found & passed", att)
+if (brSvObj.codename == "user,game1") dc_("att check found & passed", att)
           attCheckPassed = true;
         } else {
-if (codenameLeft == "game1,location1,") dc_("att check found & failed", att)
+if (brSvObj.codename == "user,game1") dc_("att check found & failed", att)
         }
       }
     }
@@ -819,10 +1052,10 @@ if (codenameLeft == "game1,location1,") dc_("att check found & failed", att)
         valCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.val, val) ) {
-if (codenameLeft == "game1,location1,") dc_("val check found & passed", val)
+if (brSvObj.codename == "user,game1") dc_("val check found & passed", val)
           valCheckPassed = true;
         } else {
-if (codenameLeft == "game1,location1,") dc_("val check found & failed", val)
+if (brSvObj.codename == "user,game1") dc_("val check found & failed", val)
         }
       }
     }
@@ -832,10 +1065,10 @@ if (codenameLeft == "game1,location1,") dc_("val check found & failed", val)
         codenameLeftCheckPassed = true;
       } else {
         if ( leftIs(brSvObj.codename, codenameLeft) ) {
-if (codenameLeft == "game1,location1,") dc_("codenameLeft check found & passed", "cnLeft=>", codenameLeft, ", cn=", brSvObj.codename)
+if (brSvObj.codename == "user,game1") dc_("codenameLeft check found & passed", "cnLeft=>", codenameLeft, ", cn=", brSvObj.codename)
           codenameLeftCheckPassed = true;
         } else {
-if (codenameLeft == "game1,location1,") dc_("typecode check found & ", typecode)
+if (brSvObj.codename == "user,game1") dc_("typecode check found & ", typecode)
         }
       }
     }
@@ -844,14 +1077,15 @@ if (codenameLeft == "game1,location1,") dc_("typecode check found & ", typecode)
       brSvObjAy.push(brSvObj);
 
 
-      if (codenameLeft == "game1,location1,") dc_("..... YES passed checks")
+if (brSvObj.codename == "user,game1") dc_("..... YES passed checks")
     } else {
-      if (codenameLeft == "game1,location1,") dc_("..... NOT passed checks")
+if (brSvObj.codename == "user,game1") dc_("..... NOT passed checks")
 
 
     }
   }
 
+if (typecode == C_typecode_ent && brSvObjAy.length > 0) da_("brSvObjAy[0].codename="+brSvObjAy[0].codename)
   return brSvObjAy;
 }
 
@@ -978,23 +1212,53 @@ function getEntObj(codename, isInitialEntCreation, isUser, name, gameCodename, l
 
   entObj.itmObjs = getItmObjsFromInventory(inventory);
 
-  entObj.getInventoryListHtml = function() {
+  entObj.getInventoryListHtml = function(includeUse, jsFuncName) {
     var i, html = "";
 
     if (this.itmObjs.length == 0) {
 
-      html += "<div>... (your inventory is empty)</div>\n";
+      html += "<div><i>(your inventory is empty)</i></div>\n";
 
     } else {
 
+      this.itmObjs.sort( sorting_objs(C_att_name) );
+
       for (i = 0; i < this.itmObjs.length; i++) {
         let curItmObj = this.itmObjs[i];
-        html += "<div>- " + curItmObj.name + "</div>\n";
+
+        if (i > 0) {
+          html += getHtmlDownSpacer();
+        }
+
+        if (includeUse) {
+
+          html += "<div>" + curItmObj.name + "</div>\n";
+          html += "<div>&nbsp;&nbsp;&nbsp;" + getHtml_a("use", "use_object", curItmObj.codename) + "</div>\n";
+
+        } else if ( ! isBlank(jsFuncName) ) {
+
+          html += "<div>" + getHtml_a(curItmObj.name, jsFuncName, curItmObj.codename) + "</div>\n";
+
+        } else {
+
+          html += "<div>" + curItmObj.name + "</div>\n";
+
+        }
       }
 
     }
 
     return html;
+  };
+
+  entObj.hasItm = function(itmCodenameToFind) {
+    for (var i = 0; i < this.itmObjs.length; i++) {
+      if ( isEqual(this.itmObjs[i].codename, itmCodenameToFind) ) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   entObj.moveToLocCodename = function(locCodename) {
@@ -1024,6 +1288,10 @@ function getEntObj(codename, isInitialEntCreation, isUser, name, gameCodename, l
     inventory = getInventoryFromItmObjs(this.itmObjs);
 
     saveToBrowser(C_typecode_ent, this.codename, C_att_inventory, inventory);
+  };
+
+  entObj.reset = function() {
+    this.moveToLocCodename(this.startLocCodename);
   };
 
   entObj.saveToBrowser = function() {
@@ -1072,35 +1340,46 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
 
     entBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_ent, null, null, null, C_att_gameCodename, null, this.codename, null, null);
 
-    for (let curEntBrSvObj in entBrSvObjs) {
+    //entBrSvObjs.forEach( function(curEntBrSvObj) {
+    //  let curEntCodename = curEntBrSvObj.codename;
+    //  let curEntObj = getEntObj(curEntCodename, null, null, null, this.codename);
+    //  entObjs.push(curEntObj);
+    //} );
+
+    for(i = 0; i < entBrSvObjs.length; i++) {
+      let curEntBrSvObj = entBrSvObjs[i];
       let curEntCodename = curEntBrSvObj.codename;
       let curEntObj = getEntObj(curEntCodename, null, null, null, this.codename);
       entObjs.push(curEntObj);
     }
 
+    entObjs.sort( sorting_objs(C_att_name) );
+
     return entObjs;
   };
 
-  gameObj.getAllItmObjs = function(doSort) {
+  gameObj.getAllItmObjs = function(canGrabOnly, hasUsereceivetypeOnly) {
     var entObjs = this.getAllEntObjs();
-    var pageObjs = this.getAllPageObjs();
+    var locObjs = this.getAllLocObjs();
     var itmObjs = [];
 
-    for (let curEntObj in entObjs) {
-      for (let curItmObj in curEntObj.itmObjs) {
-        itmObjs.push[curItmObj];
-      }
-    }
+    entObjs.forEach( (curEntObj) => {
+      curEntObj.itmObjs.forEach( (curItmObj) => {
+        if (  (! canGrabOnly || isTrue(curItmObj.canGrab))  &&  (! hasUsereceivetypeOnly || ! isBlank(curItmObj.usereceivetype))  ) {
+          itmObjs.push(curItmObj);
+        }
+      } );
+    } );
 
-    for (let curPageObj in pageObjs) {
-      for (let curItmObj in curPageObj.itmObjs) {
-        itmObjs.push[curItmObj];
-      }
-    }
+    locObjs.forEach( (curLocObj) => {
+      curLocObj.itmObjs.forEach( (curItmObj) => {
+        if (  (! canGrabOnly || isTrue(curItmObj.canGrab))  &&  (! hasUsereceivetypeOnly || ! isBlank(curItmObj.usereceivetype))  ) {
+          itmObjs.push(curItmObj);
+        }
+      } );
+    } );
 
-    if ( isTrue(doSort) ) {
-      itmObjs.sort( sorting_objs(C_att_name) );
-    }
+    itmObjs.sort( sorting_objs(C_att_name) );
 
     return itmObjs;
   };
@@ -1113,9 +1392,11 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
     for (i = 0; i < locBrSvObjs.length; i++) {
       let curLocBrSvObj = locBrSvObjs[i];
       let curLocCodename = curLocBrSvObj.codename;
-      let curLocObj = getLocObj(curLocCodename, null, this.codename);
+      let curLocObj = getLocObj(curLocCodename, this.codename);
       locObjs.push(curLocObj);
     }
+
+    locObjs.sort( sorting_objs(C_att_name) );
 
     return locObjs;
   };
@@ -1127,17 +1408,39 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
 
     for (let curPageBrSvObj in pageBrSvObjs) {
       let curPageCodename = curPageBrSvObj.codename;
-      let curPageObj = getPageObj(curPageCodename, null, this.codename);
+      let curPageObj = getPageObj(curPageCodename, this.codename);
       curPageObj.init();
       pageObjs.push(curPageObj);
     }
 
+    pageObjs.sort( sorting_objs(C_att_name) );
+
     return pageObjs;
+  };
+
+  gameObj.reset = function() {
+    var allEntObjs = this.getAllEntObjs();
+    var allItmObjs = this.getAllItmObjs(false, false);
+
+    allEntObjs.forEach( function(entObjInLoop) {
+      entObjInLoop.reset();
+    } );
+
+    allItmObjs.forEach( function(itmObjInLoop) {
+      itmObjInLoop.reset();
+    } );
+
+    this.curPageCodename = this.startPageCodename;
+    this.saveToBrowser();
+
+    APP.curPageObj = null;
+    APP.entUserObj = null;
   };
 
   gameObj.saveToBrowser = function() {
     saveToBrowser(C_typecode_game, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_game, this.codename, C_att_startPageCodename, this.startPageCodename);
+    saveToBrowser(C_typecode_game, this.codename, C_att_curPageCodename, this.curPageCodename);
   };
   
   return gameObj;
@@ -1168,19 +1471,33 @@ function getHtml_pageDisplay(pageObj) {
 
   for (i = 0; i < pageObj.trObjs.length; i++) {
     let curTrObj = pageObj.trObjs[i];
-    let textOfRow = curTrObj.textOfRow;
+    let includeTr = false;
+    let itmObj;
 
-    if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
-      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__edit_text_row", curTrObj.codename);
-      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_text_row", curTrObj.codename);
+    if ( isBlank(curTrObj.itmStatusReq) ) {
+      includeTr = true;
+    } else {
+      itmObj = getItmObj(curTrObj.itmCodename, APP.curGameObj.codename);
+      if ( isEqual(curTrObj.itmStatusReq, itmObj.status) ) {
+        includeTr = true;
+      }
     }
 
-    html += getHtmlForAddedTextRow(html, textOfRow, 1);
+    if (includeTr) {
+      let textOfRow = curTrObj.textOfRow;
+
+      if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+        //textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__edit_text_row", curTrObj.codename);
+        textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_text_row", curTrObj.codename);
+      }
+
+      html += getHtmlForAddedTextRow(html, textOfRow, 1);
+    }
   }
 
   if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
     html += getHtmlDownSpacer();
-    html += "<div>" + getHtml_a("> add new text-row", "dev_editor__add_text_row") + "</div>\n";
+    html += "<div>" + getHtml_a("> add new text-row", "dev_editor__goto__add_text_row") + "</div>\n";
   }
 
   html += getHtmlDownSpacer(2);
@@ -1195,18 +1512,45 @@ function getHtml_pageDisplay(pageObj) {
   } else {
 
     for (i = 0; i < pageObj.uaObjs.length; i++) {
-      let curUaObj = pageObj.uaObjs[i];
-      let uaText = getHtml_a(curUaObj.uaText, "do_action", curUaObj.uatype, curUaObj.codename);
 
-      if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
-        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__goto__edit_user_action", curUaObj.codename);
-        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
+      let curUaObj = pageObj.uaObjs[i];
+      let showUa = true;
+      let uaText;
+
+      switch (curUaObj.uatype) {
+        case C_uatype_moveToLoc:
+          break;
+        case C_uatype_grabItm:
+          {
+            let locObj = APP.curPageObj.getLocObj();
+
+            let locHasItm = locObj.hasItm(curUaObj.itmCodename);
+            if ( ! locHasItm ) {
+              showUa = false;
+            }
+          }
+          break;
       }
 
-      html += getHtmlForAddedTextRow(html, uaText, 1);
+      if ( ! isBlank(curUaObj.statusReq_itmCodename) ) {
+        let statusReqItmObj = getItmObj(curUaObj.statusReq_itmCodename, APP.curGameObj.codename);
 
-      //let actionLinkHtml = getHtml_userAction(action.linkText, action.name, action.var1);
-      //html += getHtmlForAddedTextRow(html, actionLinkHtml);
+        if ( ! isEqual(curUaObj.statusReq_itmStatus, statusReqItmObj.status) ) {
+          showUa = false;
+        }
+      }
+
+      if (showUa) {
+        uaText = getHtml_a(curUaObj.uaText, "do_action", curUaObj.uatype, curUaObj.codename);
+
+        if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+          //uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__goto__edit_user_action", curUaObj.codename);
+          uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
+        }
+
+        html += getHtmlForAddedTextRow(html, uaText, 1);
+      }
+
     }
 
   }
@@ -1351,33 +1695,103 @@ function getInventoryFromItmObjs(itmObjs) {
   return inventory;
 }
 
-function getItmObj(codename, name, gameCodename, canGrab) {
+function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects) {
   var itmObj = {};
 
   itmObj.codename = codename;
 
-  if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_itm, codename, C_att_name);
-  }
-
   if ( isBlank(gameCodename) ) {
     gameCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_gameCodename);
+  }
+
+  if ( isBlank(name) ) {
+    name = getFromBrowserSave_single(C_typecode_itm, codename, C_att_name);
   }
 
   if ( isBlank(canGrab) ) {
     canGrab = getFromBrowserSave_single(C_typecode_itm, codename, C_att_canGrab);
   }
 
-  itmObj.name = name;
+  if ( isBlank(startLocCodename) ) {
+    startLocCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_startLocCodename);
+  }
+
+  if ( isBlank(usereceivetype) ) {
+    usereceivetype = getFromBrowserSave_single(C_typecode_itm, codename, C_att_usereceivetype);
+  }
+
+  if ( isBlank(startStatus) ) {
+    startStatus = getFromBrowserSave_single(C_typecode_itm, codename, C_att_startStatus);
+  }
+
+  if ( isBlank(status) ) {
+    status = getFromBrowserSave_single(C_typecode_itm, codename, C_att_status);
+  }
+
+  if ( isBlank(itmThatAffects) ) {
+    itmThatAffects = getFromBrowserSave_single(C_typecode_itm, codename, C_att_itmThatAffects);
+  }
+
   itmObj.gameCodename = gameCodename;
+  itmObj.name = name;
   itmObj.canGrab = getAsOneZero(canGrab);
+  itmObj.startLocCodename = startLocCodename;
+  itmObj.usereceivetype = usereceivetype;
+  itmObj.startStatus = startStatus;
+  itmObj.status = status;
+  itmObj.itmThatAffects = itmThatAffects;
+
+  itmObj.reset = function() {
+    var gameObj = getGameObj(this.gameCodename);
+    var allGameEntObjs = gameObj.getAllEntObjs();
+    var allGameLocObjs = gameObj.getAllLocObjs();
+    var startLocObj;
+    var startLocAlreadyHasItm = false;
+
+    allGameEntObjs.forEach( (entObjInLoop) => {
+      if ( entObjInLoop.hasItm(this.codename) ) {
+        entObjInLoop.removeItmObj(this);
+      }
+    } );
+
+    allGameLocObjs.forEach( (locObjInLoop) => {
+      let curLocObjInLoop_isItmStartLoc = false;
+
+      if ( isEqual(locObjInLoop.codename, this.startLocCodename) ) {
+        startLocObj = locObjInLoop;
+        curLocObjInLoop_isItmStartLoc = true;
+      }
+
+      if ( locObjInLoop.hasItm(this.codename) ) {
+        if (curLocObjInLoop_isItmStartLoc) {
+          startLocAlreadyHasItm = true;
+        } else {
+          locObjInLoop.removeItmObj(this);
+        }
+      }
+    } );
+
+    if ( ! startLocAlreadyHasItm ) {
+      startLocObj.receiveItmObj(this);
+    }
+
+    if ( ! isBlank(this.startStatus) && ! isEqual(this.startStatus, this.status) ) {
+      this.status = this.startStatus;
+      this.saveToBrowser();
+    }
+  };
 
   itmObj.saveToBrowser = function() {
     let canGrabOneZero = getAsOneZero(this.canGrab);
 
-    saveToBrowser(C_typecode_itm, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_itm, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_itm, this.codename, C_att_canGrab, canGrabOneZero);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_startLocCodename, this.startLocCodename);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_usereceivetype, this.usereceivetype);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_startStatus, this.startStatus);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_status, this.status);
+    saveToBrowser(C_typecode_itm, this.codename, C_att_itmThatAffects, this.itmThatAffects);
   };
   
   return itmObj;
@@ -1403,6 +1817,29 @@ function getItmObjsFromInventory(inventory) {
   return itmObjs;
 }
 
+function getItmStatusObjAy_fromUsereceivetype(usereceivetype) {
+  var ay = [];
+
+  switch(usereceivetype) {
+
+    case C_usereceivetype_closedOpen:
+      {
+        let obj_usereceivetype_closedOpen__closed = {};
+        obj_usereceivetype_closedOpen__closed.codename = C_status_closed;
+        obj_usereceivetype_closedOpen__closed.name = C_status_closed;
+        ay.push(obj_usereceivetype_closedOpen__closed);
+
+        let obj_usereceivetype_closedOpen__open = {};
+        obj_usereceivetype_closedOpen__open.codename = C_status_open;
+        obj_usereceivetype_closedOpen__open.name = C_status_open;
+        ay.push(obj_usereceivetype_closedOpen__open);
+
+        return ay;
+      }
+      break;
+  }
+}
+
 function getLocationAttFromBrowserSave(locCodename, att) {
   var val = getFromBrowserSave_single(C_saveTypeName_location, locCodename, att);
   return val;
@@ -1418,14 +1855,10 @@ function getLocDisplayVarCode(att) {
   return displayVarCode;
 }
 
-function getLocObj(codename, name, gameCodename, pageCodename, inventory) {
+function getLocObj(codename, gameCodename, pageCodename, name, inventory) {
   var locObj = {}, itmCodenames, i;
 
   locObj.codename = codename;
-
-  if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_loc, codename, C_att_name);
-  }
 
   if ( isBlank(gameCodename) ) {
     gameCodename = getFromBrowserSave_single(C_typecode_loc, codename, C_att_gameCodename);
@@ -1435,33 +1868,68 @@ function getLocObj(codename, name, gameCodename, pageCodename, inventory) {
     pageCodename = getFromBrowserSave_single(C_typecode_loc, codename, C_att_pageCodename);
   }
 
+  if ( isBlank(name) ) {
+    name = getFromBrowserSave_single(C_typecode_loc, codename, C_att_name);
+  }
+
   if ( isBlank(inventory) ) {
     inventory = getFromBrowserSave_single(C_typecode_loc, codename, C_att_inventory);
   }
 
-  locObj.name = name;
   locObj.gameCodename = gameCodename;
   locObj.pageCodename = pageCodename;
+  locObj.name = name;
 
   locObj.itmObjs = getItmObjsFromInventory(inventory);
 
-  locObj.getInventoryListHtml = function() {
+  locObj.getInventoryListHtml = function(jsFuncName) {
     var i, html = "";
 
     if (this.itmObjs.length == 0) {
 
-      html += "<div>... (nothing in this location's inventory)</div>\n";
+      html += "<div><i>(nothing in this location's inventory)</i></div>\n";
 
     } else {
 
+      this.itmObjs.sort( sorting_objs(C_att_name) );
+
       for (i = 0; i < this.itmObjs.length; i++) {
         let curItmObj = this.itmObjs[i];
-        html += "<div>- " + curItmObj.name + "</div>\n";
+
+        if (jsFuncName) {
+          html += "<div>" + getHtml_a(curItmObj.name, jsFuncName, curItmObj.codename) + "</div>\n";
+        } else {
+          html += "<div>- " + curItmObj.name + "</div>\n";
+        }
       }
 
     }
 
     return html;
+  };
+
+  locObj.getItmObjs = function(canGrabOnly) {
+    var itmObjs = [];
+
+    this.itmObjs.forEach( (curItmObj) => {
+      if ( ! canGrabOnly || isTrue(curItmObj.canGrab) ) {
+        itmObjs.push(curItmObj);
+      }
+    } );
+
+    itmObjs.sort( sorting_objs(C_att_name) );
+
+    return itmObjs;
+  };
+
+  locObj.hasItm = function(itmCodenameToFind) {
+    for (var i = 0; i < this.itmObjs.length; i++) {
+      if ( isEqual(this.itmObjs[i].codename, itmCodenameToFind) ) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   locObj.receiveItmObj = function(itmObj) {
@@ -1500,7 +1968,7 @@ function getNextSortedCodename(typecode, parent1Codename, parent2Codename, att) 
   var codenameLeftToFind, ay, aySorted, lastAyItemCodename, lastCurSortval, nextSortval, nextSortedCodename;
 
   codenameLeftToFind = getCodenameLeft(parent1Codename, parent2Codename);
-//da(att)
+da_(att)
   ay = getBrSvObjsFromBrowserSave(typecode, null, null, null, att, null, null, null, codenameLeftToFind);
 
   aySorted = sortSortedCodenameAy(ay);
@@ -1556,25 +2024,25 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
   */
 }
 
-function getPageObj(codename, name, gameCodename, locCodename) {
+function getPageObj(codename, gameCodename, name, locCodename) {
   var pageObj = {};
 
   pageObj.codename = codename;
 
-  if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_page, codename, C_att_name);
-  }
-
   if ( isBlank(gameCodename) ) {
     gameCodename = getFromBrowserSave_single(C_typecode_page, codename, C_att_gameCodename);
+  }
+
+  if ( isBlank(name) ) {
+    name = getFromBrowserSave_single(C_typecode_page, codename, C_att_name);
   }
 
   if ( isBlank(locCodename) ) {
     locCodename = getFromBrowserSave_single(C_typecode_page, codename, C_att_locCodename);
   }
 
-  pageObj.name = name;
   pageObj.gameCodename = gameCodename;
+  pageObj.name = name;
   pageObj.locCodename = locCodename;
 
   pageObj.trObjs = [];
@@ -1659,9 +2127,14 @@ function getPageObj(codename, name, gameCodename, locCodename) {
     this.uaObjs = sortSortedCodenameAy(this.uaObjs);
   };
 
+  pageObj.getLocObj = function() {
+    var locObj = getLocObj(this.locCodename, this.gameCodename, this.codename);
+    return locObj;
+  };
+
   pageObj.saveToBrowser = function() {
-    saveToBrowser(C_typecode_page, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_page, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_page, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_page, this.codename, C_att_locCodename, this.locCodename);
   };
   
@@ -1878,7 +2351,7 @@ function getTextFromUser(promptText, defaultVal) {
   return response;
 }
 
-function getTrObj(codename, gameCodename, pageCodename, textOfRow) {
+function getTrObj(codename, gameCodename, pageCodename, textOfRow, itmCodename, itmStatusReq) {
   var trObj = {};
 
   trObj.codename = codename;
@@ -1895,9 +2368,19 @@ function getTrObj(codename, gameCodename, pageCodename, textOfRow) {
     textOfRow = getFromBrowserSave_single(C_typecode_tr, codename, C_att_textOfRow);
   }
 
+  if ( isBlank(itmCodename) ) {
+    itmCodename = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmCodename);
+  }
+
+  if ( isBlank(itmStatusReq) ) {
+    itmStatusReq = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmStatusReq);
+  }
+
   trObj.gameCodename = gameCodename;
   trObj.pageCodename = pageCodename;
   trObj.textOfRow = textOfRow;
+  trObj.itmCodename = itmCodename;
+  trObj.itmStatusReq = itmStatusReq;
 
   trObj.changeTextOfRow = function(newTextOfRow) {
     this.textOfRow = newTextOfRow;
@@ -1908,12 +2391,14 @@ function getTrObj(codename, gameCodename, pageCodename, textOfRow) {
     saveToBrowser(C_typecode_tr, this.codename, C_att_gameCodename, this.gameCodename);
     saveToBrowser(C_typecode_tr, this.codename, C_att_pageCodename, this.pageCodename);
     saveToBrowser(C_typecode_tr, this.codename, C_att_textOfRow, this.textOfRow);
+    saveToBrowser(C_typecode_tr, this.codename, C_att_itmCodename, this.itmCodename);
+    saveToBrowser(C_typecode_tr, this.codename, C_att_itmStatusReq, this.itmStatusReq);
   };
   
   return trObj;
 }
 
-function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCodename, locCodename) {
+function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
   var uaObj = {};
 
   uaObj.codename = codename;
@@ -1942,12 +2427,22 @@ function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCoden
     locCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_locCodename);
   }
 
+  if ( isBlank(statusReq_itmCodename) ) {
+    statusReq_itmCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_statusReq_itmCodename);
+  }
+
+  if ( isBlank(statusReq_itmStatus) ) {
+    statusReq_itmStatus = getFromBrowserSave_single(C_typecode_ua, codename, C_att_statusReq_itmStatus);
+  }
+
   uaObj.gameCodename = gameCodename;
   uaObj.pageCodename = pageCodename;
   uaObj.uaText = uaText;
   uaObj.uatype = uatype;
   uaObj.itmCodename = itmCodename;
   uaObj.locCodename = locCodename;
+  uaObj.statusReq_itmCodename = statusReq_itmCodename;
+  uaObj.statusReq_itmStatus = statusReq_itmStatus;
 
   uaObj.saveToBrowser = function() {
     saveToBrowser(C_typecode_ua, this.codename, C_att_gameCodename, this.gameCodename);
@@ -1956,6 +2451,8 @@ function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCoden
     saveToBrowser(C_typecode_ua, this.codename, C_att_uatype, this.uatype);
     saveToBrowser(C_typecode_ua, this.codename, C_att_itmCodename, this.itmCodename);
     saveToBrowser(C_typecode_ua, this.codename, C_att_locCodename, this.locCodename);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_statusReq_itmCodename, this.statusReq_itmCodename);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_statusReq_itmStatus, this.statusReq_itmStatus);
   };
   
   return uaObj;
@@ -1988,6 +2485,33 @@ function getUatypesObjAy() {
   return ay;
 }
 
+function getUsereceivetypeDisplayText(usereceivetype) {
+  switch(usereceivetype) {
+    case C_usereceivetype_closedOpen:
+      return "closed / open";
+      break;
+  }
+}
+
+function getUsereceivetypesObjAy() {
+  var ay = [];
+  var usereceivetypeObj_openClose = {};
+
+  usereceivetypeObj_openClose.codename = C_usereceivetype_closedOpen;
+  usereceivetypeObj_openClose.name = getUsereceivetypeDisplayText(C_usereceivetype_closedOpen);
+  ay.push(usereceivetypeObj_openClose);
+
+  return ay;
+}
+
+function getUsereceivetypeStartStatus(usereceivetype) {
+  switch(usereceivetype) {
+    case C_usereceivetype_closedOpen:
+      return "closed";
+      break;
+  }
+}
+
 function getValArrayWithoutElem(theArray, valToExclude) {
   var revisedArray;
 
@@ -2006,10 +2530,12 @@ function hideAllDisplays() {
   elem("dvBrowserSaveOuter").style.display = "none";
   elem("dvEditor_AddToLocInventory_Outer").style.display = "none";
   elem("dvEditor_PageAdd_Outer").style.display = "none";
+  elem("dvEditor_TrAdd_Outer").style.display = "none";
   elem("dvEditor_UaAdd_Outer").style.display = "none";
   elem("dvEditor_UaDelete_Outer").style.display = "none";
   elem("dvEditor_UaEdit_Outer").style.display = "none";
   elem("dvGameOuter").style.display = "none";
+  elem("dvUseItm_Outer").style.display = "none";
   elem("dvUserInventory_Outer").style.display = "none";
   elem("dvEditor_ViewAllPages_Outer").style.display = "none";
 }
@@ -2113,6 +2639,50 @@ function loadEntites() {
   //setCurPageObj_fromPageName(APP.youObj.locName);
 }
 
+function processItmUse(itmCodename_toReceiveUse) {
+  var itmObj_toReceiveUse, baseMsg, resultText, resultMsg;
+
+  itmObj_toReceiveUse = getItmObj(itmCodename_toReceiveUse, APP.curGameObj.codename);
+
+  baseMsg = "\nUsing Item:  " + APP.curItmObj.name + "\n";
+  baseMsg += "\nOn Item:  " + itmObj_toReceiveUse.name + "\n";
+
+  if ( isBlank(itmObj_toReceiveUse.usereceivetype) ) {
+
+    resultText = "no effect";
+
+  } else if ( ! isEqual(itmObj_toReceiveUse.itmThatAffects, APP.curItmObj.codename) ) {
+
+    resultText = "no effect"
+
+  } else {
+
+    switch (itmObj_toReceiveUse.usereceivetype) {
+
+      case C_usereceivetype_closedOpen:
+        if (itmObj_toReceiveUse.status == C_status_closed) {
+          itmObj_toReceiveUse.status = C_status_open;
+          itmObj_toReceiveUse.saveToBrowser();
+          resultText = "" + itmObj_toReceiveUse.name + " is now " + C_status_open;
+        } else if (itmObj_toReceiveUse.status == C_status_open) {
+          resultText = "no effect (" + itmObj_toReceiveUse.name + " is already " + C_status_open;
+        }
+        break;
+    }
+
+  }
+
+  if ( isBlank(resultText) ) {
+    resultText = "ERROR: there is a problem with '" + itmObj_toReceiveUse.name + "'";
+  }
+
+  resultMsg = baseMsg + "\n\nRESULT:  " + resultText + "\n\n\n";
+
+  alert(resultMsg);
+
+  runCurGame();
+}
+
 function right(str, numChars) {
   if (typeof str !== "string") return null;
   if ( ! isNumeric(numChars) ) return null;
@@ -2146,7 +2716,7 @@ function runCurGame() {
   runCurGame_init();
 
   if (APP.curPageObj && ! isBlank(APP.curPageObj.locCodename) ) {
-    APP.curLocObj = getLocObj(APP.curPageObj.locCodename, null, APP.curGameObj.codename);
+    APP.curLocObj = getLocObj(APP.curPageObj.locCodename, APP.curGameObj.codename, APP.curPageObj.codename);
   }
 
   displayPage(APP.curPageObj);
@@ -2199,14 +2769,6 @@ function runCurGame_addDevOptions() {
 
     html += getHtmlDownSpacer(2);
 
-    html += "<div>current game: " + curGameName;
-    if (APP.curGameObj) {
-      html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_game ( )'>> rename</a>";
-    }
-    html += "&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: dev_editor__view_all_games ( )'>> view all games</a></div>\n";
-
-    html += getHtmlDownSpacer(2);
-
     html += "<div>current page: " + curPageName;
     if (APP.curPageObj) {
       html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_page ( )'>> rename</a>";
@@ -2219,15 +2781,24 @@ function runCurGame_addDevOptions() {
     html += "<div>current page is a location: " + curPageIsLoc + "</div>\n";
 
     if (curPageIsLoc) {
-      html += getHtmlDownSpacer();
+      html += getHtmlDownSpacer(2);
       html += "<div>inventory for location:</div>\n";
       html += getHtmlDownSpacer();
-      html += APP.curLocObj.getInventoryListHtml();
-      html += getHtmlDownSpacer();
+      html += APP.curLocObj.getInventoryListHtml(null);
       html += "<div>" + getHtml_a("&nbsp;> add to location's inventory", "dev_editor__goto__add_to_location_inventory", APP.curLocObj.codename) + "</div>\n";
     }
 
+    html += getHtmlDownSpacer(2);
+
+    html += "<div>current game: " + curGameName;
+    if (APP.curGameObj) {
+      html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_game ( )'>> rename</a>";
+    }
+    html += "&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: dev_editor__view_all_games ( )'>> view all games</a></div>\n";
     html += getHtmlDownSpacer();
+    html += "<div><a href='javascript: dev_editor__reset_game ( )'>> reset game</a></div>\n";
+
+    html += getHtmlDownSpacer(2);
 
     html += "<a href='javascript: browser_save__view ( )'>> view browser saved data</a></div>\n";
 
@@ -2240,28 +2811,43 @@ function runCurGame_addDevOptions() {
 }
 
 function runCurGame_init() {
-  runCurGame_init_startPage();
+  var userEntLocObj;
+
+  runCurGame_init_Pages();
   runCurGame_init_userEntity();
+
+  userEntLocObj = getLocObj(APP.userEntObj.locCodename, APP.curGameObj.codename);
 }
 
-function runCurGame_init_startPage() {
-  APP.curGame_allPageBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_page, null, null, null, C_att_gameCodename, null, APP.curGameObj.codename, null, null);
+function runCurGame_init_Pages() {
+  if ( isBlank(APP.curGameObj.curPageCodename) ) {
 
-  if ( isBlank(APP.curGameObj.startPageCodename) ) {
+    let startPageObj;
 
-    if (APP.curGame_allPageBrSvObjs.length == 0) {
-      APP.curPageObj = getAndMakeNewPage(null, "Room 1", APP.curGameObj.codename, null, true);
+    if ( isBlank(APP.curGameObj.startPageCodename) ) {
+      let allPageBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_page, null, null, null, C_att_gameCodename, null, APP.curGameObj.codename, null, null);
+
+      if (allPageBrSvObjs.length == 0) {
+        startPageObj = getAndMakeNewPage(null, APP.curGameObj.codename, "Room 1", null, true);
+      } else {
+        let pageCodename = allPageBrSvObjs[0].codename;
+        startPageObj = getPageObj(pageCodename, APP.curGameObj.codename);
+      }
+
+      APP.curGameObj.startPageCodename = startPageObj.codename;
+      APP.curGameObj.saveToBrowser();
     } else {
-      let pageCodename = APP.curGame_allPageBrSvObjs[0].codename;
-      APP.curPageObj = getPageObj(pageCodename, null, APP.curGameObj.codename);
+      startPageObj = getPageObj(APP.curGameObj.startPageCodename, APP.curGameObj.codename);
     }
 
-    APP.curGameObj.startPageCodename = APP.curPageObj.codename;
+    APP.curGameObj.curPageCodename = APP.curGameObj.startPageCodename;
     APP.curGameObj.saveToBrowser();
+
+    APP.curPageObj = startPageObj;
 
   } else {
 
-    APP.curPageObj = getPageObj(APP.curGameObj.startPageCodename, null, APP.curGameObj.codename);
+    APP.curPageObj = getPageObj(APP.curGameObj.curPageCodename, APP.curGameObj.codename);
 
   }
 }
@@ -2284,7 +2870,8 @@ function runCurGame_init_userEntity() {
   }
 
   if ( ! hasUserEnt ) {
-    APP.userEntObj = getAndMakeNewEnt(C_misc_userCodename + "," + APP.curGameObj.codename, true, C_misc_userDefName, APP.curGameObj.codename, APP.curGameObj.startPageCodename, APP.curPageObj.locCodename);
+
+    APP.userEntObj = getAndMakeNewEnt(C_misc_userCodename + "," + APP.curGameObj.codename, true, C_misc_userDefName, APP.curGameObj.codename, APP.curPageObj.locCodename, APP.curPageObj.locCodename);
   }
 }
 
@@ -2294,16 +2881,29 @@ function runUserAction(uatype, uaVar1) {
     case C_uatype_moveToLoc:
       {
         let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
-        let moveToLocObj = getLocObj(uaObj.locCodename, null, APP.curGameObj.codename);
-        APP.curPageObj = getPageObj(moveToLocObj.pageCodename);
+        let moveToLocObj = getLocObj(uaObj.locCodename);
+
+        APP.curPageObj = getPageObj(moveToLocObj.pageCodename, APP.curGameObj.codename);
+
+        APP.curGameObj.curPageCodename = APP.curPageObj.codename;
+        APP.curGameObj.saveToBrowser();
+
         APP.userEntObj.moveToLocObj(moveToLocObj);
-        displayPage(APP.curPageObj);
+
+        runCurGame();
       }
       break;
 
 
     case C_uatype_grabItm:
         let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
+        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename, APP.curPageObj.codename);
+        let curLocObj = APP.curPageObj.getLocObj();
+
+        APP.userEntObj.receiveItmObj(itmObj);
+        curLocObj.removeItmObj(itmObj);
+
+        runCurGame();
       break;
 
 
@@ -2320,22 +2920,12 @@ function runUserAction(uatype, uaVar1) {
             }
             break;
 
-          case C_userAction_closeDoor:
-            changeLocAtt(APP.curPageObj, "door", "closed");
-            displayPage(APP.curPageObj);
-            break;
-
           case C_userAction_goToInfo:
             //displayPage(C_page_info);
             break;
 
           case C_userAction_goToPage:
             displayPage_fromName(linkActionVar1);
-            break;
-
-          case C_userAction_openDoor:
-            changeLocAtt(APP.curPageObj, "door", "open");
-            displayPage(APP.curPageObj);
             break;
 
           case C_userAction_openInventory:
@@ -2575,7 +3165,7 @@ function startApp() {
     if (APP.allGameBrSvObjs.length > 0) {
       defGameCodename = APP.allGameBrSvObjs[0].codename;
     } else {
-      defGameObj = getAndMakeNewGame("game1", "Your First Game");
+      defGameObj = getAndMakeNewGame("game-1", "Your First Game");
       defGameCodename = defGameObj.codename;
     }
   
@@ -2859,33 +3449,67 @@ function browser_save__view() {
   return undefined;
 }
 
-function dev_editor__add_text_row() {
-  var textOfRow = prompt("\nEnter the text for the new text-row:", "");
+function dev_editor__add_text_row__do_add() {
+  var textOfRow = getElemVal("ipEditor_TrAdd_TextOfRow");
+  var itmCodename = getElemVal("selEditor_TrAdd_ItmCodename");
+  var itmStatusReq = null;
 
   if ( isBlank(textOfRow) ) {
+    alert("\nPlease enter 'Display Text'\n\n\n");
+    elem("ipEditor_TrAdd_TextOfRow").focus();
     return undefined;
   }
 
-  getAndMakeNewTr(APP.curPageObj, textOfRow);
+  if ( ! isBlank(itmCodename) ) {
+    itmStatusReq = getElemVal("selEditor_TrAdd_ItmStatusReq");
 
-  displayPage(APP.curPageObj);
+    if ( isBlank(itmStatusReq) ) {
+      alert("\nPlease select 'Status Required to Show Text-Row'\n\n\n");
+      return undefined;
+    }
+  }
+
+  getAndMakeNewTr(APP.curPageObj, textOfRow, itmCodename, itmStatusReq);
+
+  runCurGame();
 
   return undefined;
 }
 
+function dev_editor__add_text_row__cancel_add() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
 function dev_editor__add_to_location_inventory__do_add() {
-  var itmName, codename, itmObj;
+  var itmName, canGrab, usereceivetype, startStatus, status, itmThatAffects, itmObj;
 
-  itmName = elem("ipEditor_AddToLocInventory_ItmName").value;
+  itmName = getElemVal("ipEditor_AddToLocInventory_ItmName");
+  canGrab = getElemVal("ipEditor_AddToLocInventory_CanGrab");
+  usereceivetype = getElemVal("selEditor_AddToLocInventory_Usereceivetype");
 
-  if ( ! isBlank(itmName) ) {
-    itmObj = getAndMakeNewItm(codename, itmName, APP.curGameObj.codename, false)
-
-    APP.curLocObj.receiveItmObj(itmObj);
-    
-    runCurGame();
+  if ( isBlank(itmName) ) {
+    alert("\nPlease enter 'Name of New Object'\n\n\n");
+    elem("ipEditor_AddToLocInventory_ItmName").focus();
+    return undefined;
   }
 
+  if ( ! isBlank(usereceivetype) ) {
+    startStatus = getUsereceivetypeStartStatus(usereceivetype);
+    status = startStatus;
+
+    itmThatAffects = getElemVal("selEditor_AddToLocInventory_ItmThatAffects");
+    if ( isBlank(itmThatAffects) ) {
+      alert("\nPlease enter 'Other Object That Can Be Used Upon This'\n\n\n");
+      return undefined;
+    }
+  }
+
+  itmObj = getAndMakeNewItm(null, APP.curGameObj.codename, itmName, canGrab, APP.curPageObj.locCodename, usereceivetype, startStatus, status, itmThatAffects)
+
+  APP.curLocObj.receiveItmObj(itmObj);
+  
+  runCurGame();
   return undefined;
 }
 
@@ -2897,10 +3521,11 @@ function dev_editor__add_to_location_inventory__cancel_add() {
 function dev_editor__add_user_action__do_add() {
   var uaText = getElemVal("ipEditor_UaAdd_UaText");
   var uatype = getElemVal("selEditor_UaAdd_Uatype");
-  var itmCodename, locCodename;
+  var itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus;
 
   if ( isBlank(uaText) ) {
     alert("\nPlease enter 'Name of Action'\n\n\n");
+    elem("ipEditor_UaAdd_UaText").focus();
     return undefined;
   }
 
@@ -2928,10 +3553,21 @@ function dev_editor__add_user_action__do_add() {
       break;
 
   }
-  
-  getAndMakeNewUa(APP.curPageObj, uaText, uatype, itmCodename, locCodename);
 
-  displayPage(APP.curPageObj);
+  statusReq_itmCodename = getElemVal("selEditor_UaAdd_StatusReq_ItmCodename");
+
+  if ( ! isBlank(statusReq_itmCodename) ) {
+    statusReq_itmStatus = getElemVal("selEditor_UaAdd_StatusReq_ItmStatus");
+
+    if ( isBlank(statusReq_itmStatus) ) {
+      alert("\nPlease select 'to have Status'\n\n\n");
+      return undefined;
+    }
+  }
+
+  getAndMakeNewUa(APP.curPageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+
+  runCurGame();
 
   return undefined;
 }
@@ -2949,11 +3585,14 @@ function dev_editor__create_new_page__do_add() {
     return undefined;
   }
 
-  APP.curPageObj = getAndMakeNewPage(null, name, APP.curGameObj.codename, null, true);
+  APP.curPageObj = getAndMakeNewPage(null, APP.curGameObj.codename, name, null, true);
+
+  APP.curGameObj.curPageCodename = APP.curPageObj.codename;
+  APP.curGameObj.saveToBrowser();
 
   APP.userEntObj.moveToLocCodename(APP.curPageObj.locCodename);
 
-  displayPage(APP.curPageObj);
+  runCurGame();
 
   return undefined;
 }
@@ -3036,29 +3675,34 @@ function dev_editor__edit_text_row(trCodename) {
 }
 
 function dev_editor__goto__add_to_location_inventory() {
-  displayEditor_locInventory_add();
+  devEditor_addToLocInventory();
+  return undefined;
+}
+
+function dev_editor__goto__add_text_row() {
+  devEditor_trAdd();
   return undefined;
 }
 
 function dev_editor__goto__add_user_action() {
-  displayEditor_uaAdd();
+  devEditor_uaAdd();
   return undefined;
 }
 
 function dev_editor__goto__create_new_page() {
-  displayEditor_pageAdd();
+  devEditor_pageAdd();
   return undefined;
 }
 
 function dev_editor__goto__delete_user_action(uaCodename) {
   APP.editor_curUaCodename = uaCodename;
-  displayEditor_uaDelete(uaCodename);
+  devEditor_uaDelete(uaCodename);
   return undefined;
 }
 
 function dev_editor__goto__edit_user_action(uaCodename) {
   APP.editor_curUaCodename = uaCodename;
-  displayEditor_uaEdit(uaCodename);
+  devEditor_uaEdit(uaCodename);
   return undefined;
 }
 
@@ -3102,6 +3746,15 @@ function dev_editor__rename_page() {
   return undefined;
 }
 
+function dev_editor__reset_game() {
+  if ( confirm("\nAre you sure you want to reset this game?\n\n\n") ) {
+    APP.curGameObj.reset();
+    runCurGame();
+  }
+
+  return undefined;
+}
+
 function dev_editor__show_editor() {
   setAppSetting(C_appSetting_dev_hideEditor, "0")
   startApp();
@@ -3121,10 +3774,24 @@ function do_action(uatype, uaVar1) {
   return undefined;
 }
 
+function receive_use_from_object(itmCodename) {
+  processItmUse(itmCodename)
+  return undefined;
+}
+
 function return_from_user_inventory() {
   runCurGame();
 }
 
+function return_to_user_inventory() {
+  do_action(C_userAction_openInventory);
+  return undefined;
+}
+
+function use_object(codename) {
+  displayUseItm(codename);
+  return undefined;
+}
 
 // START APP (also runs the default game)
 
