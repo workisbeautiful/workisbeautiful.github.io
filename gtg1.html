@@ -118,32 +118,42 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
 
 <div id="dvEditor_TrAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Add Text-Row</b></div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Current Page/Location: <span id="spnEditor_TrAdd_CurPageAndLoc"></span>
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Display Text: <input id="ipEditor_TrAdd_TextOfRow" class="" value="" />
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Show If Which Item <span id="spnEditor_TrAdd_ItmInLocInv_IsIsNot"></span> In Location's Inventory: <span id="spnEditor_TrAdd_ItmInLocInv"></span>
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
-    Show Based on Status of Which Item: <span id="spnEditor_TrAdd_ItmCodename"></span>
+    Show Based on Status of Which Object: <span id="spnEditor_TrAdd_ItmCodename"></span>
   </div>
   <div id="dvEditor_TrAdd_ItmStatusReq">
-    <div style="height:0.6em"></div>
+    <div style="height:0.3em"></div>
     <div>
-      Status Required to Show Text-Row: <span id="spnEditor_TrAdd_ItmStatusReq"></span>
+      &nbsp;&nbsp;&nbsp;... Object Status Required: <span id="spnEditor_TrAdd_ItmStatusReq"></span>
     </div>
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
+  <div>
+    Show Based on Player Status: <span id="spnEditor_TrAdd_UserInfo_InfoType"></span>
+  </div>
+  <div id="dvEditor_TrAdd_ExamObj_ItmCodename">
+    <div style="height:0.3em"></div>
+    <div>
+      &nbsp;&nbsp;&nbsp;... Examined Which Object: <span id="spnEditor_TrAdd_ExamObj_ItmCodename"></span>
+    </div>
+  </div>
+  <div style="height:0.9em"></div>
   <div style="display: inline-block">
     <hr></hr>
-    <div style="height:0.8em"></div>
+    <div style="height:0.9em"></div>
     <div>
       <a style="white-space: nowrap" href="javascript: dev_editor__add_text_row__do_add()">add</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__add_text_row__cancel_add()">cancel</a>
@@ -331,8 +341,10 @@ const C_appSetting_LS = "LS";
 
 const C_att_canGrab = "canGrab";
 const C_att_curPageCodename = "curPageCodename"
+const C_att_entCodename = "entCodename";
 const C_att_examineMsg = "examineMsg";
 const C_att_gameCodename = "gameCodename";
+const C_att_info = "info";
 const C_att_inventory = "inventory";
 const C_att_isUser = "isUser";
 const C_att_itmCodename = "itmCodename";
@@ -344,13 +356,21 @@ const C_att_locCodename = "locCodename";
 const C_att_locName = "locName";
 const C_att_name = "name";
 const C_att_pageCodename = "pageCodename";
+const C_att_relatedTypecode1 = "relatedTypecode1";
+const C_att_relatedCodename1 = "relatedCodename1";
+const C_att_relatedTypecode2 = "relatedTypecode2";
+const C_att_relatedCodename2 = "relatedCodename2";
 const C_att_startLocCodename = "startLocCodename";
 const C_att_startPageCodename = "startPageCodename"
 const C_att_startStatus = "startStatus";
 const C_att_status = "status";
+const C_att_infooptionset = "infooptionset";
 const C_att_statusReq_itmCodename = "statusReq_itmCodename";
 const C_att_statusReq_itmStatus = "statusReq_itmStatus";
+const C_att_infotype = "infotype";
 const C_att_textOfRow = "textOfRow";
+const C_att_trCodename = "trCodename";
+const C_att_uaCodename = "uaCodename";
 const C_att_uaText = "uaText";
 const C_att_uatype = "uatype";
 const C_att_useReceivedMsg = "useReceivedMsg";
@@ -361,8 +381,14 @@ const C_displayVarStub_locAtt = "LOC_ATT";
 const C_displayVar_you = "YOU";
 const C_displayVar_curLoc = "CUR_LOC";
 
-const C_usereceivetype_closedOpen = "closedOpen";
-const C_usereceivetype_lockedUnlocked = "lockedUnlocked";
+const C_info_no = "no";
+const C_info_yes = "yes";
+
+const C_infooptionset_custom = "custom";
+const C_infooptionset_yesNo = "yesNo";
+
+const C_infotype_custom = "custom"; //not implemented yet -- NOTE: no commas allowed in custom infotype names
+const C_infotype_itmExam = "itmExam";
 
 const C_locCodename_cozyRoom = "cozy room";
 const C_locCodename_scaryRoom = "scary room";
@@ -389,13 +415,16 @@ const C_status_unlocked = "unlocked";
 
 const C_typecode_appSetting = "appSetting";
 const C_typecode_ent = "E";
+const C_typecode_entinfo = "ei";
+const C_typecode_entinfoData = "eid";
 const C_typecode_game = "G";
-const C_typecode_itm = "itm";
+const C_typecode_itm = "Itm";
 const C_typecode_loc = "L";
 const C_typecode_page = "P";
 const C_typecode_tr = "tr";
+const C_typecode_trcond = "trcond";
 const C_typecode_ua = "ua";
-const C_typecode_unknown = "?";
+const C_typecode_uacond = "uacond";
 
 const C_uatype_examine = "examine";
 const C_uatype_grabItm = "grabItm";
@@ -405,6 +434,9 @@ const C_userAction_changeYourName = "change your name";
 const C_userAction_goToInfo = "go to info";
 const C_userAction_goToPage = "go to page"
 const C_userAction_openInventory = "open your inventory";
+
+const C_usereceivetype_closedOpen = "closedOpen";
+const C_usereceivetype_lockedUnlocked = "lockedUnlocked";
 
 
 // APP-LEVEL VARIABLES
@@ -417,6 +449,7 @@ APP.curPageObj = null;
 APP.dev = "0";
 APP.dev_hideEditor = "0";
 APP.editor_curUaCodename = null;
+APP.sort_addedTextForNum = null;
 APP.userEntObj = null;
 
 
@@ -594,7 +627,7 @@ function devEditor_addToLocInventory_changeStatusReq_itmCodename() {
   if ( isBlank(statusReq_itmCodename) ) {
     elem("spnEditor_AddToLocInventory_StatusReq_ItmStatus").innerHTML = "---";
   } else {
-    let itmObj = getItmObj(statusReq_itmCodename, APP.curGameObj.codename);
+    let itmObj = getItmObj(statusReq_itmCodename);
     itmStatusObjAy = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
     htmlSel_statusReq_status = getHtml_sel("selEditor_AddToLocInventory_StatusReq_ItmStatus", true, itmStatusObjAy, null, "width: 2in");
     elem("spnEditor_AddToLocInventory_StatusReq_ItmStatus").innerHTML = htmlSel_statusReq_status;
@@ -621,7 +654,7 @@ function devEditor_pageAdd() {
 }
 
 function devEditor_trAdd() {
-  var htmlSel_itms_checkStatus, htmlSel_itms_checkLocInv, htmlSel_itms_checkLocInv_isIsNot;
+  var htmlSel_itms_checkLocInv_isIsNot, htmlSel_itms_checkLocInv, htmlSel_itms_checkStatus, infotypeObjs, htmlSel_infotypes, htmlSel_itms_examObj;
 
   hideAllDisplays();
 
@@ -629,19 +662,44 @@ function devEditor_trAdd() {
 
   elem("ipEditor_TrAdd_TextOfRow").value = "";
 
-  htmlSel_itms_checkLocInv_isIsNot = getHtml_sel("selEditor_TrAdd_ItmInLocInv_IsIsNot", false, getIsIsNotObjAy(), C_misc_is, "width: 4em", null, null, false, undefined, undefined, undefined);
+  htmlSel_itms_checkLocInv_isIsNot = getHtml_sel("selEditor_TrAdd_ItmInLocInv_IsIsNot", false, getIsIsNotObjAy(), C_misc_is, null, null, null, false, undefined, undefined, undefined);
   elem("spnEditor_TrAdd_ItmInLocInv_IsIsNot").innerHTML = htmlSel_itms_checkLocInv_isIsNot;
 
-  htmlSel_itms_checkLocInv = getHtml_sel("selEditor_TrAdd_ItmInLocInv", true, APP.curGameObj.getAllItmObjs(true, false, true), null, "width: 2in", "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
+  htmlSel_itms_checkLocInv = getHtml_sel("selEditor_TrAdd_ItmInLocInv", true, APP.curGameObj.getAllItmObjs(true, false, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
   elem("spnEditor_TrAdd_ItmInLocInv").innerHTML = htmlSel_itms_checkLocInv;
 
-  htmlSel_itms_checkStatus = getHtml_sel("selEditor_TrAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, "width: 2in", "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
+  htmlSel_itms_checkStatus = getHtml_sel("selEditor_TrAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
   elem("spnEditor_TrAdd_ItmCodename").innerHTML = htmlSel_itms_checkStatus;
 
+  infotypeObjs = getInfotypeObjAy();
+  htmlSel_infotypes = getHtml_sel("selEditor_TrAdd_UserInfo_InfoType", true, infotypeObjs, C_info_yes, null, "devEditor_trAdd_changeInfotype()", null, false, undefined, undefined, undefined);
+  elem("spnEditor_TrAdd_UserInfo_InfoType").innerHTML = htmlSel_infotypes;
+
+  htmlSel_itms_examObj = getHtml_sel("selEditor_TrAdd_ExamObj_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, false, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
+  elem("spnEditor_TrAdd_ExamObj_ItmCodename").innerHTML = htmlSel_itms_examObj;
+
+  elem("selEditor_TrAdd_UserInfo_InfoType").value = "";
+  elem("selEditor_TrAdd_ExamObj_ItmCodename").value = "";
+
   devEditor_trAdd_changeItm();
+  devEditor_trAdd_changeInfotype();
 
   elem("dvEditor_TrAdd_Outer").style.display = "";
   elem("ipEditor_TrAdd_TextOfRow").focus();
+}
+
+function devEditor_trAdd_changeInfotype() {
+  var infotype;
+
+  hideElem("dvEditor_TrAdd_ExamObj_ItmCodename");
+
+  infotype = getElemVal("selEditor_TrAdd_UserInfo_InfoType");
+
+  switch (infotype) {
+    case C_infotype_itmExam:
+      showElem("dvEditor_TrAdd_ExamObj_ItmCodename");
+      break;
+  }
 }
 
 function devEditor_trAdd_changeItm() {
@@ -655,7 +713,7 @@ function devEditor_trAdd_changeItm() {
     return;
   }
 
-  itmObj = getItmObj(itmCodename, APP.curGameObj.codename);
+  itmObj = getItmObj(itmCodename);
 
   if ( isBlank(itmObj.usereceivetype) ) {
     return;
@@ -703,7 +761,7 @@ function devEditor_uaAdd_changeStatusReq_itmCodename() {
   if ( isBlank(statusReq_itmCodename) ) {
     elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = "---";
   } else {
-    let itmObj = getItmObj(statusReq_itmCodename, APP.curGameObj.codename);
+    let itmObj = getItmObj(statusReq_itmCodename);
     itmStatusObjAy = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
     htmlSel_statusReq_status = getHtml_sel("selEditor_UaAdd_StatusReq_ItmStatus", true, itmStatusObjAy, null, "width: 2in", undefined, undefined, undefined);
     elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = htmlSel_statusReq_status;
@@ -755,7 +813,7 @@ function devEditor_uaDelete() {
 
   elem("spnEditor_UaDelete_CurPageAndLoc").innerHTML = APP.curPageObj.getCurPageAndLoc();
 
-  uaObj = APP.curPageObj.getUaObj(APP.editor_curUaCodename, APP.curPageObj.gameCodename, APP.curPageObj.codename);
+  uaObj = APP.curPageObj.getUaObj(APP.editor_curUaCodename);
   elem("spnEditor_UaDelete_UaText").innerHTML = uaObj.uaText;
 
   elem("dvEditor_UaDelete_Outer").style.display = "";
@@ -764,19 +822,37 @@ function devEditor_uaDelete() {
 }
 
 function devEditor_uaEdit(uaCodename) {
-  var uaObj;
+}
 
-  hideAllDisplays();
+function didCondFail(condObj) {
 
-  elem("spnEditor_UaEdit_CurPageAndLoc").innerHTML = APP.curPageObj.getCurPageAndLoc();
+  switch (condObj.infotype) {
 
-  uaObj = APP.curPageObj.getUaObj(uaCodename, APP.curPageObj.gameCodename, APP.curPageObj.codename);
-  elem("ipEditor_UaEdit_UaText").value = uaObj.uaText;
+    case C_infotype_itmExam:
+      {
+        let entObj, itmObj, eidObj;
+dc("condObj.infotype",condObj.infotype)
+        entObj = getEntObj(condObj.relatedCodename1);
+        itmObj = getItmObj(condObj.relatedCodename2);
 
-  elem("dvEditor_UaEdit_Outer").style.display = "";
+        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, condObj.info)
 
-  elem("ipEditor_UaEdit_UaText").focus();
-  elem("ipEditor_UaEdit_UaText").select();
+        if (eidObj == null) {
+dc("eidObj == null")
+          return true;
+        } else {
+dc("eidObj.codename",eidObj.codename)
+          return false;
+        }
+      }
+      break;
+  }
+
+  return false;
+}
+
+function didCondPass(condObj) {
+  return ! didCondFail(condObj);
 }
 
 function displayBrowserSave() {
@@ -808,7 +884,7 @@ function displayUseItm(codename) {
 
   elem("spnUseItm_CurPageAndLoc").innerHTML = APP.curPageObj.getCurPageAndLoc();
 
-  APP.curItmObj = getItmObj(codename, APP.curGameObj.codename);
+  APP.curItmObj = getItmObj(codename);
   
   elem("spnUseItm_Name").innerHTML = APP.curItmObj.name;
 
@@ -890,21 +966,112 @@ function elem(elemId) {
   return document.getElementById(elemId);
 }
 
-function getAndMakeNewEnt(codename, isUser, name, gameCodename, locCodename, startLocCodename) {
-  var entObj;
+function existsInBrowserSave(typecode, codename, att) {
+  var bsk = getBrowserSaveKey(typecode, codename, att);
+  var val = localStorage.getItem(bsk);
 
-  entObj = getEntObj(codename, true, isUser, name, gameCodename, locCodename, null, startLocCodename);
+  if (val == null) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function findEntinfoDataObj(entCodename, infotype, relatedTypecode1_toFind, relatedCodename1_toFind, info_toFind = null) {
+  var codenameLeft, brSvObjs_codenames, i;
+
+  codenameLeft = getCodenameLeft(entCodename);
+
+dc("C_typecode_entinfoData",C_typecode_entinfoData)
+dc("C_att_infotype",C_att_infotype)
+dc("infotype",infotype)
+dc("codenameLeft",codenameLeft)
+  brSvObjs_codenames = getBrSvObjsFromBrSv(C_typecode_entinfoData, null, C_att_infotype, infotype, codenameLeft);
+dc("brSvObjs_codenames.length",brSvObjs_codenames.length)
+
+  brSvObjs_codenames.forEach( (brSvObjs_codename) => {
+    let curEidCodename = brSvObjs_codename.codename;
+
+    let relatedTypecode1_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_relatedTypecode1);
+    let relatedCodename1_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_relatedCodename1);
+
+    let relatedTypeCode1_isEqual = isEqual(relatedTypecode1_cur, relatedTypecode1_toFind);
+    let relatedCodename1_isEqual = isEqual(relatedCodename1_cur, relatedCodename1_toFind);
+
+    let curIsMatch = false;
+
+    if ( info_toFind == null ) {
+
+      if ( relatedTypeCode1_isEqual && relatedCodename1_isEqual ) {
+        curIsMatch = true;
+      }
+
+    } else {
+
+      let info_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_info);
+      let relatedInfo_isEqual = isEqual(info_cur, info_toFind);
+
+      if ( relatedTypeCode1_isEqual && relatedCodename1_isEqual && relatedInfo_isEqual ) {
+        curIsMatch = true;
+      }
+    }
+
+    if (curIsMatch) {
+      let eidObj = getEntinfoDataObj(curEidCodename);
+      return eidObj;
+    }
+  } );
+
+  return null;
+}
+
+function getAndMakeNewEnt(gameObj = APP.curGameObj, name, nameToUseForCodenameGenerator = null, isUser, locCodename, startLocCodename) {
+  var nameToSendToGetCodename, codename, entObj;
+
+  if ( isBlank(nameToUseForCodenameGenerator) ) {
+    nameToSendToGetCodename = name;
+  } else {
+    nameToSendToGetCodename = nameToUseForCodenameGenerator;
+  }
+
+  codename = getCodenameFromGameAndName(gameObj, nameToSendToGetCodename, C_typecode_ent, false);
+
+  var entObj = getEntObj(codename, gameObj.codename, name, isUser, locCodename, null, startLocCodename);
 
   entObj.saveToBrowser();
 
   return entObj;
 }
 
+function getAndMakeNewEntinfo(entCodename, infotype, info) {
+  var codename, entinfoObj;
+
+  codename = getNextSortedCodename(C_typecode_entinfo, entCodename, null, C_att_infotype, null);
+
+  entinfoObj = getEntinfoObj(codename, entCodename, infotype, info);
+
+  entinfoObj.saveToBrowser();
+
+  return entinfoObj;
+}
+
+function getAndMakeNewEntinfoData(entCodename, infotype, relatedTypecode1, relatedCodename1, info) {
+  var codename, entinfoDataObj;
+
+  codename = getNextSortedCodename(C_typecode_entinfoData, entCodename, null, C_att_infotype, null);
+
+  entinfoDataObj = getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, relatedCodename1, info);
+
+  entinfoDataObj.saveToBrowser();
+
+  return entinfoDataObj;
+}
+
 function getAndMakeNewGame(codename, name) {
   var gameObj;
 
-  if ( isBlank(codename)) {
-    codename = getCodenameFromName(name, C_typecode_game);
+  if ( isBlank(codename) ) {
+    codename = getCodenameFromGameAndName(null, name, C_typecode_game, true);
   }
 
   gameObj = getGameObj(codename, name);
@@ -914,47 +1081,41 @@ function getAndMakeNewGame(codename, name) {
   return gameObj;
 }
 
-function getAndMakeNewItm(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
-  var itmObj;
+function getAndMakeNewItm(gameObj = APP.curGameObj, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
+  var codename, itmObj;
 
-  if ( isBlank(codename)) {
-    codename = getCodenameFromName(name, C_typecode_itm);
-  }
+  codename = getCodenameFromGameAndName(gameObj, name, C_typecode_itm, false);
 
-  itmObj = getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg);
+  itmObj = getItmObj(codename, gameObj.codename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg);
 
   itmObj.saveToBrowser();
 
   return itmObj;
 }
 
-function getAndMakeNewLoc(codename, gameCodename, pageCodename, name) {
-  var locObj;
+function getAndMakeNewLoc(gameObj = APP.curGameObj, name, pageCodename) {
+  var codename, locObj;
 
-  if ( isBlank(codename)) {
-    codename = getCodenameFromName(name, C_typecode_loc);
-  }
+  codename = getCodenameFromGameAndName(gameObj, name, C_typecode_loc, false);
 
-  locObj = getLocObj(codename, gameCodename, pageCodename, name);
+  locObj = getLocObj(codename, gameObj.codename, name, pageCodename);
 
   locObj.saveToBrowser();
 
   return locObj;
 }
 
-function getAndMakeNewPage(codename, gameCodename, name, locCodename, isNewLoc) {
-  var pageObj, firstTrObj;
+function getAndMakeNewPage(gameObj = APP.curGameObj, name, locCodename, isNewLoc) {
+  var codename, pageObj, firstTrObj;
 
-  if ( isBlank(codename)) {
-    codename = getCodenameFromName(name, C_typecode_page);
-  }
+  codename = getCodenameFromGameAndName(gameObj, name, C_typecode_page, false);
 
   if (isNewLoc) {
-    getAndMakeNewLoc(codename, gameCodename, codename, name);
+    getAndMakeNewLoc(undefined, name, codename);
     locCodename = codename;
   }
 
-  pageObj = getPageObj(codename, gameCodename, name, locCodename);
+  pageObj = getPageObj(codename, gameObj.codename, name, locCodename);
 
   pageObj.saveToBrowser();
 
@@ -965,36 +1126,64 @@ function getAndMakeNewPage(codename, gameCodename, name, locCodename, isNewLoc) 
   return pageObj;
 }
 
-function getAndMakeNewTr(pageObj, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot) {
-  var trObj, trCodename;
+function getAndMakeNewTr(pageObj = APP.curPageObj, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot) {
+  var codename, trObj;
 
-  trCodename = getNextSortedCodename(C_typecode_tr, pageObj.gameCodename, pageObj.codename, C_att_textOfRow);
+  codename = getNextSortedCodename(C_typecode_tr, pageObj.codename, null, C_att_textOfRow, null);
 
-  trObj = getTrObj(trCodename, pageObj.gameCodename, pageObj.codename, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot);
+  trObj = getTrObj(codename, pageObj.codename, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot);
 
-  pageObj.trObjs.push(trObj);
+  pageObj.receiveTrObj(trObj);
 
   trObj.saveToBrowser();
 
   return trObj;
 }
 
-function getAndMakeNewUa(pageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
-  var uaObj, uaCodename;
+function getAndMakeNewTrcond(trObj, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info) {
+  var codename, trcondObj;
 
-  uaCodename = getNextSortedCodename(C_typecode_ua, pageObj.gameCodename, pageObj.codename, C_att_uaText);
+  codename = getNextSortedCodename(C_typecode_trcond, trObj.codename, null, C_att_infotype, null);
 
-  uaObj = getUaObj(uaCodename, pageObj.gameCodename, pageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+  trcondObj = getTrcondObj(codename, trObj.codename, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info)
 
-  pageObj.uaObjs.push(uaObj);
+  trObj.receiveTrcondObj(trcondObj);
+
+  trcondObj.saveToBrowser();
+
+  return trcondObj;
+}
+
+function getAndMakeNewUa(pageObj = APP.curPageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
+  var codename, uaObj;
+
+  codename = getNextSortedCodename(C_typecode_ua, pageObj.codename, null, C_att_uaText, null);
+
+  uaObj = getUaObj(codename, pageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+
+  pageObj.receiveUaObj(uaObj);
 
   uaObj.saveToBrowser();
 
   return uaObj;
 }
 
+function getAndMakeNewUacond(uaObj, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info) {
+  var codename, uacondObj;
+
+  codename = getNextSortedCodename(C_typecode_uacond, uaObj.codename, null, C_att_infotype, null);
+
+  uacondObj = getUacondObj(codename, uaObj.codename, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info)
+
+  uaObj.uaCondObjs.push(uacondObj);
+
+  uacondObj.saveToBrowser();
+
+  return uacondObj;
+}
+
 function getAppSetting(settingName) {
-  var val = getFromBrowserSave_single(C_typecode_appSetting, settingName, null);
+  var val = getFromBrSv_valFromAtt(C_typecode_appSetting, settingName, null);
   return val;
 }
 
@@ -1039,42 +1228,6 @@ function getBrowserSaveKey(typecode, codename, att) {
   return bsk;
 }
 
-// don't need anymore?
-function getBrowserSaveType_fromSaveTypeCode(typecode) {
-  switch(typecode) {
-    case C_typecode_appSetting:
-      return C_saveTypeName_appSetting;
-    case C_typecode_ent:
-      return C_saveTypeName_entity;
-    case C_typecode_game:
-      return C_saveTypeName_game;
-    case C_typecode_loc:
-      return C_saveTypeName_location;
-    case C_typecode_page:
-      return C_saveTypeName_page;
-    default:
-      return C_saveTypeName_unknown;
-  }
-}
-
-// don't need anymore?
-function getBrowserSaveTypeCode_fromSaveTypeName(saveTypeName) {
-  switch(saveTypeName) {
-    case C_saveTypeName_appSetting:
-      return C_typecode_appSetting;
-    case C_saveTypeName_entity:
-      return C_typecode_ent;
-    case C_saveTypeName_game:
-      return C_typecode_game;
-    case C_saveTypeName_location:
-      return C_typecode_loc;
-    case C_saveTypeName_page:
-      return C_typecode_page;
-    default:
-      return C_typecode_unknown;
-  }
-}
-
 function getBrowserSaveObj(keyName, keyValue) {
   var brSvObj = {};
   var bskParts = keyName.split(":");
@@ -1093,7 +1246,8 @@ function getBrowserSaveObj(keyName, keyValue) {
   return brSvObj;
 }
 
-function getBrSvObjsFromBrowserSave(typecode, typecode_altFilterOpt, codename, codename_altFilterOpt, att, att_altFilterOpt, val, val_altFilterOpt, codenameLeft) {
+function getBrSvObjsFromBrSv(typecode, codename, att, val, codenameLeft) {
+if (codenameLeft == "game-1,note-1,") dc_(">>>> entered getBrSvObjsFromBrSv()")
   var brSvObjAy = [];
   var typecodeCheckPassed, codenameCheckPassed, attCheckPassed, valCheckPassed, codenameLeftCheckPassed;
 
@@ -1103,58 +1257,56 @@ function getBrSvObjsFromBrowserSave(typecode, typecode_altFilterOpt, codename, c
     let keyName = localStorage.key(i);
     let keyValue = localStorage.getItem(keyName);
 
-    //TO-DO: need to handle C_altFilterOpt_exists and etc.
-
     let brSvObj = getBrowserSaveObj(keyName, keyValue);
-if (brSvObj.codename == "user,game1") dc_(">>>> val="+val+", brSvObj.codename="+brSvObj.codename)
-if (brSvObj.codename == "user,game1") dc_("-- " + keyName, localStorage.getItem(keyName))
+if (codenameLeft == "game-1,note-1,") dc_(">>>> brSvObj.codename="+brSvObj.codename)
+if (codenameLeft == "game-1,note-1,") dc_("-- " + keyName, localStorage.getItem(keyName))
 
-    if ( isBlank(typecode) && isBlank(typecode_altFilterOpt) ) {
+    if ( isBlank(typecode) ) {
       typecodeCheckPassed = true;
     } else {
       if ( isEqual(brSvObj.typecode, typecode) ) {
-if (brSvObj.codename == "user,game1") dc_("typecode check found & passed", typecode)
+if (codenameLeft == "game-1,note-1,") dc_("typecode check found & passed", typecode)
         typecodeCheckPassed = true;
       } else {
-if (brSvObj.codename == "user,game1") dc_("typecode check found & failed", typecode)
+if (codenameLeft == "game-1,note-1,") dc_("typecode check found & failed", typecode)
       }
     }
 
     if (typecodeCheckPassed) {
-      if ( isBlank(codename) && isBlank(codename_altFilterOpt) ) {
+      if ( isBlank(codename) ) {
         codenameCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.codename, codename) ) {
-if (brSvObj.codename == "user,game1") dc_("codename check found & passed", codename)
+if (codenameLeft == "game-1,note-1,") dc_("codename check found & passed", codename)
           codenameCheckPassed = true;
         } else {
-if (brSvObj.codename == "user,game1") dc_("codename check found & failed", codename)
+if (codenameLeft == "game-1,note-1,") dc_("codename check found & failed", codename)
         }
       }
     }
 
     if (typecodeCheckPassed && codenameCheckPassed) {
-      if ( isBlank(att) && isBlank(att_altFilterOpt) ) {
+      if ( isBlank(att) ) {
         attCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.att, att) ) {
-if (brSvObj.codename == "user,game1") dc_("att check found & passed", att)
+if (codenameLeft == "game-1,note-1,") dc_("att check found & passed", att)
           attCheckPassed = true;
         } else {
-if (brSvObj.codename == "user,game1") dc_("att check found & failed", att)
+if (codenameLeft == "game-1,note-1,") dc_("att check found & failed", att)
         }
       }
     }
 
     if (typecodeCheckPassed && codenameCheckPassed && attCheckPassed) {
-      if ( isBlank(val) && isBlank(val_altFilterOpt) ) {
+      if ( isBlank(val) ) {
         valCheckPassed = true;
       } else {
         if ( isEqual(brSvObj.val, val) ) {
-if (brSvObj.codename == "user,game1") dc_("val check found & passed", val)
+if (codenameLeft == "game-1,note-1,") dc_("val check found & passed", val)
           valCheckPassed = true;
         } else {
-if (brSvObj.codename == "user,game1") dc_("val check found & failed", val)
+if (codenameLeft == "game-1,note-1,") dc_("val check found & failed", val)
         }
       }
     }
@@ -1164,10 +1316,10 @@ if (brSvObj.codename == "user,game1") dc_("val check found & failed", val)
         codenameLeftCheckPassed = true;
       } else {
         if ( leftIs(brSvObj.codename, codenameLeft) ) {
-if (brSvObj.codename == "user,game1") dc_("codenameLeft check found & passed", "cnLeft=>", codenameLeft, ", cn=", brSvObj.codename)
+if (codenameLeft == "game-1,note-1,") dc_("codenameLeft check found & passed", "cnLeft=>", codenameLeft, ", cn=", brSvObj.codename)
           codenameLeftCheckPassed = true;
         } else {
-if (brSvObj.codename == "user,game1") dc_("typecode check found & ", typecode)
+if (codenameLeft == "game-1,note-1,") dc_("typecode check found & ", typecode)
         }
       }
     }
@@ -1176,42 +1328,28 @@ if (brSvObj.codename == "user,game1") dc_("typecode check found & ", typecode)
       brSvObjAy.push(brSvObj);
 
 
-if (brSvObj.codename == "user,game1") dc_("..... YES passed checks")
+if (codenameLeft == "game-1,note-1,") dc_("..... YES passed checks")
     } else {
-if (brSvObj.codename == "user,game1") dc_("..... NOT passed checks")
+if (codenameLeft == "game-1,note-1,") dc_("..... NOT passed checks")
 
 
     }
   }
 
-if (typecode == C_typecode_ent && brSvObjAy.length > 0) da_("brSvObjAy[0].codename="+brSvObjAy[0].codename)
   return brSvObjAy;
 }
 
-function getUniqueCodename(codename, typecode) {
-  var i;
-
-  for (i = 1; i < 10000; i++) {
-    let testBsk = getBrowserSaveKey(typecode, codename, C_att_name);
-
-    let x = localStorage.getItem(testBsk);
-
-    if (x == null) {
-      break;
-    }
-    
-    codename += i;
-  }
-
-  return codename;
-}
-
-function getCodenameFromName(name, typecode) {
+function getCodenameFromGameAndName(gameObj, name, typecode, isGame) {
   var codename, i;
 
   codename = getStringWithCharsReplaced(name, ":", "-");
   codename = getStringWithCharsReplaced(codename, " ", "-");
+  codename = getStringWithCharsReplaced(codename, ",", "-");
   codename = codename.toLowerCase();
+
+  if ( ! isGame ) {
+    codename = gameObj.codename + "," + codename;
+  }
 
   codename = getUniqueCodename(codename, typecode);
 
@@ -1224,6 +1362,23 @@ function getCodenameLeft(parent1Codename, parent2Codename) {
     codenameLeft += parent2Codename + ",";
   }
   return codenameLeft;
+}
+
+function getCodenameUniquePart(codename, addedTextForNum) {
+  var codenameParts, codenameLeft, leftStrToRemove, codenameUniquePart;
+
+  codenameParts = codename.split(",");
+  codenameLeft = getCodenameLeft(codenameParts[0], codenameParts[1]);
+
+  if ( isBlank(addedTextForNum) ) {
+    leftStrToRemove = codenameLeft;
+  } else {
+    leftStrToRemove = codenameLeft + addedTextForNum;
+  }
+
+  codenameUniquePart = withoutLeft(codename, leftStrToRemove)
+
+  return codenameUniquePart;
 }
 
 function getElemFromObjArray(theArray, propName, propValToMatch) {
@@ -1280,55 +1435,154 @@ function getElemVal(elemId) {
   return elemVal;
 }
 
-function getEntObj(codename, isInitialEntCreation, isUser, name, gameCodename, locCodename, inventory, startLocCodename) {
-  var entObj = {}, itmCodenames, i;
-  
-  if (isInitialEntCreation) {
+function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, relatedCodename1, info) {
+  var entinfoDataObj, brSvObjExists;
 
-    if ( isTrue(isUser) ) {
-      entObj.isUser = "1";
-      codename = C_misc_userCodename + "," + gameCodename;
-    } else {
-      entObj.isUser = "0";
-      if ( isEqual(codename, C_misc_userCodename) ) {
-        codename += String(getRandomPositiveWholeNumber());
-      }
-      codename = codename + "," + gameCodename;
+  entinfoDataObj = {};
+
+  entinfoDataObj.codename = codename;
+
+  brSvObjExists = existsInBrowserSave(C_typecode_entinfoData, codename, C_att_entCodename);
+
+  if (brSvObjExists) {
+
+    if ( isBlank(entCodename) ) {
+      entCodename = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_entCodename);
+    }
+
+    if ( isBlank(infotype) ) {
+      infotype = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_infotype);
+    }
+
+    if ( isBlank(relatedTypecode1) ) {
+      relatedTypecode1 = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_relatedTypecode1);
+    }
+
+    if ( isBlank(relatedCodename1) ) {
+      relatedCodename1 = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_relatedCodename1);
+    }
+
+    if ( isBlank(info) ) {
+      info = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_info);
     }
 
   } else {
 
-    if ( isBlank(isUser) ) {
-      isUser = getFromBrowserSave_single(C_typecode_ent, codename, C_att_isUser);
-    }
-    entObj.isUser = getAsOneZero(isUser);
+    entinfoDataObj._existsInBrSv = false;
 
   }
+
+  entinfoDataObj.infotype = infotype;
+  entinfoDataObj.entCodename = entCodename;
+  entinfoDataObj.relatedTypecode1 = relatedTypecode1;
+  entinfoDataObj.relatedCodename1 = relatedCodename1;
+  entinfoDataObj.info = info;
+
+  entinfoDataObj.changeInfo = function(info) {
+    this.info = info;
+    this.saveToBrowser();
+  };
+
+  entinfoDataObj.existsInBrSv = function() {
+    return this._existsInBrSv;
+  };
+
+  entinfoDataObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_entCodename, this.entCodename);
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_infotype, this.infotype);
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_relatedTypecode1, this.relatedTypecode1);
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_relatedCodename1, this.relatedCodename1);
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_info, this.info);
+    this._existsInBrSv = true;
+  };
+
+  return entinfoDataObj;
+}
+
+function getEntinfoObj(codename, entCodename, infotype, info) {
+  var entinfoObj, brSvObjExists;
+
+  entinfoObj = {};
+
+  entinfoObj.codename = codename;
+
+  brSvObjExists = existsInBrowserSave(C_typecode_entinfo, codename, C_att_entCodename);
+
+  if (brSvObjExists) {
+
+    if ( isBlank(entCodename) ) {
+      entCodename = getFromBrSv_valFromAtt(C_typecode_entinfo, codename, C_att_entCodename);
+    }
+
+    if ( isBlank(infotype) ) {
+      infotype = getFromBrSv_valFromAtt(C_typecode_entinfo, codename, C_att_infotype);
+    }
+
+    if ( isBlank(info) ) {
+      info = getFromBrSv_valFromAtt(C_typecode_entinfo, codename, C_att_info);
+    }
+
+  } else {
+
+    entinfoObj._existsInBrSv = false;
+
+  }
+
+  entinfoObj.infotype = infotype;
+  entinfoObj.entCodename = entCodename;
+  entinfoObj.info = info;
+
+  entinfoObj.changeInfo = function(info) {
+    this.info = info;
+    this.saveToBrowser();
+  };
+
+  entinfoDataObj.existsInBrSv = function() {
+    return this._existsInBrSv;
+  };
+
+  entinfoObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_entinfo, this.codename, C_att_entCodename, this.entCodename);
+    saveToBrowser(C_typecode_entinfo, this.codename, C_att_infotype, this.infotype);
+    saveToBrowser(C_typecode_entinfo, this.codename, C_att_info, this.info);
+    this._existsInBrSv = true;
+  };
+  
+  return entinfoObj;
+}
+
+function getEntObj(codename, gameCodename = APP.curGameObj.codename, name, isUser, locCodename, inventory, startLocCodename) {
+  var entObj = {};
 
   entObj.codename = codename;
 
-  if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_ent, codename, C_att_name);
+  if ( isBlank(gameCodename) ) {
+    gameCodename = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_gameCodename);
   }
 
-  if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_ent, codename, C_att_gameCodename);
+  if ( isBlank(name) ) {
+    name = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_name);
+  }
+
+  if ( isBlank(isUser) ) {
+    isUser = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_isUser);
   }
 
   if ( isBlank(locCodename) ) {
-    locCodename = getFromBrowserSave_single(C_typecode_ent, codename, C_att_locCodename);
+    locCodename = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_locCodename);
   }
 
   if ( isBlank(inventory) ) {
-    inventory = getFromBrowserSave_single(C_typecode_ent, codename, C_att_inventory);
+    inventory = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_inventory);
   }
 
   if ( isBlank(startLocCodename) ) {
-    startLocCodename = getFromBrowserSave_single(C_typecode_ent, codename, C_att_startLocCodename);
+    startLocCodename = getFromBrSv_valFromAtt(C_typecode_ent, codename, C_att_startLocCodename);
   }
 
-  entObj.name = name;
   entObj.gameCodename = gameCodename;
+  entObj.name = name;
+  entObj.isUser = getAsOneZero(isUser);
   entObj.locCodename = locCodename;
   entObj.startLocCodename = startLocCodename;
 
@@ -1430,7 +1684,7 @@ function getEntObj(codename, isInitialEntCreation, isUser, name, gameCodename, l
   return entObj;
 }
 
-function getFromBrowserSave_single(typecode, codename, att) {
+function getFromBrSv_valFromAtt(typecode, codename, att) {
   var bsk = getBrowserSaveKey(typecode, codename, att);
   var val = localStorage.getItem(bsk);
   return val;
@@ -1442,15 +1696,15 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
   gameObj.codename = codename;
 
   if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_game, codename, C_att_name);
+    name = getFromBrSv_valFromAtt(C_typecode_game, codename, C_att_name);
   }
 
   if ( isBlank(startPageCodename) ) {
-    startPageCodename = getFromBrowserSave_single(C_typecode_game, codename, C_att_startPageCodename);
+    startPageCodename = getFromBrSv_valFromAtt(C_typecode_game, codename, C_att_startPageCodename);
   }
 
   if ( isBlank(curPageCodename) ) {
-    curPageCodename = getFromBrowserSave_single(C_typecode_game, codename, C_att_curPageCodename);
+    curPageCodename = getFromBrSv_valFromAtt(C_typecode_game, codename, C_att_curPageCodename);
   }
   
   gameObj.name = name;
@@ -1460,18 +1714,12 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
   gameObj.getAllEntObjs = function() {
     var entBrSvObjs, i, entObjs = [];
 
-    entBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_ent, null, null, null, C_att_gameCodename, null, this.codename, null, null);
-
-    //entBrSvObjs.forEach( function(curEntBrSvObj) {
-    //  let curEntCodename = curEntBrSvObj.codename;
-    //  let curEntObj = getEntObj(curEntCodename, null, null, null, this.codename);
-    //  entObjs.push(curEntObj);
-    //} );
+    entBrSvObjs = getBrSvObjsFromBrSv(C_typecode_ent, null, C_att_gameCodename, this.codename, null);
 
     for(i = 0; i < entBrSvObjs.length; i++) {
       let curEntBrSvObj = entBrSvObjs[i];
       let curEntCodename = curEntBrSvObj.codename;
-      let curEntObj = getEntObj(curEntCodename, null, null, null, this.codename);
+      let curEntObj = getEntObj(curEntCodename, this.codename);
       entObjs.push(curEntObj);
     }
 
@@ -1515,7 +1763,7 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
   gameObj.getAllLocObjs = function() {
     var locBrSvObjs, i, locObjs = [];
 
-    locBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_loc, null, null, null, C_att_gameCodename, null, this.codename, null, null);
+    locBrSvObjs = getBrSvObjsFromBrSv(C_typecode_loc, null, C_att_gameCodename, this.codename, null);
 
     for (i = 0; i < locBrSvObjs.length; i++) {
       let curLocBrSvObj = locBrSvObjs[i];
@@ -1532,7 +1780,7 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
   gameObj.getAllPageObjs = function() {
     var pageBrSvObjs, i, pageObjs = [];
 
-    pageBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_page, null, null, null, C_att_gameCodename, null, this.codename, null, null);
+    pageBrSvObjs = getBrSvObjsFromBrSv(C_typecode_page, null, C_att_gameCodename, this.codename, null);
 
     for (let curPageBrSvObj in pageBrSvObjs) {
       let curPageCodename = curPageBrSvObj.codename;
@@ -1592,37 +1840,45 @@ function getHtml_a(linkText, jsFunc, jsArg1, jsArg2) {
 
 function getHtml_pageDisplay(pageObj) {
   var html = "";
-  var i, infoLinkHtml;
+  var i, trObjs, uaObjs, infoLinkHtml;
 
 
   // TEXT-ROWS
 
-  for (i = 0; i < pageObj.trObjs.length; i++) {
-    let curTrObj = pageObj.trObjs[i];
-    let includeTr = true;
-    let itmObj;
+  trObjs = pageObj.getAllTrObjs();
+
+  for (i = 0; i < trObjs.length; i++) {
+    let curTrObj, showTr, itmObj, curTrcondObjs;
+
+    curTrObj = trObjs[i];
+    showTr = true;
 
     if ( ! isBlank(curTrObj.itmStatusReq) ) {
-      itmObj = getItmObj(curTrObj.itmCodename, APP.curGameObj.codename);
+      itmObj = getItmObj(curTrObj.itmCodename);
       if ( ! isEqual(curTrObj.itmStatusReq, itmObj.status) ) {
-        includeTr = false;
+        showTr = false;
       }
     }
 
     if ( ! isBlank(curTrObj.itmInLocInv) ) {
       let locObj = APP.curPageObj.getLocObj();
 
-      if ( curTrObj.itmInLocInv_isIsNot == C_misc_is && ! locObj.hasItm(curTrObj.itmInLocInv) ) {
-        includeTr = false;
-      }
+      if ( ! isBlank(curTrObj.itmInLocInv) && ! isBlank(curTrObj.itmInLocInv_isIsNot) ) {
+        if ( curTrObj.itmInLocInv_isIsNot == C_misc_is && ! locObj.hasItm(curTrObj.itmInLocInv) ) {
+          showTr = false;
+        }
 
-      if ( curTrObj.itmInLocInv_isIsNot == C_misc_isNot && locObj.hasItm(curTrObj.itmInLocInv) ) {
-        includeTr = false;
+        if ( isEqual(curTrObj.itmInLocInv_isIsNot, C_misc_isNot) && locObj.hasItm(curTrObj.itmInLocInv) ) {
+          showTr = false;
+        }
       }
     }
 
+    if ( curTrObj.condsFailed() ) {
+      showTr = false;
+    }
 
-    if (includeTr) {
+    if (showTr) {
       let textOfRow = curTrObj.textOfRow;
 
       if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
@@ -1644,15 +1900,17 @@ function getHtml_pageDisplay(pageObj) {
 
   // USER-ACTIONS FOR PAGE
 
-  if (pageObj.uaObjs.length == 0) {
+  uaObjs = pageObj.getAllUaObjs();
+
+  if (uaObjs.length == 0) {
 
     html += getHtmlForAddedTextRow(html, "(no user-actions are available yet for this page)", 1);
 
   } else {
 
-    for (i = 0; i < pageObj.uaObjs.length; i++) {
+    for (i = 0; i < uaObjs.length; i++) {
 
-      let curUaObj = pageObj.uaObjs[i];
+      let curUaObj = uaObjs[i];
       let showUa = true;
       let uaText;
 
@@ -1682,18 +1940,23 @@ function getHtml_pageDisplay(pageObj) {
       }
 
       if ( ! isBlank(curUaObj.statusReq_itmCodename) ) {
-        let statusReqItmObj = getItmObj(curUaObj.statusReq_itmCodename, APP.curGameObj.codename);
+        let statusReqItmObj = getItmObj(curUaObj.statusReq_itmCodename);
 
         if ( ! isEqual(curUaObj.statusReq_itmStatus, statusReqItmObj.status) ) {
           showUa = false;
         }
       }
 
+
+      if ( curUaObj.condsFailed() ) {
+        showUa = false;
+      }
+
       if (showUa) {
         uaText = getHtml_a(curUaObj.uaText, "do_action", curUaObj.uatype, curUaObj.codename);
 
         if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
-          //uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit", "dev_editor__goto__edit_user_action", curUaObj.codename);
+          uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit text", "dev_editor__edit_user_action_text", curUaObj.codename);
           uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
         }
 
@@ -1827,6 +2090,33 @@ function getHtmlForAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
   return newHtml;
 }
 
+function getInfotypeDisplayText(infotype) {
+  switch(infotype) {
+    case C_infotype_custom:
+      return "custom";
+      break;
+    case C_infotype_itmExam:
+      return "object examined";
+      break;
+  }
+}
+
+function getInfotypeObjAy() {
+  var ay = [];
+  //var infotypeObj_custom = {};
+  var infotypeObj_itmExam = {};
+
+  //infotypeObj_custom.codename = C_infotype_custom;
+  //infotypeObj_custom.name = getInfotypeDisplayText(C_infotype_custom);
+  //ay.push(infotypeObj_custom);
+
+  infotypeObj_itmExam.codename = C_infotype_itmExam;
+  infotypeObj_itmExam.name = getInfotypeDisplayText(C_infotype_itmExam);
+  ay.push(infotypeObj_itmExam);
+
+  return ay;
+}
+
 function getInventoryFromItmObjs(itmObjs) {
   var i, inventory = "";
 
@@ -1860,53 +2150,53 @@ function getIsIsNotObjAy() {
   return ay;
 }
 
-function getItmObj(codename, gameCodename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
+function getItmObj(codename, gameCodename = APP.curGameObj.codename, name, canGrab, startLocCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg) {
   var itmObj = {};
 
   itmObj.codename = codename;
 
   if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_gameCodename);
+    gameCodename = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_gameCodename);
   }
 
   if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_itm, codename, C_att_name);
+    name = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_name);
   }
 
   if ( isBlank(canGrab) ) {
-    canGrab = getFromBrowserSave_single(C_typecode_itm, codename, C_att_canGrab);
+    canGrab = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_canGrab);
   }
 
   if ( isBlank(startLocCodename) ) {
-    startLocCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_startLocCodename);
+    startLocCodename = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_startLocCodename);
   }
 
   if ( isBlank(usereceivetype) ) {
-    usereceivetype = getFromBrowserSave_single(C_typecode_itm, codename, C_att_usereceivetype);
+    usereceivetype = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_usereceivetype);
   }
 
   if ( isBlank(startStatus) ) {
-    startStatus = getFromBrowserSave_single(C_typecode_itm, codename, C_att_startStatus);
+    startStatus = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_startStatus);
   }
 
   if ( isBlank(status) ) {
-    status = getFromBrowserSave_single(C_typecode_itm, codename, C_att_status);
+    status = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_status);
   }
 
   if ( isBlank(itmThatAffects) ) {
-    itmThatAffects = getFromBrowserSave_single(C_typecode_itm, codename, C_att_itmThatAffects);
+    itmThatAffects = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_itmThatAffects);
   }
 
   if ( isBlank(useReceivedMsg) ) {
-    useReceivedMsg = getFromBrowserSave_single(C_typecode_itm, codename, C_att_useReceivedMsg);
+    useReceivedMsg = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_useReceivedMsg);
   }
 
   if ( isBlank(statusReq_itmCodename) ) {
-    statusReq_itmCodename = getFromBrowserSave_single(C_typecode_itm, codename, C_att_statusReq_itmCodename);
+    statusReq_itmCodename = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_statusReq_itmCodename);
   }
 
   if ( isBlank(examineMsg) ) {
-    examineMsg = getFromBrowserSave_single(C_typecode_itm, codename, C_att_examineMsg);
+    examineMsg = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_examineMsg);
   }
 
   itmObj.gameCodename = gameCodename;
@@ -2043,7 +2333,7 @@ function getItmStatusObjAy_fromUsereceivetype(usereceivetype) {
 }
 
 function getLocationAttFromBrowserSave(locCodename, att) {
-  var val = getFromBrowserSave_single(C_saveTypeName_location, locCodename, att);
+  var val = getFromBrSv_valFromAtt(C_saveTypeName_location, locCodename, att);
   return val;
 }
 
@@ -2057,30 +2347,30 @@ function getLocDisplayVarCode(att) {
   return displayVarCode;
 }
 
-function getLocObj(codename, gameCodename, pageCodename, name, inventory) {
+function getLocObj(codename, gameCodename = APP.curGameObj.codename, name, pageCodename, inventory) {
   var locObj = {}, itmCodenames, i;
 
   locObj.codename = codename;
 
   if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_loc, codename, C_att_gameCodename);
-  }
-
-  if ( isBlank(pageCodename) ) {
-    pageCodename = getFromBrowserSave_single(C_typecode_loc, codename, C_att_pageCodename);
+    gameCodename = getFromBrSv_valFromAtt(C_typecode_loc, codename, C_att_gameCodename);
   }
 
   if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_loc, codename, C_att_name);
+    name = getFromBrSv_valFromAtt(C_typecode_loc, codename, C_att_name);
+  }
+
+  if ( isBlank(pageCodename) ) {
+    pageCodename = getFromBrSv_valFromAtt(C_typecode_loc, codename, C_att_pageCodename);
   }
 
   if ( isBlank(inventory) ) {
-    inventory = getFromBrowserSave_single(C_typecode_loc, codename, C_att_inventory);
+    inventory = getFromBrSv_valFromAtt(C_typecode_loc, codename, C_att_inventory);
   }
 
   locObj.gameCodename = gameCodename;
-  locObj.pageCodename = pageCodename;
   locObj.name = name;
+  locObj.pageCodename = pageCodename;
 
   locObj.itmObjs = getItmObjsFromInventory(inventory);
 
@@ -2108,7 +2398,7 @@ function getLocObj(codename, gameCodename, pageCodename, name, inventory) {
         curItmObj = this.itmObjs[i];
 
         if ( isTrue(checkStatusReq) && ! isBlank(curItmObj.statusReq_itmCodename) ) {
-          statusReq_itmObj = getLocObj(curItmObj.statusReq_itmCodename, APP.curGameObj.codename);
+          statusReq_itmObj = getLocObj(curItmObj.statusReq_itmCodename);
           if ( ! isEqual(statusReq_itmObj.status, curItmObj.statusReq_itmStatus) ) {
             writeItem = false;
           }
@@ -2178,8 +2468,8 @@ function getLocObj(codename, gameCodename, pageCodename, name, inventory) {
   locObj.saveToBrowser = function() {
     var inventory = getInventoryFromItmObjs(this.itmObjs);
 
-    saveToBrowser(C_typecode_loc, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_loc, this.codename, C_att_gameCodename, this.gameCodename);
+    saveToBrowser(C_typecode_loc, this.codename, C_att_name, this.name);
     saveToBrowser(C_typecode_loc, this.codename, C_att_pageCodename, this.pageCodename);
     saveToBrowser(C_typecode_loc, this.codename, C_att_inventory, inventory);
   };
@@ -2187,26 +2477,58 @@ function getLocObj(codename, gameCodename, pageCodename, name, inventory) {
   return locObj;
 }
 
-function getNextSortedCodename(typecode, parent1Codename, parent2Codename, att) {
-  var codenameLeftToFind, ay, aySorted, lastAyItemCodename, lastCurSortval, nextSortval, nextSortedCodename;
+function getTypecodeAddedTextForNum(typecode) {
+  var x = typecode.toLowerCase() + "-";
+  return x;
+}
+
+function getNextSortedCodename(typecode, parent1Codename, parent2Codename, anyValidAtt, addedTextForNum) {
+  var codenameLeftToFind, ay, lastAyItemCodename, nextNum, newCodename;
 
   codenameLeftToFind = getCodenameLeft(parent1Codename, parent2Codename);
-da_(att)
-  ay = getBrSvObjsFromBrowserSave(typecode, null, null, null, att, null, null, null, codenameLeftToFind);
 
-  aySorted = sortSortedCodenameAy(ay);
+  ay = getBrSvObjsFromBrSv(typecode, null, anyValidAtt, null, codenameLeftToFind);
 
-  if (ay.length == 0) {
-    nextSortval = 1;
-  } else {
-    lastAyItemCodename = ay[ay.length - 1].codename;
-    lastCurSortval = withoutLeft(lastAyItemCodename, codenameLeftToFind);
-    nextSortval = Number(lastCurSortval) + 1;
+  if ( isBlank(addedTextForNum) ) {
+    addedTextForNum = getTypecodeAddedTextForNum(typecode);
   }
 
-  nextSortedCodename = parent1Codename + "," + parent2Codename + "," + nextSortval;
+  APP.sort_addedTextForNum = addedTextForNum;
+  ay.sort( sorting_sortedCodenameAy() );
 
-  return nextSortedCodename;
+  if (ay.length == 0) {
+
+    nextNum = 1;
+
+  } else {
+
+    let lastNum;
+
+    lastAyItemCodename = ay[ay.length - 1].codename;
+
+    lastNum = getCodenameUniquePart(lastAyItemCodename, addedTextForNum);
+
+    nextNum = Number(lastNum) + 1;
+
+  }
+
+  newCodename = parent1Codename;
+
+  if ( ! isBlank(parent2Codename) ) {
+    newCodename += "," + parent2Codename
+  }
+
+  newCodename += ",";
+
+  if ( ! isBlank(addedTextForNum) ) {
+    newCodename += addedTextForNum;
+  }
+
+  newCodename += nextNum;
+
+  APP.sort_addedTextForNum = null;
+
+  return newCodename;
 }
 
 function getObjArrayAsString(theArray, propName, propName2) {
@@ -2247,55 +2569,138 @@ function getObjArrayWithoutElem(theArray, propName, propValToExclude) {
   */
 }
 
-function getPageObj(codename, gameCodename, name, locCodename) {
+function getObj_fromCodename(typecode, codename, gameCodename) {
+
+
+
+//INCOMPLETE: finish later
+
+
+
+  var obj;
+
+  switch(typecode) {
+    case C_typecode_appSetting:
+      // this one should never be used, as we don't set up app-settings as objects
+      break;
+    case C_typecode_ent:
+      obj = getEntObj(codename, gameCodename);
+      break;
+    case C_typecode_entinfo:
+      break;
+    case C_typecode_entinfoData:
+      break;
+    case C_typecode_game:
+      break;
+    case C_typecode_itm:
+      break;
+    case C_typecode_loc:
+      break;
+    case C_typecode_page:
+      break;
+    case C_typecode_tr:
+      break;
+    case C_typecode_trcond:
+      break;
+    case C_typecode_ua:
+      break;
+  }
+
+  return obj;
+}
+
+function getObj_fromObjOrCodename(typecode, objOrCodename, gameCodename = APP.curGameObj.codename) {
+  var codename = objOrCodename.codename;
+
+  if ( ! codename ) {
+    objOrCodename = getObj_fromCodename(typecode, objOrCodename, gameCodename);
+  }
+
+  return objOrCodename
+}
+
+function getPageObj(codename, gameCodename = APP.curGameObj.codename, name, locCodename) {
   var pageObj = {};
 
   pageObj.codename = codename;
 
   if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_page, codename, C_att_gameCodename);
+    gameCodename = getFromBrSv_valFromAtt(C_typecode_page, codename, C_att_gameCodename);
   }
 
   if ( isBlank(name) ) {
-    name = getFromBrowserSave_single(C_typecode_page, codename, C_att_name);
+    name = getFromBrSv_valFromAtt(C_typecode_page, codename, C_att_name);
   }
 
   if ( isBlank(locCodename) ) {
-    locCodename = getFromBrowserSave_single(C_typecode_page, codename, C_att_locCodename);
+    locCodename = getFromBrSv_valFromAtt(C_typecode_page, codename, C_att_locCodename);
   }
 
   pageObj.gameCodename = gameCodename;
   pageObj.name = name;
   pageObj.locCodename = locCodename;
 
-  pageObj.trObjs = [];
-  pageObj.uaObjs = [];
+  pageObj._trObjs = [];
+  pageObj._uaObjs = [];
 
-  pageObj.deleteTr = function(trCodenameToDelete) {
-    var newAy;
+  pageObj.getAllTrObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_tr);
+    this._trObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._trObjs;
+  };
+
+  pageObj.getAllUaObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_ua);
+    this._uaObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._uaObjs;
+  };
+
+  pageObj.deleteTr = function(trCodenameToDelete, skipAyRefresh) {
+    var newAy, trObj, trcondObjs;
+
+    trObj = this.getTrObj(trCodenameToDelete);
+
+    trcondObjs = trObj.getAllTrcondObjs();
+
+    trcondObjs.forEach( (trcondObj) => {
+      trObj.deleteTrcond(trcondObj.codename, true);
+    } );
 
     deleteFromBrowserSave_multiple(C_typecode_tr, trCodenameToDelete);
 
-    newAy = getObjArrayWithoutElem(this.trObjs, C_misc_codename, trCodenameToDelete);
-    this.trObjs = newAy;
+    if ( ! skipAyRefresh ) {
+      newAy = getObjArrayWithoutElem(this._trObjs, C_misc_codename, trCodenameToDelete);
+      this._trObjs = newAy;
+    }
   };
 
-  pageObj.deleteUa = function(uaCodenameToDelete) {
-    var newAy;
+  pageObj.deleteUa = function(uaCodenameToDelete, skipAyRefresh) {
+    var newAy, uaObj, uacondObjs;
+
+    uaObj = this.getUaObj(uaCodenameToDelete);
+    uacondObjs = uaObj.getAllUacondObjs();
+
+    uacondObjs.forEach( (uarcondObj) => {
+      uaObj.deleteUacond(uacondObj.codename, true);
+    } );
 
     deleteFromBrowserSave_multiple(C_typecode_ua, uaCodenameToDelete);
 
-    newAy = getObjArrayWithoutElem(this.uaObjs, C_misc_codename, uaCodenameToDelete);
-    this.uaObjs = newAy;
+    if ( ! skipAyRefresh ) {
+      newAy = getObjArrayWithoutElem(this._uaObjs, C_misc_codename, uaCodenameToDelete);
+      this._uaObjs = newAy;
+    }
   };
 
   pageObj.getCurPageAndLoc = function() {
     var locObj, txt;
 
-    locObj = getLocObj(APP.userEntObj.locCodename, APP.curGameObj.codename);
+    locObj = getLocObj(APP.userEntObj.locCodename);
 
     if ( isBlank(this.locCodename) || ! isEqual(this.locCodename, locObj.codename) ) {
-      let locObj = getLocObj(APP.userEntObj.locCodename, APP.curGameObj.codename);
+      let locObj = getLocObj(APP.userEntObj.locCodename);
       txt = this.name + " / " + locObj.name;
     } else {
       txt = this.name;
@@ -2305,8 +2710,8 @@ function getPageObj(codename, gameCodename, name, locCodename) {
   };
 
   pageObj.getTrObj = function(trCodename) {
-    for (var i = 0; i < this.trObjs.length; i++) {
-      let curTrObj = this.trObjs[i];
+    for (var i = 0; i < this._trObjs.length; i++) {
+      let curTrObj = this._trObjs[i];
       if ( isEqual(trCodename, curTrObj.codename) ) {
         return curTrObj;
       }
@@ -2332,42 +2737,57 @@ function getPageObj(codename, gameCodename, name, locCodename) {
   pageObj.loadTrObjsFromBrowserSave = function() {
     var codenameLeft, brSvObjs, i;
 
-    this.trObjs = [];
+    this._trObjs = [];
 
-    codenameLeft = getCodenameLeft(this.gameCodename, this.codename);
+    codenameLeft = getCodenameLeft(this.codename);
 
-    brSvObjs = getBrSvObjsFromBrowserSave(C_typecode_tr, null, null, null, C_att_textOfRow, null, null, null, codenameLeft);
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_tr, null, C_att_textOfRow, null, codenameLeft);
 
     for (i = 0; i < brSvObjs.length; i++) {
       let curBrSvObj = brSvObjs[i];
-      let newTrObj = getTrObj(curBrSvObj.codename, this.gameCodename, this.codename, curBrSvObj.val);
-      this.trObjs.push(newTrObj);
-    }
+      let newTrObj = getTrObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
 
-    this.trObjs = sortSortedCodenameAy(this.trObjs);
+      newTrObj.init();
+
+      this._trObjs.push(newTrObj);
+    }
   };
 
   pageObj.loadUaObjsFromBrowserSave = function() {
     var codenameLeft, brSvObjs, i;
 
-    this.uaObjs = [];
+    this._uaObjs = [];
 
-    codenameLeft = getCodenameLeft(this.gameCodename, this.codename);
+    codenameLeft = getCodenameLeft(this.codename);
 
-    brSvObjs = getBrSvObjsFromBrowserSave(C_typecode_ua, null, null, null, C_att_uaText, null, null, null, codenameLeft);
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_ua, null, C_att_uaText, null, codenameLeft);
 
     for (i = 0; i < brSvObjs.length; i++) {
       let curBrSvObj = brSvObjs[i];
-      let newUaObj = getUaObj(curBrSvObj.codename, this.gameCodename, this.codename, curBrSvObj.val);
-      this.uaObjs.push(newUaObj);
+      let newUaObj = getUaObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+
+      newUaObj.init();
+
+      this._uaObjs.push(newUaObj);
     }
 
-    this.uaObjs = sortSortedCodenameAy(this.uaObjs);
   };
 
   pageObj.getLocObj = function() {
-    var locObj = getLocObj(this.locCodename, this.gameCodename, this.codename);
+    var locObj = getLocObj(this.locCodename, this.gameCodename, null, this.codename);
     return locObj;
+  };
+
+  pageObj.receiveTrObj = function(trObj) {
+    this._trObjs.push(trObj);
+  };
+
+  pageObj.receiveUaObj = function(uaObj) {
+    this._uaObjs.push(uaObj);
+  };
+
+  pageObj.display = function() {
+    displayPage(this);
   };
 
   pageObj.saveToBrowser = function() {
@@ -2549,12 +2969,23 @@ function getProcessedStringForTextView(oldString) {
   return newString;
 }
 
-function getRandomPositiveWholeNumber() {
+function getRand(numDigits) {
+  return getRandomPositiveWholeNumber(numDigits);
+}
+
+function getRandomPositiveWholeNumber(numDigits) {
   var a = Math.random();
   var b = String(a);
   var c = b.split(".");
   var d = c[1];
-  return d;
+
+  var e;
+  if ( isNumeric(numDigits) ){
+    e = right(d,numDigits);
+  } else {
+    e = d;
+  }
+  return e;
 }
 
 function getStringWithCharsReplaced(oldString, oldChars, newChars) {
@@ -2589,40 +3020,110 @@ function getTextFromUser(promptText, defaultVal) {
   return response;
 }
 
-function getTrObj(codename, gameCodename, pageCodename, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot) {
+function getTrcondObj(codename, trCodename, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info){
+  var trcondObj, brSvObjExists;
+
+  trcondObj = {};
+
+  if ( isBlank(codename) ) {
+    codename = getNextSortedCodename(C_typecode_trcond, trCodename, null, C_att_infotype, null);
+  }
+
+  trcondObj.codename = codename;
+
+  brSvObjExists = existsInBrowserSave(C_typecode_trcond, codename, C_att_trCodename);
+
+  if (brSvObjExists) {
+
+    if ( isBlank(trCodename) ) {
+      trCodename = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_trCodename);
+    }
+
+    if ( isBlank(infotype) ) {
+      infotype = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_infotype);
+    }
+
+    if ( isBlank(relatedTypecode1) ) {
+      relatedTypecode1 = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_relatedTypecode1);
+    }
+
+    if ( isBlank(relatedCodename1) ) {
+      relatedCodename1 = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_relatedCodename1);
+    }
+
+    if ( isBlank(relatedTypecode2) ) {
+      relatedTypecode2 = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_relatedTypecode2);
+    }
+
+    if ( isBlank(relatedCodename2) ) {
+      relatedCodename2 = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_relatedCodename2);
+    }
+
+    if ( isBlank(info) ) {
+      info = getFromBrSv_valFromAtt(C_typecode_trcond, codename, C_att_info);
+    }
+
+  } else {
+
+    trcondObj._existsInBrSv = false;
+
+  }
+
+  trcondObj.trCodename = trCodename;
+  trcondObj.infotype = infotype;
+  trcondObj.relatedTypecode1 = relatedTypecode1;
+  trcondObj.relatedCodename1 = relatedCodename1;
+  trcondObj.relatedTypecode2 = relatedTypecode2;
+  trcondObj.relatedCodename2 = relatedCodename2;
+  trcondObj.info = info;
+
+  trcondObj.existsInBrSv = function() {
+    return this._existsInBrSv;
+  };
+
+  trcondObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_trCodename, this.trCodename);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_infotype, this.infotype);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_relatedTypecode1, this.relatedTypecode1);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_relatedCodename1, this.relatedCodename1);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_relatedTypecode2, this.relatedTypecode2);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_relatedCodename2, this.relatedCodename2);
+    saveToBrowser(C_typecode_trcond, this.codename, C_att_info, this.info);
+    this._existsInBrSv = true;
+  };
+
+  return trcondObj;
+}
+
+function getTrObj(codename, pageCodename = APP.curPageObj.codename, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot) {
   var trObj = {};
 
   trObj.codename = codename;
 
-  if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_tr, codename, C_att_gameCodename);
-  }
-
   if ( isBlank(pageCodename) ) {
-    pageCodename = getFromBrowserSave_single(C_typecode_tr, codename, C_att_pageCodename);
+    pageCodename = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_pageCodename);
   }
 
   if ( isBlank(textOfRow) ) {
-    textOfRow = getFromBrowserSave_single(C_typecode_tr, codename, C_att_textOfRow);
+    textOfRow = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_textOfRow);
   }
 
   if ( isBlank(itmCodename) ) {
-    itmCodename = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmCodename);
+    itmCodename = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_itmCodename);
   }
 
   if ( isBlank(itmStatusReq) ) {
-    itmStatusReq = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmStatusReq);
+    itmStatusReq = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_itmStatusReq);
   }
 
   if ( isBlank(itmInLocInv) ) {
-    itmInLocInv = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmInLocInv);
+    itmInLocInv = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_itmInLocInv);
   }
 
   if ( isBlank(itmInLocInv_isIsNot) ) {
-    itmInLocInv_isIsNot = getFromBrowserSave_single(C_typecode_tr, codename, C_att_itmInLocInv_isIsNot);
+    itmInLocInv_isIsNot = getFromBrSv_valFromAtt(C_typecode_tr, codename, C_att_itmInLocInv_isIsNot);
   }
 
-  trObj.gameCodename = gameCodename;
   trObj.pageCodename = pageCodename;
   trObj.textOfRow = textOfRow;
   trObj.itmCodename = itmCodename;
@@ -2630,13 +3131,79 @@ function getTrObj(codename, gameCodename, pageCodename, textOfRow, itmCodename, 
   trObj.itmInLocInv = itmInLocInv;
   trObj.itmInLocInv_isIsNot = itmInLocInv_isIsNot;
 
+  trObj._trcondObjs = [];
+
   trObj.changeTextOfRow = function(newTextOfRow) {
     this.textOfRow = newTextOfRow;
     saveToBrowser(C_typecode_tr, this.codename, C_att_textOfRow, this.textOfRow);
   };
 
+  trObj.deleteTrcond = function(trcondCodenameToDelete, skipAyRefresh) {
+    var newAy;
+
+    deleteFromBrowserSave_multiple(C_typecode_trcond, trcondCodenameToDelete);
+
+    if ( ! skipAyRefresh ) {
+      newAy = getObjArrayWithoutElem(this._trcondObjs, C_misc_codename, trcondCodenameToDelete);
+      this._trcondObjs = newAy;
+    }
+  };
+
+  trObj.condsFailed = function() {
+    var i;
+
+    for (i = 0; i < this._trcondObjs.length; i++) {
+      let curTrcondObj = this._trcondObjs[i];
+dc("curTrcondObj.codename",curTrcondObj.codename)
+      let condFailed = didCondFail(curTrcondObj);
+      if (condFailed) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  trObj.condsPassed = function() {
+    return ! this.condsFailed();
+  };
+
+  trObj.getAllTrcondObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_trcond);
+    this._trcondObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._trcondObjs;
+  };
+
+  trObj.loadTrcondObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this._trcondObjs = [];
+
+    codenameLeft = getCodenameLeft(this.codename);
+
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_trcond, null, C_att_infotype, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newTrcondObj = getTrcondObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+      this._trcondObjs.push(newTrcondObj);
+    }
+  };
+
+  trObj.init = function() {
+    this.loadTrcondObjsFromBrowserSave();
+  };
+
+  trObj.condsPassed = function() {
+    return ! this.condsFailed();
+  };
+
+  trObj.receiveTrcondObj = function(trcondObj) {
+    this._trcondObjs.push(trcondObj);
+  };
+
   trObj.saveToBrowser = function() {
-    saveToBrowser(C_typecode_tr, this.codename, C_att_gameCodename, this.gameCodename);
     saveToBrowser(C_typecode_tr, this.codename, C_att_pageCodename, this.pageCodename);
     saveToBrowser(C_typecode_tr, this.codename, C_att_textOfRow, this.textOfRow);
     saveToBrowser(C_typecode_tr, this.codename, C_att_itmCodename, this.itmCodename);
@@ -2648,44 +3215,39 @@ function getTrObj(codename, gameCodename, pageCodename, textOfRow, itmCodename, 
   return trObj;
 }
 
-function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
+function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
   var uaObj = {};
 
   uaObj.codename = codename;
 
-  if ( isBlank(gameCodename) ) {
-    gameCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_gameCodename);
-  }
-
   if ( isBlank(pageCodename) ) {
-    pageCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_pageCodename);
+    pageCodename = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_pageCodename);
   }
 
   if ( isBlank(uaText) ) {
-    uaText = getFromBrowserSave_single(C_typecode_ua, codename, C_att_uaText);
+    uaText = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_uaText);
   }
 
   if ( isBlank(uatype) ) {
-    uatype = getFromBrowserSave_single(C_typecode_ua, codename, C_att_uatype);
+    uatype = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_uatype);
   }
 
   if ( isBlank(itmCodename) ) {
-    itmCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_itmCodename);
+    itmCodename = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_itmCodename);
   }
 
   if ( isBlank(locCodename) ) {
-    locCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_locCodename);
+    locCodename = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_locCodename);
   }
 
   if ( isBlank(statusReq_itmCodename) ) {
-    statusReq_itmCodename = getFromBrowserSave_single(C_typecode_ua, codename, C_att_statusReq_itmCodename);
+    statusReq_itmCodename = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_statusReq_itmCodename);
   }
 
   if ( isBlank(statusReq_itmStatus) ) {
-    statusReq_itmStatus = getFromBrowserSave_single(C_typecode_ua, codename, C_att_statusReq_itmStatus);
+    statusReq_itmStatus = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_statusReq_itmStatus);
   }
 
-  uaObj.gameCodename = gameCodename;
   uaObj.pageCodename = pageCodename;
   uaObj.uaText = uaText;
   uaObj.uatype = uatype;
@@ -2694,8 +3256,67 @@ function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCoden
   uaObj.statusReq_itmCodename = statusReq_itmCodename;
   uaObj.statusReq_itmStatus = statusReq_itmStatus;
 
+  uaObj.condsFailed = function() {
+    var i;
+
+    for (i = 0; i < this._uacondObjs.length; i++) {
+      let curUacondObj = this._uacondObjs[i];
+      let condFailed = didCondFail(curUacondObj);
+      if (condFailed) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  uaObj.condsPassed = function() {
+    return ! this.condsFailed();
+  };
+
+  uaObj.deleteUacond = function(uacondCodenameToDelete, skipAyRefresh) {
+    var newAy;
+
+    deleteFromBrowserSave_multiple(C_typecode_uacond, uacondCodenameToDelete);
+
+    if ( ! skipAyRefresh ) {
+      newAy = getObjArrayWithoutElem(this._uacondObjs, C_misc_codename, uacondCodenameToDelete);
+      this._uacondObjs = newAy;
+    }
+  };
+
+  uaObj.getAllUacondObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_uacond);
+    this._uacondObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._uacondObjs;
+  };
+
+  uaObj.loadUacondObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this._uacondObjs = [];
+
+    codenameLeft = getCodenameLeft(this.codename);
+
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_uacond, null, C_att_infotype, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newUacondObj = getUacondObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+      this._uacondObjs.push(newUacondObj);
+    }
+  };
+
+  uaObj.init = function() {
+    this.loadUacondObjsFromBrowserSave();
+  };
+
+  uaObj.receiveUacondObj = function(uacondObj) {
+    this._uacondObjs.push(uacondObj);
+  };
+
   uaObj.saveToBrowser = function() {
-    saveToBrowser(C_typecode_ua, this.codename, C_att_gameCodename, this.gameCodename);
     saveToBrowser(C_typecode_ua, this.codename, C_att_pageCodename, this.pageCodename);
     saveToBrowser(C_typecode_ua, this.codename, C_att_uaText, this.uaText);
     saveToBrowser(C_typecode_ua, this.codename, C_att_uatype, this.uatype);
@@ -2706,6 +3327,81 @@ function getUaObj(codename, gameCodename, pageCodename, uaText, uatype, itmCoden
   };
   
   return uaObj;
+}
+
+function getUacondObj(codename, uaCodename, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info){
+  var uacondObj, brSvObjExists;
+
+  uacondObj = {};
+
+  if ( isBlank(codename) ) {
+    codename = getNextSortedCodename(C_typecode_uacond, uaCodename, null, C_att_infotype, null);
+  }
+
+  uacondObj.codename = codename;
+
+  brSvObjExists = existsInBrowserSave(C_typecode_uacond, codename, C_att_uaCodename);
+
+  if (brSvObjExists) {
+
+    if ( isBlank(uaCodename) ) {
+      uaCodename = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_uaCodename);
+    }
+
+    if ( isBlank(infotype) ) {
+      infotype = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_infotype);
+    }
+
+    if ( isBlank(relatedTypecode1) ) {
+      relatedTypecode1 = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_relatedTypecode1);
+    }
+
+    if ( isBlank(relatedCodename1) ) {
+      relatedCodename1 = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_relatedCodename1);
+    }
+
+    if ( isBlank(relatedTypecode2) ) {
+      relatedTypecode2 = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_relatedTypecode2);
+    }
+
+    if ( isBlank(relatedCodename2) ) {
+      relatedCodename2 = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_relatedCodename2);
+    }
+
+    if ( isBlank(info) ) {
+      info = getFromBrSv_valFromAtt(C_typecode_uacond, codename, C_att_info);
+    }
+
+  } else {
+
+    uacondObj._existsInBrSv = false;
+
+  }
+
+  uacondObj.uaCodename = uaCodename;
+  uacondObj.infotype = infotype;
+  uacondObj.relatedTypecode1 = relatedTypecode1;
+  uacondObj.relatedCodename1 = relatedCodename1;
+  uacondObj.relatedTypecode2 = relatedTypecode2;
+  uacondObj.relatedCodename2 = relatedCodename2;
+  uacondObj.info = info;
+
+  uacondObj.existsInBrSv = function() {
+    return this._existsInBrSv;
+  };
+
+  uacondObj.saveToBrowser = function() {
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_uaCodename, this.uaCodename);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_infotype, this.infotype);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_relatedTypecode1, this.relatedTypecode1);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_relatedCodename1, this.relatedCodename1);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_relatedTypecode2, this.relatedTypecode2);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_relatedCodename2, this.relatedCodename2);
+    saveToBrowser(C_typecode_uacond, this.codename, C_att_info, this.info);
+    this._existsInBrSv = true;
+  };
+
+  return uacondObj;
 }
 
 function getUatypeDisplayText(uatype) {
@@ -2741,6 +3437,29 @@ function getUatypesObjAy() {
   ay.push(uatypeObj_moveToLoc);
 
   return ay;
+}
+
+function getUniqueCodename(codename, typecode) {
+  var i, uniqueCodenameFound = false;
+
+  for (i = 1; i < 10000; i++) {
+    let testBsk = getBrowserSaveKey(typecode, codename, C_att_name);
+
+    let x = localStorage.getItem(testBsk);
+
+    if (x == null) {
+      uniqueCodenameFound = true;
+      break;
+    }
+    
+    codename += i;
+  }
+
+  if ( ! uniqueCodenameFound ) {
+    throw("ERROR: could not generate unique codename for " + typecode + " / " + codename);
+  }
+
+  return codename;
 }
 
 function getUsereceivetypeDisplayText(usereceivetype) {
@@ -2807,6 +3526,10 @@ function hideAllDisplays() {
   elem("dvUseItm_Outer").style.display = "none";
   elem("dvUserInventory_Outer").style.display = "none";
   elem("dvEditor_ViewAllPages_Outer").style.display = "none";
+}
+
+function hideElem(id) {
+  elem(id).style.display = "none"
 }
 
 function isBlank(val) {
@@ -2887,31 +3610,13 @@ function leftIs(haystack, needle) {
 }
 
 function loadAllGameCodenames() {
-  APP.allGameBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_game, null, null, null, C_att_name, null, null, null, null);
-}
-
-function loadEntites() {
-  //APP.youObj.codename = C_misc_userDefName;
-  //
-  //APP.youObj.name = getFromBrowserSave_single(C_typecode_ent, C_misc_userDefName, C_att_name);
-  //if ( isBlank(APP.youObj.name) ) {
-  //  APP.youObj.name = "Person With Unknown Name";
-  //  saveToBrowser(C_typecode_ent, C_misc_userDefName, C_att_name, APP.youObj.name)
-  //}
-  //
-  //APP.youObj.locName = getFromBrowserSave_single(C_typecode_ent, C_misc_userDefName, C_att_locName);
-  //
-  //if ( isBlank(APP.youObj.locName) ) {
-  //  moveEntityToLocation(APP.youObj, C_page_cozyRoom);
-  //}
-  //
-  //setCurPageObj_fromPageName(APP.youObj.locName);
+  APP.allGameBrSvObjs = getBrSvObjsFromBrSv(C_typecode_game, null, C_att_name, null, null);
 }
 
 function processItmUse(itmCodename_toReceiveUse) {
   var itmObj_toReceiveUse, baseMsg, resultText, resultMsg;
 
-  itmObj_toReceiveUse = getItmObj(itmCodename_toReceiveUse, APP.curGameObj.codename);
+  itmObj_toReceiveUse = getItmObj(itmCodename_toReceiveUse);
 
   baseMsg = "\nUsing Item:  " + APP.curItmObj.name + "\n";
   baseMsg += "\nOn Item:  " + itmObj_toReceiveUse.name + "\n";
@@ -2999,10 +3704,10 @@ function runCurGame() {
   runCurGame_init();
 
   if (APP.curPageObj && ! isBlank(APP.curPageObj.locCodename) ) {
-    APP.curLocObj = getLocObj(APP.curPageObj.locCodename, APP.curGameObj.codename, APP.curPageObj.codename);
+    APP.curLocObj = getLocObj(APP.curPageObj.locCodename);
   }
 
-  displayPage(APP.curPageObj);
+  APP.curPageObj.display();
 
   if (APP.dev == "1") {
     runCurGame_addDevOptions();
@@ -3101,7 +3806,7 @@ function runCurGame_init() {
   runCurGame_init_Pages();
   runCurGame_init_userEntity();
 
-  userEntLocObj = getLocObj(APP.userEntObj.locCodename, APP.curGameObj.codename);
+  userEntLocObj = getLocObj(APP.userEntObj.locCodename);
 }
 
 function runCurGame_init_Pages() {
@@ -3110,19 +3815,19 @@ function runCurGame_init_Pages() {
     let startPageObj;
 
     if ( isBlank(APP.curGameObj.startPageCodename) ) {
-      let allPageBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_page, null, null, null, C_att_gameCodename, null, APP.curGameObj.codename, null, null);
+      let allPageBrSvObjs = getBrSvObjsFromBrSv(C_typecode_page, null, C_att_gameCodename, APP.curGameObj.codename, null);
 
       if (allPageBrSvObjs.length == 0) {
-        startPageObj = getAndMakeNewPage(null, APP.curGameObj.codename, "Room 1", null, true);
+        startPageObj = getAndMakeNewPage(APP.curGameObj, "Room 1", null, true);
       } else {
         let pageCodename = allPageBrSvObjs[0].codename;
-        startPageObj = getPageObj(pageCodename, APP.curGameObj.codename);
+        startPageObj = getPageObj(pageCodename);
       }
 
       APP.curGameObj.startPageCodename = startPageObj.codename;
       APP.curGameObj.saveToBrowser();
     } else {
-      startPageObj = getPageObj(APP.curGameObj.startPageCodename, APP.curGameObj.codename);
+      startPageObj = getPageObj(APP.curGameObj.startPageCodename);
     }
 
     APP.curGameObj.curPageCodename = APP.curGameObj.startPageCodename;
@@ -3132,7 +3837,7 @@ function runCurGame_init_Pages() {
 
   } else {
 
-    APP.curPageObj = getPageObj(APP.curGameObj.curPageCodename, APP.curGameObj.codename);
+    APP.curPageObj = getPageObj(APP.curGameObj.curPageCodename);
 
   }
 }
@@ -3140,15 +3845,15 @@ function runCurGame_init_Pages() {
 function runCurGame_init_userEntity() {
   var i, hasUserEnt = false;
 
-  APP.curGame_allEntBrSvObjs = getBrSvObjsFromBrowserSave(C_typecode_ent, null, null, null, C_att_gameCodename, null, APP.curGameObj.codename, null, null);
+  APP.curGame_allEntBrSvObjs = getBrSvObjsFromBrSv(C_typecode_ent, null, C_att_gameCodename, APP.curGameObj.codename, null);
 
   for (i = 0; i < APP.curGame_allEntBrSvObjs.length; i++) {
     let curEntCodename;
 
     curEntCodename = APP.curGame_allEntBrSvObjs[i].codename;
 
-    if ( isEqual(curEntCodename, C_misc_userCodename + "," + APP.curGameObj.codename) ) {
-      APP.userEntObj = getEntObj(curEntCodename, null, null, null, APP.curGameObj.codename);
+    if ( isEqual(curEntCodename, APP.curGameObj.codename + "," + C_misc_userCodename) ) {
+      APP.userEntObj = getEntObj(curEntCodename, APP.curGameObj.codename);
       hasUserEnt = true;
       break;
     }
@@ -3156,7 +3861,7 @@ function runCurGame_init_userEntity() {
 
   if ( ! hasUserEnt ) {
 
-    APP.userEntObj = getAndMakeNewEnt(C_misc_userCodename + "," + APP.curGameObj.codename, true, C_misc_userDefName, APP.curGameObj.codename, APP.curPageObj.locCodename, APP.curPageObj.locCodename);
+    APP.userEntObj = getAndMakeNewEnt(undefined, C_misc_userDefName, C_misc_userCodename, true, APP.curPageObj.locCodename, APP.curPageObj.locCodename);
   }
 }
 
@@ -3165,9 +3870,18 @@ function runUserAction(uatype, uaVar1) {
 
     case C_uatype_examine:
       {
-        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
-        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename);
-        let msgToShow;
+        let uaObj, itmObj, eidObj, msgToShow;
+
+        uaObj = getUaObj(uaVar1);
+        itmObj = getItmObj(uaObj.itmCodename);
+
+        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, undefined)
+
+        if ( eidObj == null ) {
+          eidObj = getAndMakeNewEntinfoData(APP.userEntObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, C_info_yes);
+        } else if ( ! isEqual(eidObj.info, C_info_yes) ) {
+          eidObj.changeInfo(C_info_yes);
+        }
 
         if ( isBlank(itmObj.examineMsg) ) {
           msgToShow = "There is nothing special about this object.";
@@ -3176,26 +3890,30 @@ function runUserAction(uatype, uaVar1) {
         }
 
         alert("\n" + itmObj.name + "\n\n\n" + msgToShow + "\n\n\n");
+
+        APP.curPageObj.display();
       }
       break;
 
     case C_uatype_grabItm:
-        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
-        let itmObj = getItmObj(uaObj.itmCodename, APP.curGameObj.codename);
+      {
+        let uaObj = getUaObj(uaVar1);
+        let itmObj = getItmObj(uaObj.itmCodename);
         let curLocObj = APP.curPageObj.getLocObj();
 
         APP.userEntObj.receiveItmObj(itmObj);
         curLocObj.removeItmObj(itmObj);
 
         runCurGame();
+      }
       break;
 
     case C_uatype_moveToLoc:
       {
-        let uaObj = getUaObj(uaVar1, APP.curGameObj.codename, APP.curPageObj.codename);
+        let uaObj = getUaObj(uaVar1);
         let moveToLocObj = getLocObj(uaObj.locCodename);
 
-        APP.curPageObj = getPageObj(moveToLocObj.pageCodename, APP.curGameObj.codename);
+        APP.curPageObj = getPageObj(moveToLocObj.pageCodename);
 
         APP.curGameObj.curPageCodename = APP.curPageObj.codename;
         APP.curGameObj.saveToBrowser();
@@ -3206,33 +3924,10 @@ function runUserAction(uatype, uaVar1) {
       }
       break;
 
-
-    // OLD -- begin
-    //
-          case C_userAction_changeYourName:
-            {
-              let newName = getTextFromUser("New Name:", "");
-              if ( ! isBlank(newName) || isEqual(APP.youObj.name, newName) ) {
-                APP.youObj.name = newName;
-                saveToBrowser(C_typecode_ent, C_misc_userDefName, C_att_name, APP.youObj.name)
-                displayPage(C_page_info);
-              }
-            }
-            break;
-
-          case C_userAction_goToInfo:
-            //displayPage(C_page_info);
-            break;
-
-          case C_userAction_goToPage:
-            displayPage_fromName(linkActionVar1);
-            break;
-
-          case C_userAction_openInventory:
-            displayUserInventory();
-            break;
-    //
-    // OLD -- end
+    case C_userAction_openInventory:
+      // OLD, but still using for now
+      displayUserInventory();
+      break;
 
   
     default:
@@ -3260,6 +3955,10 @@ function setLocationAttInBrowserSave(locCodename, att, locAttVal) {
 
 function setPageToNonLocation(page) {
   page.isLocation = false;
+}
+
+function showElem(id) {
+  elem(id).style.display = ""
 }
 
 function sorting_objs(propNameToSortBy) {
@@ -3331,13 +4030,6 @@ function sorting_objs(propNameToSortBy) {
   }
 
   */
-}
-
-function sorting_vals() {
-  return function(valA, valB) {
-    var comparisonCode = sorting_returnComparisonCode(valA, valB);
-    return comparisonCode;
-  };
 }
 
 function sorting_returnComparisonCode(valA, valB) {
@@ -3418,20 +4110,26 @@ function sorting_returnComparisonCode(valA, valB) {
   return comparisonCode;
 }
 
-function sortSortedCodenameAy(ay) {
-  var newAy = ay.sort( sortSortedCodenameAy_sortingFunc() );
-  return newAy;
-}
-
-const sortSortedCodenameAy_sortingFunc = () => {
+const sorting_sortedCodenameAy = () => {
   return (ayObjA, ayObjB) => {
-    var codenameParts, codenameLeft, sortvalA, sortvalB;
+    var codenameParts, codenameLeft, leftStrToRemove, sortvalA, sortvalB;
 
+    /* OLD - move to getCodenameUniquePart()
     codenameParts = ayObjA.codename.split(",");
     codenameLeft = getCodenameLeft(codenameParts[0], codenameParts[1]);
 
-    sortvalA = withoutLeft(ayObjA.codename, codenameLeft);
-    sortvalB = withoutLeft(ayObjB.codename, codenameLeft);
+    if ( isBlank(APP.sort_addedTextForNum) ) {
+      leftStrToRemove = codenameLeft;
+    } else {
+      leftStrToRemove = codenameLeft + APP.sort_addedTextForNum;
+    }
+
+    sortvalA = withoutLeft(ayObjA.codename, leftStrToRemove);
+    sortvalB = withoutLeft(ayObjB.codename, leftStrToRemove);
+    */
+
+    sortvalA = getCodenameUniquePart(ayObjA.codename, APP.sort_addedTextForNum);
+    sortvalB = getCodenameUniquePart(ayObjB.codename, APP.sort_addedTextForNum);
 
     if ( Number(sortvalA) < Number(sortvalB) ) {
       return -1;
@@ -3440,6 +4138,13 @@ const sortSortedCodenameAy_sortingFunc = () => {
     }
   };
 };
+
+function sorting_vals() {
+  return function(valA, valB) {
+    var comparisonCode = sorting_returnComparisonCode(valA, valB);
+    return comparisonCode;
+  };
+}
 
 function startApp() {
   var defGameCodename, defGameObj;
@@ -3749,12 +4454,20 @@ function browser_save__view() {
   return undefined;
 }
 
+function dev_editor__add_text_row__cancel_add() {
+  displayPage(APP.curPageObj);
+  return undefined;
+}
+
 function dev_editor__add_text_row__do_add() {
   var textOfRow = getElemVal("ipEditor_TrAdd_TextOfRow");
   var itmCodename = getElemVal("selEditor_TrAdd_ItmCodename");
   var itmInLocInv = getElemVal("selEditor_TrAdd_ItmInLocInv");
-  var itmInLocInv_isIsNot = getElemVal("selEditor_TrAdd_ItmInLocInv_IsIsNot");
+  var itmInLocInv_isIsNot;
   var itmStatusReq = null;
+  var infotype = getElemVal("selEditor_TrAdd_UserInfo_InfoType");
+  var examObj_itmCodename;
+  var trObj;
 
   if ( isBlank(textOfRow) ) {
     alert("\nPlease enter 'Display Text'\n\n\n");
@@ -3766,19 +4479,34 @@ function dev_editor__add_text_row__do_add() {
     itmStatusReq = getElemVal("selEditor_TrAdd_ItmStatusReq");
 
     if ( isBlank(itmStatusReq) ) {
-      alert("\nPlease select 'Status Required to Show Text-Row'\n\n\n");
+      alert("\nPlease select 'Object Status Required'\n\n\n");
+      return undefined;
+    }
+
+    itmInLocInv_isIsNot = getElemVal("selEditor_TrAdd_ItmInLocInv_IsIsNot");
+  }
+
+  if ( ! isBlank(infotype) ) {
+    examObj_itmCodename = getElemVal("selEditor_TrAdd_ExamObj_ItmCodename");
+
+    if ( isBlank(examObj_itmCodename) ) {
+      alert("\nPlease select 'Examined Which Object'\n\n\n");
       return undefined;
     }
   }
 
-  getAndMakeNewTr(APP.curPageObj, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot);
+  trObj = getAndMakeNewTr(undefined, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot);
+
+  if ( ! isBlank(infotype) ) {
+    getAndMakeNewTrcond(trObj, infotype, C_typecode_ent, APP.userEntObj.codename, C_typecode_itm, examObj_itmCodename, C_info_yes);
+  }
 
   runCurGame();
 
   return undefined;
 }
 
-function dev_editor__add_text_row__cancel_add() {
+function dev_editor__add_to_location_inventory__cancel_add() {
   displayPage(APP.curPageObj);
   return undefined;
 }
@@ -3822,7 +4550,7 @@ function dev_editor__add_to_location_inventory__do_add() {
 
   examineMsg = getElemVal("ipEditor_AddToLocInventory_ExamineMsg");
 
-  itmObj = getAndMakeNewItm(null, APP.curGameObj.codename, itmName, canGrab, APP.curPageObj.locCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg)
+  itmObj = getAndMakeNewItm(APP.curGameObj, itmName, canGrab, APP.curPageObj.locCodename, usereceivetype, startStatus, status, itmThatAffects, useReceivedMsg, statusReq_itmCodename, statusReq_itmStatus, examineMsg)
 
   APP.curLocObj.receiveItmObj(itmObj);
   
@@ -3830,7 +4558,7 @@ function dev_editor__add_to_location_inventory__do_add() {
   return undefined;
 }
 
-function dev_editor__add_to_location_inventory__cancel_add() {
+function dev_editor__add_user_action__cancel_add() {
   displayPage(APP.curPageObj);
   return undefined;
 }
@@ -3890,14 +4618,14 @@ function dev_editor__add_user_action__do_add() {
     }
   }
 
-  getAndMakeNewUa(APP.curPageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+  getAndMakeNewUa(undefined, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
 
   runCurGame();
 
   return undefined;
 }
 
-function dev_editor__add_user_action__cancel_add() {
+function dev_editor__create_new_page__cancel_add() {
   displayPage(APP.curPageObj);
   return undefined;
 }
@@ -3910,7 +4638,7 @@ function dev_editor__create_new_page__do_add() {
     return undefined;
   }
 
-  getAndMakeNewPage(null, APP.curGameObj.codename, name, null, true);
+  getAndMakeNewPage(APP.curGameObj, name, null, true);
 
   alert("\nPage created\n\n\n")
 
@@ -3919,21 +4647,22 @@ function dev_editor__create_new_page__do_add() {
   return undefined;
 }
 
-function dev_editor__create_new_page__cancel_add() {
-  displayPage(APP.curPageObj);
-  return undefined;
-}
-
 function dev_editor__delete_text_row(trCodename) {
-  var curTextOfRow, trObj;
+  var curTextOfRow, trObj, trcondObjs;
   
-  curTextOfRow = getFromBrowserSave_single(C_typecode_tr, trCodename, C_att_textOfRow);
+  curTextOfRow = getFromBrSv_valFromAtt(C_typecode_tr, trCodename, C_att_textOfRow);
 
   if ( confirm("\nPlease confirm that you want to delete this text-row\n\n\n") ) {
-    trObj = APP.curPageObj.deleteTr(trCodename);
+    APP.curPageObj.deleteTr(trCodename);
+
     displayPage(APP.curPageObj);
   }
 
+  return undefined;
+}
+
+function dev_editor__delete_user_action__cancel_delete() {
+  displayPage(APP.curPageObj);
   return undefined;
 }
 
@@ -3948,22 +4677,24 @@ function dev_editor__delete_user_action__do_delete() {
   return undefined;
 }
 
-function dev_editor__delete_user_action__cancel_delete() {
+function dev_editor__edit_user_action__cancel_edit() {
   displayPage(APP.curPageObj);
   return undefined;
 }
 
 function dev_editor__edit_user_action__do_edit() {
-  var newUaText, uaObj;
+}
 
-  newUaText = elem("ipEditor_UaEdit_uaText").value;
+function dev_editor__edit_text_row(trCodename) {
+  var curTextOfRow, newTextOfRow, trObj;
 
-  if ( ! isBlank(newUaText) ) {
-    uaObj = APP.curPageObj.getUaObj(APP.editor_curUaCodename, APP.curPageObj.gameCodename, APP.curPageObj.codename);
-    uaObj.uaText = newUaText;
-    uaObj.saveToBrowser();
-    
-    APP.editor_curUaCodename = null;
+  trObj = APP.curPageObj.getTrObj(trCodename);  
+
+  newTextOfRow = prompt("\nEnter new text:", trObj.textOfRow);
+
+  if ( ! isBlank(newTextOfRow) ) {
+    trObj.textOfRow = newTextOfRow;
+    trObj.saveToBrowser();
 
     displayPage(APP.curPageObj);
   }
@@ -3971,21 +4702,16 @@ function dev_editor__edit_user_action__do_edit() {
   return undefined;
 }
 
-function dev_editor__edit_user_action__cancel_edit() {
-  displayPage(APP.curPageObj);
-  return undefined;
-}
+function dev_editor__edit_user_action_text(uaCodename) {
+  var curUaText, newUaText, uaObj;
 
-function dev_editor__edit_text_row(trCodename) {
-  var curTextOfRow, newTextOfRow, trObj;
+  uaObj = APP.curPageObj.getUaObj(uaCodename);
 
-  trObj = APP.curPageObj.getTrObj(trCodename, APP.curPageObj.codename, APP.curPageObj.gameCodename);  
+  newUaText = prompt("\nEnter new text:", uaObj.uaText);
 
-  newTextOfRow = prompt("\nEnter new text:", trObj.textOfRow);
-
-  if ( ! isBlank(newTextOfRow) ) {
-    trObj.textOfRow = newTextOfRow;
-    trObj.saveToBrowser();
+  if ( ! isBlank(newUaText) ) {
+    uaObj.uaText = newUaText;
+    uaObj.saveToBrowser();
 
     displayPage(APP.curPageObj);
   }
@@ -4051,7 +4777,7 @@ function dev_editor__rename_game() {
 function dev_editor__rename_inventory_object(codename) {
   var itmObj, newName;
 
-  itmObj = getItmObj(codename, APP.curGameObj.codename);
+  itmObj = getItmObj(codename);
 
   var newName = prompt("Enter new name:", itmObj.name);
 
@@ -4060,7 +4786,7 @@ function dev_editor__rename_inventory_object(codename) {
     itmObj.saveToBrowser();
 
     runCurGame();
-s  }
+  }
 
   return undefined;
 }
