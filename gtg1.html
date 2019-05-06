@@ -132,22 +132,25 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   </div>
   <div style="height:0.9em"></div>
   <div>
-    Show Based on Status of Which Object: <span id="spnEditor_TrAdd_ItmCodename"></span>
+    Show Based on Status of Object: <span id="spnEditor_TrAdd_ItmStatusReq_ItmCodename"></span>
   </div>
-  <div id="dvEditor_TrAdd_ItmStatusReq">
+  <div id="dvEditor_TrAdd_ItmStatusReq_Status">
     <div style="height:0.3em"></div>
     <div>
-      &nbsp;&nbsp;&nbsp;... Object Status Required: <span id="spnEditor_TrAdd_ItmStatusReq"></span>
+      &nbsp;&nbsp;&nbsp;... Object Status Required: <span id="spnEditor_TrAdd_ItmStatusReq_Status"></span>
     </div>
   </div>
   <div style="height:0.9em"></div>
   <div>
     Show Based on Player Status: <span id="spnEditor_TrAdd_UserInfo_InfoType"></span>
   </div>
-  <div id="dvEditor_TrAdd_ExamObj_ItmCodename">
+  <div id="dvEditor_TrAdd_ExamItm_ItmCodename">
     <div style="height:0.3em"></div>
     <div>
-      &nbsp;&nbsp;&nbsp;... Examined Which Object: <span id="spnEditor_TrAdd_ExamObj_ItmCodename"></span>
+      &nbsp;&nbsp;&nbsp;... <span id="spnEditor_TrAdd_ExamItm_HidingYesNoForNow2" style="display: none">Where </span>Examined Object: <span id="spnEditor_TrAdd_ExamItm_ItmCodename"></span>
+      <span id="spnEditor_TrAdd_ExamItm_HidingYesNoForNow2" style="display: none">
+        &nbsp;is <span id="spnEditor_TrAdd_ExamItm_YesNo"></span>
+      </span>
     </div>
   </div>
   <div style="height:0.9em"></div>
@@ -164,26 +167,26 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
 
 <div id="dvEditor_UaAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Add User-Action</b></div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Current Page/Location: <span id="spnEditor_UaAdd_CurPageAndLoc"></span>
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Name of Action: <input id="ipEditor_UaAdd_UaText" class="" value="" />
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
   <div>
     Action Type: <span id="spnEditor_UaAdd_Uatype"></span>
   </div>
   <div id="dvEditor_UaAdd_Itms">
-    <div style="height:0.6em"></div>
+    <div style="height:0.9em"></div>
     <div>
       Object: <span id="spnEditor_UaAdd_ItmCodename"></span>
     </div>
   </div>
   <div id="dvEditor_UaAdd_Locs">
-    <div style="height:0.6em"></div>
+    <div style="height:0.9em"></div>
     <div>Location: <span id="spnEditor_UaAdd_LocCodename"></span></div>
     <!--
     <div>
@@ -196,16 +199,41 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
     </div>
     -->
   </div>
-  <div id="dvEditor_UaAdd_statusReq">
-    <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
+  <div>
+    Show Based on Status of Object: <span id="spnEditor_UaAdd_ItmStatusReq_ItmCodename"></span>
+  </div>
+  <div id="dvEditor_UaAdd_ItmStatusReq">
+    <div style="height:0.3em"></div>
     <div>
-      Also Requires Object: <span id="spnEditor_UaAdd_StatusReq_ItmCodename"></span>&nbsp;&nbsp;to have Status: <span id="spnEditor_UaAdd_StatusReq_ItmStatus"></span>
+      &nbsp;&nbsp;&nbsp;... Object Status Required: <span id="spnEditor_UaAdd_ItmStatusReq_Status"></span>
     </div>
   </div>
-  <div style="height:0.6em"></div>
+  <div style="height:0.9em"></div>
+  <div>
+    Show Based on Player Status: <span id="spnEditor_UaAdd_UserInfo_InfoType"></span>
+  </div>
+  <div id="dvEditor_UaAdd_ExamItm_ItmCodename">
+    <div style="height:0.3em"></div>
+    <div>
+      &nbsp;&nbsp;&nbsp;... <span id="spnEditor_UaAdd_ExamItm_HidingYesNoForNow1" style="display: none">Where </span>Examined Object: <span id="spnEditor_UaAdd_ExamItm_ItmCodename"></span>
+      <span id="spnEditor_UaAdd_ExamItm_HidingYesNoForNow2" style="display: none">
+        &nbsp;is <span id="spnEditor_UaAdd_ExamItm_YesNo"></span>
+      </span>
+    </div>
+  </div>
+  <div style="height:0.9em"></div>
+  <div>
+    Cause Use Event On Object: <span id="spnEditor_UaAdd_CauseUseEventOnItm"></span>
+  </div>
+  <div style="height:0.9em"></div>
+  <div>
+    Message: <input id="ipEditor_UaAdd_Msg" class="" value="" />
+  </div>
+  <div style="height:0.9em"></div>
   <div style="display: inline-block">
     <hr></hr>
-    <div style="height:0.8em"></div>
+    <div style="height:0.9em"></div>
     <div>
       <a style="white-space: nowrap" href="javascript: dev_editor__add_user_action__do_add()">add</a>
       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: dev_editor__add_user_action__cancel_add()">cancel</a>
@@ -340,6 +368,7 @@ const C_appSetting_narrow = "narrow";
 const C_appSetting_LS = "LS";
 
 const C_att_canGrab = "canGrab";
+const C_att_causeUseEventOnItm = "causeUseEventOnItm";
 const C_att_curPageCodename = "curPageCodename"
 const C_att_entCodename = "entCodename";
 const C_att_examineMsg = "examineMsg";
@@ -354,6 +383,7 @@ const C_att_itmStatusReq = "itmStatusReq";
 const C_att_itmThatAffects = "itmThatAffects";
 const C_att_locCodename = "locCodename";
 const C_att_locName = "locName";
+const C_att_msg = "msg";
 const C_att_name = "name";
 const C_att_pageCodename = "pageCodename";
 const C_att_relatedTypecode1 = "relatedTypecode1";
@@ -388,7 +418,7 @@ const C_infooptionset_custom = "custom";
 const C_infooptionset_yesNo = "yesNo";
 
 const C_infotype_custom = "custom"; //not implemented yet -- NOTE: no commas allowed in custom infotype names
-const C_infotype_itmExam = "itmExam";
+const C_infotype_examItm = "examItm";
 
 const C_locCodename_cozyRoom = "cozy room";
 const C_locCodename_scaryRoom = "scary room";
@@ -428,6 +458,7 @@ const C_typecode_uacond = "uacond";
 
 const C_uatype_examine = "examine";
 const C_uatype_grabItm = "grabItm";
+const C_uatype_other = "other";
 const C_uatype_moveToLoc = "moveToLoc";
 
 const C_userAction_changeYourName = "change your name";
@@ -495,8 +526,8 @@ function changeLocAtt(pageObj, att, newVal) {
   pageObj[att] = newVal;
 }
 
-// the daX and dcX functions are using "x = function(y) {}" syntax, so that we can e.g. do the frequent search for "dc ("  [without the space]  without finding the called function
 const da = function(text) {
+// the daX and dcX functions are using "x = function(y) {}" syntax, so that we can e.g. do the frequent search for "dc ("  [without the space]  without finding the called function
   alert(text);
 };
 
@@ -573,8 +604,21 @@ const dc2 = function(varName) {
 };
 
 function deleteFromBrowserSave_multiple(typecodeToDelete, codenameToDelete) {
-  for (var i = 0; i < localStorage.length; i++) {
-    let keyName = localStorage.key(i);
+  var len = localStorage.length;
+
+  for (var i = 0; i < len; i++) {
+    let keyName;
+
+    try {
+      keyName = localStorage.key(i);
+    } catch(ex) {
+      break;
+    }
+
+    if ( isBlank(keyName) ) {
+      break;
+    }
+
     let bskParts = keyName.split(":");
 
     let curTypecode = bskParts[0];
@@ -592,7 +636,7 @@ function deleteFromBrowserSave_singleRow(typecode, codename, att) {
 }
 
 function devEditor_addToLocInventory() {
-  var usereceivetypeObjs, htmlSel_usereceivetypes, htmlSel_itms, htmlSel_itms_statusReq;
+  var usereceivetypeObjs, htmlSel_usereceivetypes, htmlSel_itms, htmlSel_itms_forStatusReq;
 
   hideAllDisplays();
 
@@ -607,9 +651,9 @@ function devEditor_addToLocInventory() {
   htmlSel_usereceivetypes = getHtml_sel("selEditor_AddToLocInventory_Usereceivetype", true, usereceivetypeObjs, null, "width: 2in", "devEditor_addToLocInventory_changeUsereceivetype()", null, false, undefined, undefined, undefined);
   elem("spnEditor_AddToLocInventory_Usereceivetype").innerHTML = htmlSel_usereceivetypes;
 
-  htmlSel_itms_statusReq = getHtml_sel("selEditor_AddToLocInventory_StatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, "width: 2in", "devEditor_addToLocInventory_changeStatusReq_itmCodename()", null, false, undefined, "name2", undefined);
-  elem("spnEditor_AddToLocInventory_StatusReq_ItmCodename").innerHTML = htmlSel_itms_statusReq;
-  devEditor_addToLocInventory_changeStatusReq_itmCodename();
+  htmlSel_itms_forStatusReq = getHtml_sel("selEditor_AddToLocInventory_StatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, "width: 2in", "devEditor_addToLocInventory_changeItmForStatusReq()", null, false, undefined, "name2", undefined);
+  elem("spnEditor_AddToLocInventory_StatusReq_ItmCodename").innerHTML = htmlSel_itms_forStatusReq;
+  devEditor_addToLocInventory_changeItmForStatusReq();
 
   htmlSel_itms = getHtml_sel("selEditor_AddToLocInventory_ItmThatAffects", true, APP.curGameObj.getAllItmObjs(true, false, true), null, "width: 2in", null, null, false, undefined, "name2", undefined);
   elem("spnEditor_AddToLocInventory_ItmThatAffects").innerHTML = htmlSel_itms;
@@ -619,7 +663,7 @@ function devEditor_addToLocInventory() {
   elem("ipEditor_AddToLocInventory_ItmName").focus();
 }
 
-function devEditor_addToLocInventory_changeStatusReq_itmCodename() {
+function devEditor_addToLocInventory_changeItmForStatusReq() {
   var statusReq_itmCodename, itmStatusObjAy, htmlSel_statusReq_status;
 
   statusReq_itmCodename = getElemVal("selEditor_AddToLocInventory_StatusReq_ItmCodename");
@@ -644,6 +688,26 @@ function devEditor_addToLocInventory_changeUsereceivetype() {
   }
 }
 
+function devEditor_display_jumpToPage() {
+  var pageCodename = getElemVal("selEditor_Display_JumpToPage");
+  var pageObj = getPageObj(pageCodename);
+  var locObj = pageObj.getLocObj();
+
+  if ( isEqual(pageCodename, APP.curPageObj.codename) ) {
+    alert("\nCan't jump the current page you are already viewing\n\n\n");
+    elem("selEditor_Display_JumpToPage").value = null;
+    return;
+  }
+
+  if ( isBlank(locObj) ) {
+    alert("\nCan't jump to Page '" + pageObj.name + "' because it has no associated Location\n\n\n");
+    elem("selEditor_Display_JumpToPage").value = null;
+    return;
+  }
+  
+  doUserLocMove(locObj.codename);
+}
+
 function devEditor_pageAdd() {
   hideAllDisplays();
 
@@ -654,7 +718,7 @@ function devEditor_pageAdd() {
 }
 
 function devEditor_trAdd() {
-  var htmlSel_itms_checkLocInv_isIsNot, htmlSel_itms_checkLocInv, htmlSel_itms_checkStatus, infotypeObjs, htmlSel_infotypes, htmlSel_itms_examObj;
+  var htmlSel_isIsNot_forCheckLocInv, htmlSel_itms_forCheckLocInv, htmlSel_itms_forStatusReq, infotypeObjs, htmlSel_infotypes, htmlSel_itms_forExamItm, htmlSel_yesNo_forExamItm;
 
   hideAllDisplays();
 
@@ -662,26 +726,29 @@ function devEditor_trAdd() {
 
   elem("ipEditor_TrAdd_TextOfRow").value = "";
 
-  htmlSel_itms_checkLocInv_isIsNot = getHtml_sel("selEditor_TrAdd_ItmInLocInv_IsIsNot", false, getIsIsNotObjAy(), C_misc_is, null, null, null, false, undefined, undefined, undefined);
-  elem("spnEditor_TrAdd_ItmInLocInv_IsIsNot").innerHTML = htmlSel_itms_checkLocInv_isIsNot;
+  htmlSel_isIsNot_forCheckLocInv = getHtml_sel("selEditor_TrAdd_ItmInLocInv_IsIsNot", false, getIsIsNotObjAy(), C_misc_is, null, null, null, false, undefined, undefined, undefined);
+  elem("spnEditor_TrAdd_ItmInLocInv_IsIsNot").innerHTML = htmlSel_isIsNot_forCheckLocInv;
 
-  htmlSel_itms_checkLocInv = getHtml_sel("selEditor_TrAdd_ItmInLocInv", true, APP.curGameObj.getAllItmObjs(true, false, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
-  elem("spnEditor_TrAdd_ItmInLocInv").innerHTML = htmlSel_itms_checkLocInv;
+  htmlSel_itms_forCheckLocInv = getHtml_sel("selEditor_TrAdd_ItmInLocInv", true, APP.curGameObj.getAllItmObjs(true, false, true), null, null, null, null, false, undefined, "name2", undefined);
+  elem("spnEditor_TrAdd_ItmInLocInv").innerHTML = htmlSel_itms_forCheckLocInv;
 
-  htmlSel_itms_checkStatus = getHtml_sel("selEditor_TrAdd_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
-  elem("spnEditor_TrAdd_ItmCodename").innerHTML = htmlSel_itms_checkStatus;
+  htmlSel_itms_forStatusReq = getHtml_sel("selEditor_TrAdd_ItmStatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, null, "devEditor_trAdd_changeItmForStatusReq()", null, false, undefined, "name2", undefined);
+  elem("spnEditor_TrAdd_ItmStatusReq_ItmCodename").innerHTML = htmlSel_itms_forStatusReq;
 
   infotypeObjs = getInfotypeObjAy();
-  htmlSel_infotypes = getHtml_sel("selEditor_TrAdd_UserInfo_InfoType", true, infotypeObjs, C_info_yes, null, "devEditor_trAdd_changeInfotype()", null, false, undefined, undefined, undefined);
+  htmlSel_infotypes = getHtml_sel("selEditor_TrAdd_UserInfo_InfoType", true, infotypeObjs, null, null, "devEditor_trAdd_changeInfotype()", null, false, undefined, undefined, undefined);
   elem("spnEditor_TrAdd_UserInfo_InfoType").innerHTML = htmlSel_infotypes;
 
-  htmlSel_itms_examObj = getHtml_sel("selEditor_TrAdd_ExamObj_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, false, true), null, null, "devEditor_trAdd_changeItm()", null, false, undefined, "name2", undefined);
-  elem("spnEditor_TrAdd_ExamObj_ItmCodename").innerHTML = htmlSel_itms_examObj;
+  htmlSel_itms_forExamItm = getHtml_sel("selEditor_TrAdd_ExamItm_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, false, true), null, null, null, null, false, undefined, "name2", undefined);
+  elem("spnEditor_TrAdd_ExamItm_ItmCodename").innerHTML = htmlSel_itms_forExamItm;
+
+  htmlSel_yesNo_forExamItm = getHtml_sel("selEditor_TrAdd_ExamItm_YesNo", false, getInfoObjAy_yesNo(), C_info_yes, null, null, null, false, undefined, undefined, undefined);
+  elem("spnEditor_TrAdd_ExamItm_YesNo").innerHTML = htmlSel_yesNo_forExamItm;
 
   elem("selEditor_TrAdd_UserInfo_InfoType").value = "";
-  elem("selEditor_TrAdd_ExamObj_ItmCodename").value = "";
+  elem("selEditor_TrAdd_ExamItm_ItmCodename").value = "";
 
-  devEditor_trAdd_changeItm();
+  devEditor_trAdd_changeItmForStatusReq();
   devEditor_trAdd_changeInfotype();
 
   elem("dvEditor_TrAdd_Outer").style.display = "";
@@ -691,23 +758,23 @@ function devEditor_trAdd() {
 function devEditor_trAdd_changeInfotype() {
   var infotype;
 
-  hideElem("dvEditor_TrAdd_ExamObj_ItmCodename");
+  hideElem("dvEditor_TrAdd_ExamItm_ItmCodename");
 
   infotype = getElemVal("selEditor_TrAdd_UserInfo_InfoType");
 
   switch (infotype) {
-    case C_infotype_itmExam:
-      showElem("dvEditor_TrAdd_ExamObj_ItmCodename");
+    case C_infotype_examItm:
+      showElem("dvEditor_TrAdd_ExamItm_ItmCodename");
       break;
   }
 }
 
-function devEditor_trAdd_changeItm() {
+function devEditor_trAdd_changeItmForStatusReq() {
   var itmCodename, itmObj, itmStatusObjs, htmlSel_itmStatusReq;
 
-  elem("dvEditor_TrAdd_ItmStatusReq").style.display = "none";
+  elem("dvEditor_TrAdd_ItmStatusReq_Status").style.display = "none";
 
-  itmCodename = getElemVal("selEditor_TrAdd_ItmCodename");
+  itmCodename = getElemVal("selEditor_TrAdd_ItmStatusReq_ItmCodename");
 
   if ( isBlank(itmCodename) ) {
     return;
@@ -720,52 +787,92 @@ function devEditor_trAdd_changeItm() {
   }
 
   itmStatusObjs = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
-  htmlSel_itmStatusReq = getHtml_sel("selEditor_TrAdd_ItmStatusReq", true, itmStatusObjs, null, "width: 2in", undefined, undefined, undefined);
-  elem("spnEditor_TrAdd_ItmStatusReq").innerHTML = htmlSel_itmStatusReq;
-  elem("dvEditor_TrAdd_ItmStatusReq").style.display = "";
+  htmlSel_itmStatusReq = getHtml_sel("selEditor_TrAdd_ItmStatusReq_Status", true, itmStatusObjs, null, null, undefined, undefined, undefined);
+  elem("spnEditor_TrAdd_ItmStatusReq_Status").innerHTML = htmlSel_itmStatusReq;
+  elem("dvEditor_TrAdd_ItmStatusReq_Status").style.display = "";
 }
 
 function devEditor_uaAdd() {
-  var uatypesObjs, htmlSel_uatypes, allGameLocObjs, htmlSel_locs, htmlSel_itms_statusReq;
-  var htmlSel_status;
+  var uatypesObjs, htmlSel_uatypes, allGameLocObjs, htmlSel_locs, htmlSel_itms_forStatusReq;
+  var infotypeObjs, htmlSel_infotypes, htmlSel_itms_forExamItm, htmlSel_yesNo_forExamItm, htmlSel_itms_forCauseUseEvent;
 
   hideAllDisplays();
 
   elem("spnEditor_UaAdd_CurPageAndLoc").innerHTML = APP.curPageObj.getCurPageAndLoc();
 
   elem("ipEditor_UaAdd_UaText").value = "";
+  elem("ipEditor_UaAdd_Msg").value = "";
 
   uatypesObjs = getUatypesObjAy();
-  htmlSel_uatypes = getHtml_sel("selEditor_UaAdd_Uatype", true, uatypesObjs, null, "width: 2in", "devEditor_uaAdd_changeUatype()", null, false, undefined, undefined, undefined);
+  htmlSel_uatypes = getHtml_sel("selEditor_UaAdd_Uatype", true, uatypesObjs, null, null, "devEditor_uaAdd_changeUatype()", null, false, undefined, undefined, undefined);
   elem("spnEditor_UaAdd_Uatype").innerHTML = htmlSel_uatypes;
   
   allGameLocObjs = APP.curGameObj.getAllLocObjs(true);
-  htmlSel_locs = getHtml_sel("selEditor_UaAdd_LocCodename", true, allGameLocObjs, null, "width: 2in", undefined, undefined, undefined);
+  htmlSel_locs = getHtml_sel("selEditor_UaAdd_LocCodename", true, allGameLocObjs, null, null, undefined, undefined, undefined);
   elem("spnEditor_UaAdd_LocCodename").innerHTML = htmlSel_locs;
 
-  htmlSel_itms_statusReq = getHtml_sel("selEditor_UaAdd_StatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, "width: 2in", "devEditor_uaAdd_changeStatusReq_itmCodename()", null, false, undefined, "name2", undefined);
-  elem("spnEditor_UaAdd_StatusReq_ItmCodename").innerHTML = htmlSel_itms_statusReq;
+  htmlSel_itms_forStatusReq = getHtml_sel("selEditor_UaAdd_ItmStatusReq_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, true, true), null, null, "devEditor_uaAdd_changeItmForStatusReq()", null, false, undefined, "name2", undefined);
+  elem("spnEditor_UaAdd_ItmStatusReq_ItmCodename").innerHTML = htmlSel_itms_forStatusReq;
+
+  infotypeObjs = getInfotypeObjAy();
+  htmlSel_infotypes = getHtml_sel("selEditor_UaAdd_UserInfo_InfoType", true, infotypeObjs, C_info_yes, null, "devEditor_uaAdd_changeInfotype()", null, false, undefined, undefined, undefined);
+  elem("spnEditor_UaAdd_UserInfo_InfoType").innerHTML = htmlSel_infotypes;
+
+  htmlSel_itms_forExamItm = getHtml_sel("selEditor_UaAdd_ExamItm_ItmCodename", true, APP.curGameObj.getAllItmObjs(false, false, true), null, null, null, null, false, undefined, "name2", undefined);
+  elem("spnEditor_UaAdd_ExamItm_ItmCodename").innerHTML = htmlSel_itms_forExamItm;
+
+  htmlSel_yesNo_forExamItm = getHtml_sel("selEditor_UaAdd_ExamItm_YesNo", false, getInfoObjAy_yesNo(), C_info_yes, null, null, null, false, undefined, undefined, undefined);
+  elem("spnEditor_UaAdd_ExamItm_YesNo").innerHTML = htmlSel_yesNo_forExamItm;
+
+  htmlSel_itms_forCauseUseEvent = getHtml_sel("selEditor_UaAdd_CauseUseEventOnItm", true, APP.curGameObj.getAllItmObjs(false, false, true), null, null, null, null, false, undefined, "name2", undefined);
+  elem("spnEditor_UaAdd_CauseUseEventOnItm").innerHTML = htmlSel_itms_forCauseUseEvent;
+
+  elem("selEditor_UaAdd_UserInfo_InfoType").value = "";
+  elem("selEditor_UaAdd_ExamItm_ItmCodename").value = "";
 
   devEditor_uaAdd_changeUatype();
-  devEditor_uaAdd_changeStatusReq_itmCodename();
+  devEditor_uaAdd_changeItmForStatusReq();
+  devEditor_uaAdd_changeInfotype();
 
   elem("dvEditor_UaAdd_Outer").style.display = "";
   elem("ipEditor_UaAdd_UaText").focus();
 }
 
-function devEditor_uaAdd_changeStatusReq_itmCodename() {
-  var statusReq_itmCodename, itmStatusObjAy, htmlSel_statusReq_status;
+function devEditor_uaAdd_changeInfotype() {
+  var infotype;
 
-  statusReq_itmCodename = getElemVal("selEditor_UaAdd_StatusReq_ItmCodename");
+  hideElem("dvEditor_UaAdd_ExamItm_ItmCodename");
 
-  if ( isBlank(statusReq_itmCodename) ) {
-    elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = "---";
-  } else {
-    let itmObj = getItmObj(statusReq_itmCodename);
-    itmStatusObjAy = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
-    htmlSel_statusReq_status = getHtml_sel("selEditor_UaAdd_StatusReq_ItmStatus", true, itmStatusObjAy, null, "width: 2in", undefined, undefined, undefined);
-    elem("spnEditor_UaAdd_StatusReq_ItmStatus").innerHTML = htmlSel_statusReq_status;
+  infotype = getElemVal("selEditor_UaAdd_UserInfo_InfoType");
+
+  switch (infotype) {
+    case C_infotype_examItm:
+      showElem("dvEditor_UaAdd_ExamItm_ItmCodename");
+      break;
   }
+}
+
+function devEditor_uaAdd_changeItmForStatusReq() {
+  var itmCodename, itmObj, itmStatusObjs, htmlSel_itmStatusReq;
+
+  elem("dvEditor_UaAdd_ItmStatusReq").style.display = "none";
+
+  itmCodename = getElemVal("selEditor_UaAdd_ItmStatusReq_ItmCodename");
+
+  if ( isBlank(itmCodename) ) {
+    return;
+  }
+
+  itmObj = getItmObj(itmCodename);
+
+  if ( isBlank(itmObj.usereceivetype) ) {
+    return;
+  }
+
+  itmStatusObjs = getItmStatusObjAy_fromUsereceivetype(itmObj.usereceivetype);
+  htmlSel_itmStatusReq = getHtml_sel("selEditor_UaAdd_ItmStatusReq_Status", true, itmStatusObjs, null, null, undefined, undefined, undefined);
+  elem("spnEditor_UaAdd_ItmStatusReq_Status").innerHTML = htmlSel_itmStatusReq;
+  elem("dvEditor_UaAdd_ItmStatusReq").style.display = "";
 }
 
 function devEditor_uaAdd_changeUatype() {
@@ -773,7 +880,6 @@ function devEditor_uaAdd_changeUatype() {
 
   elem("dvEditor_UaAdd_Itms").style.display = "none";
   elem("dvEditor_UaAdd_Locs").style.display = "none";
-  elem("dvEditor_UaAdd_statusReq").style.display = "none";
 
   switch(uatype) {
 
@@ -795,14 +901,14 @@ function devEditor_uaAdd_changeUatype() {
         break;
       }
 
+    case C_uatype_other:
+      // no action needed
+      break;
+
     case C_uatype_moveToLoc:
       elem("dvEditor_UaAdd_Locs").style.display = "";
       break;
 
-  }
-
-  if ( ! isBlank(uatype) ) {
-    elem("dvEditor_UaAdd_statusReq").style.display = "";
   }
 }
 
@@ -828,20 +934,23 @@ function didCondFail(condObj) {
 
   switch (condObj.infotype) {
 
-    case C_infotype_itmExam:
+    case C_infotype_examItm:
       {
         let entObj, itmObj, eidObj;
-dc("condObj.infotype",condObj.infotype)
+dc_("----------------------------------------")
+dc_("condObj.infotype",condObj.infotype)
         entObj = getEntObj(condObj.relatedCodename1);
         itmObj = getItmObj(condObj.relatedCodename2);
 
-        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, condObj.info)
+dc_(".... about to run findEntinfoDataObj()")
+        eidObj = findEntinfoDataObj(entObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, condObj.info)
+dc_(".... just exited running findEntinfoDataObj()")
 
         if (eidObj == null) {
-dc("eidObj == null")
+dc_("eidObj == null")
           return true;
         } else {
-dc("eidObj.codename",eidObj.codename)
+dc_("eidObj.codename",eidObj.codename)
           return false;
         }
       }
@@ -962,6 +1071,19 @@ function doesObjHaveProp(obj, propName) {
   */
 }
 
+function doUserLocMove(locCodename) {
+  let moveToLocObj = getLocObj(locCodename);
+
+  APP.curPageObj = getPageObj(moveToLocObj.pageCodename);
+
+  APP.curGameObj.curPageCodename = APP.curPageObj.codename;
+  APP.curGameObj.saveToBrowser();
+
+  APP.userEntObj.moveToLocObj(moveToLocObj);
+
+  runCurGame();
+}
+
 function elem(elemId) {
   return document.getElementById(elemId);
 }
@@ -982,45 +1104,66 @@ function findEntinfoDataObj(entCodename, infotype, relatedTypecode1_toFind, rela
 
   codenameLeft = getCodenameLeft(entCodename);
 
-dc("C_typecode_entinfoData",C_typecode_entinfoData)
-dc("C_att_infotype",C_att_infotype)
-dc("infotype",infotype)
-dc("codenameLeft",codenameLeft)
-  brSvObjs_codenames = getBrSvObjsFromBrSv(C_typecode_entinfoData, null, C_att_infotype, infotype, codenameLeft);
-dc("brSvObjs_codenames.length",brSvObjs_codenames.length)
+dc_("... entered info_toFind()")
+dc_("entCodename",entCodename)
+dc_("infotype",infotype)
+dc_("relatedTypecode1_toFind",relatedTypecode1_toFind)
+dc_("relatedCodename1_toFind",relatedCodename1_toFind)
+dc_("info_toFind",info_toFind)
 
-  brSvObjs_codenames.forEach( (brSvObjs_codename) => {
-    let curEidCodename = brSvObjs_codename.codename;
+dc_(".. calling getBrSvObjsFromBrSv()")
+  brSvObjs_codenames = getBrSvObjsFromBrSv(C_typecode_entinfoData, null, C_att_infotype, infotype, codenameLeft);
+dc_(".. back from getBrSvObjsFromBrSv()")
+dc_("brSvObjs_codenames.length",brSvObjs_codenames.length)
+
+dc_("starting loop through brSvObjs_codenames")
+  for (i = 0; i < brSvObjs_codenames.length; i++) {
+dc_("top of loop through brSvObjs_codenames")
+    let curEidCodename = brSvObjs_codenames[i].codename;
+dc_("curEidCodename",curEidCodename)
 
     let relatedTypecode1_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_relatedTypecode1);
+dc_("relatedTypecode1_cur",relatedTypecode1_cur)
     let relatedCodename1_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_relatedCodename1);
+dc_("relatedCodename1_cur",relatedCodename1_cur)
 
     let relatedTypeCode1_isEqual = isEqual(relatedTypecode1_cur, relatedTypecode1_toFind);
+dc_("relatedTypeCode1_isEqual",relatedTypeCode1_isEqual)
     let relatedCodename1_isEqual = isEqual(relatedCodename1_cur, relatedCodename1_toFind);
+dc_("relatedCodename1_isEqual",relatedCodename1_isEqual)
 
     let curIsMatch = false;
 
     if ( info_toFind == null ) {
+dc_("checking with info_toFind == null")
 
       if ( relatedTypeCode1_isEqual && relatedCodename1_isEqual ) {
         curIsMatch = true;
       }
 
     } else {
+dc_("checking with ! info_toFind == null")
 
       let info_cur = getFromBrSv_valFromAtt(C_typecode_entinfoData, curEidCodename, C_att_info);
+dc_("info_cur",info_cur)
       let relatedInfo_isEqual = isEqual(info_cur, info_toFind);
+dc_("relatedInfo_isEqual",relatedInfo_isEqual)
 
       if ( relatedTypeCode1_isEqual && relatedCodename1_isEqual && relatedInfo_isEqual ) {
         curIsMatch = true;
       }
     }
 
+dc_("curIsMatch",curIsMatch)
     if (curIsMatch) {
+dc_("setting eidObj = getEntinfoDataObj(curEidCodename)")
       let eidObj = getEntinfoDataObj(curEidCodename);
+dc_("eidObj.codename",eidObj.codename)
       return eidObj;
     }
-  } );
+dc_("bottom of loop through brSvObjs_codenames")
+  }
+dc_("just left loop through brSvObjs_codenames")
 
   return null;
 }
@@ -1154,12 +1297,12 @@ function getAndMakeNewTrcond(trObj, infotype, relatedTypecode1, relatedCodename1
   return trcondObj;
 }
 
-function getAndMakeNewUa(pageObj = APP.curPageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
+function getAndMakeNewUa(pageObj = APP.curPageObj, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus, msg, causeUseEventOnItm) {
   var codename, uaObj;
 
   codename = getNextSortedCodename(C_typecode_ua, pageObj.codename, null, C_att_uaText, null);
 
-  uaObj = getUaObj(codename, pageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+  uaObj = getUaObj(codename, pageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus, msg, causeUseEventOnItm);
 
   pageObj.receiveUaObj(uaObj);
 
@@ -1247,7 +1390,6 @@ function getBrowserSaveObj(keyName, keyValue) {
 }
 
 function getBrSvObjsFromBrSv(typecode, codename, att, val, codenameLeft) {
-if (codenameLeft == "game-1,note-1,") dc_(">>>> entered getBrSvObjsFromBrSv()")
   var brSvObjAy = [];
   var typecodeCheckPassed, codenameCheckPassed, attCheckPassed, valCheckPassed, codenameLeftCheckPassed;
 
@@ -1782,8 +1924,8 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
 
     pageBrSvObjs = getBrSvObjsFromBrSv(C_typecode_page, null, C_att_gameCodename, this.codename, null);
 
-    for (let curPageBrSvObj in pageBrSvObjs) {
-      let curPageCodename = curPageBrSvObj.codename;
+    for (i = 0; i < pageBrSvObjs.length; i++) {
+      let curPageCodename = pageBrSvObjs[i].codename;
       let curPageObj = getPageObj(curPageCodename, this.codename);
       curPageObj.init();
       pageObjs.push(curPageObj);
@@ -1840,15 +1982,19 @@ function getHtml_a(linkText, jsFunc, jsArg1, jsArg2) {
 
 function getHtml_pageDisplay(pageObj) {
   var html = "";
+  var showDev = false;
   var i, trObjs, uaObjs, infoLinkHtml;
 
+  if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+    showDev = true;
+  }
 
   // TEXT-ROWS
 
   trObjs = pageObj.getAllTrObjs();
 
   for (i = 0; i < trObjs.length; i++) {
-    let curTrObj, showTr, itmObj, curTrcondObjs;
+    let curTrObj, showTr, itmObj, curTrcondObjs, textOfRow;
 
     curTrObj = trObjs[i];
     showTr = true;
@@ -1879,18 +2025,34 @@ function getHtml_pageDisplay(pageObj) {
     }
 
     if (showTr) {
-      let textOfRow = curTrObj.textOfRow;
+      textOfRow = "<span style=''>";
+    } else if ( ! showTr && showDev ) {
+      textOfRow = "<span style='background-color: yellow'>";
+    }
 
-      if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
-        textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit text", "dev_editor__edit_text_row", curTrObj.codename);
-        textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_text_row", curTrObj.codename);
-      }
+    if (showTr || showDev) {
+      textOfRow += curTrObj.textOfRow;
+    }
 
+    if (showDev) {
+      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit text", "dev_editor__edit_text_row", curTrObj.codename);
+      textOfRow += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_text_row", curTrObj.codename);
+    }
+
+    if (showTr || showDev) {
+      textOfRow += "</span>";
       html += getHtmlForAddedTextRow(html, textOfRow, 1);
+    }
+
+    if (showDev) {
+      let trInfo = "<span style='font-size: 85%; font-style: italic'>&nbsp;&nbsp;>";
+      trInfo += curTrObj.getDevInfo();
+      trInfo += "</span>";
+      html += getHtmlForAddedTextRow(html, trInfo, 0);
     }
   }
 
-  if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+  if (showDev) {
     html += getHtmlDownSpacer();
     html += "<div>" + getHtml_a("> add new text-row", "dev_editor__goto__add_text_row") + "</div>\n";
   }
@@ -1909,12 +2071,12 @@ function getHtml_pageDisplay(pageObj) {
   } else {
 
     for (i = 0; i < uaObjs.length; i++) {
-
       let curUaObj = uaObjs[i];
       let showUa = true;
       let uaText;
 
       switch (curUaObj.uatype) {
+
         case C_uatype_examine:
           {
             let locObj = APP.curPageObj.getLocObj();
@@ -1925,6 +2087,7 @@ function getHtml_pageDisplay(pageObj) {
             }
           }
           break;
+
         case C_uatype_grabItm:
           {
             let locObj = APP.curPageObj.getLocObj();
@@ -1935,8 +2098,15 @@ function getHtml_pageDisplay(pageObj) {
             }
           }
           break;
-        case C_uatype_moveToLoc:
+
+        case C_uatype_other:
+          // no action needed
           break;
+
+        case C_uatype_moveToLoc:
+          // no action needed
+          break;
+
       }
 
       if ( ! isBlank(curUaObj.statusReq_itmCodename) ) {
@@ -1953,21 +2123,36 @@ function getHtml_pageDisplay(pageObj) {
       }
 
       if (showUa) {
-        uaText = getHtml_a(curUaObj.uaText, "do_action", curUaObj.uatype, curUaObj.codename);
+        uaText = "<span style=''>";
+      } else if ( ! showUa && showDev ) {
+        uaText = "<span style='background-color: yellow'>";
+      }
 
-        if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
-          uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit text", "dev_editor__edit_user_action_text", curUaObj.codename);
-          uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
-        }
+      if (showUa || showDev) {
+        uaText += getHtml_a(curUaObj.uaText, "do_action", curUaObj.uatype, curUaObj.codename);
+      }
 
+      if (showDev) {
+        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> edit text", "dev_editor__edit_user_action_text", curUaObj.codename);
+        uaText += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__goto__delete_user_action", curUaObj.codename);
+      }
+
+      if (showUa || showDev) {
+        uaText += "</span>";
         html += getHtmlForAddedTextRow(html, uaText, 1);
       }
 
+      if (showDev) {
+        let uaInfo = "<span style='font-size: 85%; font-style: italic'>&nbsp;&nbsp;>";
+        uaInfo += curUaObj.getDevInfo();
+        uaInfo += "</span>";
+        html += getHtmlForAddedTextRow(html, uaInfo, 0);
+      }
     }
 
   }
 
-  if ( isTrue(APP.dev) && ! isTrue(APP.dev_hideEditor) ) {
+  if (showDev) {
     html += getHtmlDownSpacer();
     html += "<div>" + getHtml_a("> add new user-action", "dev_editor__goto__add_user_action") + "</div>\n";
   }
@@ -2090,12 +2275,28 @@ function getHtmlForAddedTextRow(curHtml, rowOfText, spacesDown, skipParsing) {
   return newHtml;
 }
 
+function getInfoObjAy_yesNo() {
+  var ay = [];
+
+  var obj_yes = {};
+  obj_yes.codename = C_info_yes;
+  obj_yes.name = C_info_yes;
+  ay.push(obj_yes);
+
+  var obj_no = {};
+  obj_no.codename = C_info_no;
+  obj_no.name = C_info_no;
+  ay.push(obj_no);
+
+  return ay;
+}
+
 function getInfotypeDisplayText(infotype) {
   switch(infotype) {
     case C_infotype_custom:
       return "custom";
       break;
-    case C_infotype_itmExam:
+    case C_infotype_examItm:
       return "object examined";
       break;
   }
@@ -2104,15 +2305,15 @@ function getInfotypeDisplayText(infotype) {
 function getInfotypeObjAy() {
   var ay = [];
   //var infotypeObj_custom = {};
-  var infotypeObj_itmExam = {};
+  var infotypeObj_examItm = {};
 
   //infotypeObj_custom.codename = C_infotype_custom;
   //infotypeObj_custom.name = getInfotypeDisplayText(C_infotype_custom);
   //ay.push(infotypeObj_custom);
 
-  infotypeObj_itmExam.codename = C_infotype_itmExam;
-  infotypeObj_itmExam.name = getInfotypeDisplayText(C_infotype_itmExam);
-  ay.push(infotypeObj_itmExam);
+  infotypeObj_examItm.codename = C_infotype_examItm;
+  infotypeObj_examItm.name = getInfotypeDisplayText(C_infotype_examItm);
+  ay.push(infotypeObj_examItm);
 
   return ay;
 }
@@ -2195,6 +2396,10 @@ function getItmObj(codename, gameCodename = APP.curGameObj.codename, name, canGr
     statusReq_itmCodename = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_statusReq_itmCodename);
   }
 
+  if ( isBlank(statusReq_itmStatus) ) {
+    statusReq_itmStatus = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_statusReq_itmStatus);
+  }
+
   if ( isBlank(examineMsg) ) {
     examineMsg = getFromBrSv_valFromAtt(C_typecode_itm, codename, C_att_examineMsg);
   }
@@ -2211,6 +2416,107 @@ function getItmObj(codename, gameCodename = APP.curGameObj.codename, name, canGr
   itmObj.statusReq_itmCodename = statusReq_itmCodename;
   itmObj.statusReq_itmStatus = statusReq_itmStatus;
   itmObj.examineMsg = examineMsg;
+
+  itmObj.getReliersMsg = function() {
+    throw("itmObj.getAyOfReliers() is incomplete...")
+
+    //C_typecode_entinfo
+    //C_typecode_entinfoData
+    //C_typecode_tr
+    //C_typecode_trcond
+    //C_typecode_ua
+    //C_typecode_uacond
+
+    var reliersMsg, gameObj, allEntObjs, i;
+
+    reliersMsg = "";
+
+    gameObj = getGameObj(this.gameCodename);
+
+
+    // entities
+
+    allEntObjs = gameObj.getAllEntObjs();
+    entObj_thatHasItm = null;
+
+    for (i = 0; i < allEntObjs.length; i++) {
+      let curEntObj = allEntObjs[i];
+      if ( curEntObj.hasItm(this.codename) ) {
+        entObj_thatHasItm = curEntObj;
+        break;
+      }
+    }
+
+    reliersMsg += "\n\nentity '" + entObj_thatHasItm + "' (codename=" + entObj_thatHasItm + ") has the object in their inventory";
+
+
+    // locations
+
+    allLocObjs = gameObj.getAllLocObjs();
+    locObj_thatHasItm = null;
+
+    for (i = 0; i < allLocObjs.length; i++) {
+      let curLocObj = allLocObjs[i];
+      if ( curLocObj.hasItm(this.codename) ) {
+        locObj_thatHasItm = curLocObj;
+        break;
+      }
+    }
+
+    reliersMsg += "\n\nlocation '" + locObj_thatHasItm + "' (codename=" + locObj_thatHasItm + ") has the object in its invlocory";
+
+
+    // INCOMPLETE...
+
+    
+  };
+
+  itmObj.deleteThisItm = function() {
+    //var reliersMsg = this.getReliersMsg();
+
+    //if ( isBlank() ) {
+      if ( confirm("\nWARNING: only delete an item that you have not connected to any other things in any way (or you could mess up your data)\n\n\n") ) {
+        let curLocObj = APP.curPageObj.getLocObj();
+        curLocObj.removeItmObj(this);
+        deleteFromBrowserSave_multiple(C_typecode_itm, this.codename);
+        alert("\nDeletion complete\n\n\n");
+        runCurGame();
+      } else {
+        alert("\nDeletion cancelled\n\n\n");
+      }
+    //} else {
+    //  alert("CAN'T DELETE DUE TO OTHER THINGS THAT RELY ON THIS OBJECT:\n\n" + reliersMsg);
+    //}
+  };
+
+  itmObj.receiveUse = function() {
+    var resultText = "";
+
+    switch (this.usereceivetype) {
+
+      case C_usereceivetype_closedOpen:
+        if (this.status == C_status_closed) {
+          this.status = C_status_open;
+          this.saveToBrowser();
+          resultText = "" + this.name + " is now " + C_status_open;
+        } else if (this.status == C_status_open) {
+          resultText = "no effect (" + this.name + " is already " + C_status_open;
+        }
+        break;
+
+      case C_usereceivetype_lockedUnlocked:
+        if (this.status == C_status_locked) {
+          this.status = C_status_unlocked;
+          this.saveToBrowser();
+          resultText = "" + this.name + " is now " + C_status_unlocked;
+        } else if (this.status == C_status_unlocked) {
+          resultText = "no effect (" + this.name + " is already " + C_status_unlocked;
+        }
+        break;
+    }
+
+    return resultText;
+  };
 
   itmObj.reset = function() {
     var gameObj = getGameObj(this.gameCodename);
@@ -2408,7 +2714,8 @@ function getLocObj(codename, gameCodename = APP.curGameObj.codename, name, pageC
           if (jsFuncName) {
             html += "<div>" + getHtml_a(curItmObj.name, jsFuncName, curItmObj.codename) + "</div>\n";
           } else if (editLinks) {
-            html += "<div>- " + curItmObj.name + "&nbsp;&nbsp;"  + getHtml_a("> rename", "dev_editor__rename_inventory_object", curItmObj.codename) + "</div>\n";
+            html += "<div>- " + curItmObj.name + "&nbsp;&nbsp;&nbsp;"  + getHtml_a("> rename", "dev_editor__rename_inventory_object", curItmObj.codename);
+            html += "&nbsp;&nbsp;&nbsp;" + getHtml_a("> delete", "dev_editor__delete_inventory_object", curItmObj.codename) + "</div>\n";
           } else {
             html += "<div>- " + curItmObj.name + "</div>\n";
           }
@@ -2475,11 +2782,6 @@ function getLocObj(codename, gameCodename = APP.curGameObj.codename, name, pageC
   };
   
   return locObj;
-}
-
-function getTypecodeAddedTextForNum(typecode) {
-  var x = typecode.toLowerCase() + "-";
-  return x;
 }
 
 function getNextSortedCodename(typecode, parent1Codename, parent2Codename, anyValidAtt, addedTextForNum) {
@@ -2720,8 +3022,8 @@ function getPageObj(codename, gameCodename = APP.curGameObj.codename, name, locC
   };
 
   pageObj.getUaObj = function(uaCodename) {
-    for (var i = 0; i < this.uaObjs.length; i++) {
-      let curUaObj = this.uaObjs[i];
+    for (var i = 0; i < this._uaObjs.length; i++) {
+      let curUaObj = this._uaObjs[i];
       if ( isEqual(uaCodename, curUaObj.codename) ) {
         return curUaObj;
       }
@@ -3149,12 +3451,20 @@ function getTrObj(codename, pageCodename = APP.curPageObj.codename, textOfRow, i
     }
   };
 
+  trObj.getDevInfo = function() {
+    var html = "";
+
+    html = "(text-row info will go here)";
+
+    return html;
+  };
+
   trObj.condsFailed = function() {
     var i;
 
     for (i = 0; i < this._trcondObjs.length; i++) {
       let curTrcondObj = this._trcondObjs[i];
-dc("curTrcondObj.codename",curTrcondObj.codename)
+dc_("curTrcondObj.codename",curTrcondObj.codename)
       let condFailed = didCondFail(curTrcondObj);
       if (condFailed) {
         return true;
@@ -3215,7 +3525,12 @@ dc("curTrcondObj.codename",curTrcondObj.codename)
   return trObj;
 }
 
-function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus) {
+function getTypecodeAddedTextForNum(typecode) {
+  var x = typecode.toLowerCase() + "-";
+  return x;
+}
+
+function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus, msg, causeUseEventOnItm) {
   var uaObj = {};
 
   uaObj.codename = codename;
@@ -3248,6 +3563,14 @@ function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uaty
     statusReq_itmStatus = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_statusReq_itmStatus);
   }
 
+  if ( isBlank(msg) ) {
+    msg = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_msg);
+  }
+
+  if ( isBlank(causeUseEventOnItm) ) {
+    causeUseEventOnItm = getFromBrSv_valFromAtt(C_typecode_ua, codename, C_att_causeUseEventOnItm);
+  }
+
   uaObj.pageCodename = pageCodename;
   uaObj.uaText = uaText;
   uaObj.uatype = uatype;
@@ -3255,6 +3578,8 @@ function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uaty
   uaObj.locCodename = locCodename;
   uaObj.statusReq_itmCodename = statusReq_itmCodename;
   uaObj.statusReq_itmStatus = statusReq_itmStatus;
+  uaObj.msg = msg;
+  uaObj.causeUseEventOnItm = causeUseEventOnItm;
 
   uaObj.condsFailed = function() {
     var i;
@@ -3292,6 +3617,14 @@ function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uaty
     return this._uacondObjs;
   };
 
+  uaObj.getDevInfo = function() {
+    var html = "";
+
+    html = "(user-action info will go here)";
+
+    return html;
+  };
+
   uaObj.loadUacondObjsFromBrowserSave = function() {
     var codenameLeft, brSvObjs, i;
 
@@ -3324,6 +3657,8 @@ function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uaty
     saveToBrowser(C_typecode_ua, this.codename, C_att_locCodename, this.locCodename);
     saveToBrowser(C_typecode_ua, this.codename, C_att_statusReq_itmCodename, this.statusReq_itmCodename);
     saveToBrowser(C_typecode_ua, this.codename, C_att_statusReq_itmStatus, this.statusReq_itmStatus);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_msg, this.msg);
+    saveToBrowser(C_typecode_ua, this.codename, C_att_causeUseEventOnItm, this.causeUseEventOnItm);
   };
   
   return uaObj;
@@ -3412,6 +3747,9 @@ function getUatypeDisplayText(uatype) {
     case C_uatype_grabItm:
       return "grab item";
       break;
+    case C_uatype_other:
+      return "other";
+      break;
     case C_uatype_moveToLoc:
       return "move to location";
       break;
@@ -3422,6 +3760,7 @@ function getUatypesObjAy() {
   var ay = [];
   var uatypeObj_examine = {};
   var uatypeObj_grabItm = {};
+  var uatypeObj_other = {};
   var uatypeObj_moveToLoc = {};
 
   uatypeObj_examine.codename = C_uatype_examine;
@@ -3431,6 +3770,10 @@ function getUatypesObjAy() {
   uatypeObj_grabItm.codename = C_uatype_grabItm;
   uatypeObj_grabItm.name = getUatypeDisplayText(C_uatype_grabItm);
   ay.push(uatypeObj_grabItm);
+
+  uatypeObj_other.codename = C_uatype_other;
+  uatypeObj_other.name = getUatypeDisplayText(C_uatype_other);
+  ay.push(uatypeObj_other);
   
   uatypeObj_moveToLoc.codename = C_uatype_moveToLoc;
   uatypeObj_moveToLoc.name = getUatypeDisplayText(C_uatype_moveToLoc);
@@ -3614,7 +3957,7 @@ function loadAllGameCodenames() {
 }
 
 function processItmUse(itmCodename_toReceiveUse) {
-  var itmObj_toReceiveUse, baseMsg, resultText, resultMsg;
+  var itmObj_toReceiveUse, baseMsg, noEffect = false, resultText, resultMsg;
 
   itmObj_toReceiveUse = getItmObj(itmCodename_toReceiveUse);
 
@@ -3623,36 +3966,17 @@ function processItmUse(itmCodename_toReceiveUse) {
 
   if ( isBlank(itmObj_toReceiveUse.usereceivetype) ) {
 
+    noEffect = true;
     resultText = "no effect";
 
   } else if ( ! isEqual(itmObj_toReceiveUse.itmThatAffects, APP.curItmObj.codename) ) {
 
     resultText = "no effect"
+    noEffect = true;
 
   } else {
 
-    switch (itmObj_toReceiveUse.usereceivetype) {
-
-      case C_usereceivetype_closedOpen:
-        if (itmObj_toReceiveUse.status == C_status_closed) {
-          itmObj_toReceiveUse.status = C_status_open;
-          itmObj_toReceiveUse.saveToBrowser();
-          resultText = "" + itmObj_toReceiveUse.name + " is now " + C_status_open;
-        } else if (itmObj_toReceiveUse.status == C_status_open) {
-          resultText = "no effect (" + itmObj_toReceiveUse.name + " is already " + C_status_open;
-        }
-        break;
-
-      case C_usereceivetype_lockedUnlocked:
-        if (itmObj_toReceiveUse.status == C_status_locked) {
-          itmObj_toReceiveUse.status = C_status_unlocked;
-          itmObj_toReceiveUse.saveToBrowser();
-          resultText = "" + itmObj_toReceiveUse.name + " is now " + C_status_unlocked;
-        } else if (itmObj_toReceiveUse.status == C_status_unlocked) {
-          resultText = "no effect (" + itmObj_toReceiveUse.name + " is already " + C_status_unlocked;
-        }
-        break;
-    }
+    itmObj_toReceiveUse.receiveUse();
 
   }
 
@@ -3668,7 +3992,9 @@ function processItmUse(itmCodename_toReceiveUse) {
     alert(resultMsg);
   }
 
-  runCurGame();
+  if ( ! noEffect ) {
+    runCurGame();
+  }
 }
 
 function right(str, numChars) {
@@ -3759,20 +4085,24 @@ function runCurGame_addDevOptions() {
 
     html += "<div>current page: " + curPageName;
     if (APP.curPageObj) {
-      html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_page ( )'>> rename</a>";
+      html += "&nbsp;&nbsp;&nbsp;<a href='javascript: dev_editor__rename_page ( )'>> rename</a>";
     }
     //html += "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript: dev_editor__view_all_pages ( )'>> view all pages</a>";
-    html += "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href='javascript: dev_editor__goto__create_new_page ( )'>> create new page/location</a></div>\n";
+    html += "&nbsp;&nbsp;&nbsp;<a href='javascript: dev_editor__goto__create_new_page ( )'>> create new page/location</a></div>\n";
 
     html += getHtmlDownSpacer();
 
+    let htmlSel_pages = getHtml_sel("selEditor_Display_JumpToPage", true, APP.curGameObj.getAllPageObjs(), null, null, "devEditor_display_jumpToPage()", null, false, undefined, undefined, undefined);
     html += "<div>current page is a location: " + curPageIsLoc + "</div>\n";
+    html += getHtmlDownSpacer();
+    html += "<div>jump to page: " + htmlSel_pages + "</div>\n";
 
     if (curPageIsLoc) {
       html += getHtmlDownSpacer(2);
       html += "<div>inventory for location:</div>\n";
       html += getHtmlDownSpacer();
       html += APP.curLocObj.getInventoryListHtml(null, true, false);
+      html += getHtmlDownSpacer();
       html += "<div>" + getHtml_a("> add to location's inventory", "dev_editor__goto__add_to_location_inventory", APP.curLocObj.codename) + "</div>\n";
     }
 
@@ -3866,19 +4196,21 @@ function runCurGame_init_userEntity() {
 }
 
 function runUserAction(uatype, uaVar1) {
+  var uaObj = getUaObj(uaVar1);
+
   switch (uatype) {
 
     case C_uatype_examine:
       {
-        let uaObj, itmObj, eidObj, msgToShow;
+        let itmObj, eidObj, msgToShow;
 
         uaObj = getUaObj(uaVar1);
         itmObj = getItmObj(uaObj.itmCodename);
 
-        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, undefined)
+        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, undefined)
 
         if ( eidObj == null ) {
-          eidObj = getAndMakeNewEntinfoData(APP.userEntObj.codename, C_infotype_itmExam, C_typecode_itm, itmObj.codename, C_info_yes);
+          eidObj = getAndMakeNewEntinfoData(APP.userEntObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, C_info_yes);
         } else if ( ! isEqual(eidObj.info, C_info_yes) ) {
           eidObj.changeInfo(C_info_yes);
         }
@@ -3897,7 +4229,6 @@ function runUserAction(uatype, uaVar1) {
 
     case C_uatype_grabItm:
       {
-        let uaObj = getUaObj(uaVar1);
         let itmObj = getItmObj(uaObj.itmCodename);
         let curLocObj = APP.curPageObj.getLocObj();
 
@@ -3908,19 +4239,13 @@ function runUserAction(uatype, uaVar1) {
       }
       break;
 
+    case C_uatype_other:
+      // no action needed here -- message will be displayed below
+      break;
+
     case C_uatype_moveToLoc:
       {
-        let uaObj = getUaObj(uaVar1);
-        let moveToLocObj = getLocObj(uaObj.locCodename);
-
-        APP.curPageObj = getPageObj(moveToLocObj.pageCodename);
-
-        APP.curGameObj.curPageCodename = APP.curPageObj.codename;
-        APP.curGameObj.saveToBrowser();
-
-        APP.userEntObj.moveToLocObj(moveToLocObj);
-
-        runCurGame();
+        doUserLocMove(uaObj.locCodename);
       }
       break;
 
@@ -3932,6 +4257,16 @@ function runUserAction(uatype, uaVar1) {
   
     default:
       alert("ERROR: action '" + getUatypeDisplayText(uatype) + "' was not found");
+  }
+
+  if ( ! isBlank(uaObj.causeUseEventOnItm) ) {
+    let itmObj = getItmObj(uaObj.causeUseEventOnItm);
+    itmObj.receiveUse();
+    runCurGame();
+  }
+
+  if ( ! isBlank(uaObj.msg) ) {
+    alert(uaObj.msg);
   }
 }
 
@@ -4461,12 +4796,12 @@ function dev_editor__add_text_row__cancel_add() {
 
 function dev_editor__add_text_row__do_add() {
   var textOfRow = getElemVal("ipEditor_TrAdd_TextOfRow");
-  var itmCodename = getElemVal("selEditor_TrAdd_ItmCodename");
   var itmInLocInv = getElemVal("selEditor_TrAdd_ItmInLocInv");
-  var itmInLocInv_isIsNot;
-  var itmStatusReq = null;
+  var itmInLocInv_isIsNot = getElemVal("selEditor_TrAdd_ItmInLocInv_IsIsNot");
+  var itmStatusReq_itmCodename = getElemVal("selEditor_TrAdd_ItmStatusReq_ItmCodename");
+  var itmStatusReq_status = null;
   var infotype = getElemVal("selEditor_TrAdd_UserInfo_InfoType");
-  var examObj_itmCodename;
+  var examItm_itmCodename, examItm_yesNo;
   var trObj;
 
   if ( isBlank(textOfRow) ) {
@@ -4475,30 +4810,29 @@ function dev_editor__add_text_row__do_add() {
     return undefined;
   }
 
-  if ( ! isBlank(itmCodename) ) {
-    itmStatusReq = getElemVal("selEditor_TrAdd_ItmStatusReq");
+  if ( ! isBlank(itmStatusReq_itmCodename) ) {
+    itmStatusReq_status = getElemVal("selEditor_TrAdd_ItmStatusReq_Status");
 
-    if ( isBlank(itmStatusReq) ) {
+    if ( isBlank(itmStatusReq_status) ) {
       alert("\nPlease select 'Object Status Required'\n\n\n");
       return undefined;
     }
-
-    itmInLocInv_isIsNot = getElemVal("selEditor_TrAdd_ItmInLocInv_IsIsNot");
   }
 
   if ( ! isBlank(infotype) ) {
-    examObj_itmCodename = getElemVal("selEditor_TrAdd_ExamObj_ItmCodename");
+    examItm_itmCodename = getElemVal("selEditor_TrAdd_ExamItm_ItmCodename");
 
-    if ( isBlank(examObj_itmCodename) ) {
+    if ( isBlank(examItm_itmCodename) ) {
       alert("\nPlease select 'Examined Which Object'\n\n\n");
       return undefined;
     }
+    examItm_yesNo = getElemVal("selEditor_TrAdd_ExamItm_YesNo");
   }
 
-  trObj = getAndMakeNewTr(undefined, textOfRow, itmCodename, itmStatusReq, itmInLocInv, itmInLocInv_isIsNot);
+  trObj = getAndMakeNewTr(undefined, textOfRow, itmStatusReq_itmCodename, itmStatusReq_status, itmInLocInv, itmInLocInv_isIsNot);
 
   if ( ! isBlank(infotype) ) {
-    getAndMakeNewTrcond(trObj, infotype, C_typecode_ent, APP.userEntObj.codename, C_typecode_itm, examObj_itmCodename, C_info_yes);
+    getAndMakeNewTrcond(trObj, infotype, C_typecode_ent, APP.userEntObj.codename, C_typecode_itm, examItm_itmCodename, examItm_yesNo);
   }
 
   runCurGame();
@@ -4540,10 +4874,10 @@ function dev_editor__add_to_location_inventory__do_add() {
     status = startStatus;
 
     itmThatAffects = getElemVal("selEditor_AddToLocInventory_ItmThatAffects");
-    if ( isBlank(itmThatAffects) ) {
-      alert("\nPlease enter 'Other Object That Can Be Used Upon This'\n\n\n");
-      return undefined;
-    }
+    //if ( isBlank(itmThatAffects) ) {
+    //  alert("\nPlease enter 'Other Object That Can Be Used Upon This'\n\n\n");
+    //  return undefined;
+    //}
   }
 
   useReceivedMsg = getElemVal("ipEditor_AddToLocInventory_UseReceivedMsg");
@@ -4566,7 +4900,14 @@ function dev_editor__add_user_action__cancel_add() {
 function dev_editor__add_user_action__do_add() {
   var uaText = getElemVal("ipEditor_UaAdd_UaText");
   var uatype = getElemVal("selEditor_UaAdd_Uatype");
-  var itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus;
+  var itmCodename, locCodename;
+  var itmStatusReq_itmCodename = getElemVal("selEditor_UaAdd_ItmStatusReq_ItmCodename");
+  var itmStatusReq_status = null;
+  var infotype = getElemVal("selEditor_UaAdd_UserInfo_InfoType");
+  var examItm_itmCodename, examItm_yesNo;
+  var causeUseEventOnItm = getElemVal("selEditor_UaAdd_CauseUseEventOnItm");
+  var msg = getElemVal("ipEditor_UaAdd_Msg");
+  var uaObj;
 
   if ( isBlank(uaText) ) {
     alert("\nPlease enter 'Name of Action'\n\n\n");
@@ -4607,18 +4948,30 @@ function dev_editor__add_user_action__do_add() {
 
   }
 
-  statusReq_itmCodename = getElemVal("selEditor_UaAdd_StatusReq_ItmCodename");
+  if ( ! isBlank(itmStatusReq_itmCodename) ) {
+    itmStatusReq_status = getElemVal("selEditor_UaAdd_ItmStatusReq_Status");
 
-  if ( ! isBlank(statusReq_itmCodename) ) {
-    statusReq_itmStatus = getElemVal("selEditor_UaAdd_StatusReq_ItmStatus");
-
-    if ( isBlank(statusReq_itmStatus) ) {
-      alert("\nPlease select 'to have Status'\n\n\n");
+    if ( isBlank(itmStatusReq_status) ) {
+      alert("\nPlease select 'Object Status Required'\n\n\n");
       return undefined;
     }
   }
 
-  getAndMakeNewUa(undefined, uaText, uatype, itmCodename, locCodename, statusReq_itmCodename, statusReq_itmStatus);
+  if ( ! isBlank(infotype) ) {
+    examItm_itmCodename = getElemVal("selEditor_UaAdd_ExamItm_ItmCodename");
+
+    if ( isBlank(examItm_itmCodename) ) {
+      alert("\nPlease select 'Examined Which Object'\n\n\n");
+      return undefined;
+    }
+    examItm_yesNo = getElemVal("selEditor_UaAdd_ExamItm_YesNo");
+  }
+
+  uaObj = getAndMakeNewUa(undefined, uaText, uatype, itmCodename, locCodename, itmStatusReq_itmCodename, itmStatusReq_status, msg, causeUseEventOnItm);
+
+  if ( ! isBlank(infotype) ) {
+    getAndMakeNewUacond(uaObj, infotype, C_typecode_ent, APP.userEntObj.codename, C_typecode_itm, examItm_itmCodename, examItm_yesNo);
+  }
 
   runCurGame();
 
@@ -4640,9 +4993,19 @@ function dev_editor__create_new_page__do_add() {
 
   getAndMakeNewPage(APP.curGameObj, name, null, true);
 
-  alert("\nPage created\n\n\n")
+  alert("\nPage '" + name + "' created\n\n\n")
 
   runCurGame();
+
+  return undefined;
+}
+
+function dev_editor__delete_inventory_object(codename) {
+  var itmObj;
+
+  itmObj = getItmObj(codename);
+
+  itmObj.deleteThisItm();
 
   return undefined;
 }
