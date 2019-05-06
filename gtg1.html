@@ -31,14 +31,55 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
 
 <div id="dvDisplayBlocks">
 
-<div id="dvBrowserSaveOuter" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvBrSv_Export_Outer" style="display: none">
   <div style="display: inline-block">
-    <div><a href="javascript: browser_save__return_to_game()">return to game</a></div>
+    <div style="height:0.3em"></div>
+    <div><b>browser saved data, ready for export</b></div>
+    <div style="height:0.9em"></div>
+    <div>
+      <a href="javascript: browser_save__view(true)">return to regular view</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: browser_save__return_to_game()">return to game</a>
+    </div>
+  </div>
+  <div style="height:0.9em"></div>
+  <textarea id="taBrSv_Export_ExportedBrSvText" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
+  <div style="height:0.8em"></div>
+  <div><a id="aBrSv_Export_CopyToClipboard" href="javascript: undefined">copy to clipboard</a></div>
+  <div style="height:2em"></div>
+</div>
+
+<div id="dvBrSv_Import_Outer" style="display: none">
+  <div style="display: inline-block">
+    <div style="height:0.3em"></div>
+    <div><b>paste text-to-import below:</b></div>
+    <div style="height:0.9em"></div>
+    <div>
+      <a href="javascript: browser_save__view(true)">return to regular view</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: browser_save__return_to_game()">return to game</a>
+    </div>
+  </div>
+  <div style="height:0.9em"></div>
+  <textarea id="taBrSv_Import_BrSvTextToImport" style="height: 50vh; width: 80vw; border: 1px black solid; padding: 10px"></textarea>
+  <div style="height:0.9em"></div>
+  <div><a href="javascript:browser_save__begin_import()">begin import</a></div>
+  <div style="height:1em"></div>
+</div>
+
+<div id="dvBrSv_View_Outer" style="display: none">
+  <div style="display: inline-block">
+    <div style="height:0.3em"></div>
+    <div><b>browser saved data</b></div>
+    <div style="height:0.9em"></div>
+    <div>
+      <a href="javascript: browser_save__return_to_game()">return to game</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: browser_save__display_data_export()">export data</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="javascript: browser_save__display_data_import()">import data</a>
+    </div>
     <div style="height:0.8em"></div>
     <hr></hr>
   </div>
   <div style="height:0.6em"></div>
-  <div id="dvBrowserSaveInner"></div>
+  <div id="dvBrSv_View_Inner"></div>
   <div style="height:0.6em"></div>
   <div style="display: inline-block">
     <hr></hr>
@@ -50,7 +91,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:1em"></div>
 </div>
 
-<div id="dvEditor_AddToLocInventory_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_AddToLocInventory_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Add New Object To Location's Inventory</b></div>
   <div style="height:0.6em"></div>
   <div>
@@ -98,7 +139,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_PageAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_PageAdd_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Create New Page/Location</b></div>
   <div style="height:0.6em"></div>
   <div>
@@ -116,7 +157,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_TrAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_TrAdd_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Add Text-Row</b></div>
   <div style="height:0.9em"></div>
   <div>
@@ -165,7 +206,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_UaAdd_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_UaAdd_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Add User-Action</b></div>
   <div style="height:0.9em"></div>
   <div>
@@ -242,7 +283,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_UaDelete_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_UaDelete_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Confirm Deletion of User-Action</b></div>
   <div style="height:0.6em"></div>
   <div>
@@ -264,7 +305,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_UaEdit_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_UaEdit_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>Edit User-Action</b></div>
   <div style="height:0.6em"></div>
   <div>
@@ -286,7 +327,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvEditor_ViewAllPages_Outer" style="padding-left: 0.4em; padding-top: 0.4em">
+<div id="dvEditor_ViewAllPages_Outer" style="display: none; padding-left: 0.4em; padding-top: 0.4em">
   <div><b>All Pages For Game</b></div>
   <div style="height:0.6em"></div>
   <div>
@@ -304,14 +345,14 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvGameOuter" style="padding-left: 1em; padding-top: 1em">
+<div id="dvGameOuter" style="display: none; padding-left: 1em; padding-top: 1em">
   <div id="dvGameInner_Page"></div>
   <div style="height:1.5em"></div>
   <div id="dvGameInner_Dev"></div>
   <div style="height:2em"></div>
 </div>
 
-<div id="dvUseItm_Outer" style="padding-left: 1em; padding-top: 1em">
+<div id="dvUseItm_Outer" style="display: none; padding-left: 1em; padding-top: 1em">
   <div>
     Current Page/Location: <span id="spnUseItm_CurPageAndLoc"></span>
   </div>
@@ -336,7 +377,7 @@ select {font-size: 95%; font-family: Helvetica; background-color: #f9f9f9; paddi
   <div style="height:2em"></div>
 </div>
 
-<div id="dvUserInventory_Outer" style="padding-left: 1em; padding-top: 1em">
+<div id="dvUserInventory_Outer" style="display: none; padding-left: 1em; padding-top: 1em">
   <div><b>Your Inventory</b></div>
   <div style="height:0.6em"></div>
   <div id="dvUserInventory_Inner" class=""></div>
@@ -374,6 +415,7 @@ const C_att_entCodename = "entCodename";
 const C_att_examineMsg = "examineMsg";
 const C_att_gameCodename = "gameCodename";
 const C_att_info = "info";
+const C_att_infooptionset = "infooptionset";
 const C_att_inventory = "inventory";
 const C_att_isUser = "isUser";
 const C_att_itmCodename = "itmCodename";
@@ -394,7 +436,7 @@ const C_att_startLocCodename = "startLocCodename";
 const C_att_startPageCodename = "startPageCodename"
 const C_att_startStatus = "startStatus";
 const C_att_status = "status";
-const C_att_infooptionset = "infooptionset";
+const C_att_startInfo = "startInfo";
 const C_att_statusReq_itmCodename = "statusReq_itmCodename";
 const C_att_statusReq_itmStatus = "statusReq_itmStatus";
 const C_att_infotype = "infotype";
@@ -436,6 +478,10 @@ const C_saveTypeName_location = "location";
 const C_saveTypeName_page = "page";
 const C_saveTypeName_unknown = "unknown";
 
+const C_sd1 = ":"; // C_sd1 -> storageDivider#1 --> not using this const yet in gtg1.html
+const C_sd2 = ","; // C_sd2 -> storageDivider#2 --> not using this const yet in gtg1.html
+const C_sd3 = "`"; // C_sd3 -> storageDivider#3, used for text formatting during backup
+
 const C_spacerHeight = "0.5em"
 
 const C_status_closed = "closed";
@@ -473,15 +519,6 @@ const C_usereceivetype_lockedUnlocked = "lockedUnlocked";
 // APP-LEVEL VARIABLES
 
 const APP = {};
-APP.allGameBrSvObjs = [];
-APP.curGameObj = null;
-APP.curItmObj = null;
-APP.curPageObj = null;
-APP.dev = "0";
-APP.dev_hideEditor = "0";
-APP.editor_curUaCodename = null;
-APP.sort_addedTextForNum = null;
-APP.userEntObj = null;
 
 
 // INTERNAL FUNCTIONS
@@ -519,6 +556,179 @@ function addPageTextRow(page, textOfRow, spacesDown) {
   textRow.spacesDown = spacesDown;
 
   page.textRows.push(textRow);
+}
+
+function app_resetAppVars() {
+  APP.curGameObj = null;
+  APP.curItmObj = null;
+  APP.curPageObj = null;
+  APP.dev = "0";
+  APP.dev_hideEditor = "0";
+  APP.editor_curUaCodename = null;
+  APP.sort_addedTextForNum = null;
+  APP.userEntObj = null;
+}
+
+function app_start() {
+  var defGameCodename, defGameObj;
+
+  hideAllDisplays();
+  app_resetAppVars();
+
+  app_start_processQueryString();
+
+  APP.dev = getAsOneZero( getAppSetting(C_appSetting_dev) );
+
+  //keys_startMonitoring();
+
+  if ( getAppSetting(C_appSetting_LS) == "1" ) {
+    brSv_displayView();
+    return;
+  }
+
+  APP.dev_hideEditor = getAsOneZero( getAppSetting(C_appSetting_dev_hideEditor) );
+
+  defGameCodename = getAppSetting(C_appSetting_defaultGameCodename);
+
+  if ( isBlank(defGameCodename) ) {
+    let allGameBrSvObjs = getBrSvObjsFromBrSv(C_typecode_game, null, C_att_name, null, null);
+
+    if (allGameBrSvObjs.length > 0) {
+      defGameCodename = allGameBrSvObjs[0].codename;
+    } else {
+      defGameObj = getAndMakeNewGame("game-1", "Your First Game");
+      defGameCodename = defGameObj.codename;
+    }
+  
+    setAppSetting(C_appSetting_defaultGameCodename, defGameCodename);
+  }
+
+  if ( ! defGameObj ) {
+    defGameObj = getGameObj(defGameCodename);
+  }
+
+  APP.curGameObj = defGameObj;
+
+  runCurGame();
+}
+
+function app_start_processQueryString() {
+  var qs_urlParams = new URLSearchParams(window.location.search);
+
+  if ( qs_urlParams.has(C_appSetting_dev) ) {
+    setAppSetting(C_appSetting_dev, "1");
+  }
+
+  if ( qs_urlParams.has(C_appSetting_narrow) ) {
+    setAppSetting(C_appSetting_narrow, "1");
+  }
+
+  if ( qs_urlParams.has(C_appSetting_LS) ) {
+    setAppSetting(C_appSetting_LS, "1");
+  } else {
+    setAppSetting(C_appSetting_LS, "0");
+  }
+}
+
+function brSv_displayExport() {
+  hideAllDisplays();
+  elem("dvBrSv_Export_Outer").style.display = "";
+  brSv_writeExport();
+}
+
+function brSv_displayImport() {
+  hideAllDisplays();
+  elem("dvBrSv_Import_Outer").style.display = "";
+  elem("taBrSv_Import_BrSvTextToImport").value = "";
+  elem("taBrSv_Import_BrSvTextToImport").focus();
+}
+
+function brSv_displayView(cursorToTop) {
+  hideAllDisplays();
+
+  elem("dvBrSv_View_Outer").style.display = "";
+
+  writeBrSvData();
+
+  if (cursorToTop) {
+    html_scrollPageToTop();
+  }
+}
+
+function brSv_doImport(textToImport) {
+  var i, keyValuePairs, keyName, keyValue;
+
+  //split storage-keys from text-to-import string
+  keyValuePairs = textToImport.split(C_sd3);
+
+  //if we don't have an even number of items, there is a mismatch of key/value pairs
+  if (keyValuePairs.length % 2 > 0) {
+    html_showMsgToUser("uneven number of key/value pairs, operation canceled");
+    return;
+  }
+
+  //clear existing storage
+  if ( ! html_getConfirmFromUser("about to clear existing storage, in order to proceed with import. Continue?") ) {
+    return
+  }
+  localStorage.clear();
+
+  //do the import
+  for (i = 0; i < keyValuePairs.length; i = i + 2) {
+    keyName = keyValuePairs[i];
+    keyValue = keyValuePairs[i+1];
+//if(!html_getConfirmFromUser("would make:\nkeyName: "+keyName+"\nkeyValue: "+keyValue+"\n\nexisting keyValue: "+getFromDatastore(keyName)))return
+    localStorage.setItem(keyName, keyValue);
+//if(!html_getConfirmFromUser("just added:\nkeyName: "+keyName+"\n\nnow, when re-grabbed from localStorage it is: "+getFromDatastore(keyName)))return
+  }
+
+  html_showMsgToUser("import complete\n\n\nrestarting app ...");
+
+  //restart app
+  app_start();
+}
+
+function brSv_getSortedAy() {
+  var i, ay = [];
+
+  for (i = 0; i < localStorage.length; i++) {
+    let lsPair = {};
+    lsPair.keyName = localStorage.key(i);
+    lsPair.keyValue = localStorage.getItem(lsPair.keyName);
+    ay.push(lsPair);
+  }
+
+  ay.sort( brSv_localStorageSortFunc() );
+
+  return ay;
+}
+
+const brSv_localStorageSortFunc = () => {
+  return (lsPairA, lsPairB) => {
+    if (lsPairA.keyName.toLowerCase() < lsPairB.keyName.toLowerCase()) {
+      return -1;
+    } else {
+      return 1;
+    }
+  };
+};
+
+function brSv_writeExport() {
+  var ay, i, keyName, keyValue, txt = "";
+
+  ay = brSv_getSortedAy();
+
+  for (i = 0; i < localStorage.length; i++){
+    keyName = ay[i].keyName;
+    keyValue = ay[i].keyValue;
+
+    if (i > 0) txt += C_sd3;
+
+    txt += keyName + C_sd3 + keyValue;
+  }
+
+  elem("taBrSv_Export_ExportedBrSvText").value = txt;
+  elem("taBrSv_Export_ExportedBrSvText").select();
 }
 
 function changeLocAtt(pageObj, att, newVal) {
@@ -942,9 +1152,9 @@ dc_("condObj.infotype",condObj.infotype)
         entObj = getEntObj(condObj.relatedCodename1);
         itmObj = getItmObj(condObj.relatedCodename2);
 
-dc_(".... about to run findEntinfoDataObj()")
+dc_(".... about to run findEntinfoDataObj() from didCondFail()")
         eidObj = findEntinfoDataObj(entObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, condObj.info)
-dc_(".... just exited running findEntinfoDataObj()")
+dc_(".... just exited running findEntinfoDataObj() from didCondFail()")
 
         if (eidObj == null) {
 dc_("eidObj == null")
@@ -962,12 +1172,6 @@ dc_("eidObj.codename",eidObj.codename)
 
 function didCondPass(condObj) {
   return ! didCondFail(condObj);
-}
-
-function displayBrowserSave() {
-  hideAllDisplays();
-  writeBrowserSavedData();
-  elem("dvBrowserSaveOuter").style.display = "";
 }
 
 function displayPage(pageObj) {
@@ -1104,7 +1308,7 @@ function findEntinfoDataObj(entCodename, infotype, relatedTypecode1_toFind, rela
 
   codenameLeft = getCodenameLeft(entCodename);
 
-dc_("... entered info_toFind()")
+dc_("... entered findEntinfoDataObj()")
 dc_("entCodename",entCodename)
 dc_("infotype",infotype)
 dc_("relatedTypecode1_toFind",relatedTypecode1_toFind)
@@ -1183,29 +1387,35 @@ function getAndMakeNewEnt(gameObj = APP.curGameObj, name, nameToUseForCodenameGe
 
   entObj.saveToBrowser();
 
+  gameObj.receiveEntObj(entObj);
+
   return entObj;
 }
 
-function getAndMakeNewEntinfo(entCodename, infotype, info) {
+function getAndMakeNewEntinfo(entObj, infotype, info, startInfo) {
   var codename, entinfoObj;
 
-  codename = getNextSortedCodename(C_typecode_entinfo, entCodename, null, C_att_infotype, null);
+  codename = getNextSortedCodename(C_typecode_entinfo, entObj.codename, null, C_att_infotype, null);
 
-  entinfoObj = getEntinfoObj(codename, entCodename, infotype, info);
+  entinfoObj = getEntinfoObj(codename, entObj.codename, infotype, info, startInfo);
 
   entinfoObj.saveToBrowser();
+
+  entObj.receiveEidObj(entinfoObj);
 
   return entinfoObj;
 }
 
-function getAndMakeNewEntinfoData(entCodename, infotype, relatedTypecode1, relatedCodename1, info) {
+function getAndMakeNewEntinfoData(entObj, infotype, relatedTypecode1, relatedCodename1, info, startInfo) {
   var codename, entinfoDataObj;
 
-  codename = getNextSortedCodename(C_typecode_entinfoData, entCodename, null, C_att_infotype, null);
+  codename = getNextSortedCodename(C_typecode_entinfoData, entObj.codename, null, C_att_infotype, null);
 
-  entinfoDataObj = getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, relatedCodename1, info);
+  entinfoDataObj = getEntinfoDataObj(codename, entObj.codename, infotype, relatedTypecode1, relatedCodename1, info, startInfo);
 
   entinfoDataObj.saveToBrowser();
+
+  entObj.receiveEidObj(entinfoDataObj);
 
   return entinfoDataObj;
 }
@@ -1318,7 +1528,7 @@ function getAndMakeNewUacond(uaObj, infotype, relatedTypecode1, relatedCodename1
 
   uacondObj = getUacondObj(codename, uaObj.codename, infotype, relatedTypecode1, relatedCodename1, relatedTypecode2, relatedCodename2, info)
 
-  uaObj.uaCondObjs.push(uacondObj);
+  uaObj.receiveUacondObj(uacondObj);
 
   uacondObj.saveToBrowser();
 
@@ -1577,7 +1787,7 @@ function getElemVal(elemId) {
   return elemVal;
 }
 
-function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, relatedCodename1, info) {
+function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, relatedCodename1, info, startInfo) {
   var entinfoDataObj, brSvObjExists;
 
   entinfoDataObj = {};
@@ -1608,6 +1818,10 @@ function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, re
       info = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_info);
     }
 
+    if ( isBlank(startInfo) ) {
+      startInfo = getFromBrSv_valFromAtt(C_typecode_entinfoData, codename, C_att_startInfo);
+    }
+
   } else {
 
     entinfoDataObj._existsInBrSv = false;
@@ -1619,6 +1833,7 @@ function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, re
   entinfoDataObj.relatedTypecode1 = relatedTypecode1;
   entinfoDataObj.relatedCodename1 = relatedCodename1;
   entinfoDataObj.info = info;
+  entinfoDataObj.startInfo = startInfo;
 
   entinfoDataObj.changeInfo = function(info) {
     this.info = info;
@@ -1635,13 +1850,14 @@ function getEntinfoDataObj(codename, entCodename, infotype, relatedTypecode1, re
     saveToBrowser(C_typecode_entinfoData, this.codename, C_att_relatedTypecode1, this.relatedTypecode1);
     saveToBrowser(C_typecode_entinfoData, this.codename, C_att_relatedCodename1, this.relatedCodename1);
     saveToBrowser(C_typecode_entinfoData, this.codename, C_att_info, this.info);
+    saveToBrowser(C_typecode_entinfoData, this.codename, C_att_startInfo, this.startInfo);
     this._existsInBrSv = true;
   };
 
   return entinfoDataObj;
 }
 
-function getEntinfoObj(codename, entCodename, infotype, info) {
+function getEntinfoObj(codename, entCodename, infotype, info, startInfo) {
   var entinfoObj, brSvObjExists;
 
   entinfoObj = {};
@@ -1664,6 +1880,10 @@ function getEntinfoObj(codename, entCodename, infotype, info) {
       info = getFromBrSv_valFromAtt(C_typecode_entinfo, codename, C_att_info);
     }
 
+    if ( isBlank(startInfo) ) {
+      startInfo = getFromBrSv_valFromAtt(C_typecode_entinfo, codename, C_att_startInfo);
+    }
+
   } else {
 
     entinfoObj._existsInBrSv = false;
@@ -1673,6 +1893,7 @@ function getEntinfoObj(codename, entCodename, infotype, info) {
   entinfoObj.infotype = infotype;
   entinfoObj.entCodename = entCodename;
   entinfoObj.info = info;
+  entinfoObj.startInfo = startInfo;
 
   entinfoObj.changeInfo = function(info) {
     this.info = info;
@@ -1687,6 +1908,7 @@ function getEntinfoObj(codename, entCodename, infotype, info) {
     saveToBrowser(C_typecode_entinfo, this.codename, C_att_entCodename, this.entCodename);
     saveToBrowser(C_typecode_entinfo, this.codename, C_att_infotype, this.infotype);
     saveToBrowser(C_typecode_entinfo, this.codename, C_att_info, this.info);
+    saveToBrowser(C_typecode_entinfo, this.codename, C_att_startInfo, this.startInfo);
     this._existsInBrSv = true;
   };
   
@@ -1729,6 +1951,23 @@ function getEntObj(codename, gameCodename = APP.curGameObj.codename, name, isUse
   entObj.startLocCodename = startLocCodename;
 
   entObj.itmObjs = getItmObjsFromInventory(inventory);
+
+  entObj._eiObjs = [];
+  entObj._eidObjs = [];
+
+  entObj.getAllEntinfoDataObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_entinfoData);
+    this._eidObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._eidObjs;
+  };
+
+  entObj.getAllEntinfoObjs = function() {
+    APP.sort_addedTextForNum = getTypecodeAddedTextForNum(C_typecode_entinfo);
+    this._eiObjs.sort( sorting_sortedCodenameAy() );
+    APP.sort_addedTextForNum = null;
+    return this._eiObjs;
+  };
 
   entObj.getInventoryListHtml = function(includeUse, jsFuncName) {
     var i, html = "";
@@ -1779,6 +2018,46 @@ function getEntObj(codename, gameCodename = APP.curGameObj.codename, name, isUse
     return false;
   };
 
+  entObj.loadEiObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this._eiObjs = [];
+
+    codenameLeft = getCodenameLeft(this.codename);
+
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_entinfo, null, C_att_infotype, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newEiObj = getEntinfoObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+      this._eiObjs.push(newEiObj);
+    }
+  };
+
+  entObj.loadEidObjsFromBrowserSave = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this._eidObjs = [];
+
+    codenameLeft = getCodenameLeft(this.codename);
+
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_entinfoData, null, C_att_infotype, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newEidObj = getEntinfoDataObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+      this._eidObjs.push(newEidObj);
+    }
+  };
+
+  entObj.init = function() {
+dc_("running entObj.init()")
+    this.loadEiObjsFromBrowserSave();
+    this.loadEidObjsFromBrowserSave();
+dc_("this._eiObjs.length",this._eiObjs.length)
+dc_("this._eidObjs.length",this._eidObjs.length)
+  };
+
   entObj.moveToLocCodename = function(locCodename) {
     this.locCodename = locCodename;
     saveToBrowser(C_typecode_ent, this.codename, C_att_locCodename, this.locCodename);
@@ -1786,6 +2065,14 @@ function getEntObj(codename, gameCodename = APP.curGameObj.codename, name, isUse
 
   entObj.moveToLocObj = function(locObj) {
     this.moveToLocCodename(locObj.codename);
+  };
+
+  entObj.receiveEidObj = function(eidObj) {
+    this._eidObjs.push(eidObj);
+  };
+
+  entObj.receiveEiObj = function(eiObj) {
+    this._eiObjs.push(eiObj);
   };
 
   entObj.receiveItmObj = function(itmObj) {
@@ -1809,6 +2096,33 @@ function getEntObj(codename, gameCodename = APP.curGameObj.codename, name, isUse
   };
 
   entObj.reset = function() {
+dc_("running entObj.reset()")
+dc_("this._eiObjs.length",this._eiObjs.length)
+dc_("this._eidObjs.length",this._eidObjs.length)
+    var i;
+
+    this._eiObjs.forEach( (curEiObj) => {
+      curEiObj.info = curEiObj.startInfo;
+      curEiObj.saveToBrowser();
+    } );
+
+    this._eidObjs.forEach( (curEidObj) => {
+      curEidObj.info = curEidObj.startInfo;
+      curEidObj.saveToBrowser();
+    } );
+
+    //for (i = 0; i < this._eiObjs.length; i++) {
+    //  let curEiObj = this._eiObjs[i];
+    //  curEiObj.info = curEiObj.startnfo;
+    //  curEiObj.saveToBrowser();
+    //}
+
+    //for (i = 0; i < this._eidObjs.length; i++) {
+    //  let curEidObj = this._eidObjs[i];
+    //  curEidObj.info = curEidObj.startnfo;
+    //  curEidObj.saveToBrowser();
+    //}
+
     this.moveToLocCodename(this.startLocCodename);
   };
 
@@ -1852,6 +2166,8 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
   gameObj.name = name;
   gameObj.startPageCodename = startPageCodename;
   gameObj.curPageCodename = curPageCodename;
+
+  gameObj._entObjs = [];
 
   gameObj.getAllEntObjs = function() {
     var entBrSvObjs, i, entObjs = [];
@@ -1936,11 +2252,41 @@ function getGameObj(codename, name, startPageCodename, curPageCodename) {
     return pageObjs;
   };
 
+  gameObj.init = function() {
+    this.loadEntObjsFromBrSv();
+  };
+
+  gameObj.loadEntObjsFromBrSv = function() {
+    var codenameLeft, brSvObjs, i;
+
+    this._entObjs = [];
+
+    codenameLeft = getCodenameLeft(this.codename);
+
+    brSvObjs = getBrSvObjsFromBrSv(C_typecode_ent, null, C_att_name, null, codenameLeft);
+
+    for (i = 0; i < brSvObjs.length; i++) {
+      let curBrSvObj = brSvObjs[i];
+      let newEntObj = getEntObj(curBrSvObj.codename, this.codename, curBrSvObj.val);
+
+      if ( isTrue(newEntObj.isUser) ) {
+        APP.userEntObj = newEntObj;
+      }
+
+      newEntObj.init();
+
+      this._entObjs.push(newEntObj);
+    }
+  };
+
+  gameObj.receiveEntObj = function(entObj) {
+    this._entObjs.push(entObj);
+  };
+
   gameObj.reset = function() {
-    var allEntObjs = this.getAllEntObjs();
     var allItmObjs = this.getAllItmObjs(false, false, false);
 
-    allEntObjs.forEach( function(entObjInLoop) {
+    this._entObjs.forEach( function(entObjInLoop) {
       entObjInLoop.reset();
     } );
 
@@ -3581,6 +3927,8 @@ function getUaObj(codename, pageCodename = APP.curPageObj.codename, uaText, uaty
   uaObj.msg = msg;
   uaObj.causeUseEventOnItm = causeUseEventOnItm;
 
+  uaObj._uacondObjs = [];
+
   uaObj.condsFailed = function() {
     var i;
 
@@ -3858,7 +4206,12 @@ function getValArrayWithoutElem(theArray, valToExclude) {
 }
 
 function hideAllDisplays() {
-  elem("dvBrowserSaveOuter").style.display = "none";
+  elem("taBrSv_Import_BrSvTextToImport").value = "";
+  elem("taBrSv_Export_ExportedBrSvText").value = "";
+
+  elem("dvBrSv_Export_Outer").style.display = "none";
+  elem("dvBrSv_Import_Outer").style.display = "none";
+  elem("dvBrSv_View_Outer").style.display = "none";
   elem("dvEditor_AddToLocInventory_Outer").style.display = "none";
   elem("dvEditor_PageAdd_Outer").style.display = "none";
   elem("dvEditor_TrAdd_Outer").style.display = "none";
@@ -3873,6 +4226,22 @@ function hideAllDisplays() {
 
 function hideElem(id) {
   elem(id).style.display = "none"
+}
+
+function html_getConfirmFromUser(txt) {
+  if ( confirm("\n" + txt + "\n\n\n") ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function html_scrollPageToTop() {
+  window.scrollTo(0, 0);
+}
+
+function html_showMsgToUser(txt) {
+  alert("\n" + txt + "\n\n\n");
 }
 
 function isBlank(val) {
@@ -3952,10 +4321,6 @@ function leftIs(haystack, needle) {
   return isEqual(haystackLeft, needle);
 }
 
-function loadAllGameCodenames() {
-  APP.allGameBrSvObjs = getBrSvObjsFromBrSv(C_typecode_game, null, C_att_name, null, null);
-}
-
 function processItmUse(itmCodename_toReceiveUse) {
   var itmObj_toReceiveUse, baseMsg, noEffect = false, resultText, resultMsg;
 
@@ -3971,24 +4336,24 @@ function processItmUse(itmCodename_toReceiveUse) {
 
   } else if ( ! isEqual(itmObj_toReceiveUse.itmThatAffects, APP.curItmObj.codename) ) {
 
-    resultText = "no effect"
     noEffect = true;
+    resultText = "no effect"
 
   } else {
 
-    itmObj_toReceiveUse.receiveUse();
+    resultText = itmObj_toReceiveUse.receiveUse();
 
   }
 
-  if ( isBlank(resultText) ) {
+  if ( ! noEffect && isBlank(resultText) ) {
     resultText = "ERROR: there is a problem with '" + itmObj_toReceiveUse.name + "'";
   }
 
-  resultMsg = baseMsg + "\n\nRESULT:  " + resultText + "\n\n\n";
 
-  if ( ! isBlank(itmObj_toReceiveUse.useReceivedMsg) ) {
+  if ( ! noEffect && ! isBlank(itmObj_toReceiveUse.useReceivedMsg) ) {
     alert("\n" + itmObj_toReceiveUse.useReceivedMsg + "\n\n\n");
   } else {
+    resultMsg = baseMsg + "\n\nRESULT:  " + resultText + "\n\n\n";
     alert(resultMsg);
   }
 
@@ -4109,9 +4474,9 @@ function runCurGame_addDevOptions() {
     html += getHtmlDownSpacer(2);
 
     html += "<div>current game: " + curGameName;
-    //if (APP.curGameObj) {
-    //  html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_game ( )'>> rename</a>";
-    //}
+    if (APP.curGameObj) {
+      html += "&nbsp;&nbsp;<a href='javascript: dev_editor__rename_game ( )'>> rename</a>";
+    }
     //html += "&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: dev_editor__view_all_games ( )'>> view all games</a></div>\n";
     html += "</div>\n";
 
@@ -4120,7 +4485,7 @@ function runCurGame_addDevOptions() {
 
     html += getHtmlDownSpacer(2);
 
-    html += "<a href='javascript: browser_save__view ( )'>> view browser saved data</a></div>\n";
+    html += "<a href='javascript: browser_save__view ( true )'>> browser saved data</a></div>\n";
 
     html += getHtmlDownSpacer();
 
@@ -4133,13 +4498,15 @@ function runCurGame_addDevOptions() {
 function runCurGame_init() {
   var userEntLocObj;
 
-  runCurGame_init_Pages();
+  APP.curGameObj.init();
+
+  runCurGame_init_startPage();
   runCurGame_init_userEntity();
 
   userEntLocObj = getLocObj(APP.userEntObj.locCodename);
 }
 
-function runCurGame_init_Pages() {
+function runCurGame_init_startPage() {
   if ( isBlank(APP.curGameObj.curPageCodename) ) {
 
     let startPageObj;
@@ -4173,29 +4540,16 @@ function runCurGame_init_Pages() {
 }
 
 function runCurGame_init_userEntity() {
-  var i, hasUserEnt = false;
-
-  APP.curGame_allEntBrSvObjs = getBrSvObjsFromBrSv(C_typecode_ent, null, C_att_gameCodename, APP.curGameObj.codename, null);
-
-  for (i = 0; i < APP.curGame_allEntBrSvObjs.length; i++) {
-    let curEntCodename;
-
-    curEntCodename = APP.curGame_allEntBrSvObjs[i].codename;
-
-    if ( isEqual(curEntCodename, APP.curGameObj.codename + "," + C_misc_userCodename) ) {
-      APP.userEntObj = getEntObj(curEntCodename, APP.curGameObj.codename);
-      hasUserEnt = true;
-      break;
-    }
-  }
-
-  if ( ! hasUserEnt ) {
-
+  var allEntBrSvObjs;
+  
+  if ( isBlank(APP.userEntObj) ) {
+    allEntBrSvObjs = getBrSvObjsFromBrSv(C_typecode_ent, null, C_att_gameCodename, APP.curGameObj.codename, null);
     APP.userEntObj = getAndMakeNewEnt(undefined, C_misc_userDefName, C_misc_userCodename, true, APP.curPageObj.locCodename, APP.curPageObj.locCodename);
   }
 }
 
 function runUserAction(uatype, uaVar1) {
+  var msgFromUatypeSpecificProcessing = "";
   var uaObj = getUaObj(uaVar1);
 
   switch (uatype) {
@@ -4207,23 +4561,21 @@ function runUserAction(uatype, uaVar1) {
         uaObj = getUaObj(uaVar1);
         itmObj = getItmObj(uaObj.itmCodename);
 
-        eidObj = findEntinfoDataObj(itmObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, undefined)
+dc_(".... about to run findEntinfoDataObj() from runUserAction()")
+        eidObj = findEntinfoDataObj(APP.userEntObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, undefined)
+dc_(".... just exited running findEntinfoDataObj() from runUserAction()")
 
         if ( eidObj == null ) {
-          eidObj = getAndMakeNewEntinfoData(APP.userEntObj.codename, C_infotype_examItm, C_typecode_itm, itmObj.codename, C_info_yes);
+          eidObj = getAndMakeNewEntinfoData(APP.userEntObj, C_infotype_examItm, C_typecode_itm, itmObj.codename, C_info_yes, C_info_no);
         } else if ( ! isEqual(eidObj.info, C_info_yes) ) {
           eidObj.changeInfo(C_info_yes);
         }
 
         if ( isBlank(itmObj.examineMsg) ) {
-          msgToShow = "There is nothing special about this object.";
+          msgFromUatypeSpecificProcessing = "There is nothing special about this object.";
         } else {
-          msgToShow = itmObj.examineMsg;
+          msgFromUatypeSpecificProcessing = itmObj.examineMsg;
         }
-
-        alert("\n" + itmObj.name + "\n\n\n" + msgToShow + "\n\n\n");
-
-        APP.curPageObj.display();
       }
       break;
 
@@ -4235,12 +4587,14 @@ function runUserAction(uatype, uaVar1) {
         APP.userEntObj.receiveItmObj(itmObj);
         curLocObj.removeItmObj(itmObj);
 
-        runCurGame();
+        if ( isBlank(uaObj.msg) ) {
+          msgFromUatypeSpecificProcessing = "you pick up " + itmObj.name
+        }
       }
       break;
 
     case C_uatype_other:
-      // no action needed here -- message will be displayed below
+      // no action needed here -- any message or use will be handled below
       break;
 
     case C_uatype_moveToLoc:
@@ -4252,22 +4606,25 @@ function runUserAction(uatype, uaVar1) {
     case C_userAction_openInventory:
       // OLD, but still using for now
       displayUserInventory();
-      break;
+      return;
 
   
     default:
-      alert("ERROR: action '" + getUatypeDisplayText(uatype) + "' was not found");
+      html_showMsgToUser("ERROR: action '" + getUatypeDisplayText(uatype) + "' was not found");
   }
 
   if ( ! isBlank(uaObj.causeUseEventOnItm) ) {
     let itmObj = getItmObj(uaObj.causeUseEventOnItm);
     itmObj.receiveUse();
-    runCurGame();
   }
 
   if ( ! isBlank(uaObj.msg) ) {
-    alert(uaObj.msg);
+    html_showMsgToUser(uaObj.msg);
+  } else if ( ! isBlank(msgFromUatypeSpecificProcessing) ) {
+    html_showMsgToUser(msgFromUatypeSpecificProcessing);
   }
+
+  runCurGame();
 }
 
 function saveToBrowser(typecode, codename, att, val) {
@@ -4481,64 +4838,6 @@ function sorting_vals() {
   };
 }
 
-function startApp() {
-  var defGameCodename, defGameObj;
-
-  startApp_processQueryString();
-
-  APP.dev = getAsOneZero( getAppSetting(C_appSetting_dev) );
-
-  //keys_startMonitoring();
-
-  if ( getAppSetting(C_appSetting_LS) == "1" ) {
-    displayBrowserSave();
-    return;
-  }
-
-  APP.dev_hideEditor = getAsOneZero( getAppSetting(C_appSetting_dev_hideEditor) );
-
-  loadAllGameCodenames();
-
-  defGameCodename = getAppSetting(C_appSetting_defaultGameCodename);
-
-  if ( isBlank(defGameCodename) ) {
-    if (APP.allGameBrSvObjs.length > 0) {
-      defGameCodename = APP.allGameBrSvObjs[0].codename;
-    } else {
-      defGameObj = getAndMakeNewGame("game-1", "Your First Game");
-      defGameCodename = defGameObj.codename;
-    }
-  
-    setAppSetting(C_appSetting_defaultGameCodename, defGameCodename);
-  }
-
-  if ( ! defGameObj ) {
-    defGameObj = getGameObj(defGameCodename);
-  }
-
-  APP.curGameObj = defGameObj;
-
-  runCurGame();
-}
-
-function startApp_processQueryString() {
-  var qs_urlParams = new URLSearchParams(window.location.search);
-
-  if ( qs_urlParams.has(C_appSetting_dev) ) {
-    setAppSetting(C_appSetting_dev, "1");
-  }
-
-  if ( qs_urlParams.has(C_appSetting_narrow) ) {
-    setAppSetting(C_appSetting_narrow, "1");
-  }
-
-  if ( qs_urlParams.has(C_appSetting_LS) ) {
-    setAppSetting(C_appSetting_LS, "1");
-  } else {
-    setAppSetting(C_appSetting_LS, "0");
-  }
-}
-
 function withoutLeft(haystack, needle) {
   if (typeof haystack !== "string") return "";
   if (typeof needle !== "string") return haystack;
@@ -4577,7 +4876,7 @@ function withoutRight(haystack , needle) {
   }
 }
 
-function writeBrowserSavedData() {
+function writeBrSvData() {
   var i, keyName, keyValue, html = "", appSetting_narrow;
   var ay = [];
 
@@ -4605,7 +4904,14 @@ function writeBrowserSavedData() {
     }
   }
 
+  //
+  //
   // put localStorage into an array, for sorting
+  //
+  //
+  // ---> can switch this to the new centralized brSv_getSortedAy()
+  //
+  //
   for (i = 0; i < localStorage.length; i++) {
     let lsPair = {};
     lsPair.keyName = localStorage.key(i);
@@ -4613,7 +4919,7 @@ function writeBrowserSavedData() {
     ay.push(lsPair);
   }
 
-  ay.sort( writeBrowserSavedData_sortingFunc() );
+  ay.sort( brSv_localStorageSortFunc() );
 
   for (i = 0; i < ay.length; i++) {
     keyName = ay[i].keyName;
@@ -4647,17 +4953,16 @@ function writeBrowserSavedData() {
   html += "<div style='height:0.8em'></div>\n";
   html += "<div><a href='javascript: browser_save__add_row()'>add row</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='javascript: browser_save__refresh_view()'>refresh view</a></div>\n";
 
-  elem("dvBrowserSaveInner").innerHTML = html;
+  elem("dvBrSv_View_Inner").innerHTML = html;
 }
 
-const writeBrowserSavedData_sortingFunc = () => {
-  return (lsPairA, lsPairB) => {
-    if (lsPairA.keyName.toLowerCase() < lsPairB.keyName.toLowerCase()) {
-      return -1;
-    } else {
-      return 1;
-    }
-  };
+
+// EVENT-HANDLER FUNCTIONS
+
+elem("aBrSv_Export_CopyToClipboard").onclick = (evt) => {
+  elem("taBrSv_Export_ExportedBrSvText").select();  
+  document.execCommand("copy")
+  alert("\nthe browser saved data was copied to your clipboard\n\n\n");
 };
 
 
@@ -4672,7 +4977,19 @@ function browser_save__add_row() {
   }
 
   localStorage.setItem(keyName, keyValue);
-  displayBrowserSave();
+  brSv_displayView();
+  return undefined;
+}
+
+function browser_save__begin_import() {
+  var textToImport = getElemVal("taBrSv_Import_BrSvTextToImport");
+
+  if ( isBlank(textToImport) ) {
+    alert("\nno import text entered, operation cancelled\n\n\n");
+    return undefined;
+  }
+
+  brSv_doImport(textToImport);
   return undefined;
 }
 
@@ -4716,7 +5033,7 @@ function browser_save__change_key_name(curKeyName) {
   alert(confirmationMsg);
 
   //refresh storage view
-  displayBrowserSave();
+  brSv_displayView();
   return undefined;
 }
 
@@ -4752,8 +5069,18 @@ function browser_save__delete_all_saved_data() {
 function browser_save__delete_row(keyName) {
   if ( confirm("\nDelete this row?\n\n\n") ) {
     localStorage.removeItem(keyName);
-    displayBrowserSave();
+    brSv_displayView();
   }
+  return undefined;
+}
+
+function browser_save__display_data_export() {
+  brSv_displayExport();
+  return undefined;
+}
+
+function browser_save__display_data_import() {
+  brSv_displayImport();
   return undefined;
 }
 
@@ -4769,23 +5096,23 @@ function browser_save__edit_row(keyName) {
   editedKeyValue = getProcessedStringForSave(editedKeyValue);
 
   localStorage.setItem(keyName, editedKeyValue);
-  displayBrowserSave();
+  brSv_displayView();
   return undefined;
 }
 
 function browser_save__return_to_game() {
-  elem("dvBrowserSaveOuter").style.display = "none";
-  startApp();
+  elem("dvBrSv_View_Outer").style.display = "none";
+  app_start();
   return undefined;
 }
 
 function browser_save__refresh_view() {
-  displayBrowserSave();
+  brSv_displayView();
   return undefined;
 }
 
-function browser_save__view() {
-  displayBrowserSave();
+function browser_save__view(cursorToTop = false) {
+  brSv_displayView(cursorToTop);
   return undefined;
 }
 
@@ -5116,7 +5443,7 @@ function dev_editor__goto__edit_user_action(uaCodename) {
 
 function dev_editor__hide_editor() {
   setAppSetting(C_appSetting_dev_hideEditor, "1")
-  startApp();
+  app_start();
   return undefined;
 }
 
@@ -5180,7 +5507,7 @@ function dev_editor__reset_game() {
 
 function dev_editor__show_editor() {
   setAppSetting(C_appSetting_dev_hideEditor, "0")
-  startApp();
+  app_start();
   return undefined;
 }
 
@@ -5218,7 +5545,7 @@ function use_object(codename) {
 
 // START APP (also runs the default game)
 
-startApp();
+app_start();
 
 
 </script>
